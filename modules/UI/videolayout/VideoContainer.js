@@ -10,7 +10,6 @@ import { ORIENTATION, LargeVideoBackground, updateLastLargeVideoMediaEvent } fro
 import { isRoomBackgroundDefined } from '../../../react/features/room-background';
 import { LAYOUTS, getCurrentLayout } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
-import UIEvents from '../../../service/UI/UIEvents';
 import UIUtil from '../util/UIUtil';
 
 import Filmstrip from './Filmstrip';
@@ -191,16 +190,13 @@ export class VideoContainer extends LargeContainer {
      * Creates new VideoContainer instance.
      * @param resizeContainer {Function} function that takes care of the size
      * of the video container.
-     * @param emitter {EventEmitter} the event emitter that will be used by
-     * this instance.
      */
-    constructor(resizeContainer, emitter) {
+    constructor(resizeContainer) {
         super();
         this.stream = null;
         this.userId = null;
         this.videoType = null;
         this.localFlipX = true;
-        this.emitter = emitter;
         this.resizeContainer = resizeContainer;
 
         /**
@@ -506,7 +502,7 @@ export class VideoContainer extends LargeContainer {
 
         stream.attach(this.$video[0]);
 
-        const flipX = stream.isLocal() && this.localFlipX;
+        const flipX = stream.isLocal() && this.localFlipX && !this.isScreenSharing();
 
         this.$video.css({
             transform: flipX ? 'scaleX(-1)' : 'none'
@@ -548,7 +544,6 @@ export class VideoContainer extends LargeContainer {
         this.$avatar.css('visibility', show ? 'visible' : 'hidden');
         this.avatarDisplayed = show;
 
-        this.emitter.emit(UIEvents.LARGE_VIDEO_AVATAR_VISIBLE, show);
         APP.API.notifyLargeVideoVisibilityChanged(show);
     }
 
