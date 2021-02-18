@@ -3,6 +3,7 @@
 import { getBlurEffect } from '../../blur';
 import { createForegroundOverlay } from '../../stream-effects/foreground-overlay';
 import { createScreenshotCaptureEffect } from '../../stream-effects/screenshot-capture';
+import { getBackgroundEffect } from '../../virtual-background';
 
 import logger from './logger';
 
@@ -16,10 +17,10 @@ export default function loadEffects(store: Object): Promise<any> {
     const state = store.getState();
     const foregroundOverlay = state['features/foreground-overlay'];
 
-    const blurPromise = state['features/blur'].blurEnabled
-        ? getBlurEffect()
+    const backgroundPromise = state['features/virtual-background'].backgroundEffectEnabled
+        ? getBackgroundEffect()
             .catch(error => {
-                logger.error('Failed to obtain the blur effect instance with error: ', error);
+                logger.error('Failed to obtain the background effect instance with error: ', error);
 
                 return Promise.resolve();
             })
@@ -45,5 +46,5 @@ export default function loadEffects(store: Object): Promise<any> {
             })
         : Promise.resolve();
 
-    return Promise.all([ blurPromise, foregroundOverlayPromise, screenshotCapturePromise ]);
+    return Promise.all([blurPromise, foregroundOverlayPromise, screenshotCapturePromise]);
 }
