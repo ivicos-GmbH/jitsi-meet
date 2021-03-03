@@ -2956,6 +2956,23 @@ export default {
     removeListener(eventName, listener) {
         eventEmitter.removeListener(eventName, listener);
     },
+    setBackgroundImage(backgroundImageUrl, backgroundColor) {
+        const id = getLocalParticipant(APP.store.getState());
+        const updateDate = Date.now();
+
+        APP.store.dispatch(participantUpdated({
+            id,
+            local: true,
+            backgroundImageUrl,
+            backgroundColor,
+            backgroundLastUpdate: updateDate
+        }));
+        APP.store.dispatch(updateSettings({
+            backgroundImageUrl,
+            backgroundColor,
+            backgroundLastUpdate: updateDate
+        }));
+    },
 
     /**
      * Changes the display name for the local user
