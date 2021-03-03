@@ -1,5 +1,11 @@
-<!--
-Thank you for your pull request. Please provide a thorough description below.
+## Description of the PR
 
-Contributors guide: https://github.com/jitsi/jitsi-meet/blob/master/CONTRIBUTING.md
--->
+<!-- Description -->
+
+## Screenshots
+
+<!-- Screenshots -->
+
+## Issues to clarify before merge
+
+- [ ] : Issue
