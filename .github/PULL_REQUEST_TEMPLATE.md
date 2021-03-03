@@ -2,6 +2,13 @@
 
 <!-- Description -->
 
+## Type of change
+
+* [ ]: Technical
+* [ ]: Feature
+* [ ]: Documentation
+* [ ]: Bugfix
+
 ## Screenshots
 
 <!-- Screenshots -->
