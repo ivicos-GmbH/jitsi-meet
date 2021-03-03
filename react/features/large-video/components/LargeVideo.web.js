@@ -131,6 +131,111 @@ class LargeVideo extends Component<Props> {
     }
 }
 
+/**
+ * For a local participant, extract the background-related information from the participant state.
+ *
+ * @param {Object} participant - The Redux state for participants feature.
+ * @private
+ * @returns {Object}
+ */
+function _extractBackgroundInfo(participant) {
+    const { backgroundColor, backgroundImageUrl, backgroundLastUpdate } = participant;
+
+    return {
+        backgroundColor,
+        backgroundImageUrl,
+        backgroundLastUpdate
+    };
+}
+
+/**
+ * For a remote participant, extract the background-related information from the conference state.
+ *
+ * @param {Object} participant - Participant related information in the conference state.
+ * @private
+ * @returns {Object}
+ */
+function _extractBackgroundInfoRemote(participant) {
+    if (!participant?._properties) {
+        return {
+            backgroundColor: undefined,
+            backgroundImageUrl: undefined,
+            backgroundLastUpdate: undefined
+        };
+    }
+    const properties = participant?._properties;
+
+    return {
+        backgroundColor: properties.backgroundColor,
+        backgroundImageUrl: properties.backgroundImageUrl,
+        backgroundLastUpdate: properties.backgroundLastUpdate
+    };
+}
+
+/**
+ * The function synchronizes the information between local and remote participants to get the latest
+ * background defined.
+ *
+ * @param {Object} participantsState - Participants redux state.
+ * @param {Object} conferenceState - Conference redux state.
+ * @private
+ * @returns {Object}
+ */
+function _getLatestBackground(participantsState, conferenceState) {
+
+    const localParticipant = participantsState
+        .filter(participant => participant.local)
+        .map(p => _extractBackgroundInfo(p));
+
+    const remoteParticipants = participantsState
+        .filter(participant => !participant.local)
+        .map(p => (conferenceState?.participants || {})[p.id])
+        .map(p => _extractBackgroundInfoRemote(p));
+
+    const participants = localParticipant
+        .concat(remoteParticipants)
+        .filter(participant => participant.backgroundLastUpdate !== undefined);
+
+    console.log('Background participants list : ');
+    console.log(participants);
+    const reference = participants
+        .sort((a, b) => parseInt(b.backgroundLastUpdate, 10) - parseInt(a.backgroundLastUpdate, 10))[0];
+
+    console.log('Background reference chosen : ');
+    console.log(reference);
+
+    return {
+        backgroundColor: reference?.backgroundColor,
+        backgroundImageUrl: reference?.backgroundImageUrl
+    };
+}
+
+/**
+ * Returns background properties depending on the states of participants, conference and dynamic branding.
+ *
+ * @param {Object} state - The Redux state.
+ * @private
+ * @returns {Object}
+ */
+function _resolveBackground(state) {
+    const participantsState = state['features/base/participants'];
+    const conferenceState = state['features/base/conference'].conference;
+    const dynamicBrandingState = state['features/dynamic-branding'];
+
+    const { backgroundColor, backgroundImageUrl } = _getLatestBackground(participantsState, conferenceState);
+
+    if (backgroundColor || backgroundImageUrl) {
+        return {
+            backgroundColor,
+            backgroundImageUrl
+        };
+    }
+
+    return {
+        backgroundColor: dynamicBrandingState.backgroundColor,
+        backgroundImageUrl: dynamicBrandingState.backgroundImageUrl
+    };
+}
 
 /**
  * Maps (parts of) the Redux state to the associated LargeVideo props.
@@ -141,7 +246,7 @@ class LargeVideo extends Component<Props> {
  */
 function _mapStateToProps(state) {
     const testingConfig = state['features/base/config'].testing;
-    const { backgroundColor, backgroundImageUrl } = state['features/dynamic-branding'];
+    const { backgroundColor, backgroundImageUrl } = _resolveBackground(state);
     const { isOpen: isChatOpen } = state['features/chat'];
 
     return {
