@@ -260,6 +260,7 @@ StateListenerRegistry.register(
             // We left the conference, the local participant must be updated.
             _e2eeUpdated(store, conference, localParticipantId, false);
             _raiseHandUpdated(store, conference, localParticipantId, false);
+
         }
     }
 );
@@ -383,7 +384,8 @@ function _maybePlaySounds({ getState, dispatch }, action) {
  */
 function _participantJoinedOrUpdated(store, next, action) {
     const { dispatch, getState } = store;
-    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand } } = action;
+    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand, backgroundColor,
+        backgroundImageUrl, backgroundLastUpdate } } = action;
 
     // Send an external update of the local participant's raised hand state
     // if a new raised hand state is defined in the action.
@@ -394,6 +396,24 @@ function _participantJoinedOrUpdated(store, next, action) {
             // Send raisedHand signalling only if there is a change
             if (conference && raisedHand !== getLocalParticipant(getState()).raisedHand) {
                 conference.setLocalParticipantProperty('raisedHand', raisedHand);
+            }
+        }
+    }
+
+    // Send an external update of the local participant's background color/image state
+    // if a new background color/image state is defined in the action.
+    if (typeof backgroundLastUpdate !== 'undefined') {
+        if (local) {
+            const { conference } = getState()['features/base/conference'];
+
+            conference.setLocalParticipantProperty('backgroundLastUpdate', backgroundLastUpdate);
+
+            if (conference && backgroundColor !== getLocalParticipant(getState()).backgroundColor) {
+                conference.setLocalParticipantProperty('backgroundColor', backgroundColor);
+            }
+
+            if (conference && backgroundImageUrl !== getLocalParticipant(getState()).backgroundImageUrl) {
+                conference.setLocalParticipantProperty('backgroundImageUrl', backgroundImageUrl);
             }
         }
     }

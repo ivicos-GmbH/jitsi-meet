@@ -13,7 +13,6 @@ import { getDynamicBrandingUrl } from './functions';
 
 const logger = getLogger(__filename);
 
-
 /**
  * Fetches custom branding data.
  * If there is no data or the request fails, sets the `customizationReady` flag

@@ -43,6 +43,7 @@ const commands = {
     resizeLargeVideo: 'resize-large-video',
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendTones: 'send-tones',
+    setBackgroundImage: 'set-background-image',
     setLargeVideoParticipant: 'set-large-video-participant',
     setTileView: 'set-tile-view',
     setVideoQuality: 'set-video-quality',
@@ -78,7 +79,7 @@ const events = {
     'feedback-prompt-displayed': 'feedbackPromptDisplayed',
     'filmstrip-display-changed': 'filmstripDisplayChanged',
     'incoming-message': 'incomingMessage',
-    'log': 'log',
+    log: 'log',
     'mic-error': 'micError',
     'outgoing-message': 'outgoingMessage',
     'participant-joined': 'participantJoined',
@@ -219,7 +220,6 @@ function parseSizeParam(value) {
     return parsedValue;
 }
 
-
 /**
  * The IFrame API interface class.
  */
@@ -270,7 +270,9 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             userInfo,
             e2eeKey
         } = parseArguments(args);
-        const localStorageContent = jitsiLocalStorage.getItem('jitsiLocalStorage');
+        const localStorageContent = jitsiLocalStorage.getItem(
+            'jitsiLocalStorage'
+        );
 
         this._parentNode = parentNode;
         this._url = generateURL(domain, {
@@ -324,7 +326,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         const frameName = `jitsiConferenceFrame${id}`;
 
         this._frame = document.createElement('iframe');
-        this._frame.allow = 'camera; microphone; display-capture; autoplay; clipboard-write';
+        this._frame.allow
+            = 'camera; microphone; display-capture; autoplay; clipboard-write';
         this._frame.src = this._url;
         this._frame.name = frameName;
         this._frame.id = frameName;
@@ -387,7 +390,6 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         return this._onStageParticipant;
     }
 
-
     /**
      * Getter for the large video element in Jitsi Meet.
      *
@@ -423,8 +425,13 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             return;
         }
 
-        if (typeof participantId === 'undefined' || participantId === this._myUserID) {
-            return iframe.contentWindow.document.getElementById('localVideo_container');
+        if (
+            typeof participantId === 'undefined'
+            || participantId === this._myUserID
+        ) {
+            return iframe.contentWindow.document.getElementById(
+                'localVideo_container'
+            );
         }
 
         return iframe.contentWindow.document.querySelector(`#participant_${participantId} video`);
@@ -477,10 +484,10 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
                     avatarURL: data.avatarURL
                 };
             }
-
             // eslint-disable-next-line no-fallthrough
             case 'participant-joined': {
-                this._participants[userID] = this._participants[userID] || {};
+                this._participants[userID]
+                        = this._participants[userID] || {};
                 this._participants[userID].displayName = data.displayName;
                 this._participants[userID].formattedDisplayName
                     = data.formattedDisplayName;
@@ -532,7 +539,10 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
                 this._videoQuality = data.videoQuality;
                 break;
             case 'local-storage-changed':
-                jitsiLocalStorage.setItem('jitsiLocalStorage', data.localStorageContent);
+                jitsiLocalStorage.setItem(
+                        'jitsiLocalStorage',
+                        data.localStorageContent
+                );
 
                 // Since this is internal event we don't need to emit it to the consumer of the API.
                 return true;
@@ -1107,5 +1117,20 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     stopRecording(mode) {
         this.executeCommand('startRecording', mode);
+    }
+
+    /**
+     * Sets a background image for the room.
+     *
+     * @param {string} backgroundImageUrl - URL of the background image.
+     * @param {string} backgroundColor - Custom color code for the background.
+     * @returns {void}
+     */
+    setBackgroundImage(backgroundImageUrl, backgroundColor) {
+        this.executeCommand(
+            'setBackgroundImage',
+            backgroundImageUrl,
+            backgroundColor
+        );
     }
 }
