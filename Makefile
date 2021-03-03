@@ -19,7 +19,7 @@ WEBPACK_DEV_SERVER = ./node_modules/.bin/webpack-dev-server
 all: compile deploy clean
 
 compile: compile-load-test
-	$(WEBPACK) -p
+	sh $(WEBPACK) -p
 
 compile-load-test:
 	${NPM} install --prefix resources/load-test && ${NPM} run build --prefix resources/load-test
@@ -104,7 +104,7 @@ deploy-local:
 
 .NOTPARALLEL:
 dev: deploy-init deploy-css deploy-rnnoise-binary deploy-tflite deploy-meet-models deploy-lib-jitsi-meet deploy-libflac deploy-olm
-	$(WEBPACK_DEV_SERVER) --detect-circular-deps
+	sh $(WEBPACK_DEV_SERVER) --detect-circular-deps
 
 source-package:
 	mkdir -p source_package/jitsi-meet/css && \
