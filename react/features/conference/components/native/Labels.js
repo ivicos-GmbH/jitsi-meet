@@ -167,37 +167,37 @@ class Labels extends AbstractLabels<Props, State> {
 
         return (
             <View
-                pointerEvents = 'box-none'
-                style = { styles.labelWrapper }>
+                pointerEvents='box-none'
+                style={styles.labelWrapper}>
                 <View
-                    onLayout = { this._onTopViewLayout }
-                    pointerEvents = 'box-none'
-                    style = { [
+                    onLayout={this._onTopViewLayout}
+                    pointerEvents='box-none'
+                    style={[
                         styles.indicatorContainer,
                         wide && _filmstripVisible && !_shouldDisplayTileView
-                            && styles.indicatorContainerWide
-                    ] }>
+                        && styles.indicatorContainerWide
+                    ]}>
                     <TouchableOpacity
-                        onLayout = { this._createOnLayout(LABEL_ID_RECORDING) }
-                        onPress = { this._createOnPress(LABEL_ID_RECORDING) } >
+                        onLayout={this._createOnLayout(LABEL_ID_RECORDING)}
+                        onPress={this._createOnPress(LABEL_ID_RECORDING)} >
                         {
                             this._renderRecordingLabel(
                                 JitsiRecordingConstants.mode.FILE)
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = { this._createOnLayout(LABEL_ID_STREAMING) }
-                        onPress = { this._createOnPress(LABEL_ID_STREAMING) } >
+                        onLayout={this._createOnLayout(LABEL_ID_STREAMING)}
+                        onPress={this._createOnPress(LABEL_ID_STREAMING)} >
                         {
                             this._renderRecordingLabel(
                                 JitsiRecordingConstants.mode.STREAM)
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = {
+                        onLayout={
                             this._createOnLayout(LABEL_ID_TRANSCRIBING)
                         }
-                        onPress = {
+                        onPress={
                             this._createOnPress(LABEL_ID_TRANSCRIBING)
                         } >
                         {
@@ -205,10 +205,10 @@ class Labels extends AbstractLabels<Props, State> {
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = {
+                        onLayout={
                             this._createOnLayout(LABEL_ID_INSECURE_ROOM_NAME)
                         }
-                        onPress = {
+                        onPress={
                             this._createOnPress(LABEL_ID_INSECURE_ROOM_NAME)
                         } >
                         {
@@ -216,19 +216,19 @@ class Labels extends AbstractLabels<Props, State> {
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = {
-                            this._createOnLayout(LABEL_ID_QUALITY) }
-                        onPress = {
-                            this._createOnPress(LABEL_ID_QUALITY) } >
-                        { this._renderVideoQualityLabel() }
+                        onLayout={
+                            this._createOnLayout(LABEL_ID_QUALITY)}
+                        onPress={
+                            this._createOnPress(LABEL_ID_QUALITY)} >
+                        {this._renderVideoQualityLabel()}
                     </TouchableOpacity>
                 </View>
                 <View
-                    style = { [
+                    style={[
                         styles.indicatorContainer,
                         wide && _filmstripVisible && !_shouldDisplayTileView
-                            && styles.indicatorContainerWide
-                    ] }>
+                        && styles.indicatorContainerWide
+                    ]}>
                     {
                         this._renderExpandedLabel()
                     }

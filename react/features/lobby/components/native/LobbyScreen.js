@@ -30,12 +30,12 @@ class LobbyScreen extends AbstractLobbyScreen {
                 onCancel = { this._onCancel }
                 style = { styles.contentWrapper }>
                 <Text style = { styles.dialogTitle }>
-                    { t(this._getScreenTitleKey()) }
+                    {t(this._getScreenTitleKey())}
                 </Text>
                 <Text style = { styles.secondaryText }>
-                    { _meetingName }
+                    {_meetingName}
                 </Text>
-                { this._renderContent() }
+                { this._renderContent()}
             </CustomDialog>
         );
     }
@@ -74,9 +74,9 @@ class LobbyScreen extends AbstractLobbyScreen {
                     color = 'black'
                     style = { styles.loadingIndicator } />
                 <Text style = { styles.joiningMessage }>
-                    { this.props.t('lobby.joiningMessage') }
+                    {this.props.t('lobby.joiningMessage')}
                 </Text>
-                { this._renderStandardButtons() }
+                { this._renderStandardButtons()}
             </>
         );
     }
@@ -93,14 +93,14 @@ class LobbyScreen extends AbstractLobbyScreen {
         return (
             <View style = { styles.formWrapper }>
                 <Text style = { styles.fieldLabel }>
-                    { t('lobby.nameField') }
+                    {t('lobby.nameField')}
                 </Text>
                 <TextInput
                     onChangeText = { this._onChangeDisplayName }
                     style = { styles.field }
                     value = { displayName } />
                 <Text style = { styles.fieldLabel }>
-                    { t('lobby.emailField') }
+                    {t('lobby.emailField')}
                 </Text>
                 <TextInput
                     onChangeText = { this._onChangeEmail }
@@ -131,11 +131,11 @@ class LobbyScreen extends AbstractLobbyScreen {
                     participantId = { this.props._participantId }
                     size = { 64 } />
                 <Text style = { styles.displayNameText }>
-                    { displayName }
+                    {displayName}
                 </Text>
                 { Boolean(email) && <Text style = { styles.secondaryText }>
-                    { email }
-                </Text> }
+                    {email}
+                </Text>}
             </View>
         );
     }
@@ -151,7 +151,7 @@ class LobbyScreen extends AbstractLobbyScreen {
         return (
             <View style = { styles.formWrapper }>
                 <Text style = { styles.fieldLabel }>
-                    { this.props.t('lobby.passwordField') }
+                    {this.props.t('lobby.passwordField')}
                 </Text>
                 <TextInput
                     autoCapitalize = 'none'
@@ -161,8 +161,8 @@ class LobbyScreen extends AbstractLobbyScreen {
                     style = { styles.field }
                     value = { this.state.password } />
                 { _passwordJoinFailed && <Text style = { styles.fieldError }>
-                    { t('lobby.invalidPassword') }
-                </Text> }
+                    {t('lobby.invalidPassword')}
+                </Text>}
             </View>
         );
     }
@@ -185,7 +185,7 @@ class LobbyScreen extends AbstractLobbyScreen {
                         styles.primaryButton
                     ] }>
                     <Text style = { styles.primaryButtonText }>
-                        { t('lobby.passwordJoinButton') }
+                        {t('lobby.passwordJoinButton')}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -195,7 +195,7 @@ class LobbyScreen extends AbstractLobbyScreen {
                         styles.secondaryButton
                     ] }>
                     <Text>
-                        { t('lobby.backToKnockModeButton') }
+                        {t('lobby.backToKnockModeButton')}
                     </Text>
                 </TouchableOpacity>
             </>
@@ -220,9 +220,9 @@ class LobbyScreen extends AbstractLobbyScreen {
                         styles.primaryButton
                     ] }>
                     <Text style = { styles.primaryButtonText }>
-                        { t('lobby.knockButton') }
+                        {t('lobby.knockButton')}
                     </Text>
-                </TouchableOpacity> }
+                </TouchableOpacity>}
                 <TouchableOpacity
                     onPress = { this._onSwitchToPasswordMode }
                     style = { [
@@ -230,7 +230,7 @@ class LobbyScreen extends AbstractLobbyScreen {
                         styles.secondaryButton
                     ] }>
                     <Text>
-                        { t('lobby.enterPasswordButton') }
+                        {t('lobby.enterPasswordButton')}
                     </Text>
                 </TouchableOpacity>
             </>

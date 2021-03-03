@@ -62,9 +62,9 @@ export function getSessionStatusToShow(state: Object, mode: string): ?string {
     if (Array.isArray(recordingSessions)) {
         for (const session of recordingSessions) {
             if (session.mode === mode
-                    && (!status
-                        || (RECORDING_STATUS_PRIORITIES.indexOf(session.status)
-                            > RECORDING_STATUS_PRIORITIES.indexOf(status)))) {
+                && (!status
+                    || (RECORDING_STATUS_PRIORITIES.indexOf(session.status)
+                        > RECORDING_STATUS_PRIORITIES.indexOf(status)))) {
                 status = session.status;
             }
         }

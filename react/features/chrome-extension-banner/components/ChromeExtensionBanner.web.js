@@ -241,7 +241,7 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
                         className = 'chrome-extension-banner__icon-container' />
                     <div
                         className = 'chrome-extension-banner__text-container'>
-                        { t('chromeExtensionBanner.installExtensionText') }
+                        {t('chromeExtensionBanner.installExtensionText')}
                     </div>
                     <div
                         className = 'chrome-extension-banner__close-container'
@@ -259,7 +259,7 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
                         onClick = { this._onInstallExtensionClick }>
                         <div
                             className = 'chrome-extension-banner__button-text'>
-                            { t('chromeExtensionBanner.buttonText') }
+                            {t('chromeExtensionBanner.buttonText')}
                         </div>
                     </div>
                 </div>
@@ -269,7 +269,7 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
                             checked = { this.state.dontShowAgainChecked }
                             onChange = { this._onDontShowAgainChange }
                             type = 'checkbox' />
-                        &nbsp;{ t('chromeExtensionBanner.dontShowAgain') }
+                        &nbsp;{t('chromeExtensionBanner.dontShowAgain')}
                     </label>
                 </div>
             </div>

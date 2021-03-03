@@ -22,7 +22,7 @@ class LobbyScreen extends AbstractLobbyScreen {
     render() {
         return (
             <PreMeetingScreen title = { this.props.t(this._getScreenTitleKey()) }>
-                { this._renderContent() }
+                { this._renderContent()}
             </PreMeetingScreen>
         );
     }
@@ -63,9 +63,9 @@ class LobbyScreen extends AbstractLobbyScreen {
                     <LoadingIndicator size = 'large' />
                 </div>
                 <span className = 'joining-message'>
-                    { this.props.t('lobby.joiningMessage') }
+                    {this.props.t('lobby.joiningMessage')}
                 </span>
-                { this._renderStandardButtons() }
+                { this._renderStandardButtons()}
             </div>
         );
     }
@@ -134,13 +134,13 @@ class LobbyScreen extends AbstractLobbyScreen {
                     onClick = { this._onJoinWithPassword }
                     testId = 'lobby.passwordJoinButton'
                     type = 'primary'>
-                    { t('lobby.passwordJoinButton') }
+                    {t('lobby.passwordJoinButton')}
                 </ActionButton>
                 <ActionButton
                     onClick = { this._onSwitchToKnockMode }
                     testId = 'lobby.backToKnockModeButton'
                     type = 'secondary'>
-                    { t('lobby.backToKnockModeButton') }
+                    {t('lobby.backToKnockModeButton')}
                 </ActionButton>
             </>
         );
@@ -161,13 +161,13 @@ class LobbyScreen extends AbstractLobbyScreen {
                     onClick = { this._onAskToJoin }
                     testId = 'lobby.knockButton'
                     type = 'primary'>
-                    { t('lobby.knockButton') }
-                </ActionButton> }
+                    {t('lobby.knockButton')}
+                </ActionButton>}
                 <ActionButton
                     onClick = { this._onSwitchToPasswordMode }
                     testId = 'lobby.enterPasswordButton'
                     type = 'secondary'>
-                    { t('lobby.enterPasswordButton') }
+                    {t('lobby.enterPasswordButton')}
                 </ActionButton>
             </>
         );

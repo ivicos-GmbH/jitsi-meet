@@ -116,7 +116,7 @@ function CopyButton({ className, displayedText, textToCopy, textOnHover, textOnC
             onClick = { onClick }
             onMouseOut = { onHoverOut }
             onMouseOver = { onHoverIn }>
-            { renderContent() }
+            { renderContent()}
         </div>
     );
 }

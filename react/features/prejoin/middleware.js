@@ -88,7 +88,7 @@ MiddlewareRegistry.register(store => next => async action => {
 
             if (track.isReceivingData()) {
                 if (deviceStatusType === 'warning'
-                    && deviceStatusText === 'prejoin.audioDeviceProblem') {
+                        && deviceStatusText === 'prejoin.audioDeviceProblem') {
                     store.dispatch(setDeviceStatusOk('prejoin.lookGood'));
                 }
             } else if (deviceStatusType === 'ok') {

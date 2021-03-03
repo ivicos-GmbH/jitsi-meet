@@ -31,53 +31,53 @@ MiddlewareRegistry.register(store => next => action => {
     const result = next(action);
 
     switch (action.type) {
-    case CONFERENCE_WILL_LEAVE:
-        VideoLayout.reset();
-        break;
+        case CONFERENCE_WILL_LEAVE:
+            VideoLayout.reset();
+            break;
 
-    case PARTICIPANT_JOINED:
-        if (!action.participant.local) {
-            VideoLayout.updateVideoMutedForNoTracks(action.participant.id);
-        }
-        break;
+        case PARTICIPANT_JOINED:
+            if (!action.participant.local) {
+                VideoLayout.updateVideoMutedForNoTracks(action.participant.id);
+            }
+            break;
 
-    case PARTICIPANT_UPDATED: {
-        // Look for actions that triggered a change to connectionStatus. This is
-        // done instead of changing the connection status change action to be
-        // explicit in order to minimize changes to other code.
-        if (typeof action.participant.connectionStatus !== 'undefined') {
-            VideoLayout.onParticipantConnectionStatusChanged(
-                action.participant.id,
-                action.participant.connectionStatus);
-        }
-        break;
-    }
-
-    case SET_FILMSTRIP_VISIBLE:
-        VideoLayout.resizeVideoArea();
-        break;
-
-    case TRACK_ADDED:
-        if (action.track.mediaType !== MEDIA_TYPE.AUDIO) {
-            VideoLayout._updateLargeVideoIfDisplayed(action.track.participantId, true);
+        case PARTICIPANT_UPDATED: {
+            // Look for actions that triggered a change to connectionStatus. This is
+            // done instead of changing the connection status change action to be
+            // explicit in order to minimize changes to other code.
+            if (typeof action.participant.connectionStatus !== 'undefined') {
+                VideoLayout.onParticipantConnectionStatusChanged(
+                    action.participant.id,
+                    action.participant.connectionStatus);
+            }
+            break;
         }
 
-        break;
+        case SET_FILMSTRIP_VISIBLE:
+            VideoLayout.resizeVideoArea();
+            break;
 
-    case TRACK_STOPPED: {
-        if (action.track.jitsiTrack.isLocal()) {
-            const participant = getLocalParticipant(store.getState);
+        case TRACK_ADDED:
+            if (action.track.mediaType !== MEDIA_TYPE.AUDIO) {
+                VideoLayout._updateLargeVideoIfDisplayed(action.track.participantId, true);
+            }
 
-            VideoLayout._updateLargeVideoIfDisplayed(participant?.id);
+            break;
+
+        case TRACK_STOPPED: {
+            if (action.track.jitsiTrack.isLocal()) {
+                const participant = getLocalParticipant(store.getState);
+
+                VideoLayout._updateLargeVideoIfDisplayed(participant?.id);
+            }
+            break;
         }
-        break;
-    }
-    case TRACK_REMOVED:
-        if (!action.track.local && action.track.mediaType !== MEDIA_TYPE.AUDIO) {
-            VideoLayout.updateVideoMutedForNoTracks(action.track.jitsiTrack.getParticipantId());
-        }
+        case TRACK_REMOVED:
+            if (!action.track.local && action.track.mediaType !== MEDIA_TYPE.AUDIO) {
+                VideoLayout.updateVideoMutedForNoTracks(action.track.jitsiTrack.getParticipantId());
+            }
 
-        break;
+            break;
     }
 
     return result;

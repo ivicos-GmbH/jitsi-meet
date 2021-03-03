@@ -522,8 +522,8 @@ export function urlObjectToString(o: Object): ?string {
     const room = o.roomName || o.room;
 
     if (room
-            && (url.pathname.endsWith('/')
-                || !url.pathname.endsWith(`/${room}`))) {
+        && (url.pathname.endsWith('/')
+            || !url.pathname.endsWith(`/${room}`))) {
         pathname.endsWith('/') || (pathname += '/');
         pathname += room;
     }
@@ -555,8 +555,8 @@ export function urlObjectToString(o: Object): ?string {
         const urlParamsArray
             = _objectToURLParamsArray(
                 o[`${urlPrefix}Overwrite`]
-                    || o[urlPrefix]
-                    || o[`${urlPrefix}Override`]);
+                || o[urlPrefix]
+                || o[`${urlPrefix}Override`]);
 
         if (urlParamsArray.length) {
             let urlParamsString

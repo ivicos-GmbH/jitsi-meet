@@ -11,8 +11,12 @@ import { themed } from '@atlaskit/theme/components';
 import React from 'react';
 
 const ThemedDialog = props => {
-    const style = { backgroundColor: props.isChromeless ? 'transparent' : themed({ light: N0,
-        dark: DN50 })({ theme: { mode: 'dark' } }) };
+    const style = {
+        backgroundColor: props.isChromeless ? 'transparent' : themed({
+            light: N0,
+            dark: DN50
+        })({ theme: { mode: 'dark' } })
+    };
 
     return (<Dialog
         { ...props }

@@ -30,7 +30,7 @@ declare type PersistencyConfigMap = { [name: string]: ElementConfig };
  */
 class PersistenceRegistry {
     _checksum: string;
-    _defaultStates: { [name: string ]: ?Object} = {};
+    _defaultStates: { [name: string]: ?Object } = {};
     _elements: PersistencyConfigMap = {};
 
     /**

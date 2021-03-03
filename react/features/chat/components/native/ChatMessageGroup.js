@@ -10,10 +10,10 @@ import styles from './styles';
 
 type Props = {
 
-  /**
-   * The messages array to render.
-   */
-  messages: Array<Object>
+    /**
+     * The messages array to render.
+     */
+    messages: Array<Object>
 }
 
 /**
@@ -65,22 +65,22 @@ export default class ChatMessageGroup extends Component<Props> {
     _renderMessage: Object => React$Element<*>;
 
     /**
-     * Renders a single chat message.
-     *
-     * @param {Object} message - The chat message to render.
-     * @returns {React$Element<*>}
-     */
+ * Renders a single chat message.
+ *
+ * @param {Object} message - The chat message to render.
+ * @returns {React$Element<*>}
+ */
     _renderMessage({ index, item: message }) {
         return (
             <ChatMessage
                 message = { message }
                 showAvatar = {
                     this.props.messages[0].messageType !== MESSAGE_TYPE_LOCAL
-                        && index === this.props.messages.length - 1
+                && index === this.props.messages.length - 1
                 }
                 showDisplayName = {
                     this.props.messages[0].messageType === MESSAGE_TYPE_REMOTE
-                        && index === this.props.messages.length - 1
+                && index === this.props.messages.length - 1
                 }
                 showTimestamp = { index === 0 } />
         );

@@ -140,7 +140,7 @@ export function processPermissionRequestReply(participantId: string, event: Obje
         const { requestedParticipant } = state['features/remote-control'].controller;
 
         if (isRemoteControlEnabled(state) && name === REMOTE_CONTROL_MESSAGE_NAME && type === EVENTS.permissions
-                && participantId === requestedParticipant) {
+            && participantId === requestedParticipant) {
             let descriptionKey, permissionGranted = false;
 
             switch (action) {
@@ -223,7 +223,7 @@ export function handleRemoteControlStoppedEvent(participantId: Object, event: Ob
         const { controlled } = state['features/remote-control'].controller;
 
         if (isRemoteControlEnabled(state) && name === REMOTE_CONTROL_MESSAGE_NAME && type === EVENTS.stop
-                && participantId === controlled) {
+            && participantId === controlled) {
             dispatch(stopController());
         }
     };

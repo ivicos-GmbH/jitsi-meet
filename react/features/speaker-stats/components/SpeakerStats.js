@@ -105,7 +105,7 @@ class SpeakerStats extends Component<Props, State> {
                 titleKey = 'speakerStats.speakerStats'>
                 <div className = 'speaker-stats'>
                     <SpeakerStatsLabels />
-                    { items }
+                    {items}
                 </div>
             </Dialog>
         );
@@ -142,7 +142,7 @@ class SpeakerStats extends Component<Props, State> {
         } else {
             displayName
                 = this.state.stats[userId].getDisplayName()
-                    || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
+                || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
         }
 
         return (

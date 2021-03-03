@@ -25,7 +25,7 @@ export default class Linkify extends Component<Props> {
         return (
             <ReactLinkify
                 componentDecorator = { this._componentDecorator }>
-                { this.props.children }
+                { this.props.children}
             </ReactLinkify>
         );
     }
@@ -45,7 +45,7 @@ export default class Linkify extends Component<Props> {
                 key = { key }
                 rel = 'noopener noreferrer'
                 target = '_blank'>
-                { punycode.toASCII(decoratedText) }
+                { punycode.toASCII(decoratedText)}
             </a>
         );
     }

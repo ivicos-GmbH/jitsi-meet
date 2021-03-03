@@ -32,7 +32,7 @@ class Notice extends Component<Props> {
         return (
             <div className = 'notice'>
                 <span className = 'notice__message' >
-                    { this.props._message }
+                    {this.props._message}
                 </span>
             </div>
         );

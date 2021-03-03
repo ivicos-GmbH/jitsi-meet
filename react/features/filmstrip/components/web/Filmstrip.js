@@ -100,7 +100,7 @@ type Props = {
  *
  * @extends Component
  */
-class Filmstrip extends Component <Props> {
+class Filmstrip extends Component<Props> {
 
     /**
      * Initializes a new {@code Filmstrip} instance.
@@ -146,7 +146,7 @@ class Filmstrip extends Component <Props> {
      * @returns {ReactElement}
      */
     render() {
-        const filmstripStyle = { };
+        const filmstripStyle = {};
         const filmstripRemoteVideosContainerStyle = {};
         let remoteVideoContainerClassName = 'remote-videos-container';
         const { _currentLayout, _participants } = this.props;
@@ -155,22 +155,22 @@ class Filmstrip extends Component <Props> {
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
 
         switch (_currentLayout) {
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            // Adding 18px for the 2px margins, 2px borders on the left and right and 5px padding on the left and right.
-            // Also adding 7px for the scrollbar.
-            filmstripStyle.maxWidth = (interfaceConfig.FILM_STRIP_MAX_HEIGHT || 120) + 25;
-            break;
-        case LAYOUTS.TILE_VIEW: {
-            // The size of the side margins for each tile as set in CSS.
-            const { _columns, _rows, _filmstripWidth } = this.props;
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+                // Adding 18px for the 2px margins, 2px borders on the left and right and 5px padding on the left and right.
+                // Also adding 7px for the scrollbar.
+                filmstripStyle.maxWidth = (interfaceConfig.FILM_STRIP_MAX_HEIGHT || 120) + 25;
+                break;
+            case LAYOUTS.TILE_VIEW: {
+                // The size of the side margins for each tile as set in CSS.
+                const { _columns, _rows, _filmstripWidth } = this.props;
 
-            if (_rows > _columns) {
-                remoteVideoContainerClassName += ' has-overflow';
+                if (_rows > _columns) {
+                    remoteVideoContainerClassName += ' has-overflow';
+                }
+
+                filmstripRemoteVideosContainerStyle.width = _filmstripWidth;
+                break;
             }
-
-            filmstripRemoteVideosContainerStyle.width = _filmstripWidth;
-            break;
-        }
         }
 
         let remoteVideosWrapperClassName = 'filmstrip__videos';
@@ -187,48 +187,48 @@ class Filmstrip extends Component <Props> {
 
         return (
             <div
-                className = { `filmstrip ${this.props._className}` }
-                style = { filmstripStyle }>
-                { toolbar }
+                className={`filmstrip ${this.props._className}`}
+                style={filmstripStyle}>
+                { toolbar}
                 <div
-                    className = { this.props._videosClassName }
-                    id = 'remoteVideos'>
+                    className={this.props._videosClassName}
+                    id='remoteVideos'>
                     <div
-                        className = 'filmstrip__videos'
-                        id = 'filmstripLocalVideo'>
-                        <div id = 'filmstripLocalVideoThumbnail'>
+                        className='filmstrip__videos'
+                        id='filmstripLocalVideo'>
+                        <div id='filmstripLocalVideoThumbnail'>
                             {
                                 !tileViewActive && <Thumbnail
-                                    key = 'local'
-                                    participantID = { localParticipant.id } />
+                                    key='local'
+                                    participantID={localParticipant.id} />
                             }
                         </div>
                     </div>
                     <div
-                        className = { remoteVideosWrapperClassName }
-                        id = 'filmstripRemoteVideos'>
+                        className={remoteVideosWrapperClassName}
+                        id='filmstripRemoteVideos'>
                         {/*
                           * XXX This extra video container is needed for
                           * scrolling thumbnails in Firefox; otherwise, the flex
                           * thumbnails resize instead of causing overflow.
                           */}
                         <div
-                            className = { remoteVideoContainerClassName }
-                            id = 'filmstripRemoteVideosContainer'
-                            style = { filmstripRemoteVideosContainerStyle }>
+                            className={remoteVideoContainerClassName}
+                            id='filmstripRemoteVideosContainer'
+                            style={filmstripRemoteVideosContainerStyle}>
                             {
                                 remoteParticipants.map(
                                     p => (
                                         <Thumbnail
-                                            key = { `remote_${p.id}` }
-                                            participantID = { p.id } />
+                                            key={`remote_${p.id}`}
+                                            participantID={p.id} />
                                     ))
                             }
-                            <div id = 'localVideoTileViewContainer'>
+                            <div id='localVideoTileViewContainer'>
                                 {
                                     tileViewActive && <Thumbnail
-                                        key = 'local'
-                                        participantID = { localParticipant.id } />
+                                        key='local'
+                                        participantID={localParticipant.id} />
                                 }
                             </div>
                         </div>
@@ -298,12 +298,12 @@ class Filmstrip extends Component <Props> {
         const { t } = this.props;
 
         return (
-            <div className = 'filmstrip__toolbar'>
+            <div className='filmstrip__toolbar'>
                 <button
-                    aria-label = { t('toolbar.accessibilityLabel.toggleFilmstrip') }
-                    id = 'toggleFilmstripButton'
-                    onClick = { this._onToolbarToggleFilmstrip }>
-                    <Icon src = { icon } />
+                    aria-label={t('toolbar.accessibilityLabel.toggleFilmstrip')}
+                    id='toggleFilmstripButton'
+                    onClick={this._onToolbarToggleFilmstrip}>
+                    <Icon src={icon} />
                 </button>
             </div>
         );
@@ -325,9 +325,8 @@ function _mapStateToProps(state) {
         = state['features/toolbox'].visible && toolbarButtons.length;
     const remoteVideosVisible = shouldRemoteVideosBeVisible(state);
     const { isOpen: shiftRight } = state['features/chat'];
-    const className = `${remoteVideosVisible ? '' : 'hide-videos'} ${
-        reduceHeight ? 'reduce-height' : ''
-    } ${shiftRight ? 'shift-right' : ''}`.trim();
+    const className = `${remoteVideosVisible ? '' : 'hide-videos'} ${reduceHeight ? 'reduce-height' : ''
+        } ${shiftRight ? 'shift-right' : ''}`.trim();
     const videosClassName = `filmstrip__videos${visible ? '' : ' hidden'}`;
     const { gridDimensions = {}, filmstripWidth } = state['features/filmstrip'].tileViewDimensions;
 

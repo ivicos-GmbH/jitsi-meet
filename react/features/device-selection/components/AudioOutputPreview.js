@@ -67,7 +67,7 @@ class AudioOutputPreview extends Component<Props> {
         return (
             <div className = 'audio-output-preview'>
                 <a onClick = { this._onClick }>
-                    { this.props.t('deviceSelection.testAudio') }
+                    {this.props.t('deviceSelection.testAudio')}
                 </a>
                 <Audio
                     setRef = { this._audioElementReady }

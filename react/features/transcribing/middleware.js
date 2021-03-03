@@ -55,7 +55,7 @@ MiddlewareRegistry.register(store => next => action => {
         const { participant } = action;
 
         if (potentialTranscriberJIDs.includes(participant.id)
-            && participant.name === TRANSCRIBER_DISPLAY_NAME) {
+                && participant.name === TRANSCRIBER_DISPLAY_NAME) {
             store.dispatch(transcriberJoined(participant.id));
             store.dispatch(hidePendingTranscribingNotification());
         }

@@ -31,7 +31,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         content.forEach(i => {
             if (typeof i === 'string') {
-                processedMessage.push(<Linkify key = { i }>{ i }</Linkify>);
+                processedMessage.push(<Linkify key = { i }>{i}</Linkify>);
             } else {
                 processedMessage.push(i);
             }
@@ -42,13 +42,13 @@ class ChatMessage extends AbstractChatMessage<Props> {
                 <div className = { `chatmessage ${message.privateMessage ? 'privatemessage' : ''}` }>
                     <div className = 'replywrapper'>
                         <div className = 'messagecontent'>
-                            { this.props.showDisplayName && this._renderDisplayName() }
+                            {this.props.showDisplayName && this._renderDisplayName()}
                             <div className = 'usermessage'>
-                                { processedMessage }
+                                {processedMessage}
                             </div>
-                            { message.privateMessage && this._renderPrivateNotice() }
+                            {message.privateMessage && this._renderPrivateNotice()}
                         </div>
-                        { message.privateMessage && message.messageType !== MESSAGE_TYPE_LOCAL
+                        {message.privateMessage && message.messageType !== MESSAGE_TYPE_LOCAL
                             && (
                                 <div className = 'messageactions'>
                                     <PrivateMessageButton
@@ -56,10 +56,10 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                         reply = { true }
                                         showLabel = { false } />
                                 </div>
-                            ) }
+                            )}
                     </div>
                 </div>
-                { this.props.showTimestamp && this._renderTimestamp() }
+                { this.props.showTimestamp && this._renderTimestamp()}
             </div>
         );
     }
@@ -78,7 +78,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
     _renderDisplayName() {
         return (
             <div className = 'display-name'>
-                { this.props.message.displayName }
+                { this.props.message.displayName}
             </div>
         );
     }
@@ -91,7 +91,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
     _renderPrivateNotice() {
         return (
             <div className = 'privatemessagenotice'>
-                { this._getPrivateNoticeMessage() }
+                { this._getPrivateNoticeMessage()}
             </div>
         );
     }
@@ -104,7 +104,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
     _renderTimestamp() {
         return (
             <div className = 'timestamp'>
-                { this._getFormattedTimestamp() }
+                { this._getFormattedTimestamp()}
             </div>
         );
     }

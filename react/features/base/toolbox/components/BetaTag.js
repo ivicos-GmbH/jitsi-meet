@@ -26,7 +26,7 @@ class BetaTag extends Component<Props> {
         return (
             <Container className = 'beta-tag'>
                 <Text>
-                    { this.props.t('recording.beta') }
+                    {this.props.t('recording.beta')}
                 </Text>
             </Container>
         );

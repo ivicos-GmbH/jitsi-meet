@@ -38,8 +38,8 @@ class NoRoomError extends Component<Props> {
 
         return (
             <div className = { this.props.className } >
-                <div>{ t('info.noNumbers') }</div>
-                <div>{ t('info.noRoom') }</div>
+                <div>{t('info.noNumbers')}</div>
+                <div>{t('info.noRoom')}</div>
             </div>
         );
     }

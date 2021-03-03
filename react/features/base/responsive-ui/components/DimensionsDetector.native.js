@@ -61,7 +61,7 @@ export default class DimensionsDetector extends PureComponent<Props> {
             <View
                 onLayout = { this._onLayout }
                 style = { StyleSheet.absoluteFillObject } >
-                { this.props.children }
+                { this.props.children}
             </View>
         );
     }

@@ -195,14 +195,14 @@ class DesktopPicker extends PureComponent<Props, State> {
     render() {
         return (
             <Dialog
-                isModal = { false }
-                okDisabled = { Boolean(!this.state.selectedSource.id) }
-                okKey = 'dialog.Share'
-                onCancel = { this._onCloseModal }
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.shareYourScreen'
-                width = 'medium' >
-                { this._renderTabs() }
+                isModal={false}
+                okDisabled={Boolean(!this.state.selectedSource.id)}
+                okKey='dialog.Share'
+                onCancel={this._onCloseModal}
+                onSubmit={this._onSubmit}
+                titleKey='dialog.shareYourScreen'
+                width='medium' >
+                { this._renderTabs()}
             </Dialog>
         );
     }
@@ -221,7 +221,7 @@ class DesktopPicker extends PureComponent<Props, State> {
          * we can't select anything.
          */
         if (!Array.isArray(sources[this._selectedTabType])
-                || sources[this._selectedTabType].length <= 0) {
+            || sources[this._selectedTabType].length <= 0) {
             return {};
         }
 
@@ -233,9 +233,9 @@ class DesktopPicker extends PureComponent<Props, State> {
          * 3) The selected source is no longer available.
          */
         if (!selectedSource // scenario 1)
-                || selectedSource.type !== this._selectedTabType // scenario 2)
-                || !sources[this._selectedTabType].some( // scenario 3)
-                        source => source.id === selectedSource.id)) {
+            || selectedSource.type !== this._selectedTabType // scenario 2)
+            || !sources[this._selectedTabType].some( // scenario 3)
+                source => source.id === selectedSource.id)) {
             return {
                 id: sources[this._selectedTabType][0].id,
                 type: this._selectedTabType
@@ -248,167 +248,147 @@ class DesktopPicker extends PureComponent<Props, State> {
         return selectedSource;
     }
 
-    _onCloseModal: (?string, string, ?boolean) => void;
+    _onCloseModal: (?string, string, ? boolean) => void;
 
-    /**
-     * Dispatches an action to hide the DesktopPicker and invokes the passed in
-     * callback with a selectedSource, if any.
-     *
-     * @param {string} [id] - The id of the DesktopCapturerSource to pass into
-     * the onSourceChoose callback.
-     * @param {string} type - The type of the DesktopCapturerSource to pass into
-     * the onSourceChoose callback.
-     * @param {boolean} screenShareAudio - Whether or not to add system audio to
-     * screen sharing session.
-     * @returns {void}
-     */
-    _onCloseModal(id = '', type, screenShareAudio = false) {
-        this.props.onSourceChoose(id, type, screenShareAudio);
-        this.props.dispatch(hideDialog());
-    }
+/**
+* Dispatches an action to hide the DesktopPicker and invokes the passed in
+* callback with a selectedSource, if any.
+*
+* @param {string} [id] - The id of the DesktopCapturerSource to pass into
+* the onSourceChoose callback.
+* @param {string} type - The type of the DesktopCapturerSource to pass into
+* the onSourceChoose callback.
+* @param {boolean} screenShareAudio - Whether or not to add system audio to
+* screen sharing session.
+* @returns {void}
+*/
+_onCloseModal(id = '', type, screenShareAudio = false) {
+    this.props.onSourceChoose(id, type, screenShareAudio);
+    this.props.dispatch(hideDialog());
+}
 
-    _onPreviewClick: (string, string) => void;
+_onPreviewClick: (string, string) => void;
 
-    /**
-     * Sets the currently selected DesktopCapturerSource.
-     *
-     * @param {string} id - The id of DesktopCapturerSource.
-     * @param {string} type - The type of DesktopCapturerSource.
-     * @returns {void}
-     */
-    _onPreviewClick(id, type) {
-        this.setState({
-            selectedSource: {
-                id,
-                type
-            }
-        });
-    }
+/**
+ * Sets the currently selected DesktopCapturerSource.
+ *
+ * @param {string} id - The id of DesktopCapturerSource.
+ * @param {string} type - The type of DesktopCapturerSource.
+ * @returns {void}
+ */
+_onPreviewClick(id, type) {
+    this.setState({
+        selectedSource: {
+            id,
+            type
+        }
+    });
+}
 
-    _onSubmit: () => void;
+_onSubmit: () => void;
 
-    /**
-     * Request to close the modal and execute callbacks with the selected source
-     * id.
-     *
-     * @returns {void}
-     */
-    _onSubmit() {
-        const { selectedSource: { id, type }, screenShareAudio } = this.state;
+/**
+ * Request to close the modal and execute callbacks with the selected source
+ * id.
+ *
+ * @returns {void}
+ */
+_onSubmit() {
+    const { selectedSource: { id, type }, screenShareAudio } = this.state;
 
-        this._onCloseModal(id, type, screenShareAudio);
-    }
+    this._onCloseModal(id, type, screenShareAudio);
+}
 
-    _onTabSelected: () => void;
+_onTabSelected: () => void;
 
-    /**
-     * Stores the selected tab and updates the selected source via
-     * {@code _getSelectedSource}.
-     *
-     * @param {Object} tab - The configuration passed into atlaskit tabs to
-     * describe how to display the selected tab.
-     * @param {number} tabIndex - The index of the tab within the array of
-     * displayed tabs.
-     * @returns {void}
-     */
-    _onTabSelected(tab, tabIndex) { // eslint-disable-line no-unused-vars
-        const { types, sources } = this.state;
+/**
+ * Stores the selected tab and updates the selected source via
+ * {@code _getSelectedSource}.
+ *
+ * @param {Object} tab - The configuration passed into atlaskit tabs to
+ * describe how to display the selected tab.
+ * @param {number} tabIndex - The index of the tab within the array of
+ * displayed tabs.
+ * @returns {void}
+ */
+_onTabSelected(tab, tabIndex) { // eslint-disable-line no-unused-vars
+    const { types, sources } = this.state;
 
-        this._selectedTabType = types[tabIndex];
+    this._selectedTabType = types[tabIndex];
 
-        // When we change tabs also reset the screenShareAudio state so we don't
-        // use the option from one tab when sharing from another.
-        this.setState({
-            screenShareAudio: false,
-            selectedSource: this._getSelectedSource(sources),
-            selectedTab: tabIndex
-        });
-    }
+    // When we change tabs also reset the screenShareAudio state so we don't
+    // use the option from one tab when sharing from another.
+    this.setState({
+        screenShareAudio: false,
+        selectedSource: this._getSelectedSource(sources),
+        selectedTab: tabIndex
+    });
+}
 
-    _onShareAudioChecked: (boolean) => void;
+_onShareAudioChecked: (boolean) => void;
 
-    /**
-     * Set the screenSharingAudio state indicating whether or not to also share
-     * system audio.
-     *
-     * @param {boolean} checked - Share audio or not.
-     * @returns {void}
-     */
-    _onShareAudioChecked(checked) {
-        this.setState({ screenShareAudio: checked });
-    }
+/**
+ * Set the screenSharingAudio state indicating whether or not to also share
+ * system audio.
+ *
+ * @param {boolean} checked - Share audio or not.
+ * @returns {void}
+ */
+_onShareAudioChecked(checked) {
+    this.setState({ screenShareAudio: checked });
+}
 
-    /**
-     * Configures and renders the tabs for display.
-     *
-     * @private
-     * @returns {ReactElement}
-     */
-    _renderTabs() {
-        const { selectedSource, sources, types } = this.state;
-        const { t } = this.props;
-        const tabs
-            = types.map(
-                type => {
-                    return {
-                        content: <DesktopPickerPane
-                            key = { type }
-                            onClick = { this._onPreviewClick }
-                            onDoubleClick = { this._onSubmit }
-                            onShareAudioChecked = { this._onShareAudioChecked }
-                            selectedSourceId = { selectedSource.id }
-                            sources = { sources[type] }
-                            type = { type } />,
-                        label: t(TAB_LABELS[type])
-                    };
-                });
+/**
+ * Create an interval to update known available DesktopCapturerSources.
+ *
+ * @private
+ * @returns {void}
+ */
+_startPolling() {
+    this._stopPolling();
+    this._updateSources();
+    this._poller = window.setInterval(this._updateSources, UPDATE_INTERVAL);
+}
 
-        return (
-            <Tabs
-                onSelect = { this._onTabSelected }
-                selected = { this.state.selectedTab }
-                tabs = { tabs } />);
-    }
+/**
+ * Create an interval to update knwon available DesktopCapturerSources.
+ *
+ * @private
+ * @returns {void}
+ */
+_startPolling() {
+    this._stopPolling();
+    this._updateSources();
+    this._poller = window.setInterval(this._updateSources, UPDATE_INTERVAL);
+}
 
-    /**
-     * Create an interval to update known available DesktopCapturerSources.
-     *
-     * @private
-     * @returns {void}
-     */
-    _startPolling() {
-        this._stopPolling();
-        this._updateSources();
-        this._poller = window.setInterval(this._updateSources, UPDATE_INTERVAL);
-    }
+/**
+ * Cancels the interval to update DesktopCapturerSources.
+ *
+ * @private
+ * @returns {void}
+ */
+_stopPolling() {
+    window.clearInterval(this._poller);
+    this._poller = null;
+}
 
-    /**
-     * Cancels the interval to update DesktopCapturerSources.
-     *
-     * @private
-     * @returns {void}
-     */
-    _stopPolling() {
-        window.clearInterval(this._poller);
-        this._poller = null;
-    }
+_updateSources: () => void;
 
-    _updateSources: () => void;
+/**
+ * Obtains the desktop sources and updates state with them.
+ *
+ * @private
+ * @returns {void}
+ */
+_updateSources() {
+    const { types } = this.state;
 
-    /**
-     * Obtains the desktop sources and updates state with them.
-     *
-     * @private
-     * @returns {void}
-     */
-    _updateSources() {
-        const { types } = this.state;
-
-        if (types.length > 0) {
-            obtainDesktopSources(
-                this.state.types,
-                { thumbnailSize: THUMBNAIL_SIZE }
-            )
+    if (types.length > 0) {
+        obtainDesktopSources(
+            this.state.types,
+            { thumbnailSize: THUMBNAIL_SIZE }
+        )
             .then(sources => {
                 const selectedSource = this._getSelectedSource(sources);
 
@@ -420,8 +400,8 @@ class DesktopPicker extends PureComponent<Props, State> {
                 });
             })
             .catch(() => { /* ignore */ });
-        }
     }
+}
 }
 
 export default translate(connect()(DesktopPicker));

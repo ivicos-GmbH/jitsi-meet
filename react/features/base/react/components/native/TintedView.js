@@ -59,7 +59,7 @@ export default class TintedView extends Component<Props> {
                 <View
                     pointerEvents = 'box-none'
                     style = { BASE_STYLE }>
-                    { children }
+                    {children}
                 </View>
             </View>
         );

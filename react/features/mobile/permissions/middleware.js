@@ -29,7 +29,7 @@ MiddlewareRegistry.register(store => next => action => {
         // me.
         if (action.permissionDenied
                 && isRoomValid(
-                        store.getState()['features/base/conference'].room)) {
+                    store.getState()['features/base/conference'].room)) {
             _alertPermissionErrorWithSettings(action.trackType);
         }
         break;
@@ -55,8 +55,7 @@ function _alertPermissionErrorWithSettings(trackType) {
 
     const message
         = `${deviceType
-            } permission is required to participate in conferences with ${
-            trackType}. Please grant it in Settings.`;
+        } permission is required to participate in conferences with ${trackType}. Please grant it in Settings.`;
 
     /* eslint-ensable indent */
 

@@ -120,7 +120,7 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
         // TODO: Potentially check if we need to handle changes of
         // _fileRecordingsServiceEnabled and _areIntegrationsEnabled()
         if (this.props._fileRecordingsServiceEnabled
-                || !this._areIntegrationsEnabled()) {
+            || !this._areIntegrationsEnabled()) {
             selectedRecordingService = RECORDING_TYPES.JITSI_REC_SERVICE;
         } else if (this._areIntegrationsEnabled()) {
             selectedRecordingService = RECORDING_TYPES.DROPBOX;
@@ -252,9 +252,9 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
         const attributes = {};
 
         if (_isDropboxEnabled
-                && _token
-                && this.state.selectedRecordingService
-                    === RECORDING_TYPES.DROPBOX) {
+            && _token
+            && this.state.selectedRecordingService
+            === RECORDING_TYPES.DROPBOX) {
             appData = JSON.stringify({
                 'file_recording_metadata': {
                     'upload_credentials': {

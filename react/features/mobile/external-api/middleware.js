@@ -135,11 +135,11 @@ MiddlewareRegistry.register(store => next => action => {
             const locationURL = connection[JITSI_CONNECTION_URL_KEY];
 
             sendEvent(
-                store,
-                CONFERENCE_TERMINATED,
-                /* data */ {
-                    url: _normalizeUrl(locationURL)
-                });
+                    store,
+                    CONFERENCE_TERMINATED,
+                    /* data */ {
+                        url: _normalizeUrl(locationURL)
+                    });
         }
 
         break;
@@ -147,7 +147,7 @@ MiddlewareRegistry.register(store => next => action => {
 
     case CONNECTION_FAILED:
         !action.error.recoverable
-            && _sendConferenceFailedOnConnectionError(store, action);
+                && _sendConferenceFailedOnConnectionError(store, action);
         break;
 
     case ENTER_PICTURE_IN_PICTURE:
@@ -158,23 +158,23 @@ MiddlewareRegistry.register(store => next => action => {
         const { error, locationURL } = action;
 
         sendEvent(
-            store,
-            CONFERENCE_TERMINATED,
-            /* data */ {
-                error: _toErrorString(error),
-                url: _normalizeUrl(locationURL)
-            });
+                store,
+                CONFERENCE_TERMINATED,
+                /* data */ {
+                    error: _toErrorString(error),
+                    url: _normalizeUrl(locationURL)
+                });
         break;
     }
 
     case OPEN_CHAT:
     case CLOSE_CHAT: {
         sendEvent(
-            store,
-            CHAT_TOGGLED,
-            /* data */ {
-                isOpen: action.type === OPEN_CHAT
-            });
+                store,
+                CHAT_TOGGLED,
+                /* data */ {
+                    isOpen: action.type === OPEN_CHAT
+                });
         break;
     }
 
@@ -183,17 +183,17 @@ MiddlewareRegistry.register(store => next => action => {
         const { participant } = action;
 
         sendEvent(
-            store,
-            action.type,
-            /* data */ {
-                isLocal: participant.local,
-                email: participant.email,
-                name: participant.name,
-                participantId: participant.id,
-                displayName: participant.displayName,
-                avatarUrl: participant.avatarURL,
-                role: participant.role
-            });
+                store,
+                action.type,
+                /* data */ {
+                    isLocal: participant.local,
+                    email: participant.email,
+                    name: participant.name,
+                    participantId: participant.id,
+                    displayName: participant.displayName,
+                    avatarUrl: participant.avatarURL,
+                    role: participant.role
+                });
         break;
     }
 
@@ -203,11 +203,11 @@ MiddlewareRegistry.register(store => next => action => {
 
     case SET_AUDIO_MUTED:
         sendEvent(
-            store,
-            'AUDIO_MUTED_CHANGED',
-            /* data */ {
-                muted: action.muted
-            });
+                store,
+                'AUDIO_MUTED_CHANGED',
+                /* data */ {
+                    muted: action.muted
+                });
         break;
 
     case SET_VIDEO_MUTED:
@@ -234,30 +234,30 @@ StateListenerRegistry.register(
     /* listener */ debounce((tracks, store) => {
         const oldScreenShares = store.getState()['features/mobile/external-api'].screenShares || [];
         const newScreenShares = tracks
-            .filter(track => track.mediaType === 'video' && track.videoType === 'desktop')
-            .map(track => track.participantId);
+        .filter(track => track.mediaType === 'video' && track.videoType === 'desktop')
+        .map(track => track.participantId);
 
         oldScreenShares.forEach(participantId => {
             if (!newScreenShares.includes(participantId)) {
                 sendEvent(
-                    store,
-                    SCREEN_SHARE_TOGGLED,
-                    /* data */ {
-                        participantId,
-                        sharing: false
-                    });
+                store,
+                SCREEN_SHARE_TOGGLED,
+                /* data */ {
+                    participantId,
+                    sharing: false
+                });
             }
         });
 
         newScreenShares.forEach(participantId => {
             if (!oldScreenShares.includes(participantId)) {
                 sendEvent(
-                    store,
-                    SCREEN_SHARE_TOGGLED,
-                    /* data */ {
-                        participantId,
-                        sharing: true
-                    });
+                store,
+                SCREEN_SHARE_TOGGLED,
+                /* data */ {
+                    participantId,
+                    sharing: true
+                });
             }
         });
 
@@ -379,32 +379,32 @@ function _registerForEndpointTextMessages(store) {
 
     conference.on(
         JitsiConferenceEvents.MESSAGE_RECEIVED,
-            (id, message, timestamp) => {
-                sendEvent(
-                    store,
-                    CHAT_MESSAGE_RECEIVED,
-                    /* data */ {
-                        senderId: id,
-                        message,
-                        isPrivate: false,
-                        timestamp
-                    });
-            }
+        (id, message, timestamp) => {
+            sendEvent(
+                store,
+                CHAT_MESSAGE_RECEIVED,
+                /* data */ {
+                    senderId: id,
+                    message,
+                    isPrivate: false,
+                    timestamp
+                });
+        }
     );
 
     conference.on(
         JitsiConferenceEvents.PRIVATE_MESSAGE_RECEIVED,
-            (id, message, timestamp) => {
-                sendEvent(
-                    store,
-                    CHAT_MESSAGE_RECEIVED,
-                    /* data */ {
-                        senderId: id,
-                        message,
-                        isPrivate: true,
-                        timestamp
-                    });
-            }
+        (id, message, timestamp) => {
+            sendEvent(
+                store,
+                CHAT_MESSAGE_RECEIVED,
+                /* data */ {
+                    senderId: id,
+                    message,
+                    isPrivate: true,
+                    timestamp
+                });
+        }
     );
 }
 
@@ -475,10 +475,10 @@ function _normalizeUrl(url: URL) {
 function _sendConferenceEvent(
         store: Object,
         action: {
-            conference: Object,
-            type: string,
-            url: ?string
-        }) {
+        conference: Object,
+        type: string,
+        url: ?string
+    }) {
     const { conference, type, ...data } = action;
 
     // For these (redux) actions, conference identifies a JitsiConference
@@ -529,12 +529,12 @@ function _sendConferenceFailedOnConnectionError(store, action) {
             // base/conference feature is supposed to emit a failure.
             conference => conference.getConnection() !== connection)
         && sendEvent(
-        store,
-        CONFERENCE_TERMINATED,
-        /* data */ {
-            url: _normalizeUrl(locationURL),
-            error: action.error.name
-        });
+            store,
+            CONFERENCE_TERMINATED,
+            /* data */ {
+                url: _normalizeUrl(locationURL),
+                error: action.error.name
+            });
 }
 
 /**

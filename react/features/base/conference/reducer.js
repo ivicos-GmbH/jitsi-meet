@@ -365,10 +365,10 @@ function _setPassword(state, { conference, method, password }) {
             locked: LOCKED_REMOTELY,
 
             /**
-             * The password with which the conference is to be joined.
-             *
-             * @type {string}
-             */
+                 * The password with which the conference is to be joined.
+                 *
+                 * @type {string}
+                 */
             password
         });
 

@@ -82,8 +82,8 @@ ReducerRegistry.register('features/transcribing',
             return {
                 ...state,
                 potentialTranscriberJIDs:
-                    [ action.transcriberJID ]
-                        .concat(state.potentialTranscriberJIDs)
+                        [ action.transcriberJID ]
+                            .concat(state.potentialTranscriberJIDs)
             };
         case SET_PENDING_TRANSCRIBING_NOTIFICATION_UID:
             return {

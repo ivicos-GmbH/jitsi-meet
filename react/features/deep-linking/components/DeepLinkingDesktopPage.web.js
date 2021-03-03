@@ -22,7 +22,7 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of
  * {@link DeepLinkingDesktopPage}.
  */
- type Props = {
+type Props = {
 
     /**
      * Used to dispatch actions from the buttons.
@@ -107,7 +107,7 @@ class DeepLinkingDesktopPage<P : Props> extends Component<P> {
                                 <h1 className = 'title'>
                                     {
                                         t(`${_TNS}.title`,
-                                        { app: NATIVE_APP_NAME })
+                                            { app: NATIVE_APP_NAME })
                                     }
                                 </h1>
                                 <p className = 'description'>
@@ -125,13 +125,13 @@ class DeepLinkingDesktopPage<P : Props> extends Component<P> {
                                         <Button
                                             appearance = 'default'
                                             onClick = { this._onTryAgain }>
-                                            { t(`${_TNS}.tryAgainButton`) }
+                                            {t(`${_TNS}.tryAgainButton`)}
                                         </Button>
                                         {
                                             isSupportedBrowser()
-                                                && <Button onClick = { this._onLaunchWeb }>
-                                                    { t(`${_TNS}.launchWebButton`) }
-                                                </Button>
+                                            && <Button onClick = { this._onLaunchWeb }>
+                                                {t(`${_TNS}.launchWebButton`)}
+                                            </Button>
                                         }
                                     </ButtonGroup>
                                 </div>

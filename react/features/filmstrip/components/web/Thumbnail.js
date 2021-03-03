@@ -52,26 +52,26 @@ export type State = {|
      */
     audioLevel: number,
 
-    /**
-     * Indicates that the canplay event has been received.
-     */
-    canPlayEventReceived: boolean,
+        /**
+         * Indicates that the canplay event has been received.
+         */
+        canPlayEventReceived: boolean,
 
-    /**
-     * The current display mode of the thumbnail.
-     */
-    displayMode: number,
+            /**
+             * The current display mode of the thumbnail.
+             */
+            displayMode: number,
 
-    /**
-     * Indicates whether the thumbnail is hovered or not.
-     */
-    isHovered: boolean,
+                /**
+                 * Indicates whether the thumbnail is hovered or not.
+                 */
+                isHovered: boolean,
 
-    /**
-     * The current volume setting for the Thumbnail.
-     */
-    volume: ?number
-|};
+                    /**
+                     * The current volume setting for the Thumbnail.
+                     */
+                    volume: ?number
+                        |};
 
 /**
  * The type of the React {@code Component} props of {@link Thumbnail}.
@@ -83,131 +83,131 @@ export type Props = {|
      */
     _audioTrack: ?Object,
 
-    /**
-     * Disable/enable the auto hide functionality for the connection indicator.
-     */
-    _connectionIndicatorAutoHideEnabled: boolean,
+        /**
+         * Disable/enable the auto hide functionality for the connection indicator.
+         */
+        _connectionIndicatorAutoHideEnabled: boolean,
 
-    /**
-     * Disable/enable the connection indicator.
-     */
-    _connectionIndicatorDisabled: boolean,
+            /**
+             * Disable/enable the connection indicator.
+             */
+            _connectionIndicatorDisabled: boolean,
 
-    /**
-     * The current layout of the filmstrip.
-     */
-    _currentLayout: string,
+                /**
+                 * The current layout of the filmstrip.
+                 */
+                _currentLayout: string,
 
-    /**
-     * The default display name for the local participant.
-     */
-    _defaultLocalDisplayName: string,
+                    /**
+                     * The default display name for the local participant.
+                     */
+                    _defaultLocalDisplayName: string,
 
-    /**
-     * Indicates whether the local video flip feature is disabled or not.
-     */
-    _disableLocalVideoFlip: boolean,
+                        /**
+                         * Indicates whether the local video flip feature is disabled or not.
+                         */
+                        _disableLocalVideoFlip: boolean,
 
-    /**
-     * Indicates whether the profile functionality is disabled.
-     */
-    _disableProfile: boolean,
+                            /**
+                             * Indicates whether the profile functionality is disabled.
+                             */
+                            _disableProfile: boolean,
 
-    /**
-     * The display mode of the thumbnail.
-     */
-    _displayMode: number,
+                                /**
+                                 * The display mode of the thumbnail.
+                                 */
+                                _displayMode: number,
 
-    /**
-     * The height of the Thumbnail.
-     */
-    _height: number,
+                                    /**
+                                     * The height of the Thumbnail.
+                                     */
+                                    _height: number,
 
-    /**
-     * The aspect ratio of the Thumbnail in percents.
-     */
-    _heightToWidthPercent: number,
+                                        /**
+                                         * The aspect ratio of the Thumbnail in percents.
+                                         */
+                                        _heightToWidthPercent: number,
 
-    /**
-     * Indicates whether the thumbnail should be hidden or not.
-     */
-    _isHidden: boolean,
+                                            /**
+                                             * Indicates whether the thumbnail should be hidden or not.
+                                             */
+                                            _isHidden: boolean,
 
-    /**
-     * Indicates whether audio only mode is enabled.
-     */
-    _isAudioOnly: boolean,
+                                                /**
+                                                 * Indicates whether audio only mode is enabled.
+                                                 */
+                                                _isAudioOnly: boolean,
 
-    /**
-     * Indicates whether the participant associated with the thumbnail is displayed on the large video.
-     */
-    _isCurrentlyOnLargeVideo: boolean,
+                                                    /**
+                                                     * Indicates whether the participant associated with the thumbnail is displayed on the large video.
+                                                     */
+                                                    _isCurrentlyOnLargeVideo: boolean,
 
-    /**
-     * Indicates whether the participant is screen sharing.
-     */
-    _isScreenSharing: boolean,
+                                                        /**
+                                                         * Indicates whether the participant is screen sharing.
+                                                         */
+                                                        _isScreenSharing: boolean,
 
-    /**
-     * Indicates whether the video associated with the thumbnail is playable.
-     */
-    _isVideoPlayable: boolean,
+                                                            /**
+                                                             * Indicates whether the video associated with the thumbnail is playable.
+                                                             */
+                                                            _isVideoPlayable: boolean,
 
-    /**
-     * Disable/enable the dominant speaker indicator.
-     */
-    _isDominantSpeakerDisabled: boolean,
+                                                                /**
+                                                                 * Disable/enable the dominant speaker indicator.
+                                                                 */
+                                                                _isDominantSpeakerDisabled: boolean,
 
-    /**
-     * Indicates whether testing mode is enabled.
-     */
-    _isTestModeEnabled: boolean,
+                                                                    /**
+                                                                     * Indicates whether testing mode is enabled.
+                                                                     */
+                                                                    _isTestModeEnabled: boolean,
 
-    /**
-     * The size of the icon of indicators.
-     */
-    _indicatorIconSize: number,
+                                                                        /**
+                                                                         * The size of the icon of indicators.
+                                                                         */
+                                                                        _indicatorIconSize: number,
 
-    /**
-     * The current local video flip setting.
-     */
-    _localFlipX: boolean,
+                                                                            /**
+                                                                             * The current local video flip setting.
+                                                                             */
+                                                                            _localFlipX: boolean,
 
-    /**
-     * An object with information about the participant related to the thumbnaul.
-     */
-    _participant: Object,
+                                                                                /**
+                                                                                 * An object with information about the participant related to the thumbnaul.
+                                                                                 */
+                                                                                _participant: Object,
 
-    /**
-     * The number of participants in the call.
-     */
-    _participantCount: number,
+                                                                                    /**
+                                                                                     * The number of participants in the call.
+                                                                                     */
+                                                                                    _participantCount: number,
 
-    /**
-     * Indicates whether the "start silent" mode is enabled.
-     */
-    _startSilent: Boolean,
+                                                                                        /**
+                                                                                         * Indicates whether the "start silent" mode is enabled.
+                                                                                         */
+                                                                                        _startSilent: Boolean,
 
-     /**
-     * The video track that will be displayed in the thumbnail.
-     */
-    _videoTrack: ?Object,
+                                                                                            /**
+                                                                                            * The video track that will be displayed in the thumbnail.
+                                                                                            */
+                                                                                            _videoTrack: ?Object,
 
-    /**
-     * The width of the thumbnail.
-     */
-    _width: number,
+                                                                                                /**
+                                                                                                 * The width of the thumbnail.
+                                                                                                 */
+                                                                                                _width: number,
 
-    /**
-     * The redux dispatch function.
-     */
-    dispatch: Function,
+                                                                                                    /**
+                                                                                                     * The redux dispatch function.
+                                                                                                     */
+                                                                                                    dispatch: Function,
 
-    /**
-     * The ID of the participant related to the thumbnail.
-     */
-    participantID: ?string
-|};
+                                                                                                        /**
+                                                                                                         * The ID of the participant related to the thumbnail.
+                                                                                                         */
+                                                                                                        participantID: ?string
+                                                                                                            |};
 
 /**
  * Click handler for the display name container.
@@ -318,7 +318,7 @@ class Thumbnail extends Component<Props, State> {
         const { displayMode } = this.state;
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
 
-        if (![ DISPLAY_VIDEO, DISPLAY_VIDEO_WITH_NAME ].includes(displayMode)
+        if (![DISPLAY_VIDEO, DISPLAY_VIDEO_WITH_NAME].includes(displayMode)
             && tileViewActive
             && _isScreenSharing
             && !_isAudioOnly) {
@@ -467,36 +467,36 @@ class Thumbnail extends Component<Props, State> {
         };
 
         switch (_currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
-            const avatarSize = _height / 2;
+            case LAYOUTS.TILE_VIEW:
+            case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
+                const avatarSize = _height / 2;
 
-            styles = {
-                thumbnail: {
-                    height: `${_height}px`,
-                    minHeight: `${_height}px`,
-                    minWidth: `${_width}px`,
-                    width: `${_width}px`
-                },
-                avatar: {
-                    height: `${avatarSize}px`,
-                    width: `${avatarSize}px`
-                }
-            };
-            break;
-        }
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
-            styles = {
-                thumbnail: {
-                    paddingTop: `${_heightToWidthPercent}%`
-                },
-                avatar: {
-                    height: '50%',
-                    width: `${_heightToWidthPercent / 2}%`
-                }
-            };
-            break;
-        }
+                styles = {
+                    thumbnail: {
+                        height: `${_height}px`,
+                        minHeight: `${_height}px`,
+                        minWidth: `${_width}px`,
+                        width: `${_width}px`
+                    },
+                    avatar: {
+                        height: `${avatarSize}px`,
+                        width: `${avatarSize}px`
+                    }
+                };
+                break;
+            }
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
+                styles = {
+                    thumbnail: {
+                        paddingTop: `${_heightToWidthPercent}%`
+                    },
+                    avatar: {
+                        height: '50%',
+                        width: `${_heightToWidthPercent / 2}%`
+                    }
+                };
+                break;
+            }
         }
 
         if (_isHidden) {
@@ -556,19 +556,19 @@ class Thumbnail extends Component<Props, State> {
 
         return (
             <span
-                className = { containerClassName }
-                id = 'sharedVideoContainer'
-                onClick = { this._onClick }
-                onMouseEnter = { this._onMouseEnter }
-                onMouseLeave = { this._onMouseLeave }
-                style = { styles.thumbnail }>
+                className={containerClassName}
+                id='sharedVideoContainer'
+                onClick={this._onClick}
+                onMouseEnter={this._onMouseEnter}
+                onMouseLeave={this._onMouseLeave}
+                style={styles.thumbnail}>
                 <img
-                    className = 'sharedVideoAvatar'
-                    src = { `https://img.youtube.com/vi/${id}/0.jpg` } />
-                <div className = 'displayNameContainer'>
+                    className='sharedVideoAvatar'
+                    src={`https://img.youtube.com/vi/${id}/0.jpg`} />
+                <div className='displayNameContainer'>
                     <DisplayName
-                        elementID = 'sharedVideoContainer_name'
-                        participantID = { id } />
+                        elementID='sharedVideoContainer_name'
+                        participantID={id} />
                 </div>
             </span>
         );
@@ -596,38 +596,38 @@ class Thumbnail extends Component<Props, State> {
         let statsPopoverPosition, tooltipPosition;
 
         switch (_currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-            statsPopoverPosition = 'right-start';
-            tooltipPosition = 'right';
-            break;
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            statsPopoverPosition = 'left-start';
-            tooltipPosition = 'left';
-            break;
-        default:
-            statsPopoverPosition = 'auto';
-            tooltipPosition = 'top';
+            case LAYOUTS.TILE_VIEW:
+                statsPopoverPosition = 'right-start';
+                tooltipPosition = 'right';
+                break;
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+                statsPopoverPosition = 'left-start';
+                tooltipPosition = 'left';
+                break;
+            default:
+                statsPopoverPosition = 'auto';
+                tooltipPosition = 'top';
         }
 
         return (
             <div>
                 { !_connectionIndicatorDisabled
                     && <ConnectionIndicator
-                        alwaysVisible = { showConnectionIndicator }
-                        enableStatsDisplay = { true }
-                        iconSize = { iconSize }
-                        isLocalVideo = { local }
-                        participantId = { id }
-                        statsPopoverPosition = { statsPopoverPosition } />
+                        alwaysVisible={showConnectionIndicator}
+                        enableStatsDisplay={true}
+                        iconSize={iconSize}
+                        isLocalVideo={local}
+                        participantId={id}
+                        statsPopoverPosition={statsPopoverPosition} />
                 }
                 <RaisedHandIndicator
-                    iconSize = { iconSize }
-                    participantId = { id }
-                    tooltipPosition = { tooltipPosition } />
+                    iconSize={iconSize}
+                    participantId={id}
+                    tooltipPosition={tooltipPosition} />
                 { showDominantSpeaker && _participantCount > 2
                     && <DominantSpeakerIndicator
-                        iconSize = { iconSize }
-                        tooltipPosition = { tooltipPosition } />
+                        iconSize={iconSize}
+                        tooltipPosition={tooltipPosition} />
                 }
             </div>);
     }
@@ -644,11 +644,11 @@ class Thumbnail extends Component<Props, State> {
 
         return (
             <div
-                className = 'avatar-container'
-                style = { styles }>
+                className='avatar-container'
+                style={styles}>
                 <Avatar
-                    className = 'userAvatar'
-                    participantId = { id } />
+                    className='userAvatar'
+                    participantId={id} />
             </div>
         );
     }
@@ -710,41 +710,41 @@ class Thumbnail extends Component<Props, State> {
 
         return (
             <span
-                className = { containerClassName }
-                id = 'localVideoContainer'
-                onClick = { this._onClick }
-                onMouseEnter = { this._onMouseEnter }
-                onMouseLeave = { this._onMouseLeave }
-                style = { styles.thumbnail }>
-                <div className = 'videocontainer__background' />
-                <span id = 'localVideoWrapper'>
+                className={containerClassName}
+                id='localVideoContainer'
+                onClick={this._onClick}
+                onMouseEnter={this._onMouseEnter}
+                onMouseLeave={this._onMouseLeave}
+                style={styles.thumbnail}>
+                <div className='videocontainer__background' />
+                <span id='localVideoWrapper'>
                     <VideoTrack
-                        className = { videoTrackClassName }
-                        id = 'localVideo_container'
-                        videoTrack = { _videoTrack } />
+                        className={videoTrackClassName}
+                        id='localVideo_container'
+                        videoTrack={_videoTrack} />
                 </span>
-                <div className = 'videocontainer__toolbar'>
-                    <StatusIndicators participantID = { id } />
+                <div className='videocontainer__toolbar'>
+                    <StatusIndicators participantID={id} />
                 </div>
-                <div className = 'videocontainer__toptoolbar'>
-                    { this._renderTopIndicators() }
+                <div className='videocontainer__toptoolbar'>
+                    {this._renderTopIndicators()}
                 </div>
-                <div className = 'videocontainer__hoverOverlay' />
+                <div className='videocontainer__hoverOverlay' />
                 <div
-                    className = 'displayNameContainer'
-                    onClick = { onClick }>
+                    className='displayNameContainer'
+                    onClick={onClick}>
                     <DisplayName
-                        allowEditing = { !_disableProfile }
-                        displayNameSuffix = { _defaultLocalDisplayName }
-                        elementID = 'localDisplayName'
-                        participantID = { id } />
+                        allowEditing={!_disableProfile}
+                        displayNameSuffix={_defaultLocalDisplayName}
+                        elementID='localDisplayName'
+                        participantID={id} />
                 </div>
-                { this._renderAvatar(styles.avatar) }
-                <span className = 'localvideomenu'>
+                { this._renderAvatar(styles.avatar)}
+                <span className='localvideomenu'>
                     <LocalVideoMenuTriggerButton />
                 </span>
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
+                <span className='audioindicator-container'>
+                    <AudioLevelIndicator audioLevel={audioLevel} />
                 </span>
             </span>
         );
@@ -829,55 +829,55 @@ class Thumbnail extends Component<Props, State> {
 
         return (
             <span
-                className = { containerClassName }
-                id = { `participant_${id}` }
-                onClick = { this._onClick }
-                onMouseEnter = { this._onMouseEnter }
-                onMouseLeave = { this._onMouseLeave }
-                style = { styles.thumbnail }>
+                className={containerClassName}
+                id={`participant_${id}`}
+                onClick={this._onClick}
+                onMouseEnter={this._onMouseEnter}
+                onMouseLeave={this._onMouseLeave}
+                style={styles.thumbnail}>
                 {
                     _videoTrack && <VideoTrack
-                        eventHandlers = { videoEventListeners }
-                        id = { `remoteVideo_${videoTrackId || ''}` }
-                        muted = { true }
-                        style = { videoElementStyle }
-                        videoTrack = { _videoTrack } />
+                        eventHandlers={videoEventListeners}
+                        id={`remoteVideo_${videoTrackId || ''}`}
+                        muted={true}
+                        style={videoElementStyle}
+                        videoTrack={_videoTrack} />
                 }
                 {
                     _audioTrack && <AudioTrack
-                        audioTrack = { _audioTrack }
-                        id = { `remoteAudio_${audioTrackId || ''}` }
-                        muted = { _startSilent }
-                        onInitialVolumeSet = { this._onInitialVolumeSet }
-                        volume = { volume } />
+                        audioTrack={_audioTrack}
+                        id={`remoteAudio_${audioTrackId || ''}`}
+                        muted={_startSilent}
+                        onInitialVolumeSet={this._onInitialVolumeSet}
+                        volume={volume} />
                 }
-                <div className = 'videocontainer__background' />
-                <div className = 'videocontainer__toptoolbar'>
-                    { this._renderTopIndicators() }
+                <div className='videocontainer__background' />
+                <div className='videocontainer__toptoolbar'>
+                    {this._renderTopIndicators()}
                 </div>
-                <div className = 'videocontainer__toolbar'>
-                    <StatusIndicators participantID = { id } />
+                <div className='videocontainer__toolbar'>
+                    <StatusIndicators participantID={id} />
                 </div>
-                <div className = 'videocontainer__hoverOverlay' />
-                <div className = 'displayNameContainer'>
+                <div className='videocontainer__hoverOverlay' />
+                <div className='displayNameContainer'>
                     <DisplayName
-                        elementID = { `participant_${id}_name` }
-                        participantID = { id } />
+                        elementID={`participant_${id}_name`}
+                        participantID={id} />
                 </div>
-                { this._renderAvatar(styles.avatar) }
-                <div className = 'presence-label-container'>
+                { this._renderAvatar(styles.avatar)}
+                <div className='presence-label-container'>
                     <PresenceLabel
-                        className = 'presence-label'
-                        participantID = { id } />
+                        className='presence-label'
+                        participantID={id} />
                 </div>
-                <span className = 'remotevideomenu'>
+                <span className='remotevideomenu'>
                     <RemoteVideoMenuTriggerButton
-                        initialVolumeValue = { volume }
-                        onVolumeChange = { onVolumeChange }
-                        participantID = { id } />
+                        initialVolumeValue={volume}
+                        onVolumeChange={onVolumeChange}
+                        participantID={id} />
                 </span>
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
+                <span className='audioindicator-container'>
+                    <AudioLevelIndicator audioLevel={audioLevel} />
                 </span>
             </span>
         );
@@ -970,39 +970,39 @@ function _mapStateToProps(state, ownProps): Object {
 
 
     switch (_currentLayout) {
-    case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
-        const {
-            horizontalViewDimensions = {
-                local: {},
-                remote: {}
-            }
-        } = state['features/filmstrip'];
-        const { local, remote } = horizontalViewDimensions;
-        const { width, height } = isLocal ? local : remote;
+        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
+            const {
+                horizontalViewDimensions = {
+                    local: {},
+                    remote: {}
+                }
+            } = state['features/filmstrip'];
+            const { local, remote } = horizontalViewDimensions;
+            const { width, height } = isLocal ? local : remote;
 
-        size = {
-            _width: width,
-            _height: height
-        };
+            size = {
+                _width: width,
+                _height: height
+            };
 
-        break;
-    }
-    case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-        size = {
-            _heightToWidthPercent: isLocal
-                ? 100 / interfaceConfig.LOCAL_THUMBNAIL_RATIO
-                : 100 / interfaceConfig.REMOTE_THUMBNAIL_RATIO
-        };
-        break;
-    case LAYOUTS.TILE_VIEW: {
-        const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
+            break;
+        }
+        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+            size = {
+                _heightToWidthPercent: isLocal
+                    ? 100 / interfaceConfig.LOCAL_THUMBNAIL_RATIO
+                    : 100 / interfaceConfig.REMOTE_THUMBNAIL_RATIO
+            };
+            break;
+        case LAYOUTS.TILE_VIEW: {
+            const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
 
-        size = {
-            _width: width,
-            _height: height
-        };
-        break;
-    }
+            size = {
+                _width: width,
+                _height: height
+            };
+            break;
+        }
     }
 
     return {

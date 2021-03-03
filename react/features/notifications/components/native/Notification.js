@@ -76,7 +76,7 @@ class Notification extends AbstractNotification<Props> {
                     key = { index }
                     numberOfLines = { maxLines }
                     style = { styles.contentText }>
-                    { line }
+                    { line}
                 </Text>
             ));
         }
@@ -85,7 +85,7 @@ class Notification extends AbstractNotification<Props> {
             <Text
                 numberOfLines = { maxLines }
                 style = { styles.contentText } >
-                { titleText }
+                { titleText}
             </Text>
         );
     }

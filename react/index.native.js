@@ -59,7 +59,7 @@ if (!__DEV__) {
 
     AppRegistry.runApplication = (...args) => {
         // $FlowExpectedError
-        console.log = () => {};
+        console.log = () => { };
         __orig_appregistry_runapplication(...args);
         // $FlowExpectedError
         console.log = __orig_console_log;

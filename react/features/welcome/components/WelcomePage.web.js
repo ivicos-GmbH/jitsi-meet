@@ -191,7 +191,7 @@ class WelcomePage extends AbstractWelcomePage {
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
                             defaultTab = { SETTINGS_TABS.CALENDAR } />
-                        { showAdditionalToolbarContent
+                        {showAdditionalToolbarContent
                             ? <div
                                 className = 'settings-toolbar-content'
                                 ref = { this._setAdditionalToolbarContentRef } />
@@ -201,10 +201,10 @@ class WelcomePage extends AbstractWelcomePage {
                     <div className = 'header-image' />
                     <div className = 'header-container'>
                         <h1 className = 'header-text-title'>
-                            { t('welcomepage.headerTitle') }
+                            {t('welcomepage.headerTitle')}
                         </h1>
                         <span className = 'header-text-subtitle'>
-                            { t('welcomepage.headerSubtitle')}
+                            {t('welcomepage.headerSubtitle')}
                         </span>
                         <div id = 'enter_room'>
                             <div className = 'enter-room-input-container'>
@@ -226,7 +226,7 @@ class WelcomePage extends AbstractWelcomePage {
                                         className = { _moderatedRoomServiceUrl
                                             ? 'warning-with-link'
                                             : 'warning-without-link' }>
-                                        { this._renderInsecureRoomNameWarning() }
+                                        {this._renderInsecureRoomNameWarning()}
                                     </div>
                                 </form>
                             </div>
@@ -238,16 +238,16 @@ class WelcomePage extends AbstractWelcomePage {
                                 onClick = { this._onFormSubmit }
                                 tabIndex = '0'
                                 type = 'button'>
-                                { t('welcomepage.startMeeting') }
+                                {t('welcomepage.startMeeting')}
                             </button>
                         </div>
 
-                        { _moderatedRoomServiceUrl && (
+                        {_moderatedRoomServiceUrl && (
                             <div id = 'moderated-meetings'>
                                 <p>
                                     {
                                         translateToHTML(
-                                        t, 'welcomepage.moderatedMessage', { url: _moderatedRoomServiceUrl })
+                                            t, 'welcomepage.moderatedMessage', { url: _moderatedRoomServiceUrl })
                                     }
                                 </p>
                             </div>)}
@@ -257,20 +257,20 @@ class WelcomePage extends AbstractWelcomePage {
                 <div className = 'welcome-cards-container'>
                     <div className = 'welcome-card-row'>
                         <div className = 'welcome-tabs welcome-card welcome-card--blue'>
-                            { this._renderTabs() }
+                            {this._renderTabs()}
                         </div>
-                        { showAdditionalCard
+                        {showAdditionalCard
                             ? <div
                                 className = 'welcome-card welcome-card--dark'
                                 ref = { this._setAdditionalCardRef } />
-                            : null }
+                            : null}
                     </div>
 
-                    { showAdditionalContent
+                    {showAdditionalContent
                         ? <div
                             className = 'welcome-page-content'
                             ref = { this._setAdditionalContentRef } />
-                        : null }
+                        : null}
                 </div>
                 { DISPLAY_WELCOME_FOOTER && this._renderFooter()}
             </div>
@@ -288,7 +288,7 @@ class WelcomePage extends AbstractWelcomePage {
             <div className = 'insecure-room-name-warning'>
                 <Icon src = { IconWarning } />
                 <span>
-                    { this.props.t('security.insecureRoomNameWarning') }
+                    {this.props.t('security.insecureRoomNameWarning')}
                 </span>
             </div>
         );

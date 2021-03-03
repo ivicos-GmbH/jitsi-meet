@@ -61,7 +61,7 @@ export default class CircularLabel extends AbstractCircularLabel<Props, {}> {
             <div
                 className = { `circular-label ${className}` }
                 id = { id }>
-                { labelComponent }
+                { labelComponent}
             </div>
         );
     }

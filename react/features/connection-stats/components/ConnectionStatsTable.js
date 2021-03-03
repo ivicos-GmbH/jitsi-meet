@@ -174,14 +174,14 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <div
-                className = 'connection-info'
-                onClick = { onClick }>
-                { this._renderStatistics() }
-                <div className = 'connection-actions'>
-                    { isLocalVideo && enableSaveLogs ? this._renderSaveLogs() : null}
-                    { this._renderShowMoreLink() }
+                className='connection-info'
+                onClick={onClick}>
+                { this._renderStatistics()}
+                <div className='connection-actions'>
+                    {isLocalVideo && enableSaveLogs ? this._renderSaveLogs() : null}
+                    {this._renderShowMoreLink()}
                 </div>
-                { this.props.shouldShowMore ? this._renderAdditionalStats() : null }
+                { this.props.shouldShowMore ? this._renderAdditionalStats() : null}
             </div>
         );
     }
@@ -197,14 +197,14 @@ class ConnectionStatsTable extends Component<Props> {
         const { isLocalVideo } = this.props;
 
         return (
-            <table className = 'connection-info__container'>
+            <table className='connection-info__container'>
                 <tbody>
-                    { isLocalVideo ? this._renderBandwidth() : null }
-                    { isLocalVideo ? this._renderTransport() : null }
-                    { isLocalVideo ? this._renderRegion() : null }
-                    { this._renderAudioSsrc() }
-                    { this._renderVideoSsrc() }
-                    { this._renderParticipantId() }
+                    {isLocalVideo ? this._renderBandwidth() : null}
+                    {isLocalVideo ? this._renderTransport() : null}
+                    {isLocalVideo ? this._renderRegion() : null}
+                    {this._renderAudioSsrc()}
+                    {this._renderVideoSsrc()}
+                    {this._renderParticipantId()}
                 </tbody>
             </table>
         );
@@ -223,17 +223,17 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    { this.props.t('connectionindicator.bandwidth') }
+                    {this.props.t('connectionindicator.bandwidth')}
                 </td>
                 <td>
-                    <span className = 'connection-info__download'>
+                    <span className='connection-info__download'>
                         &darr;
                     </span>
-                    { download ? `${download} Kbps` : 'N/A' }
-                    <span className = 'connection-info__upload'>
+                    {download ? `${download} Kbps` : 'N/A'}
+                    <span className='connection-info__upload'>
                         &uarr;
                     </span>
-                    { upload ? `${upload} Kbps` : 'N/A' }
+                    {upload ? `${upload} Kbps` : 'N/A'}
                 </td>
             </tr>
         );
@@ -253,18 +253,18 @@ class ConnectionStatsTable extends Component<Props> {
             <tr>
                 <td>
                     <span>
-                        { this.props.t('connectionindicator.bitrate') }
+                        {this.props.t('connectionindicator.bitrate')}
                     </span>
                 </td>
                 <td>
-                    <span className = 'connection-info__download'>
+                    <span className='connection-info__download'>
                         &darr;
                     </span>
-                    { download ? `${download} Kbps` : 'N/A' }
-                    <span className = 'connection-info__upload'>
+                    {download ? `${download} Kbps` : 'N/A'}
+                    <span className='connection-info__upload'>
                         &uarr;
                     </span>
-                    { upload ? `${upload} Kbps` : 'N/A' }
+                    {upload ? `${upload} Kbps` : 'N/A'}
                 </td>
             </tr>
         );
@@ -283,9 +283,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.audio_ssrc') }</span>
+                    <span>{t('connectionindicator.audio_ssrc')}</span>
                 </td>
-                <td>{ audioSsrc || 'N/A' }</td>
+                <td>{audioSsrc || 'N/A'}</td>
             </tr>
         );
     }
@@ -303,9 +303,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.video_ssrc') }</span>
+                    <span>{t('connectionindicator.video_ssrc')}</span>
                 </td>
-                <td>{ videoSsrc || 'N/A' }</td>
+                <td>{videoSsrc || 'N/A'}</td>
             </tr>
         );
     }
@@ -323,9 +323,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.participant_id') }</span>
+                    <span>{t('connectionindicator.participant_id')}</span>
                 </td>
-                <td>{ participantId || 'N/A' }</td>
+                <td>{participantId || 'N/A'}</td>
             </tr>
         );
     }
@@ -361,9 +361,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.codecs') }</span>
+                    <span>{t('connectionindicator.codecs')}</span>
                 </td>
-                <td>{ codecString }</td>
+                <td>{codecString}</td>
             </tr>
         );
     }
@@ -378,11 +378,11 @@ class ConnectionStatsTable extends Component<Props> {
      */
     _renderConnectionSummary() {
         return (
-            <tr className = 'connection-info__status'>
+            <tr className='connection-info__status'>
                 <td>
-                    <span>{ this.props.t('connectionindicator.status') }</span>
+                    <span>{this.props.t('connectionindicator.status')}</span>
                 </td>
-                <td>{ this.props.connectionSummary }</td>
+                <td>{this.props.connectionSummary}</td>
             </tr>
         );
     }
@@ -401,9 +401,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.e2e_rtt') }</span>
+                    <span>{t('connectionindicator.e2e_rtt')}</span>
                 </td>
-                <td>{ str }</td>
+                <td>{str}</td>
             </tr>
         );
     }
@@ -431,9 +431,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.connectedTo') }</span>
+                    <span>{t('connectionindicator.connectedTo')}</span>
                 </td>
-                <td>{ str }</td>
+                <td>{str}</td>
             </tr>
         );
     }
@@ -456,9 +456,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.bridgeCount') }</span>
+                    <span>{t('connectionindicator.bridgeCount')}</span>
                 </td>
-                <td>{ bridgeCount }</td>
+                <td>{bridgeCount}</td>
             </tr>
         );
     }
@@ -479,9 +479,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.framerate') }</span>
+                    <span>{t('connectionindicator.framerate')}</span>
                 </td>
-                <td>{ frameRateString }</td>
+                <td>{frameRateString}</td>
             </tr>
         );
     }
@@ -502,14 +502,14 @@ class ConnectionStatsTable extends Component<Props> {
 
             packetLossTableData = (
                 <td>
-                    <span className = 'connection-info__download'>
+                    <span className='connection-info__download'>
                         &darr;
                     </span>
-                    { download === null ? 'N/A' : `${download}%` }
-                    <span className = 'connection-info__upload'>
+                    { download === null ? 'N/A' : `${download}%`}
+                    <span className='connection-info__upload'>
                         &uarr;
                     </span>
-                    { upload === null ? 'N/A' : `${upload}%` }
+                    { upload === null ? 'N/A' : `${upload}%`}
                 </td>
             );
         } else {
@@ -520,10 +520,10 @@ class ConnectionStatsTable extends Component<Props> {
             <tr>
                 <td>
                     <span>
-                        { t('connectionindicator.packetloss') }
+                        {t('connectionindicator.packetloss')}
                     </span>
                 </td>
-                { packetLossTableData }
+                { packetLossTableData}
             </tr>
         );
     }
@@ -554,9 +554,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr>
                 <td>
-                    <span>{ t('connectionindicator.resolution') }</span>
+                    <span>{t('connectionindicator.resolution')}</span>
                 </td>
-                <td>{ resolutionString }</td>
+                <td>{resolutionString}</td>
             </tr>
         );
     }
@@ -571,9 +571,9 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <span>
                 <a
-                    className = 'savelogs link'
-                    onClick = { this.props.onSaveLogs } >
-                    { this.props.t('connectionindicator.savelogs') }
+                    className='savelogs link'
+                    onClick={this.props.onSaveLogs} >
+                    {this.props.t('connectionindicator.savelogs')}
                 </a>
                 <span> | </span>
             </span>
@@ -596,9 +596,9 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <a
-                className = 'showmore link'
-                onClick = { this.props.onShowMore } >
-                { this.props.t(translationKey) }
+                className='showmore link'
+                onClick={this.props.onShowMore} >
+                { this.props.t(translationKey)}
             </a>
         );
     }
@@ -613,17 +613,17 @@ class ConnectionStatsTable extends Component<Props> {
         const isRemoteVideo = !this.props.isLocalVideo;
 
         return (
-            <table className = 'connection-info__container'>
+            <table className='connection-info__container'>
                 <tbody>
-                    { this._renderConnectionSummary() }
-                    { this._renderBitrate() }
-                    { this._renderPacketLoss() }
-                    { isRemoteVideo ? this._renderE2eRtt() : null }
-                    { isRemoteVideo ? this._renderRegion() : null }
-                    { this._renderResolution() }
-                    { this._renderFrameRate() }
-                    { this._renderCodecs() }
-                    { isRemoteVideo ? null : this._renderBridgeCount() }
+                    {this._renderConnectionSummary()}
+                    {this._renderBitrate()}
+                    {this._renderPacketLoss()}
+                    {isRemoteVideo ? this._renderE2eRtt() : null}
+                    {isRemoteVideo ? this._renderRegion() : null}
+                    {this._renderResolution()}
+                    {this._renderFrameRate()}
+                    {this._renderCodecs()}
+                    {isRemoteVideo ? null : this._renderBridgeCount()}
                 </tbody>
             </table>
         );
@@ -641,9 +641,9 @@ class ConnectionStatsTable extends Component<Props> {
 
         if (!transport || transport.length === 0) {
             const NA = (
-                <tr key = 'address'>
+                <tr key='address'>
                     <td>
-                        <span>{ t('connectionindicator.address') }</span>
+                        <span>{t('connectionindicator.address')}</span>
                     </td>
                     <td>
                         N/A
@@ -651,7 +651,7 @@ class ConnectionStatsTable extends Component<Props> {
                 </tr>
             );
 
-            return [ NA ];
+            return [NA];
         }
 
         const data = {
@@ -721,7 +721,7 @@ class ConnectionStatsTable extends Component<Props> {
                 data: data.remotePort,
                 key: 'remoteport',
                 label: t('connectionindicator.remoteport',
-                        { count: transport.length })
+                    { count: transport.length })
             },
             {
                 data: data.localIP,
@@ -764,15 +764,15 @@ class ConnectionStatsTable extends Component<Props> {
         const { additionalData, data, key, label } = config;
 
         return (
-            <tr key = { key }>
+            <tr key={key}>
                 <td>
                     <span>
-                        { label }
+                        {label}
                     </span>
                 </td>
                 <td>
-                    { getStringFromArray(data) }
-                    { additionalData || null }
+                    {getStringFromArray(data)}
+                    {additionalData || null}
                 </td>
             </tr>
         );

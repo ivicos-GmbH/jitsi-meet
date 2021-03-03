@@ -36,7 +36,7 @@ export default class MicrosoftSignInButton extends Component<Props> {
                     className = 'microsoft-logo'
                     src = 'images/microsoftLogo.svg' />
                 <div className = 'microsoft-cta'>
-                    { this.props.text }
+                    {this.props.text}
                 </div>
             </div>
         );

@@ -45,7 +45,7 @@ type Props = {
     /**
      * The 'Skip prejoin' button to be rendered (if any).
      */
-     skipPrejoinButton?: React$Node,
+    skipPrejoinButton?: React$Node,
 
     /**
      * True if the preview overlay should be muted, false otherwise.
@@ -103,12 +103,12 @@ export default class PreMeetingScreen extends PureComponent<Props> {
                     {showConferenceInfo && (
                         <>
                             <div className = 'title'>
-                                { title }
+                                {title}
                             </div>
                             {showSharingButton ? <CopyMeetingUrl /> : null}
                         </>
                     )}
-                    { this.props.children }
+                    {this.props.children}
                     <div className = 'media-btn-container'>
                         <div className = 'toolbox-content'>
                             <div className = 'toolbox-content-items'>
@@ -117,8 +117,8 @@ export default class PreMeetingScreen extends PureComponent<Props> {
                             </div>
                         </div>
                     </div>
-                    { this.props.skipPrejoinButton }
-                    { this.props.footer }
+                    {this.props.skipPrejoinButton}
+                    {this.props.footer}
                 </div>
             </div>
         );

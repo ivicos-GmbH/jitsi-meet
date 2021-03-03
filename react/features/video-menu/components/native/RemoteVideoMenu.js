@@ -101,8 +101,8 @@ class RemoteVideoMenu extends PureComponent<Props> {
             <BottomSheet
                 onCancel = { this._onCancel }
                 renderHeader = { this._renderMenuHeader }>
-                { !_disableRemoteMute && <MuteButton { ...buttonProps } /> }
-                { !_disableKick && <KickButton { ...buttonProps } /> }
+                { !_disableRemoteMute && <MuteButton { ...buttonProps } />}
+                { !_disableKick && <KickButton { ...buttonProps } />}
                 <GrantModeratorButton { ...buttonProps } />
                 <PinButton { ...buttonProps } />
                 <PrivateMessageButton { ...buttonProps } />
@@ -149,7 +149,7 @@ class RemoteVideoMenu extends PureComponent<Props> {
                     participantId = { participant.id }
                     size = { AVATAR_SIZE } />
                 <Text style = { styles.participantNameLabel }>
-                    { this.props._participantDisplayName }
+                    {this.props._participantDisplayName}
                 </Text>
             </View>
         );

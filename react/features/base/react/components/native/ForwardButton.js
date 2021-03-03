@@ -67,7 +67,7 @@ class ForwardButton extends Component<Props> {
                         this.props.disabled && _headerStyles.disabledButtonText,
                         this.props.style
                     ] }>
-                    { this.props.t(this.props.labelKey) }
+                    {this.props.t(this.props.labelKey)}
                 </Text>
             </TouchableOpacity>
         );

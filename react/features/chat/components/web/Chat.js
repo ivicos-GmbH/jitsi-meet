@@ -84,7 +84,7 @@ class Chat extends AbstractChat<Props> {
     render() {
         return (
             <>
-                { this._renderPanelContent() }
+                { this._renderPanelContent()}
             </>
         );
     }
@@ -155,14 +155,14 @@ class Chat extends AbstractChat<Props> {
             if (_isModal) {
                 ComponentToRender = (
                     <ChatDialog>
-                        { _showNamePrompt ? <DisplayNameForm /> : this._renderChat() }
+                        { _showNamePrompt ? <DisplayNameForm /> : this._renderChat()}
                     </ChatDialog>
                 );
             } else {
                 ComponentToRender = (
                     <>
-                        { this._renderChatHeader() }
-                        { _showNamePrompt ? <DisplayNameForm /> : this._renderChat() }
+                        { this._renderChatHeader()}
+                        { _showNamePrompt ? <DisplayNameForm /> : this._renderChat()}
                     </>
                 );
             }
@@ -179,7 +179,7 @@ class Chat extends AbstractChat<Props> {
             <div
                 className = { `sideToolbarContainer ${className}` }
                 id = 'sideToolbarContainer'>
-                { ComponentToRender }
+                { ComponentToRender}
             </div>
         );
     }

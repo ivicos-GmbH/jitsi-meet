@@ -86,8 +86,7 @@ export function overrideConfigJSON(
 
             if (!_.isEmpty(configJSON)) {
                 logger.info(
-                    `Extending ${configName} with: ${
-                        JSON.stringify(configJSON)}`);
+                    `Extending ${configName} with: ${JSON.stringify(configJSON)}`);
 
                 // eslint-disable-next-line arrow-body-style
                 _.mergeWith(configObj, configJSON, (oldValue, newValue) => {

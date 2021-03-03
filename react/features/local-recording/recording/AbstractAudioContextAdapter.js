@@ -64,20 +64,20 @@ export class AbstractAudioContextAdapter extends RecordingAdapter {
         }
 
         return this._getAudioStream(micDeviceId)
-        .then(stream => {
-            this._stream = stream;
-            this._audioSource
-                = this._audioContext.createMediaStreamSource(stream);
-            this._audioProcessingNode
-                = this._audioContext.createScriptProcessor(4096, 1, 1);
-            this._audioProcessingNode.onaudioprocess = callback;
-            logger.debug('AudioContext is set up.');
-        })
-        .catch(err => {
-            logger.error(`Error calling getUserMedia(): ${err}`);
+            .then(stream => {
+                this._stream = stream;
+                this._audioSource
+                    = this._audioContext.createMediaStreamSource(stream);
+                this._audioProcessingNode
+                    = this._audioContext.createScriptProcessor(4096, 1, 1);
+                this._audioProcessingNode.onaudioprocess = callback;
+                logger.debug('AudioContext is set up.');
+            })
+            .catch(err => {
+                logger.error(`Error calling getUserMedia(): ${err}`);
 
-            return Promise.reject(err);
-        });
+                return Promise.reject(err);
+            });
     }
 
     /**

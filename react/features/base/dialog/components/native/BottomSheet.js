@@ -95,7 +95,7 @@ class BottomSheet extends PureComponent<Props> {
                     <View
                         pointerEvents = 'box-none'
                         style = { styles.sheetAreaCover } />
-                    { renderHeader && renderHeader() }
+                    {renderHeader && renderHeader()}
                     <SafeAreaView
                         style = { [
                             styles.sheetItemContainer,
@@ -106,7 +106,7 @@ class BottomSheet extends PureComponent<Props> {
                             bounces = { false }
                             showsVerticalScrollIndicator = { false }
                             style = { styles.scrollView } >
-                            { this.props.children }
+                            {this.props.children}
                         </ScrollView>
                     </SafeAreaView>
                 </View>

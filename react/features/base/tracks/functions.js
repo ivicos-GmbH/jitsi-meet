@@ -30,7 +30,7 @@ export async function createLocalPresenterTrack(options, desktopHeight) {
     const cameraHeights = [ 180, 270, 360, 540, 720 ];
     const proportion = 5;
     const result = cameraHeights.find(
-            height => (desktopHeight / proportion) < height);
+        height => (desktopHeight / proportion) < height);
     const constraints = {
         video: {
             aspectRatio: 4 / 3,
@@ -129,11 +129,11 @@ export function createLocalTracksF(options = {}, store) {
                     resolution,
                     timeout
                 })
-            .catch(err => {
-                logger.error('Failed to create local tracks', options.devices, err);
+                .catch(err => {
+                    logger.error('Failed to create local tracks', options.devices, err);
 
-                return Promise.reject(err);
-            });
+                    return Promise.reject(err);
+                });
         }));
 }
 
@@ -175,52 +175,52 @@ export function createPrejoinTracks() {
             devices: initialDevices,
             firePermissionPromptIsShownEvent: true
         })
-                .catch(err => {
-                    if (requestedAudio && requestedVideo) {
+            .catch(err => {
+                if (requestedAudio && requestedVideo) {
 
-                        // Try audio only...
-                        errors.audioAndVideoError = err;
+                    // Try audio only...
+                    errors.audioAndVideoError = err;
 
-                        return (
-                            createLocalTracksF({
-                                devices: [ 'audio' ],
-                                firePermissionPromptIsShownEvent: true
-                            }));
-                    } else if (requestedAudio && !requestedVideo) {
-                        errors.audioOnlyError = err;
-
-                        return [];
-                    } else if (requestedVideo && !requestedAudio) {
-                        errors.videoOnlyError = err;
-
-                        return [];
-                    }
-                    logger.error('Should never happen');
-                })
-                .catch(err => {
-                    // Log this just in case...
-                    if (!requestedAudio) {
-                        logger.error('The impossible just happened', err);
-                    }
+                    return (
+                        createLocalTracksF({
+                            devices: [ 'audio' ],
+                            firePermissionPromptIsShownEvent: true
+                        }));
+                } else if (requestedAudio && !requestedVideo) {
                     errors.audioOnlyError = err;
 
-                    // Try video only...
-                    return requestedVideo
-                        ? createLocalTracksF({
-                            devices: [ 'video' ],
-                            firePermissionPromptIsShownEvent: true
-                        })
-                        : [];
-                })
-                .catch(err => {
-                    // Log this just in case...
-                    if (!requestedVideo) {
-                        logger.error('The impossible just happened', err);
-                    }
+                    return [];
+                } else if (requestedVideo && !requestedAudio) {
                     errors.videoOnlyError = err;
 
                     return [];
-                });
+                }
+                logger.error('Should never happen');
+            })
+            .catch(err => {
+                // Log this just in case...
+                if (!requestedAudio) {
+                    logger.error('The impossible just happened', err);
+                }
+                errors.audioOnlyError = err;
+
+                // Try video only...
+                return requestedVideo
+                    ? createLocalTracksF({
+                        devices: [ 'video' ],
+                        firePermissionPromptIsShownEvent: true
+                    })
+                    : [];
+            })
+            .catch(err => {
+                // Log this just in case...
+                if (!requestedVideo) {
+                    logger.error('The impossible just happened', err);
+                }
+                errors.videoOnlyError = err;
+
+                return [];
+            });
     }
 
     return {

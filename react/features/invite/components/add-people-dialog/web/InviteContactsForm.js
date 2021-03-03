@@ -100,9 +100,9 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
          * invite.
          */
         if (prevState.addToCallError
-                && !this.state.addToCallInProgress
-                && !this.state.addToCallError
-                && this._multiselect) {
+            && !this.state.addToCallInProgress
+            && !this.state.addToCallError
+            && this._multiselect) {
             this._multiselect.setSelectedItems([]);
         }
     }
@@ -145,361 +145,361 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
 
         return (
             <div
-                className = 'add-people-form-wrap'
-                onKeyDown = { this._onKeyDown }>
-                { this._renderErrorMessage() }
+                className='add-people-form-wrap'
+                onKeyDown={this._onKeyDown}>
+                { this._renderErrorMessage()}
                 <MultiSelectAutocomplete
-                    footer = { footerText }
-                    isDisabled = { isMultiSelectDisabled }
-                    loadingMessage = { t(loadingMessage) }
-                    noMatchesFound = { t(noMatches) }
-                    onItemSelected = { this._onItemSelected }
-                    onSelectionChange = { this._onSelectionChange }
-                    placeholder = { t(placeholder) }
-                    ref = { this._setMultiSelectElement }
-                    resourceClient = { this._resourceClient }
-                    shouldFitContainer = { true }
-                    shouldFocus = { true }
-                    showSupportLink = { !_isVpaas } />
-                { this._renderFormActions() }
+                    footer={footerText}
+                    isDisabled={isMultiSelectDisabled}
+                    loadingMessage={t(loadingMessage)}
+                    noMatchesFound={t(noMatches)}
+                    onItemSelected={this._onItemSelected}
+                    onSelectionChange={this._onSelectionChange}
+                    placeholder={t(placeholder)}
+                    ref={this._setMultiSelectElement}
+                    resourceClient={this._resourceClient}
+                    shouldFitContainer={true}
+                    shouldFocus={true}
+                    showSupportLink={!_isVpaas} />
+                { this._renderFormActions()}
             </div>
         );
     }
 
     _invite: Array<Object> => Promise<*>
 
-    _isAddDisabled: () => boolean;
+        _isAddDisabled: () => boolean;
 
-    _onItemSelected: (Object) => Object;
+_onItemSelected: (Object) => Object;
 
-    /**
-     * Callback invoked when a selection has been made but before it has been
-     * set as selected.
-     *
-     * @param {Object} item - The item that has just been selected.
-     * @private
-     * @returns {Object} The item to display as selected in the input.
-     */
-    _onItemSelected(item) {
-        if (item.item.type === 'phone') {
-            item.content = item.item.number;
-        }
-
-        return item;
+/**
+ * Callback invoked when a selection has been made but before it has been
+ * set as selected.
+ *
+ * @param {Object} item - The item that has just been selected.
+ * @private
+ * @returns {Object} The item to display as selected in the input.
+ */
+_onItemSelected(item) {
+    if (item.item.type === 'phone') {
+        item.content = item.item.number;
     }
 
-    _onSelectionChange: (Map<*, *>) => void;
+    return item;
+}
 
-    /**
-     * Handles a selection change.
-     *
-     * @param {Array} selectedItems - The list of selected items.
-     * @private
-     * @returns {void}
-     */
-    _onSelectionChange(selectedItems) {
-        this.setState({
-            inviteItems: selectedItems
-        });
-    }
+_onSelectionChange: (Map <*, *>) => void;
 
-    _onSubmit: () => void;
+/**
+ * Handles a selection change.
+ *
+ * @param {Array} selectedItems - The list of selected items.
+ * @private
+ * @returns {void}
+ */
+_onSelectionChange(selectedItems) {
+    this.setState({
+        inviteItems: selectedItems
+    });
+}
 
-    /**
-     * Submits the selection for inviting.
-     *
-     * @private
-     * @returns {void}
-     */
-    _onSubmit() {
-        const { inviteItems } = this.state;
-        const invitees = inviteItems.map(({ item }) => item);
+_onSubmit: () => void;
 
-        this._invite(invitees)
-            .then(invitesLeftToSend => {
-                if (invitesLeftToSend.length) {
-                    const unsentInviteIDs
-                        = invitesLeftToSend.map(invitee =>
-                            invitee.id || invitee.user_id || invitee.number);
-                    const itemsToSelect
-                        = inviteItems.filter(({ item }) =>
-                            unsentInviteIDs.includes(item.id || item.user_id || item.number));
+/**
+ * Submits the selection for inviting.
+ *
+ * @private
+ * @returns {void}
+ */
+_onSubmit() {
+    const { inviteItems } = this.state;
+    const invitees = inviteItems.map(({ item }) => item);
 
-                    if (this._multiselect) {
-                        this._multiselect.setSelectedItems(itemsToSelect);
-                    }
-                } else {
-                    this.props.dispatch(hideAddPeopleDialog());
+    this._invite(invitees)
+        .then(invitesLeftToSend => {
+            if (invitesLeftToSend.length) {
+                const unsentInviteIDs
+                    = invitesLeftToSend.map(invitee =>
+                        invitee.id || invitee.user_id || invitee.number);
+                const itemsToSelect
+                    = inviteItems.filter(({ item }) =>
+                        unsentInviteIDs.includes(item.id || item.user_id || item.number));
+
+                if (this._multiselect) {
+                    this._multiselect.setSelectedItems(itemsToSelect);
                 }
-            });
-    }
-
-    _onKeyDown: (Object) => void;
-
-    /**
-     * Handles 'Enter' key in the form to trigger the invite.
-     *
-     * @param {Object} event - The key event.
-     * @returns {void}
-     */
-    _onKeyDown(event) {
-        const { inviteItems } = this.state;
-
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            if (!this._isAddDisabled() && inviteItems.length) {
-                this._onSubmit();
+            } else {
+                this.props.dispatch(hideAddPeopleDialog());
             }
+        });
+}
+
+_onKeyDown: (Object) => void;
+
+/**
+ * Handles 'Enter' key in the form to trigger the invite.
+ *
+ * @param {Object} event - The key event.
+ * @returns {void}
+ */
+_onKeyDown(event) {
+    const { inviteItems } = this.state;
+
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        if (!this._isAddDisabled() && inviteItems.length) {
+            this._onSubmit();
         }
     }
+}
 
-    _parseQueryResults: (?Array<Object>) => Array<Object>;
+_parseQueryResults: (? Array < Object >) => Array < Object >;
 
-    /**
-     * Returns the avatar component for a user.
-     *
-     * @param {Object} user - The user.
-     * @param {string} className - The CSS class for the avatar component.
-     * @private
-     * @returns {ReactElement}
-     */
-    _getAvatar(user, className = 'avatar-small') {
-        return (
-            <Avatar
-                className = { className }
-                status = { user.status }
-                url = { user.avatar } />
-        );
-    }
+/**
+ * Returns the avatar component for a user.
+ *
+ * @param {Object} user - The user.
+ * @param {string} className - The CSS class for the avatar component.
+ * @private
+ * @returns {ReactElement}
+ */
+_getAvatar(user, className = 'avatar-small') {
+    return (
+        <Avatar
+            className={className}
+            status={user.status}
+            url={user.avatar} />
+    );
+}
 
-    /**
-     * Processes results from requesting available numbers and people by munging
-     * each result into a format {@code MultiSelectAutocomplete} can use for
-     * display.
-     *
-     * @param {Array} response - The response object from the server for the
-     * query.
-     * @private
-     * @returns {Object[]} Configuration objects for items to display in the
-     * search autocomplete.
-     */
-    _parseQueryResults(response = []) {
-        const { t, _dialOutEnabled } = this.props;
-        const users = response.filter(item => item.type !== 'phone');
-        const userDisplayItems = [];
+/**
+ * Processes results from requesting available numbers and people by munging
+ * each result into a format {@code MultiSelectAutocomplete} can use for
+ * display.
+ *
+ * @param {Array} response - The response object from the server for the
+ * query.
+ * @private
+ * @returns {Object[]} Configuration objects for items to display in the
+ * search autocomplete.
+ */
+_parseQueryResults(response = []) {
+    const { t, _dialOutEnabled } = this.props;
+    const users = response.filter(item => item.type !== 'phone');
+    const userDisplayItems = [];
 
-        for (const user of users) {
-            const { name, phone } = user;
-            const tagAvatar = this._getAvatar(user, 'avatar-xsmall');
-            const elemAvatar = this._getAvatar(user);
+    for (const user of users) {
+        const { name, phone } = user;
+        const tagAvatar = this._getAvatar(user, 'avatar-xsmall');
+        const elemAvatar = this._getAvatar(user);
 
+        userDisplayItems.push({
+            content: name,
+            elemBefore: elemAvatar,
+            item: user,
+            tag: {
+                elemBefore: tagAvatar
+            },
+            value: user.id || user.user_id
+        });
+
+        if (phone && _dialOutEnabled) {
             userDisplayItems.push({
-                content: name,
+                filterValues: [name, phone],
+                content: `${phone} (${name})`,
                 elemBefore: elemAvatar,
-                item: user,
+                item: {
+                    type: 'phone',
+                    number: phone
+                },
                 tag: {
                     elemBefore: tagAvatar
                 },
-                value: user.id || user.user_id
+                value: phone
             });
-
-            if (phone && _dialOutEnabled) {
-                userDisplayItems.push({
-                    filterValues: [ name, phone ],
-                    content: `${phone} (${name})`,
-                    elemBefore: elemAvatar,
-                    item: {
-                        type: 'phone',
-                        number: phone
-                    },
-                    tag: {
-                        elemBefore: tagAvatar
-                    },
-                    value: phone
-                });
-            }
         }
-
-        const numbers = response.filter(item => item.type === 'phone');
-        const telephoneIcon = this._renderTelephoneIcon();
-
-        const numberDisplayItems = numbers.map(number => {
-            const numberNotAllowedMessage
-                = number.allowed ? '' : t('addPeople.countryNotSupported');
-            const countryCodeReminder = number.showCountryCodeReminder
-                ? t('addPeople.countryReminder') : '';
-            const description
-                = `${numberNotAllowedMessage} ${countryCodeReminder}`.trim();
-
-            return {
-                filterValues: [
-                    number.originalEntry,
-                    number.number
-                ],
-                content: t('addPeople.telephone', { number: number.number }),
-                description,
-                isDisabled: !number.allowed,
-                elemBefore: telephoneIcon,
-                item: number,
-                tag: {
-                    elemBefore: telephoneIcon
-                },
-                value: number.number
-            };
-        });
-
-        return [
-            ...userDisplayItems,
-            ...numberDisplayItems
-        ];
     }
 
-    _query: (string) => Promise<Array<Object>>;
+    const numbers = response.filter(item => item.type === 'phone');
+    const telephoneIcon = this._renderTelephoneIcon();
 
-    _renderFooterText: () => Object;
+    const numberDisplayItems = numbers.map(number => {
+        const numberNotAllowedMessage
+            = number.allowed ? '' : t('addPeople.countryNotSupported');
+        const countryCodeReminder = number.showCountryCodeReminder
+            ? t('addPeople.countryReminder') : '';
+        const description
+            = `${numberNotAllowedMessage} ${countryCodeReminder}`.trim();
 
-    /**
-     * Sets up the rendering of the footer text, if enabled.
-     *
-     * @returns {Object | undefined}
-     */
-    _renderFooterText() {
-        const { _footerTextEnabled, t } = this.props;
-        let footerText;
+        return {
+            filterValues: [
+                number.originalEntry,
+                number.number
+            ],
+            content: t('addPeople.telephone', { number: number.number }),
+            description,
+            isDisabled: !number.allowed,
+            elemBefore: telephoneIcon,
+            item: number,
+            tag: {
+                elemBefore: telephoneIcon
+            },
+            value: number.number
+        };
+    });
 
-        if (_footerTextEnabled) {
-            footerText = {
-                content: <div className = 'footer-text-wrap'>
-                    <div>
-                        <span className = 'footer-telephone-icon'>
-                            <Icon src = { IconPhone } />
-                        </span>
-                    </div>
-                    { translateToHTML(t, 'addPeople.footerText') }
+    return [
+        ...userDisplayItems,
+        ...numberDisplayItems
+    ];
+}
+
+_query: (string) => Promise < Array < Object >>;
+
+_renderFooterText: () => Object;
+
+/**
+ * Sets up the rendering of the footer text, if enabled.
+ *
+ * @returns {Object | undefined}
+ */
+_renderFooterText() {
+    const { _footerTextEnabled, t } = this.props;
+    let footerText;
+
+    if (_footerTextEnabled) {
+        footerText = {
+            content: <div className='footer-text-wrap'>
+                <div>
+                    <span className='footer-telephone-icon'>
+                        <Icon src={IconPhone} />
+                    </span>
                 </div>
-            };
-        }
-
-        return footerText;
-    }
-
-    _onClearItems: () => void;
-
-    /**
-     * Clears the selected items from state and form.
-     *
-     * @returns {void}
-     */
-    _onClearItems() {
-        if (this._multiselect) {
-            this._multiselect.setSelectedItems([]);
-        }
-        this.setState({ inviteItems: [] });
-    }
-
-    /**
-     * Renders the add/cancel actions for the form.
-     *
-     * @returns {ReactElement|null}
-     */
-    _renderFormActions() {
-        const { inviteItems } = this.state;
-        const { t } = this.props;
-
-        if (!inviteItems.length) {
-            return null;
-        }
-
-        return (
-            <div className = { `invite-more-dialog invite-buttons${this._isAddDisabled() ? ' disabled' : ''}` }>
-                <a
-                    className = 'invite-more-dialog invite-buttons-cancel'
-                    onClick = { this._onClearItems }>
-                    {t('dialog.Cancel')}
-                </a>
-                <a
-                    className = 'invite-more-dialog invite-buttons-add'
-                    onClick = { this._onSubmit }>
-                    {t('addPeople.add')}
-                </a>
+                {translateToHTML(t, 'addPeople.footerText')}
             </div>
-        );
+        };
     }
 
-    /**
-     * Renders the error message if the add doesn't succeed.
-     *
-     * @private
-     * @returns {ReactElement|null}
-     */
-    _renderErrorMessage() {
-        if (!this.state.addToCallError) {
-            return null;
-        }
+    return footerText;
+}
 
-        const { t } = this.props;
-        const supportString = t('inlineDialogFailure.supportMsg');
-        const supportLink = interfaceConfig.SUPPORT_URL;
+_onClearItems: () => void;
 
-        if (!supportLink) {
-            return null;
-        }
+/**
+ * Clears the selected items from state and form.
+ *
+ * @returns {void}
+ */
+_onClearItems() {
+    if (this._multiselect) {
+        this._multiselect.setSelectedItems([]);
+    }
+    this.setState({ inviteItems: [] });
+}
 
-        const supportLinkContent = (
+/**
+ * Renders the add/cancel actions for the form.
+ *
+ * @returns {ReactElement|null}
+ */
+_renderFormActions() {
+    const { inviteItems } = this.state;
+    const { t } = this.props;
+
+    if (!inviteItems.length) {
+        return null;
+    }
+
+    return (
+        <div className={`invite-more-dialog invite-buttons${this._isAddDisabled() ? ' disabled' : ''}`}>
+            <a
+                className='invite-more-dialog invite-buttons-cancel'
+                onClick={this._onClearItems}>
+                {t('dialog.Cancel')}
+            </a>
+            <a
+                className='invite-more-dialog invite-buttons-add'
+                onClick={this._onSubmit}>
+                {t('addPeople.add')}
+            </a>
+        </div>
+    );
+}
+
+/**
+ * Renders the error message if the add doesn't succeed.
+ *
+ * @private
+ * @returns {ReactElement|null}
+ */
+_renderErrorMessage() {
+    if (!this.state.addToCallError) {
+        return null;
+    }
+
+    const { t } = this.props;
+    const supportString = t('inlineDialogFailure.supportMsg');
+    const supportLink = interfaceConfig.SUPPORT_URL;
+
+    if (!supportLink) {
+        return null;
+    }
+
+    const supportLinkContent = (
+        <span>
             <span>
-                <span>
-                    { supportString.padEnd(supportString.length + 1) }
-                </span>
-                <span>
-                    <a
-                        href = { supportLink }
-                        rel = 'noopener noreferrer'
-                        target = '_blank'>
-                        { t('inlineDialogFailure.support') }
-                    </a>
-                </span>
-                <span>.</span>
+                {supportString.padEnd(supportString.length + 1)}
             </span>
-        );
-
-        return (
-            <div className = 'modal-dialog-form-error'>
-                <InlineMessage
-                    title = { t('addPeople.failedToAdd') }
-                    type = 'error'>
-                    { supportLinkContent }
-                </InlineMessage>
-            </div>
-        );
-    }
-
-    /**
-     * Renders a telephone icon.
-     *
-     * @private
-     * @returns {ReactElement}
-     */
-    _renderTelephoneIcon() {
-        return (
-            <span className = 'add-telephone-icon'>
-                <Icon src = { IconPhone } />
+            <span>
+                <a
+                    href={supportLink}
+                    rel='noopener noreferrer'
+                    target='_blank'>
+                    {t('inlineDialogFailure.support')}
+                </a>
             </span>
-        );
-    }
+            <span>.</span>
+        </span>
+    );
 
-    _setMultiSelectElement: (React$ElementRef<*> | null) => void;
+    return (
+        <div className='modal-dialog-form-error'>
+            <InlineMessage
+                title={t('addPeople.failedToAdd')}
+                type='error'>
+                {supportLinkContent}
+            </InlineMessage>
+        </div>
+    );
+}
 
-    /**
-     * Sets the instance variable for the multi select component
-     * element so it can be accessed directly.
-     *
-     * @param {Object} element - The DOM element for the component's dialog.
-     * @private
-     * @returns {void}
-     */
-    _setMultiSelectElement(element) {
-        this._multiselect = element;
-    }
+/**
+ * Renders a telephone icon.
+ *
+ * @private
+ * @returns {ReactElement}
+ */
+_renderTelephoneIcon() {
+    return (
+        <span className='add-telephone-icon'>
+            <Icon src={IconPhone} />
+        </span>
+    );
+}
+
+_setMultiSelectElement: (React$ElementRef <*> | null) => void;
+
+/**
+ * Sets the instance variable for the multi select component
+ * element so it can be accessed directly.
+ *
+ * @param {Object} element - The DOM element for the component's dialog.
+ * @private
+ * @returns {void}
+ */
+_setMultiSelectElement(element) {
+    this._multiselect = element;
+}
 }
 
 /**

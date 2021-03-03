@@ -162,12 +162,12 @@ function _conferenceFailed({ dispatch, getState }, next, action) {
 
     if (typeof APP === 'undefined') {
         !error.recoverable
-        && conference
-        && conference.leave().catch(reason => {
-            // Even though we don't care too much about the failure, it may be
-            // good to know that it happen, so log it (on the info level).
-            logger.info('JitsiConference.leave() rejected with:', reason);
-        });
+            && conference
+            && conference.leave().catch(reason => {
+                // Even though we don't care too much about the failure, it may be
+                // good to know that it happen, so log it (on the info level).
+                logger.info('JitsiConference.leave() rejected with:', reason);
+            });
     } else if (typeof beforeUnloadHandler !== 'undefined') {
         // FIXME: Workaround for the web version. Currently, the creation of the
         // conference is handled by /conference.js and appropriate failure handlers
@@ -405,7 +405,7 @@ function _pinParticipant({ getState }, next, action) {
     const actionName = id ? ACTION_PINNED : ACTION_UNPINNED;
     const local
         = (participantById && participantById.local)
-            || (!id && pinnedParticipant && pinnedParticipant.local);
+        || (!id && pinnedParticipant && pinnedParticipant.local);
     let participantIdForEvent;
 
     if (local) {

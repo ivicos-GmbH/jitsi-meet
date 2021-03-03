@@ -29,7 +29,7 @@ export default function AudioSettingsHeader({ IconComponent, text }: Props) {
     return (
         <div className = 'audio-preview-header'>
             <div className = 'audio-preview-header-icon'>
-                { <Icon
+                {<Icon
                     size = { 20 }
                     src = { IconComponent } />}
             </div>

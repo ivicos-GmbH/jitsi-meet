@@ -145,11 +145,11 @@ MiddlewareRegistry.register(store => next => action => {
     }
     case SET_NETWORK_INFO:
         sendAnalytics(
-            createNetworkInfoEvent({
-                isOnline: action.isOnline,
-                details: action.details,
-                networkType: action.networkType
-            }));
+                createNetworkInfoEvent({
+                    isOnline: action.isOnline,
+                    details: action.details,
+                    networkType: action.networkType
+                }));
         break;
     case TRACK_ADDED:
     case TRACK_REMOVED:

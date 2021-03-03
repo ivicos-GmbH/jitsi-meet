@@ -19,6 +19,6 @@ export type Props = {
  * Abstract class for the {@code CircularLabel} component.
  */
 export default class AbstractCircularLabel<P: Props, S: *>
-    extends Component<P, S> {
+    extends Component < P, S > {
 
 }

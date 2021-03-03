@@ -174,7 +174,7 @@ class ParticipantView extends Component<Props> {
                 pointerEvents = 'box-none'
                 style = { containerStyle }>
                 <Text style = { styles.connectionInfoText }>
-                    { t(messageKey, { displayName }) }
+                    {t(messageKey, { displayName })}
                 </Text>
             </View>
         );
@@ -224,7 +224,7 @@ class ParticipantView extends Component<Props> {
                     onPress = { renderYoutubeLargeVideo ? undefined : onPress }
                     value = '' />
 
-                { renderYoutubeLargeVideo && <YoutubeLargeVideo youtubeId = { this.props.participantId } /> }
+                { renderYoutubeLargeVideo && <YoutubeLargeVideo youtubeId = { this.props.participantId } />}
 
                 { !_isFakeParticipant && renderVideo
                     && <VideoTrack
@@ -232,24 +232,24 @@ class ParticipantView extends Component<Props> {
                         videoTrack = { videoTrack }
                         waitForVideoStarted = { false }
                         zOrder = { this.props.zOrder }
-                        zoomEnabled = { this.props.zoomEnabled } /> }
+                        zoomEnabled = { this.props.zoomEnabled } />}
 
                 { !renderYoutubeLargeVideo && !renderVideo
                     && <View style = { styles.avatarContainer }>
                         <Avatar
                             participantId = { this.props.participantId }
                             size = { this.props.avatarSize } />
-                    </View> }
+                    </View>}
 
                 { useTint
 
                     // If the connection has problems, tint the video / avatar.
                     && <TintedView
                         style = {
-                            connectionProblem ? undefined : tintStyle } /> }
+                            connectionProblem ? undefined : tintStyle } />}
 
                 { this.props.useConnectivityInfoLabel
-                    && this._renderConnectionInfo(connectionStatus) }
+                    && this._renderConnectionInfo(connectionStatus)}
             </Container>
         );
     }
@@ -274,7 +274,7 @@ function _mapStateToProps(state, ownProps) {
     return {
         _connectionStatus:
             connectionStatus
-                || JitsiParticipantConnectionStatus.ACTIVE,
+            || JitsiParticipantConnectionStatus.ACTIVE,
         _isFakeParticipant: participant && participant.isFakeParticipant,
         _participantName: participantName,
         _renderVideo: shouldRenderParticipantVideo(state, participantId) && !disableVideo,

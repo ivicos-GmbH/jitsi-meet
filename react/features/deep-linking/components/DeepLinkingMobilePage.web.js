@@ -132,10 +132,10 @@ class DeepLinkingMobilePage extends Component<Props> {
                             : null
                     }
                     <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.appNotInstalled`, { app: NATIVE_APP_NAME }) }
+                        {t(`${_TNS}.appNotInstalled`, { app: NATIVE_APP_NAME })}
                     </p>
                     <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.ifHaveApp`) }
+                        {t(`${_TNS}.ifHaveApp`)}
                     </p>
                     <a
                         { ...onOpenLinkProperties }
@@ -144,11 +144,11 @@ class DeepLinkingMobilePage extends Component<Props> {
                         onClick = { this._onOpenApp }
                         target = '_top'>
                         <button className = { `${_SNS}__button ${_SNS}__button_primary` }>
-                            { t(`${_TNS}.joinInApp`) }
+                            {t(`${_TNS}.joinInApp`)}
                         </button>
                     </a>
                     <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.ifDoNotHaveApp`) }
+                        {t(`${_TNS}.ifDoNotHaveApp`)}
                     </p>
                     <a
                         { ...onOpenLinkProperties }
@@ -156,20 +156,20 @@ class DeepLinkingMobilePage extends Component<Props> {
                         onClick = { this._onDownloadApp }
                         target = '_top'>
                         <button className = { downloadButtonClassName }>
-                            { t(`${_TNS}.downloadApp`) }
+                            {t(`${_TNS}.downloadApp`)}
                         </button>
                     </a>
                     {
                         isSupportedMobileBrowser()
-                            && <a
-                                onClick = { this._onLaunchWeb }
-                                target = '_top'>
-                                <button className = { downloadButtonClassName }>
-                                    { t(`${_TNS}.launchWebButton`) }
-                                </button>
-                            </a>
+                        && <a
+                            onClick = { this._onLaunchWeb }
+                            target = '_top'>
+                            <button className = { downloadButtonClassName }>
+                                {t(`${_TNS}.launchWebButton`)}
+                            </button>
+                        </a>
                     }
-                    { renderPromotionalFooter() }
+                    {renderPromotionalFooter()}
                     <DialInSummary
                         className = 'deep-linking-dial-in'
                         clickableNumbers = { true }
@@ -206,12 +206,7 @@ class DeepLinkingMobilePage extends Component<Props> {
         const domain = CUSTOM_DOMAIN ?? `https://${APP_CODE}.app.goo.gl`;
         const IUS = interfaceConfig.APP_SCHEME || 'org.jitsi.meet';
 
-        return `${domain}/?link=${
-            encodeURIComponent(window.location.href)}&apn=${
-            APN}&ibi=${
-            IBI}&isi=${
-            ISI}&ius=${
-            IUS}&efr=1`;
+        return `${domain}/?link=${encodeURIComponent(window.location.href)}&apn=${APN}&ibi=${IBI}&isi=${ISI}&ius=${IUS}&efr=1`; // eslint-disable-line max-len
     }
 
     _onDownloadApp: () => void;

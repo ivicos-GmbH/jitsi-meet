@@ -175,7 +175,7 @@ class OverflowMenu extends PureComponent<Props, State> {
                     styles.expandMenuContainer
                 ] }>
                 <TouchableOpacity onPress = { this._onToggleMenu }>
-                    { /* $FlowFixMe */ }
+                    { /* $FlowFixMe */}
                     <IconDragHandle
                         fill = { this.props._bottomSheetStyles.buttons.iconStyle.color } />
                 </TouchableOpacity>

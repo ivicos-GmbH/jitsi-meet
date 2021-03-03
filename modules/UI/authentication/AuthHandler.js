@@ -1,4 +1,5 @@
 // @flow
+/* global APP, config, JitsiMeetJS */
 
 import Logger from 'jitsi-meet-logger';
 
@@ -113,31 +114,31 @@ function initJWTTokenListener(room) {
                 // to upgrade current connection's user role
 
                 newRoom.room.moderator.authenticate()
-                .then(() => {
-                    connection.disconnect();
+                    .then(() => {
+                        connection.disconnect();
 
-                    // At this point we'll have session-ID stored in
-                    // the settings. It will be used in the call below
-                    // to upgrade user's role
-                    room.room.moderator.authenticate()
-                        .then(() => {
-                            logger.info('User role upgrade done !');
-                            // eslint-disable-line no-use-before-define
-                            unregister();
-                        })
-                        .catch((err, errCode) => {
-                            logger.error('Authentication failed: ',
-                                err, errCode);
-                            unregister();
-                        });
-                })
-                .catch((error, code) => {
-                    unregister();
-                    connection.disconnect();
-                    logger.error(
-                        'Authentication failed on the new connection',
-                        error, code);
-                });
+                        // At this point we'll have session-ID stored in
+                        // the settings. It will be used in the call below
+                        // to upgrade user's role
+                        room.room.moderator.authenticate()
+                            .then(() => {
+                                logger.info('User role upgrade done !');
+                                // eslint-disable-line no-use-before-define
+                                unregister();
+                            })
+                            .catch((err, errCode) => {
+                                logger.error('Authentication failed: ',
+                                    err, errCode);
+                                unregister();
+                            });
+                    })
+                    .catch((error, code) => {
+                        unregister();
+                        connection.disconnect();
+                        logger.error(
+                            'Authentication failed on the new connection',
+                            error, code);
+                    });
             }, err => {
                 unregister();
                 logger.error('Failed to open new connection', err);

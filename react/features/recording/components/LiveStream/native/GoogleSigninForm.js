@@ -114,8 +114,8 @@ class GoogleSigninForm extends Component<Props> {
             && googleResponse.user.email;
 
         if (googleAPIState === GOOGLE_API_STATES.NOT_AVAILABLE
-                || googleAPIState === GOOGLE_API_STATES.NEEDS_LOADING
-                || typeof googleAPIState === 'undefined') {
+            || googleAPIState === GOOGLE_API_STATES.NEEDS_LOADING
+            || typeof googleAPIState === 'undefined') {
             return null;
         }
 
@@ -131,7 +131,7 @@ class GoogleSigninForm extends Component<Props> {
                             _dialogStyles.text,
                             styles.text
                         ] }>
-                        { userInfo }
+                        {userInfo}
                     </Text>
                 </View>
                 <GoogleSignInButton

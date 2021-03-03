@@ -11,7 +11,7 @@ import {
 /**
  * Reduces the redux actions of the feature power monitor.
  */
-ReducerRegistry.register('features/power-monitor', (state = { }, action) => {
+ReducerRegistry.register('features/power-monitor', (state = {}, action) => {
     switch (action.type) {
     case SET_TRANSPORT:
         return _setTransport(state, action.transport);

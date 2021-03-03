@@ -92,8 +92,8 @@ class StartLiveStreamDialog
                 titleKey = 'liveStreaming.start'
                 width = { 'small' }>
                 <div className = 'live-stream-dialog'>
-                    { _googleApiApplicationClientID
-                        ? this._renderYouTubePanel() : null }
+                    {_googleApiApplicationClientID
+                        ? this._renderYouTubePanel() : null}
                     <StreamKeyForm
                         onChange = { this._onStreamKeyChange }
                         value = {
@@ -120,7 +120,7 @@ class StartLiveStreamDialog
      */
     _onInitializeGoogleApi() {
         this.props.dispatch(loadGoogleAPI())
-        .catch(response => this._parseErrorFromResponse(response));
+            .catch(response => this._parseErrorFromResponse(response));
     }
 
     /**
@@ -271,7 +271,7 @@ class StartLiveStreamDialog
         switch (this.props._googleAPIState) {
         case GOOGLE_API_STATES.LOADED:
             googleContent
-                = <GoogleSignInButton onClick = { this._onGoogleSignIn } />;
+                    = <GoogleSignInButton onClick = { this._onGoogleSignIn } />;
             helpText = t('liveStreaming.signInCTA');
 
             break;
@@ -294,16 +294,16 @@ class StartLiveStreamDialog
             }
 
             /**
-             * FIXME: Ideally this help text would be one translation string
-             * that also accepts the anchor. This can be done using the Trans
-             * component of react-i18next but I couldn't get it working...
-             */
+                 * FIXME: Ideally this help text would be one translation string
+                 * that also accepts the anchor. This can be done using the Trans
+                 * component of react-i18next but I couldn't get it working...
+                 */
             helpText = (
                 <div>
                     { `${t('liveStreaming.chooseCTA',
-                        { email: _googleProfileEmail })} ` }
+                            { email: _googleProfileEmail })} `}
                     <a onClick = { this._onRequestGoogleSignIn }>
-                        { t('liveStreaming.changeSignIn') }
+                        {t('liveStreaming.changeSignIn')}
                     </a>
                 </div>
             );
@@ -332,10 +332,10 @@ class StartLiveStreamDialog
         return (
             <div className = 'google-panel'>
                 <div className = 'live-stream-cta'>
-                    { helpText }
+                    {helpText}
                 </div>
                 <div className = 'google-api'>
-                    { googleContent }
+                    {googleContent}
                 </div>
             </div>
         );
@@ -355,15 +355,15 @@ class StartLiveStreamDialog
         switch (this.state.errorType) {
         case 'liveStreamingNotEnabled':
             text = this.props.t(
-                'liveStreaming.errorLiveStreamNotEnabled',
-                { email: this.props._googleProfileEmail });
+                    'liveStreaming.errorLiveStreamNotEnabled',
+                    { email: this.props._googleProfileEmail });
             break;
         default:
             text = this.props.t('liveStreaming.errorAPI');
             break;
         }
 
-        return <div className = 'google-error'>{ text }</div>;
+        return <div className = 'google-error'>{text}</div>;
     }
 }
 
@@ -379,7 +379,7 @@ function _mapStateToProps(state: Object) {
     return {
         ..._abstractMapStateToProps(state),
         _googleApiApplicationClientID:
-        state['features/base/config'].googleApiApplicationClientID
+            state['features/base/config'].googleApiApplicationClientID
     };
 }
 

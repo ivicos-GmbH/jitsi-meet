@@ -660,16 +660,16 @@ export function setPassword(
             if (state.conference === conference) {
                 return (
                     method.call(conference, password)
-                        .then(() => dispatch({
-                            type: SET_PASSWORD,
-                            conference,
-                            method,
-                            password
-                        }))
-                        .catch(error => dispatch({
-                            type: SET_PASSWORD_FAILED,
-                            error
-                        }))
+                            .then(() => dispatch({
+                                type: SET_PASSWORD,
+                                conference,
+                                method,
+                                password
+                            }))
+                            .catch(error => dispatch({
+                                type: SET_PASSWORD_FAILED,
+                                error
+                            }))
                 );
             }
 

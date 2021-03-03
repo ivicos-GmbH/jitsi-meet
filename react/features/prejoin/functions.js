@@ -22,7 +22,7 @@ export function isJoinByPhoneButtonVisible(state: Object): boolean {
  */
 export function isDeviceStatusVisible(state: Object): boolean {
     return !(isAudioMuted(state) && isVideoMutedByUser(state))
-    && !state['features/base/config'].startSilent;
+        && !state['features/base/config'].startSilent;
 }
 
 /**

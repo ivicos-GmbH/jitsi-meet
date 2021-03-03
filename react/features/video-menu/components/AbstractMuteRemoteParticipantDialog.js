@@ -32,7 +32,7 @@ export type Props = {
  *
  * @extends Component
  */
-export default class AbstractMuteRemoteParticipantDialog<P:Props = Props>
+export default class AbstractMuteRemoteParticipantDialog<P: Props = Props>
     extends Component<P> {
     /**
      * Initializes a new {@code AbstractMuteRemoteParticipantDialog} instance.

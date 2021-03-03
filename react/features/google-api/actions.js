@@ -22,8 +22,8 @@ export function getCalendarEntries(
         fetchStartDays: ?number, fetchEndDays: ?number) {
     return () =>
         googleApi.get()
-        .then(() =>
-            googleApi._getCalendarEntries(fetchStartDays, fetchEndDays));
+            .then(() =>
+                googleApi._getCalendarEntries(fetchStartDays, fetchEndDays));
 }
 
 /**
@@ -34,28 +34,28 @@ export function getCalendarEntries(
 export function loadGoogleAPI() {
     return (dispatch: Dispatch<any>, getState: Function) =>
         googleApi.get()
-        .then(() => {
-            const {
-                liveStreamingEnabled,
-                enableCalendarIntegration,
-                googleApiApplicationClientID
-            } = getState()['features/base/config'];
+            .then(() => {
+                const {
+                    liveStreamingEnabled,
+                    enableCalendarIntegration,
+                    googleApiApplicationClientID
+                } = getState()['features/base/config'];
 
-            if (getState()['features/google-api'].googleAPIState
+                if (getState()['features/google-api'].googleAPIState
                     === GOOGLE_API_STATES.NEEDS_LOADING) {
-                return googleApi.initializeClient(
-                    googleApiApplicationClientID, liveStreamingEnabled, enableCalendarIntegration);
-            }
+                    return googleApi.initializeClient(
+                        googleApiApplicationClientID, liveStreamingEnabled, enableCalendarIntegration);
+                }
 
-            return Promise.resolve();
-        })
-        .then(() => dispatch(setGoogleAPIState(GOOGLE_API_STATES.LOADED)))
-        .then(() => googleApi.isSignedIn())
-        .then(isSignedIn => {
-            if (isSignedIn) {
-                dispatch(setGoogleAPIState(GOOGLE_API_STATES.SIGNED_IN));
-            }
-        });
+                return Promise.resolve();
+            })
+            .then(() => dispatch(setGoogleAPIState(GOOGLE_API_STATES.LOADED)))
+            .then(() => googleApi.isSignedIn())
+            .then(isSignedIn => {
+                if (isSignedIn) {
+                    dispatch(setGoogleAPIState(GOOGLE_API_STATES.SIGNED_IN));
+                }
+            });
 }
 
 /**
@@ -67,30 +67,30 @@ export function loadGoogleAPI() {
 export function requestAvailableYouTubeBroadcasts() {
     return () =>
         googleApi.requestAvailableYouTubeBroadcasts()
-        .then(response => {
-            // Takes in a list of broadcasts from the YouTube API,
-            // removes dupes, removes broadcasts that cannot get a stream key,
-            // and parses the broadcasts into flat objects.
-            const broadcasts = response.result.items;
+            .then(response => {
+                // Takes in a list of broadcasts from the YouTube API,
+                // removes dupes, removes broadcasts that cannot get a stream key,
+                // and parses the broadcasts into flat objects.
+                const broadcasts = response.result.items;
 
-            const parsedBroadcasts = {};
+                const parsedBroadcasts = {};
 
-            for (let i = 0; i < broadcasts.length; i++) {
-                const broadcast = broadcasts[i];
-                const boundStreamID = broadcast.contentDetails.boundStreamId;
+                for (let i = 0; i < broadcasts.length; i++) {
+                    const broadcast = broadcasts[i];
+                    const boundStreamID = broadcast.contentDetails.boundStreamId;
 
-                if (boundStreamID && !parsedBroadcasts[boundStreamID]) {
-                    parsedBroadcasts[boundStreamID] = {
-                        boundStreamID,
-                        id: broadcast.id,
-                        status: broadcast.status.lifeCycleStatus,
-                        title: broadcast.snippet.title
-                    };
+                    if (boundStreamID && !parsedBroadcasts[boundStreamID]) {
+                        parsedBroadcasts[boundStreamID] = {
+                            boundStreamID,
+                            id: broadcast.id,
+                            status: broadcast.status.lifeCycleStatus,
+                            title: broadcast.snippet.title
+                        };
+                    }
                 }
-            }
 
-            return Object.values(parsedBroadcasts);
-        });
+                return Object.values(parsedBroadcasts);
+            });
 }
 
 /**
@@ -159,11 +159,11 @@ export function showAccountSelection() {
  */
 export function signIn() {
     return (dispatch: Dispatch<any>) => googleApi.get()
-            .then(() => googleApi.signInIfNotSignedIn())
-            .then(() => dispatch({
-                type: SET_GOOGLE_API_STATE,
-                googleAPIState: GOOGLE_API_STATES.SIGNED_IN
-            }));
+        .then(() => googleApi.signInIfNotSignedIn())
+        .then(() => dispatch({
+            type: SET_GOOGLE_API_STATE,
+            googleAPIState: GOOGLE_API_STATES.SIGNED_IN
+        }));
 }
 
 /**

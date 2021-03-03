@@ -120,7 +120,7 @@ export default class NavigateSectionListItem extends Component<Props> {
                 item = { item }
                 onLongPress = { onLongPress }
                 onPress = { onPress } >
-                { secondaryAction && this._renderSecondaryAction() }
+                { secondaryAction && this._renderSecondaryAction()}
             </AvatarListItem>
         );
     }

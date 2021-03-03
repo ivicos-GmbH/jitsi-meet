@@ -338,7 +338,7 @@ class Prejoin extends Component<Props, State> {
                                                 className = 'prejoin-preview-dropdown-icon'
                                                 size = { 24 }
                                                 src = { IconVolumeOff } />
-                                            { t('prejoin.joinWithoutAudio') }
+                                            {t('prejoin.joinWithoutAudio')}
                                         </div>
                                         {hasJoinByPhoneButton && <div
                                             className = 'prejoin-preview-dropdown-btn'
@@ -348,7 +348,7 @@ class Prejoin extends Component<Props, State> {
                                                 data-testid = 'prejoin.joinByPhone'
                                                 size = { 24 }
                                                 src = { IconPhone } />
-                                            { t('prejoin.joinAudioByPhone') }
+                                            {t('prejoin.joinAudioByPhone')}
                                         </div>}
                                     </div> }
                                     isOpen = { showJoinByPhoneButtons }
@@ -360,7 +360,7 @@ class Prejoin extends Component<Props, State> {
                                         onOptionsClick = { _onOptionsClick }
                                         testId = 'prejoin.joinMeeting'
                                         type = 'primary'>
-                                        { t('prejoin.joinMeeting') }
+                                        {t('prejoin.joinMeeting')}
                                     </ActionButton>
                                 </InlineDialog>
                             </div>

@@ -151,12 +151,12 @@ class Conference extends AbstractConference<Props, *> {
         const { _fullscreenEnabled } = this.props;
 
         return (
-            <Container style = { styles.conference }>
+            <Container style={styles.conference}>
                 <StatusBar
-                    barStyle = 'light-content'
-                    hidden = { _fullscreenEnabled }
-                    translucent = { _fullscreenEnabled } />
-                { this._renderContent() }
+                    barStyle='light-content'
+                    hidden={_fullscreenEnabled}
+                    translucent={_fullscreenEnabled} />
+                { this._renderContent()}
             </Container>
         );
     }
@@ -207,9 +207,9 @@ class Conference extends AbstractConference<Props, *> {
      */
     _renderConferenceModals() {
         return [
-            <AddPeopleDialog key = 'addPeopleDialog' />,
-            <Chat key = 'chat' />,
-            <SharedDocument key = 'sharedDocument' />
+            <AddPeopleDialog key='addPeopleDialog' />,
+            <Chat key='chat' />,
+            <SharedDocument key='sharedDocument' />
         ];
     }
 
@@ -252,8 +252,8 @@ class Conference extends AbstractConference<Props, *> {
                   * The LargeVideo is the lowermost stacking layer.
                   */
                     _shouldDisplayTileView
-                        ? <TileView onClick = { this._onClick } />
-                        : <LargeVideo onClick = { this._onClick } />
+                        ? <TileView onClick={this._onClick} />
+                        : <LargeVideo onClick={this._onClick} />
                 }
 
                 {/*
@@ -267,40 +267,40 @@ class Conference extends AbstractConference<Props, *> {
                   * the toolbox/toolbars and the dialogs.
                   */
                     _connecting
-                        && <TintedView>
-                            <LoadingIndicator />
-                        </TintedView>
+                    && <TintedView>
+                        <LoadingIndicator />
+                    </TintedView>
                 }
 
                 <View
-                    pointerEvents = 'box-none'
-                    style = { styles.toolboxAndFilmstripContainer }>
+                    pointerEvents='box-none'
+                    style={styles.toolboxAndFilmstripContainer}>
 
-                    <Captions onPress = { this._onClick } />
+                    <Captions onPress={this._onClick} />
 
-                    { _shouldDisplayTileView || <Container style = { styles.displayNameContainer }>
-                        <DisplayNameLabel participantId = { _largeVideoParticipantId } />
-                    </Container> }
+                    {_shouldDisplayTileView || <Container style={styles.displayNameContainer}>
+                        <DisplayNameLabel participantId={_largeVideoParticipantId} />
+                    </Container>}
 
                     <LonelyMeetingExperience />
 
-                    { _shouldDisplayTileView ? undefined : <Filmstrip /> }
+                    {_shouldDisplayTileView ? undefined : <Filmstrip />}
                     <Toolbox />
                 </View>
 
                 <SafeAreaView
-                    pointerEvents = 'box-none'
-                    style = { styles.navBarSafeView }>
+                    pointerEvents='box-none'
+                    style={styles.navBarSafeView}>
                     <NavigationBar />
-                    { this._renderNotificationsContainer() }
+                    {this._renderNotificationsContainer()}
                     <KnockingParticipantList />
                 </SafeAreaView>
 
                 <TestConnectionInfo />
 
-                { this._renderConferenceNotification() }
+                { this._renderConferenceNotification()}
 
-                { this._renderConferenceModals() }
+                { this._renderConferenceModals()}
             </>
         );
     }
@@ -316,13 +316,13 @@ class Conference extends AbstractConference<Props, *> {
 
         return (
             <>
-                <LargeVideo onClick = { this._onClick } />
+                <LargeVideo onClick={this._onClick} />
 
                 {
                     _connecting
-                        && <TintedView>
-                            <LoadingIndicator />
-                        </TintedView>
+                    && <TintedView>
+                        <LoadingIndicator />
+                    </TintedView>
                 }
             </>
         );

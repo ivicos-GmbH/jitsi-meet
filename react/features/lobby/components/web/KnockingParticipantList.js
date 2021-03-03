@@ -40,10 +40,10 @@ class KnockingParticipantList extends AbstractKnockingParticipantList<Props> {
                 className = { _toolboxVisible ? 'toolbox-visible' : '' }
                 id = 'knocking-participant-list'>
                 <span className = 'title'>
-                    { t('lobby.knockingParticipantList') }
+                    {t('lobby.knockingParticipantList')}
                 </span>
                 <ul>
-                    { _participants.map(p => (
+                    {_participants.map(p => (
                         <li key = { p.id }>
                             <Avatar
                                 displayName = { p.name }
@@ -52,30 +52,30 @@ class KnockingParticipantList extends AbstractKnockingParticipantList<Props> {
                                 url = { p.loadableAvatarUrl } />
                             <div className = 'details'>
                                 <span data-testid = 'knockingParticipant.name'>
-                                    { p.name }
+                                    {p.name}
                                 </span>
-                                { p.email && (
+                                {p.email && (
                                     <span data-testid = 'knockingParticipant.email'>
-                                        { p.email }
+                                        { p.email}
                                     </span>
-                                ) }
+                                )}
                             </div>
                             <button
                                 className = 'primary'
                                 data-testid = 'lobby.allow'
                                 onClick = { this._onRespondToParticipant(p.id, true) }
                                 type = 'button'>
-                                { t('lobby.allow') }
+                                {t('lobby.allow')}
                             </button>
                             <button
                                 className = 'borderLess'
                                 data-testid = 'lobby.reject'
                                 onClick = { this._onRespondToParticipant(p.id, false) }
                                 type = 'button'>
-                                { t('lobby.reject') }
+                                {t('lobby.reject')}
                             </button>
                         </li>
-                    )) }
+                    ))}
                 </ul>
             </div>
         );

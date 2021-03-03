@@ -219,7 +219,7 @@ class FeedbackDialog extends Component<Props, State> {
                                 size = 'xlarge' />
                             : <StarIcon
                                 label = 'star'
-                                size = 'xlarge' /> }
+                                size = 'xlarge' />}
                     </a>
                 );
             });
@@ -236,13 +236,13 @@ class FeedbackDialog extends Component<Props, State> {
                     <div className = 'rating'>
                         <div className = 'star-label'>
                             <p id = 'starLabel'>
-                                { t(SCORES[scoreToDisplayAsSelected]) }
+                                {t(SCORES[scoreToDisplayAsSelected])}
                             </p>
                         </div>
                         <div
                             className = 'stars'
                             onMouseLeave = { this._onScoreContainerMouseLeave }>
-                            { scoreIcons }
+                            {scoreIcons}
                         </div>
                     </div>
                     <div className = 'details'>

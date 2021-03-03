@@ -32,7 +32,7 @@ MiddlewareRegistry.register(store => next => action => {
         const result = next(action);
 
         store.dispatch(
-            _setImmersiveListenerA(_onImmersiveChange.bind(undefined, store)));
+                _setImmersiveListenerA(_onImmersiveChange.bind(undefined, store)));
 
         return result;
     }

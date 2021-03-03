@@ -24,8 +24,8 @@ function _getCommonPrototype(a, b) {
     let p;
 
     if (((p = Object.getPrototypeOf(a)) && (p = _getCommonPrototype(b, p)))
-            || ((p = Object.getPrototypeOf(b))
-                && (p = _getCommonPrototype(a, p)))) {
+        || ((p = Object.getPrototypeOf(b))
+            && (p = _getCommonPrototype(a, p)))) {
         return p;
     }
 
@@ -48,7 +48,7 @@ function _querySelector(node, selectors) {
 
     node && _visitNode(node, n => {
         if (n.nodeType === 1 /* ELEMENT_NODE */
-                && n.nodeName === selectors) {
+            && n.nodeName === selectors) {
             element = n;
 
             return true;
@@ -105,7 +105,7 @@ function _visitNode(node, callback) {
     // - jQuery
     if (typeof global.addEventListener === 'undefined') {
         // eslint-disable-next-line no-empty-function
-        global.addEventListener = () => {};
+        global.addEventListener = () => { };
     }
 
     // Promise.allSettled is supported from RN 0.63 onwards, use a polyfill for that.
@@ -121,7 +121,7 @@ function _visitNode(node, callback) {
     // - features/base/conference/middleware
     if (typeof global.removeEventListener === 'undefined') {
         // eslint-disable-next-line no-empty-function
-        global.removeEventListener = () => {};
+        global.removeEventListener = () => { };
     }
 
     // document
@@ -141,7 +141,7 @@ function _visitNode(node, callback) {
         // - jQuery
         if (typeof document.addEventListener === 'undefined') {
             // eslint-disable-next-line no-empty-function
-            document.addEventListener = () => {};
+            document.addEventListener = () => { };
         }
 
         // document.cookie
@@ -274,10 +274,10 @@ function _visitNode(node, callback) {
 
         if (nodePrototype
 
-                // XXX The intention was to find Node from which Document and
-                // Element extend. If for whatever reason we've reached Object,
-                // then it doesn't sound like what expected.
-                && nodePrototype !== Object.getPrototypeOf({})) {
+            // XXX The intention was to find Node from which Document and
+            // Element extend. If for whatever reason we've reached Object,
+            // then it doesn't sound like what expected.
+            && nodePrototype !== Object.getPrototypeOf({})) {
             // Override console.log.
             const { console } = global;
 
@@ -315,11 +315,11 @@ function _visitNode(node, callback) {
                                 let arg = args[i];
 
                                 if (arg
-                                        && typeof arg !== 'string'
+                                    && typeof arg !== 'string'
 
-                                        // Limit the console.log override to
-                                        // Node (instances).
-                                        && nodePrototype.isPrototypeOf(arg)) {
+                                    // Limit the console.log override to
+                                    // Node (instances).
+                                    && nodePrototype.isPrototypeOf(arg)) {
                                     const toString = arg.toString;
 
                                     if (toString) {
@@ -405,9 +405,9 @@ function _visitNode(node, callback) {
 
                     return (
                         responseText
-                            && new DOMParser().parseFromString(
-                                responseText,
-                                'text/xml'));
+                        && new DOMParser().parseFromString(
+                            responseText,
+                            'text/xml'));
                 }
             });
         }

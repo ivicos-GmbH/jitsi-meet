@@ -19,7 +19,7 @@ StateListenerRegistry.register(
 
         return controlled === participantId;
     },
-    /* listener */ (isControlledParticipantOnStage, { dispatch }) => {
+    /* listener */(isControlledParticipantOnStage, { dispatch }) => {
         if (isControlledParticipantOnStage === true) {
             dispatch(resume());
         } else if (isControlledParticipantOnStage === false) {

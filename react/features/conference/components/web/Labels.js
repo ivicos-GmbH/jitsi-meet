@@ -69,9 +69,7 @@ class Labels extends AbstractLabels<Props, State> {
         const { _filmstripVisible } = this.props;
         const { filmstripBecomingVisible } = this.state;
         const { VIDEO_QUALITY_LABEL_DISABLED } = interfaceConfig;
-        const className = `large-video-labels ${
-            filmstripBecomingVisible ? 'opening' : ''} ${
-            _filmstripVisible ? 'with-filmstrip' : 'without-filmstrip'}`;
+        const className = `large-video-labels ${filmstripBecomingVisible ? 'opening' : ''} ${_filmstripVisible ? 'with-filmstrip' : 'without-filmstrip'}`; // eslint-disable-line max-len
 
         return (
             <div className = { className } >
@@ -94,7 +92,7 @@ class Labels extends AbstractLabels<Props, State> {
                 }
                 {
                     this.props._showVideoQualityLabel && !VIDEO_QUALITY_LABEL_DISABLED
-                        && this._renderVideoQualityLabel()
+                    && this._renderVideoQualityLabel()
                 }
                 {
                     this._renderInsecureRoomNameLabel()
@@ -109,11 +107,11 @@ class Labels extends AbstractLabels<Props, State> {
 
     _renderRecordingLabel: string => React$Element<*>;
 
-    _renderTranscribingLabel: () => React$Element<*>;
+_renderTranscribingLabel: () => React$Element<*>;
 
-    _renderInsecureRoomNameLabel: () => React$Element<any>;
+_renderInsecureRoomNameLabel: () => React$Element<any>;
 
-    _renderVideoQualityLabel: () => React$Element<*>;
+_renderVideoQualityLabel: () => React$Element<*>;
 }
 
 export default connect(_mapStateToProps)(Labels);

@@ -39,8 +39,8 @@ function DrawerPortal({ children }: Props) {
     }, []);
 
     return ReactDOM.createPortal(
-      children,
-      portalTarget
+        children,
+        portalTarget
     );
 }
 

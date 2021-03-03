@@ -129,7 +129,7 @@ export class App extends AbstractApp {
         return (
             <DimensionsDetector
                 onDimensionsChanged = { this._onDimensionsChanged }>
-                { super._createMainElement(component, props) }
+                { super._createMainElement(component, props)}
             </DimensionsDetector>
         );
     }

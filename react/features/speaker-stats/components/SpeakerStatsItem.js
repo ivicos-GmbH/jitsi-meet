@@ -56,7 +56,7 @@ class SpeakerStatsItem extends Component<Props> {
                     <span className = { speakerStatusClass } />
                 </div>
                 <div className = 'speaker-stats-item__name'>
-                    { this.props.displayName }
+                    {this.props.displayName}
                 </div>
                 <div className = 'speaker-stats-item__time'>
                     <TimeElapsed

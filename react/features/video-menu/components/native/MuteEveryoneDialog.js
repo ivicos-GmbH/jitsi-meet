@@ -10,7 +10,8 @@ import { connect } from '../../../base/redux';
 import { StyleType } from '../../../base/styles';
 import AbstractMuteEveryoneDialog, {
     abstractMapStateToProps,
-    type Props as AbstractProps } from '../AbstractMuteEveryoneDialog';
+    type Props as AbstractProps
+} from '../AbstractMuteEveryoneDialog';
 
 type Props = AbstractProps & {
 
@@ -39,7 +40,7 @@ class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
                 okKey = 'dialog.muteParticipantButton'
                 onSubmit = { this._onSubmit } >
                 <Text style = { this.props._dialogStyles.text }>
-                    { `${this.props.title} \n\n ${this.props.content}` }
+                    {`${this.props.title} \n\n ${this.props.content}`}
                 </Text>
             </ConfirmDialog>
         );

@@ -81,9 +81,9 @@ function _connectionDisconnected(
 function _connectionEstablished(
         state: Object,
         { connection, timeEstablished }: {
-            connection: Object,
-            timeEstablished: number
-        }) {
+        connection: Object,
+        timeEstablished: number
+    }) {
     return assign(state, {
         connecting: undefined,
         connection,
@@ -106,9 +106,9 @@ function _connectionEstablished(
 function _connectionFailed(
         state: Object,
         { connection, error }: {
-            connection: Object,
-            error: ConnectionFailedError
-        }) {
+        connection: Object,
+        error: ConnectionFailedError
+    }) {
     const connection_ = _getCurrentConnection(state);
 
     if (connection_ && connection_ !== connection) {

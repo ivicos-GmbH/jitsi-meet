@@ -21,12 +21,12 @@ type Props = {
     /**
      * The user selected background color.
      */
-     _customBackgroundColor: string,
+    _customBackgroundColor: string,
 
     /**
      * The user selected background image url.
      */
-     _customBackgroundImageUrl: string,
+    _customBackgroundImageUrl: string,
 
     /**
      * Fetches the branding data.
@@ -110,7 +110,7 @@ class LargeVideo extends Component<Props> {
                     </div>
                 </div>
                 { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
-                    || <Captions /> }
+                    || <Captions />}
             </div>
         );
     }

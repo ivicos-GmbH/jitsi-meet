@@ -58,7 +58,7 @@ class EnableLobbyModeDialog extends PureComponent<Props> {
                 titleKey = 'lobby.dialogTitle'>
                 <View style = { styles.formWrapper }>
                     <Text style = { this.props._dialogStyles.text } >
-                        { this.props.t('lobby.enableDialogText') }
+                        {this.props.t('lobby.enableDialogText')}
                     </Text>
                 </View>
             </CustomSubmitDialog>

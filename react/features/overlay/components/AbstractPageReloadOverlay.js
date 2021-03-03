@@ -120,9 +120,9 @@ export default class AbstractPageReloadOverlay<P: Props>
 
         return (
             (connectionError && isFatalJitsiConnectionError(connectionError))
-                || (conferenceError
-                    && isFatalJitsiConferenceError(conferenceError))
-                || configError);
+            || (conferenceError
+                && isFatalJitsiConferenceError(conferenceError))
+            || configError);
     }
 
     _interval: ?IntervalID;
@@ -189,8 +189,7 @@ export default class AbstractPageReloadOverlay<P: Props>
             this.props.details));
 
         logger.info(
-            `The conference will be reloaded after ${
-                this.state.timeoutSeconds} seconds.`);
+            `The conference will be reloaded after ${this.state.timeoutSeconds} seconds.`);
 
         this._interval
             = setInterval(

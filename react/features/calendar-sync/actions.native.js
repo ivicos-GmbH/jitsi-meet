@@ -40,8 +40,8 @@ export function updateCalendarEvent(eventId: string) {
         const roomName = generateRoomWithoutSeparator();
 
         addLinkToCalendarEntry(getState(), eventId, `${defaultUrl}/${roomName}`)
-        .finally(() => {
-            dispatch(refreshCalendar(false, false));
-        });
+            .finally(() => {
+                dispatch(refreshCalendar(false, false));
+            });
     };
 }

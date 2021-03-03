@@ -64,7 +64,7 @@ function DialinDialog(props: Props) {
         t
     } = props;
     const flagClassName = `prejoin-dialog-flag iti-flag ${getCountryCodeFromPhone(
-        number,
+        number
     )}`;
 
     return (
@@ -79,7 +79,7 @@ function DialinDialog(props: Props) {
                     {t('prejoin.dialInMeeting')}
                 </div>
             </div>
-            <Label number = { 1 }>{ t('prejoin.dialInPin') }</Label>
+            <Label number = { 1 }>{t('prejoin.dialInPin')}</Label>
 
             <div className = 'prejoin-dialog-dialin-num-container'>
                 <div className = 'prejoin-dialog-dialin-num'>

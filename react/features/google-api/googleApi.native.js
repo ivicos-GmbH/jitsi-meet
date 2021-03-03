@@ -57,13 +57,13 @@ class GoogleApi {
             // Fetching the list of available broadcasts first.
             this._fetchGoogleEndpoint(accessToken,
                 API_URL_LIVE_BROADCASTS)
-            .then(broadcasts => {
-                // Then fetching all the available live streams that the
-                // user has access to with the broadcasts we retrieved
-                // earlier.
-                this._getLiveStreamsForBroadcasts(
-                    accessToken, broadcasts).then(resolve, reject);
-            }, reject);
+                .then(broadcasts => {
+                    // Then fetching all the available live streams that the
+                    // user has access to with the broadcasts we retrieved
+                    // earlier.
+                    this._getLiveStreamsForBroadcasts(
+                        accessToken, broadcasts).then(resolve, reject);
+                }, reject);
         });
     }
 
@@ -125,13 +125,13 @@ class GoogleApi {
             fetch(endpoint, {
                 headers
             }).then(response => response.json())
-            .then(responseJSON => {
-                if (responseJSON.error) {
-                    reject(responseJSON.error.message);
-                } else {
-                    resolve(responseJSON.items || []);
-                }
-            }, reject);
+                .then(responseJSON => {
+                    if (responseJSON.error) {
+                        reject(responseJSON.error.message);
+                    } else {
+                        resolve(responseJSON.items || []);
+                    }
+                }, reject);
         });
     }
 
@@ -172,8 +172,8 @@ class GoogleApi {
                         // use the key as title again.
                         for (const broadcast of broadcasts) {
                             if (broadcast.contentDetails
-                                    && broadcast.contentDetails.boundStreamId
-                                        === stream.id) {
+                                && broadcast.contentDetails.boundStreamId
+                                === stream.id) {
                                 title = broadcast.snippet.title;
                             }
                         }

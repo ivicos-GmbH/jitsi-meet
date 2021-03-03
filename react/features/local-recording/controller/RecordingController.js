@@ -422,15 +422,15 @@ class RecordingController {
     getParticipantsStats() {
         const members
             = this._conference.getParticipants()
-            .map(member => {
-                return {
-                    id: member.getId(),
-                    displayName: member.getDisplayName(),
-                    recordingStats:
-                        JSON.parse(member.getProperty(PROPERTY_STATS) || '{}'),
-                    isSelf: false
-                };
-            });
+                .map(member => {
+                    return {
+                        id: member.getId(),
+                        displayName: member.getDisplayName(),
+                        recordingStats:
+                            JSON.parse(member.getProperty(PROPERTY_STATS) || '{}'),
+                        isSelf: false
+                    };
+                });
 
         // transform into a dictionary for consistent ordering
         const result = {};
@@ -567,24 +567,24 @@ class RecordingController {
             const delegate = this._adapters[this._currentSessionToken];
 
             delegate.start(this._micDeviceId)
-            .then(() => {
-                this._changeState(ControllerState.RECORDING);
-                sessionManager.beginSegment(this._currentSessionToken);
-                logger.log('Local recording engaged.');
+                .then(() => {
+                    this._changeState(ControllerState.RECORDING);
+                    sessionManager.beginSegment(this._currentSessionToken);
+                    logger.log('Local recording engaged.');
 
-                if (this._onNotify) {
-                    this._onNotify('localRecording.messages.engaged');
-                }
-                if (this._onStateChanged) {
-                    this._onStateChanged(true);
-                }
+                    if (this._onNotify) {
+                        this._onNotify('localRecording.messages.engaged');
+                    }
+                    if (this._onStateChanged) {
+                        this._onStateChanged(true);
+                    }
 
-                delegate.setMuted(this._isMuted);
-                this._updateStats();
-            })
-            .catch(err => {
-                logger.error('Failed to start local recording.', err);
-            });
+                    delegate.setMuted(this._isMuted);
+                    this._updateStats();
+                })
+                .catch(err => {
+                    logger.error('Failed to start local recording.', err);
+                });
         }
 
     }
@@ -631,7 +631,7 @@ class RecordingController {
         }
 
         /* eslint-disable */
-        return (Promise.resolve(): Promise<void>);
+        return (Promise.resolve(): Promise < void>);
         // FIXME: better ways to satisfy flow and ESLint at the same time?
         /* eslint-enable */
 
@@ -652,7 +652,7 @@ class RecordingController {
         logger.log(`New session: ${this._currentSessionToken}, `
             + `format: ${this._format}`);
         this._adapters[sessionToken]
-             = this._createRecordingAdapter();
+            = this._createRecordingAdapter();
         sessionManager.createSession(sessionToken, this._format);
     }
 

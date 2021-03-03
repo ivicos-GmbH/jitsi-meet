@@ -93,7 +93,7 @@ class InputDialog extends BaseDialog<Props, State> {
                         styles.fieldWrapper
                     ] }>
                     <Text style = { _dialogStyles.fieldLabel }>
-                        { t(this.props.contentKey) }
+                        {t(this.props.contentKey)}
                     </Text>
                     <TextInput
                         onChangeText = { this._onChangeText }
@@ -101,13 +101,13 @@ class InputDialog extends BaseDialog<Props, State> {
                         underlineColorAndroid = { FIELD_UNDERLINE }
                         value = { this.state.fieldValue }
                         { ...this.props.textInputProps } />
-                    { messageKey && (<Text
+                    {messageKey && (<Text
                         style = { [
                             styles.formMessage,
                             _dialogStyles.text
                         ] }>
-                        { t(messageKey) }
-                    </Text>) }
+                        { t(messageKey)}
+                    </Text>)}
                 </View>
                 <View style = { brandedDialog.buttonWrapper }>
                     <TouchableOpacity
@@ -119,7 +119,7 @@ class InputDialog extends BaseDialog<Props, State> {
                             brandedDialog.buttonFarRight
                         ] }>
                         <Text style = { _dialogStyles.buttonLabel }>
-                            { t('dialog.Ok') }
+                            {t('dialog.Ok')}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -140,7 +140,7 @@ class InputDialog extends BaseDialog<Props, State> {
     _onChangeText(fieldValue) {
 
         if (this.props.validateInput
-                && !this.props.validateInput(fieldValue)) {
+            && !this.props.validateInput(fieldValue)) {
             return;
         }
 

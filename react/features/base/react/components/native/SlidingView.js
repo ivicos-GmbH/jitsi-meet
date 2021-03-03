@@ -174,7 +174,7 @@ export default class SlidingView extends PureComponent<Props, State> {
                 <Animated.View
                     pointerEvents = 'box-none'
                     style = { this._getContentStyle() }>
-                    { this.props.children }
+                    {this.props.children}
                 </Animated.View>
             </View>
         );

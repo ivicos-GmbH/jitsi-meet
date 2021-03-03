@@ -29,7 +29,7 @@ export type Props = {
  *
  * @extends Component
  */
-class AbstractDialogTab<P: Props, S: *> extends Component<P, S> {
+class AbstractDialogTab<P: Props, S: *> extends Component < P, S > {
     /**
      * Initializes a new {@code AbstractDialogTab} instance.
      *

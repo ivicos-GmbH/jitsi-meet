@@ -22,7 +22,7 @@ export function submitDeviceSelectionTab(newState) {
 
         if (newState.selectedVideoInputId
             && newState.selectedVideoInputId
-                !== currentState.selectedVideoInputId) {
+            !== currentState.selectedVideoInputId) {
             dispatch(updateSettings({
                 userSelectedCameraDeviceId: newState.selectedVideoInputId,
                 userSelectedCameraDeviceLabel:
@@ -34,8 +34,8 @@ export function submitDeviceSelectionTab(newState) {
         }
 
         if (newState.selectedAudioInputId
-                && newState.selectedAudioInputId
-                  !== currentState.selectedAudioInputId) {
+            && newState.selectedAudioInputId
+            !== currentState.selectedAudioInputId) {
             dispatch(updateSettings({
                 userSelectedMicDeviceId: newState.selectedAudioInputId,
                 userSelectedMicDeviceLabel:
@@ -47,8 +47,8 @@ export function submitDeviceSelectionTab(newState) {
         }
 
         if (newState.selectedAudioOutputId
-                && newState.selectedAudioOutputId
-                    !== currentState.selectedAudioOutputId) {
+            && newState.selectedAudioOutputId
+            !== currentState.selectedAudioOutputId) {
             sendAnalytics(createDeviceChangedEvent('audio', 'output'));
 
             setAudioOutputDeviceId(

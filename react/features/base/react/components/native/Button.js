@@ -36,7 +36,7 @@ export default class ButtonImpl extends Component<Props> {
             <TouchableOpacity
                 onPress = { this.props.onValueChange } >
                 <Text style = { this.props.style }>
-                    { this.props.children }
+                    {this.props.children}
                 </Text>
             </TouchableOpacity>
         );

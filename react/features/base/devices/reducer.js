@@ -59,10 +59,10 @@ ReducerRegistry.register(
         case REMOVE_PENDING_DEVICE_REQUESTS:
             return {
                 ...state,
-                pendingRequests: [ ]
+                pendingRequests: []
             };
 
-        // TODO: Changing of current audio and video device id is currently handled outside of react/redux.
+            // TODO: Changing of current audio and video device id is currently handled outside of react/redux.
         case SET_AUDIO_INPUT_DEVICE: {
             logger.debug(`set audio input device: ${action.deviceId}`);
 

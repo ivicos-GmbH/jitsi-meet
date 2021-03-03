@@ -17,19 +17,19 @@ import VideoSettingsContent, { type Props as VideoSettingsProps } from './VideoS
 
 type Props = VideoSettingsProps & {
 
-   /**
-    * Component children (the Video button).
-    */
+    /**
+     * Component children (the Video button).
+     */
     children: React$Node,
 
-   /**
-    * Flag controlling the visibility of the popup.
-    */
+    /**
+     * Flag controlling the visibility of the popup.
+     */
     isOpen: boolean,
 
-   /**
-    * Callback executed when the popup closes.
-    */
+    /**
+     * Callback executed when the popup closes.
+     */
     onClose: Function,
 }
 
@@ -47,17 +47,17 @@ function VideoSettingsPopup({
     videoDeviceIds
 }: Props) {
     return (
-        <div className = 'video-preview'>
+        <div className='video-preview'>
             <InlineDialog
-                content = { <VideoSettingsContent
-                    currentCameraDeviceId = { currentCameraDeviceId }
-                    setVideoInputDevice = { setVideoInputDevice }
-                    toggleVideoSettings = { onClose }
-                    videoDeviceIds = { videoDeviceIds } /> }
-                isOpen = { isOpen }
-                onClose = { onClose }
-                placement = 'top-start'>
-                { children }
+                content={<VideoSettingsContent
+                    currentCameraDeviceId={currentCameraDeviceId}
+                    setVideoInputDevice={setVideoInputDevice}
+                    toggleVideoSettings={onClose}
+                    videoDeviceIds={videoDeviceIds} />}
+                isOpen={isOpen}
+                onClose={onClose}
+                placement='top-start'>
+                {children}
             </InlineDialog>
         </div>
     );

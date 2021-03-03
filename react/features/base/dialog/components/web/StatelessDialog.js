@@ -154,7 +154,7 @@ class StatelessDialog extends Component<Props> {
                         className = 'modal-dialog-form'
                         id = 'modal-dialog-form'
                         onSubmit = { this._onSubmit }>
-                        { children }
+                        {children}
                     </form>
                 </div>
             </Modal>
@@ -193,7 +193,7 @@ class StatelessDialog extends Component<Props> {
                 }
                 <span />
                 <ButtonGroup>
-                    { buttons }
+                    {buttons}
                 </ButtonGroup>
             </ModalFooter>
         );
@@ -267,7 +267,7 @@ class StatelessDialog extends Component<Props> {
                 key = 'cancel'
                 onClick = { this._onCancel }
                 type = 'button'>
-                { t(this.props.cancelKey || 'dialog.Cancel') }
+                { t(this.props.cancelKey || 'dialog.Cancel')}
             </Button>
         );
     }
@@ -296,7 +296,7 @@ class StatelessDialog extends Component<Props> {
                 key = 'submit'
                 onClick = { this._onSubmit }
                 type = 'button'>
-                { t(this.props.okKey || 'dialog.Ok') }
+                { t(this.props.okKey || 'dialog.Ok')}
             </Button>
         );
     }

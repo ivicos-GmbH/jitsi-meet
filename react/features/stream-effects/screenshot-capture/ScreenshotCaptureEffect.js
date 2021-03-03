@@ -59,7 +59,7 @@ export default class ScreenshotCaptureEffect {
      * videoType parameter is not desktop.
      */
     startEffect(stream: MediaStream, videoType: string) {
-        return new Promise<void>((resolve, reject) => {
+        return new Promise < void>((resolve, reject) => {
             if (videoType !== 'desktop') {
                 reject();
             }

@@ -46,14 +46,14 @@ class InlineDialogFailure extends Component<Props> {
             = supportLink && showSupportLink
                 ? (
                     <div className = 'inline-dialog-error-text'>
-                        <span>{ supportString.padEnd(supportString.length + 1) }
+                        <span>{supportString.padEnd(supportString.length + 1)}
                         </span>
                         <span>
                             <a
                                 href = { supportLink }
                                 rel = 'noopener noreferrer'
                                 target = '_blank'>
-                                { t('inlineDialogFailure.support') }
+                                {t('inlineDialogFailure.support')}
                             </a>
                         </span>
                         <span>.</span>
@@ -64,13 +64,13 @@ class InlineDialogFailure extends Component<Props> {
         return (
             <div className = 'inline-dialog-error'>
                 <div className = 'inline-dialog-error-text'>
-                    { t('inlineDialogFailure.msg') }
+                    {t('inlineDialogFailure.msg')}
                 </div>
-                { supportLinkElem }
+                { supportLinkElem}
                 <Button
                     className = 'inline-dialog-error-button'
                     onClick = { this.props.onRetry } >
-                    { t('inlineDialogFailure.retry') }
+                    {t('inlineDialogFailure.retry')}
                 </Button>
             </div>
         );

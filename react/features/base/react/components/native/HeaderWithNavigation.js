@@ -52,12 +52,12 @@ class HeaderWithNavigation extends Component<Props> {
 
         return (
             <Header>
-                { onPressBack && <BackButton onPress = { onPressBack } /> }
+                { onPressBack && <BackButton onPress = { onPressBack } />}
                 <HeaderLabel labelKey = { this.props.headerLabelKey } />
                 { onPressForward && <ForwardButton
                     disabled = { this.props.forwardDisabled }
                     labelKey = { this.props.forwardLabelKey }
-                    onPress = { onPressForward } /> }
+                    onPress = { onPressForward } />}
             </Header>
         );
     }

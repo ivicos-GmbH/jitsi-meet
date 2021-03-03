@@ -72,7 +72,7 @@ class BaseDialog<P: Props, S: State> extends AbstractDialog<P, S> {
                                 src = { IconClose }
                                 style = { _dialogStyles.closeStyle } />
                         </TouchableOpacity>
-                        { this._renderContent() }
+                        {this._renderContent()}
                     </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
@@ -124,7 +124,7 @@ class BaseDialog<P: Props, S: State> extends AbstractDialog<P, S> {
                     r.push(html.substring(prevClosingLastIndex, o.index));
                     r.push(
                         <Text style = { styles.boldDialogText }>
-                            { html.substring(opening.lastIndex, c.index) }
+                            {html.substring(opening.lastIndex, c.index)}
                         </Text>);
                     opening.lastIndex
                         = prevClosingLastIndex
