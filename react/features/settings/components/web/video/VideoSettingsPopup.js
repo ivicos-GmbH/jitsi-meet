@@ -47,16 +47,16 @@ function VideoSettingsPopup({
     videoDeviceIds
 }: Props) {
     return (
-        <div className='video-preview'>
+        <div className = 'video-preview'>
             <InlineDialog
-                content={<VideoSettingsContent
-                    currentCameraDeviceId={currentCameraDeviceId}
-                    setVideoInputDevice={setVideoInputDevice}
-                    toggleVideoSettings={onClose}
-                    videoDeviceIds={videoDeviceIds} />}
-                isOpen={isOpen}
-                onClose={onClose}
-                placement='top-start'>
+                content = { <VideoSettingsContent
+                    currentCameraDeviceId = { currentCameraDeviceId }
+                    setVideoInputDevice = { setVideoInputDevice }
+                    toggleVideoSettings = { onClose }
+                    videoDeviceIds = { videoDeviceIds } /> }
+                isOpen = { isOpen }
+                onClose = { onClose }
+                placement = 'top-start'>
                 {children}
             </InlineDialog>
         </div>

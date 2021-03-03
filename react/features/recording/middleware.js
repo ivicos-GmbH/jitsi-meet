@@ -78,37 +78,37 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
     const result = next(action);
 
     switch (action.type) {
-        case APP_WILL_MOUNT:
-            dispatch(registerSound(
+    case APP_WILL_MOUNT:
+        dispatch(registerSound(
                 LIVE_STREAMING_OFF_SOUND_ID,
                 LIVE_STREAMING_OFF_SOUND_FILE));
 
-            dispatch(registerSound(
+        dispatch(registerSound(
                 LIVE_STREAMING_ON_SOUND_ID,
                 LIVE_STREAMING_ON_SOUND_FILE));
 
-            dispatch(registerSound(
+        dispatch(registerSound(
                 RECORDING_OFF_SOUND_ID,
                 RECORDING_OFF_SOUND_FILE));
 
-            dispatch(registerSound(
+        dispatch(registerSound(
                 RECORDING_ON_SOUND_ID,
                 RECORDING_ON_SOUND_FILE));
 
-            break;
+        break;
 
-        case APP_WILL_UNMOUNT:
-            dispatch(unregisterSound(LIVE_STREAMING_OFF_SOUND_ID));
-            dispatch(unregisterSound(LIVE_STREAMING_ON_SOUND_ID));
-            dispatch(unregisterSound(RECORDING_OFF_SOUND_ID));
-            dispatch(unregisterSound(RECORDING_ON_SOUND_ID));
+    case APP_WILL_UNMOUNT:
+        dispatch(unregisterSound(LIVE_STREAMING_OFF_SOUND_ID));
+        dispatch(unregisterSound(LIVE_STREAMING_ON_SOUND_ID));
+        dispatch(unregisterSound(RECORDING_OFF_SOUND_ID));
+        dispatch(unregisterSound(RECORDING_ON_SOUND_ID));
 
-            break;
+        break;
 
-        case CONFERENCE_WILL_JOIN: {
-            const { conference } = action;
+    case CONFERENCE_WILL_JOIN: {
+        const { conference } = action;
 
-            conference.on(
+        conference.on(
                 JitsiConferenceEvents.RECORDER_STATE_CHANGED,
                 recorderSession => {
 
@@ -125,104 +125,104 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
                     return;
                 });
 
+        break;
+    }
+
+    case RECORDING_SESSION_UPDATED: {
+        // When in recorder mode no notifications are shown
+        // or extra sounds are also not desired
+        // but we want to indicate those in case of sip gateway
+        const {
+            iAmRecorder,
+            iAmSipGateway,
+            disableRecordAudioNotification,
+            recordingLimit
+        } = getState()['features/base/config'];
+
+        if (iAmRecorder && !iAmSipGateway) {
             break;
         }
 
-        case RECORDING_SESSION_UPDATED: {
-            // When in recorder mode no notifications are shown
-            // or extra sounds are also not desired
-            // but we want to indicate those in case of sip gateway
-            const {
-                iAmRecorder,
-                iAmSipGateway,
-                disableRecordAudioNotification,
-                recordingLimit
-            } = getState()['features/base/config'];
-
-            if (iAmRecorder && !iAmSipGateway) {
-                break;
-            }
-
-            const updatedSessionData
+        const updatedSessionData
                 = getSessionById(getState(), action.sessionData.id);
-            const { initiator, mode, terminator } = updatedSessionData;
-            const { PENDING, OFF, ON } = JitsiRecordingConstants.status;
+        const { initiator, mode, terminator } = updatedSessionData;
+        const { PENDING, OFF, ON } = JitsiRecordingConstants.status;
 
-            if (updatedSessionData.status === PENDING
+        if (updatedSessionData.status === PENDING
                 && (!oldSessionData || oldSessionData.status !== PENDING)) {
-                dispatch(showPendingRecordingNotification(mode));
-            } else if (updatedSessionData.status !== PENDING) {
-                dispatch(hidePendingRecordingNotification(mode));
+            dispatch(showPendingRecordingNotification(mode));
+        } else if (updatedSessionData.status !== PENDING) {
+            dispatch(hidePendingRecordingNotification(mode));
 
-                if (updatedSessionData.status === ON
+            if (updatedSessionData.status === ON
                     && (!oldSessionData || oldSessionData.status !== ON)) {
-                    if (typeof recordingLimit === 'object') {
-                        // Show notification with additional information to the initiator.
-                        dispatch(showRecordingLimitNotification(mode));
-                    } else {
-                        dispatch(showStartedRecordingNotification(
+                if (typeof recordingLimit === 'object') {
+                    // Show notification with additional information to the initiator.
+                    dispatch(showRecordingLimitNotification(mode));
+                } else {
+                    dispatch(showStartedRecordingNotification(
                             mode, initiator && getParticipantDisplayName(getState, initiator.getId())));
-                    }
+                }
 
 
-                    sendAnalytics(createRecordingEvent('start', mode));
+                sendAnalytics(createRecordingEvent('start', mode));
 
-                    if (disableRecordAudioNotification) {
-                        break;
-                    }
+                if (disableRecordAudioNotification) {
+                    break;
+                }
 
-                    let soundID;
+                let soundID;
 
-                    if (mode === JitsiRecordingConstants.mode.FILE) {
-                        soundID = RECORDING_ON_SOUND_ID;
-                    } else if (mode === JitsiRecordingConstants.mode.STREAM) {
-                        soundID = LIVE_STREAMING_ON_SOUND_ID;
-                    }
+                if (mode === JitsiRecordingConstants.mode.FILE) {
+                    soundID = RECORDING_ON_SOUND_ID;
+                } else if (mode === JitsiRecordingConstants.mode.STREAM) {
+                    soundID = LIVE_STREAMING_ON_SOUND_ID;
+                }
 
-                    if (soundID) {
-                        dispatch(playSound(soundID));
-                    }
+                if (soundID) {
+                    dispatch(playSound(soundID));
+                }
 
-                    if (typeof APP !== 'undefined') {
-                        APP.API.notifyRecordingStatusChanged(true, mode);
-                    }
-                } else if (updatedSessionData.status === OFF
+                if (typeof APP !== 'undefined') {
+                    APP.API.notifyRecordingStatusChanged(true, mode);
+                }
+            } else if (updatedSessionData.status === OFF
                     && (!oldSessionData || oldSessionData.status !== OFF)) {
-                    dispatch(showStoppedRecordingNotification(
+                dispatch(showStoppedRecordingNotification(
                         mode, terminator && getParticipantDisplayName(getState, terminator.getId())));
-                    let duration = 0, soundOff, soundOn;
+                let duration = 0, soundOff, soundOn;
 
-                    if (oldSessionData && oldSessionData.timestamp) {
-                        duration
+                if (oldSessionData && oldSessionData.timestamp) {
+                    duration
                             = (Date.now() / 1000) - oldSessionData.timestamp;
-                    }
-                    sendAnalytics(createRecordingEvent('stop', mode, duration));
+                }
+                sendAnalytics(createRecordingEvent('stop', mode, duration));
 
-                    if (disableRecordAudioNotification) {
-                        break;
-                    }
+                if (disableRecordAudioNotification) {
+                    break;
+                }
 
-                    if (mode === JitsiRecordingConstants.mode.FILE) {
-                        soundOff = RECORDING_OFF_SOUND_ID;
-                        soundOn = RECORDING_ON_SOUND_ID;
-                    } else if (mode === JitsiRecordingConstants.mode.STREAM) {
-                        soundOff = LIVE_STREAMING_OFF_SOUND_ID;
-                        soundOn = LIVE_STREAMING_ON_SOUND_ID;
-                    }
+                if (mode === JitsiRecordingConstants.mode.FILE) {
+                    soundOff = RECORDING_OFF_SOUND_ID;
+                    soundOn = RECORDING_ON_SOUND_ID;
+                } else if (mode === JitsiRecordingConstants.mode.STREAM) {
+                    soundOff = LIVE_STREAMING_OFF_SOUND_ID;
+                    soundOn = LIVE_STREAMING_ON_SOUND_ID;
+                }
 
-                    if (soundOff && soundOn) {
-                        dispatch(stopSound(soundOn));
-                        dispatch(playSound(soundOff));
-                    }
+                if (soundOff && soundOn) {
+                    dispatch(stopSound(soundOn));
+                    dispatch(playSound(soundOff));
+                }
 
-                    if (typeof APP !== 'undefined') {
-                        APP.API.notifyRecordingStatusChanged(false, mode);
-                    }
+                if (typeof APP !== 'undefined') {
+                    APP.API.notifyRecordingStatusChanged(false, mode);
                 }
             }
-
-            break;
         }
+
+        break;
+    }
     }
 
     return result;
@@ -245,39 +245,39 @@ function _showRecordingErrorNotification(recorderSession, dispatch) {
     const isStreamMode = mode === JitsiMeetJS.constants.recording.mode.STREAM;
 
     switch (error) {
-        case JitsiMeetJS.constants.recording.error.SERVICE_UNAVAILABLE:
-            dispatch(showRecordingError({
-                descriptionKey: 'recording.unavailable',
-                descriptionArguments: {
-                    serviceName: isStreamMode
-                        ? '$t(liveStreaming.serviceName)'
-                        : '$t(recording.serviceName)'
-                },
-                titleKey: isStreamMode
-                    ? 'liveStreaming.unavailableTitle'
-                    : 'recording.unavailableTitle'
-            }));
-            break;
-        case JitsiMeetJS.constants.recording.error.RESOURCE_CONSTRAINT:
-            dispatch(showRecordingError({
-                descriptionKey: isStreamMode
-                    ? 'liveStreaming.busy'
-                    : 'recording.busy',
-                titleKey: isStreamMode
-                    ? 'liveStreaming.busyTitle'
-                    : 'recording.busyTitle'
-            }));
-            break;
-        default:
-            dispatch(showRecordingError({
-                descriptionKey: isStreamMode
-                    ? 'liveStreaming.error'
-                    : 'recording.error',
-                titleKey: isStreamMode
-                    ? 'liveStreaming.failedToStart'
-                    : 'recording.failedToStart'
-            }));
-            break;
+    case JitsiMeetJS.constants.recording.error.SERVICE_UNAVAILABLE:
+        dispatch(showRecordingError({
+            descriptionKey: 'recording.unavailable',
+            descriptionArguments: {
+                serviceName: isStreamMode
+                    ? '$t(liveStreaming.serviceName)'
+                    : '$t(recording.serviceName)'
+            },
+            titleKey: isStreamMode
+                ? 'liveStreaming.unavailableTitle'
+                : 'recording.unavailableTitle'
+        }));
+        break;
+    case JitsiMeetJS.constants.recording.error.RESOURCE_CONSTRAINT:
+        dispatch(showRecordingError({
+            descriptionKey: isStreamMode
+                ? 'liveStreaming.busy'
+                : 'recording.busy',
+            titleKey: isStreamMode
+                ? 'liveStreaming.busyTitle'
+                : 'recording.busyTitle'
+        }));
+        break;
+    default:
+        dispatch(showRecordingError({
+            descriptionKey: isStreamMode
+                ? 'liveStreaming.error'
+                : 'recording.error',
+            titleKey: isStreamMode
+                ? 'liveStreaming.failedToStart'
+                : 'recording.failedToStart'
+        }));
+        break;
     }
 
     if (typeof APP !== 'undefined') {

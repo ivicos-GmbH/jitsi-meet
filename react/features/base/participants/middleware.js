@@ -207,6 +207,11 @@ StateListenerRegistry.register(
     (conference, store) => {
         if (conference) {
             const propertyHandlers = {
+                'backgroundData': (participant, value) =>
+                    _backgroundDataUpdated(
+                        store,
+                        getLocalParticipant(store.getState()),
+                        value),
                 'e2eeEnabled': (participant, value) => _e2eeUpdated(store, conference, participant.getId(), value),
                 'features_e2ee': (participant, value) =>
                     store.dispatch(participantUpdated({
@@ -280,6 +285,28 @@ function _e2eeUpdated({ dispatch }, conference, participantId, newValue) {
         conference,
         id: participantId,
         e2eeEnabled
+    }));
+}
+
+/**
+ * Handles a background update.
+ *
+ * @param {Function} dispatch - The Redux dispatch function.
+ * @param {Object} localParticipant - Redux state of the local participant.
+ * @param {boolean} newValue - The new value of the serialized background properties.
+ * @returns {void}
+ */
+function _backgroundDataUpdated({ dispatch }, localParticipant, newValue) {
+
+    if (localParticipant?.backgroundData === newValue) {
+        return;
+    }
+
+    // Update the local participant information
+    dispatch(participantUpdated({
+        id: localParticipant.id,
+        local: localParticipant.local,
+        backgroundData: newValue
     }));
 }
 
@@ -383,7 +410,7 @@ function _maybePlaySounds({ getState, dispatch }, action) {
  */
 function _participantJoinedOrUpdated(store, next, action) {
     const { dispatch, getState } = store;
-    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand } } = action;
+    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand, backgroundData } } = action;
 
     // Send an external update of the local participant's raised hand state
     // if a new raised hand state is defined in the action.
@@ -394,6 +421,18 @@ function _participantJoinedOrUpdated(store, next, action) {
             // Send raisedHand signalling only if there is a change
             if (conference && raisedHand !== getLocalParticipant(getState()).raisedHand) {
                 conference.setLocalParticipantProperty('raisedHand', raisedHand);
+            }
+        }
+    }
+
+    // Send an external update of the local participant's background color/image state
+    // if a new background color/image state is defined in the action.
+    if (typeof backgroundData !== 'undefined') {
+        if (local) {
+            const { conference } = getState()['features/base/conference'];
+
+            if (conference) {
+                conference.setLocalParticipantProperty('backgroundData', backgroundData);
             }
         }
     }

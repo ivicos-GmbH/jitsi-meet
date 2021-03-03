@@ -1,5 +1,4 @@
 // @flow
-/* global APP, config, JitsiMeetJS */
 
 import Logger from 'jitsi-meet-logger';
 

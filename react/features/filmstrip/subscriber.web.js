@@ -52,10 +52,10 @@ StateListenerRegistry.register(
         const state = store.getState();
 
         switch (layout) {
-            case LAYOUTS.TILE_VIEW: {
-                const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+        case LAYOUTS.TILE_VIEW: {
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
 
-                store.dispatch(
+            store.dispatch(
                     setTileViewDimensions(
                         getTileViewGridDimensions(state),
                         {
@@ -64,12 +64,12 @@ StateListenerRegistry.register(
                         },
                         store
                     )
-                );
-                break;
-            }
-            case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
-                store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
-                break;
+            );
+            break;
+        }
+        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
+            store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
+            break;
         }
     });
 

@@ -1,6 +1,5 @@
 // @flow
 
-import Tabs from '@atlaskit/tabs';
 import React, { PureComponent } from 'react';
 import type { Dispatch } from 'redux';
 
@@ -8,8 +7,6 @@ import { Dialog, hideDialog } from '../../base/dialog';
 import { translate } from '../../base/i18n';
 import { connect } from '../../base/redux';
 import { obtainDesktopSources } from '../functions';
-
-import DesktopPickerPane from './DesktopPickerPane';
 
 /**
  * The size of the requested thumbnails.
@@ -195,13 +192,13 @@ class DesktopPicker extends PureComponent<Props, State> {
     render() {
         return (
             <Dialog
-                isModal={false}
-                okDisabled={Boolean(!this.state.selectedSource.id)}
-                okKey='dialog.Share'
-                onCancel={this._onCloseModal}
-                onSubmit={this._onSubmit}
-                titleKey='dialog.shareYourScreen'
-                width='medium' >
+                isModal = { false }
+                okDisabled = { Boolean(!this.state.selectedSource.id) }
+                okKey = 'dialog.Share'
+                onCancel = { this._onCloseModal }
+                onSubmit = { this._onSubmit }
+                titleKey = 'dialog.shareYourScreen'
+                width = 'medium' >
                 { this._renderTabs()}
             </Dialog>
         );
@@ -250,7 +247,7 @@ class DesktopPicker extends PureComponent<Props, State> {
 
     _onCloseModal: (?string, string, ? boolean) => void;
 
-/**
+    /**
 * Dispatches an action to hide the DesktopPicker and invokes the passed in
 * callback with a selectedSource, if any.
 *
@@ -262,10 +259,10 @@ class DesktopPicker extends PureComponent<Props, State> {
 * screen sharing session.
 * @returns {void}
 */
-_onCloseModal(id = '', type, screenShareAudio = false) {
-    this.props.onSourceChoose(id, type, screenShareAudio);
-    this.props.dispatch(hideDialog());
-}
+    _onCloseModal(id = '', type, screenShareAudio = false) {
+        this.props.onSourceChoose(id, type, screenShareAudio);
+        this.props.dispatch(hideDialog());
+    }
 
 _onPreviewClick: (string, string) => void;
 
@@ -340,18 +337,6 @@ _onShareAudioChecked(checked) {
 
 /**
  * Create an interval to update known available DesktopCapturerSources.
- *
- * @private
- * @returns {void}
- */
-_startPolling() {
-    this._stopPolling();
-    this._updateSources();
-    this._poller = window.setInterval(this._updateSources, UPDATE_INTERVAL);
-}
-
-/**
- * Create an interval to update knwon available DesktopCapturerSources.
  *
  * @private
  * @returns {void}

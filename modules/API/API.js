@@ -2,10 +2,7 @@
 
 import Logger from 'jitsi-meet-logger';
 
-import {
-    createApiEvent,
-    sendAnalytics
-} from '../../react/features/analytics';
+import { createApiEvent, sendAnalytics } from '../../react/features/analytics';
 import {
     getCurrentConference,
     sendTones,
@@ -25,9 +22,7 @@ import {
 } from '../../react/features/base/participants';
 import { setPrivateMessageRecipient } from '../../react/features/chat/actions';
 import { openChat } from '../../react/features/chat/actions.web';
-import {
-    processExternalDeviceRequest
-} from '../../react/features/device-selection/functions';
+import { processExternalDeviceRequest } from '../../react/features/device-selection/functions';
 import { isEnabled as isDropboxEnabled } from '../../react/features/dropbox';
 import { toggleE2EE } from '../../react/features/e2ee/actions';
 import { invite } from '../../react/features/invite';
@@ -117,11 +112,7 @@ function initCommands() {
             } else {
                 sendAnalytics(createApiEvent('password.changed'));
 
-                APP.store.dispatch(setPassword(
-                    conference,
-                    conference.lock,
-                    password
-                ));
+                APP.store.dispatch(setPassword(conference, conference.lock, password));
             }
         },
         'pin-participant': id => {
@@ -141,6 +132,10 @@ function initCommands() {
             const { duration, tones, pause } = options;
 
             APP.store.dispatch(sendTones(tones, duration, pause));
+        },
+        'set-background-image': (backgroundImageUrl, backgroundColor) => {
+            logger.debug('Set background image command received');
+            APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');
@@ -349,7 +344,7 @@ function initCommands() {
                 return;
             }
 
-            if (![ JitsiRecordingConstants.mode.FILE, JitsiRecordingConstants.mode.STREAM ].includes(mode)) {
+            if (![JitsiRecordingConstants.mode.FILE, JitsiRecordingConstants.mode.STREAM].includes(mode)) {
                 logger.error('Invalid recording mode provided!');
 
                 return;
@@ -409,96 +404,102 @@ function initCommands() {
         const { name } = request;
 
         switch (name) {
-        case 'capture-largevideo-screenshot' :
-            APP.store.dispatch(captureLargeVideoScreenshot())
-                .then(dataURL => {
-                    let error;
+            case 'capture-largevideo-screenshot':
+                APP.store
+                    .dispatch(captureLargeVideoScreenshot())
+                    .then(dataURL => {
+                        let error;
 
-                    if (!dataURL) {
-                        error = new Error('No large video found!');
-                    }
+                        if (!dataURL) {
+                            error = new Error('No large video found!');
+                        }
 
-                    callback({
-                        error,
-                        dataURL
+                        callback({
+                            error,
+                            dataURL
+                        });
                     });
-                });
-            break;
-        case 'invite': {
-            const { invitees } = request;
+                break;
+            case 'invite': {
+                const { invitees } = request;
 
-            if (!Array.isArray(invitees) || invitees.length === 0) {
-                callback({
-                    error: new Error('Unexpected format of invitees')
-                });
+                if (!Array.isArray(invitees) || invitees.length === 0) {
+                    callback({
+                        error: new Error('Unexpected format of invitees')
+                    });
 
+                    break;
+                }
+
+                // The store should be already available because API.init is called
+                // on appWillMount action.
+                APP.store
+                    .dispatch(invite(invitees, true))
+                    .then(failedInvitees => {
+                        let error;
+                        let result;
+
+                        if (failedInvitees.length) {
+                            error = new Error('One or more invites failed!');
+                        } else {
+                            result = true;
+                        }
+
+                        callback({
+                            error,
+                            result
+                        });
+                    });
                 break;
             }
+            case 'is-audio-muted':
+                callback(APP.conference.isLocalAudioMuted());
+                break;
+            case 'is-video-muted':
+                callback(APP.conference.isLocalVideoMuted());
+                break;
+            case 'is-audio-available':
+                callback(audioAvailable);
+                break;
+            case 'is-video-available':
+                callback(videoAvailable);
+                break;
+            case 'is-sharing-screen':
+                callback(Boolean(APP.conference.isSharingScreen));
+                break;
+            case 'get-content-sharing-participants': {
+                const tracks = getState()['features/base/tracks'];
+                const sharingParticipantIds = tracks
+                    .filter(tr => tr.videoType === 'desktop')
+                    .map(t => t.participantId);
 
-            // The store should be already available because API.init is called
-            // on appWillMount action.
-            APP.store.dispatch(
-                invite(invitees, true))
-                .then(failedInvitees => {
-                    let error;
-                    let result;
-
-                    if (failedInvitees.length) {
-                        error = new Error('One or more invites failed!');
-                    } else {
-                        result = true;
-                    }
-
-                    callback({
-                        error,
-                        result
-                    });
+                callback({
+                    sharingParticipantIds
                 });
-            break;
-        }
-        case 'is-audio-muted':
-            callback(APP.conference.isLocalAudioMuted());
-            break;
-        case 'is-video-muted':
-            callback(APP.conference.isLocalVideoMuted());
-            break;
-        case 'is-audio-available':
-            callback(audioAvailable);
-            break;
-        case 'is-video-available':
-            callback(videoAvailable);
-            break;
-        case 'is-sharing-screen':
-            callback(Boolean(APP.conference.isSharingScreen));
-            break;
-        case 'get-content-sharing-participants': {
-            const tracks = getState()['features/base/tracks'];
-            const sharingParticipantIds = tracks.filter(tr => tr.videoType === 'desktop').map(t => t.participantId);
-
-            callback({
-                sharingParticipantIds
-            });
-            break;
-        }
-        case 'get-livestream-url': {
-            const state = APP.store.getState();
-            const conference = getCurrentConference(state);
-            let livestreamUrl;
-
-            if (conference) {
-                const activeSession = getActiveSession(state, JitsiRecordingConstants.mode.STREAM);
-
-                livestreamUrl = activeSession?.liveStreamViewURL;
-            } else {
-                logger.error('Conference is not defined');
+                break;
             }
-            callback({
-                livestreamUrl
-            });
-            break;
-        }
-        default:
-            return false;
+            case 'get-livestream-url': {
+                const state = APP.store.getState();
+                const conference = getCurrentConference(state);
+                let livestreamUrl;
+
+                if (conference) {
+                    const activeSession = getActiveSession(
+                        state,
+                        JitsiRecordingConstants.mode.STREAM
+                    );
+
+                    livestreamUrl = activeSession?.liveStreamViewURL;
+                } else {
+                    logger.error('Conference is not defined');
+                }
+                callback({
+                    livestreamUrl
+                });
+                break;
+            }
+            default:
+                return false;
         }
 
         return true;
@@ -514,12 +515,13 @@ function shouldBeEnabled() {
     return (
         typeof API_ID === 'number'
 
-            // XXX Enable the API when a JSON Web Token (JWT) is specified in
-            // the location/URL because then it is very likely that the Jitsi
-            // Meet (Web) app is being used by an external/wrapping (Web) app
-            // and, consequently, the latter will need to communicate with the
-            // former. (The described logic is merely a heuristic though.)
-            || parseJWTFromURLParams());
+        // XXX Enable the API when a JSON Web Token (JWT) is specified in
+        // the location/URL because then it is very likely that the Jitsi
+        // Meet (Web) app is being used by an external/wrapping (Web) app
+        // and, consequently, the latter will need to communicate with the
+        // former. (The described logic is merely a heuristic though.)
+        || parseJWTFromURLParams()
+    );
 }
 
 /**
@@ -663,9 +665,9 @@ class API {
      * @returns {void}
      */
     notifyReceivedChatMessage(
-            { body, id, nick, privateMessage, ts }: {
-                body: *, id: string, nick: string, privateMessage: boolean, ts: *
-            } = {}) {
+        { body, id, nick, privateMessage, ts }: {
+            body: *, id: string, nick: string, privateMessage: boolean, ts: *
+        } = {}) {
         if (APP.conference.isLocalId(id)) {
             return;
         }
@@ -794,8 +796,9 @@ class API {
      * @returns {void}
      */
     notifyDisplayNameChanged(
-            id: string,
-            { displayName, formattedDisplayName }: Object) {
+        id: string,
+        { displayName, formattedDisplayName }: Object
+    ) {
         this._sendEvent({
             name: 'display-name-change',
             displayname: displayName,
@@ -812,9 +815,7 @@ class API {
      * @param {string} email - The new email of the participant.
      * @returns {void}
      */
-    notifyEmailChanged(
-            id: string,
-            { email }: Object) {
+    notifyEmailChanged(id: string, { email }: Object) {
         this._sendEvent({
             name: 'email-change',
             email,
@@ -1164,6 +1165,21 @@ class API {
             on,
             mode,
             error
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated its background information.
+     *
+     * @param {string} localId - Local participant ID.
+     * @param {Object} backgroundData - Background image/color object.
+     * @returns {void}
+     */
+    notifyBackgroundChanged(localId: string, backgroundData: Object) {
+        this._sendEvent({
+            name: 'room-background-updated',
+            backgroundData,
+            localId
         });
     }
 
