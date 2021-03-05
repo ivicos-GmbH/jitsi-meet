@@ -358,7 +358,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         }
 
         return ALWAYS_ON_TOP_FILENAMES.map(
-            filename => (new URL(filename, baseURL)).href
+            filename => new URL(filename, baseURL).href
         );
     }
 
@@ -394,9 +394,9 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         const iframe = this.getIFrame();
 
         if (!this._isLargeVideoVisible
-                || !iframe
-                || !iframe.contentWindow
-                || !iframe.contentWindow.document) {
+            || !iframe
+            || !iframe.contentWindow
+            || !iframe.contentWindow.document) {
             return;
         }
 
@@ -415,8 +415,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         const iframe = this.getIFrame();
 
         if (!iframe
-                || !iframe.contentWindow
-                || !iframe.contentWindow.document) {
+            || !iframe.contentWindow
+            || !iframe.contentWindow.document) {
             return;
         }
 
@@ -480,7 +480,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
                 this._participants[userID] = this._participants[userID] || {};
                 this._participants[userID].displayName = data.displayName;
                 this._participants[userID].formattedDisplayName
-                    = data.formattedDisplayName;
+                        = data.formattedDisplayName;
                 changeParticipantNumber(this, 1);
                 break;
             }

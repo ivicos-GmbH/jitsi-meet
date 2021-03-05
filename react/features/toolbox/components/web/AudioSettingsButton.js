@@ -62,10 +62,10 @@ class AudioSettingsButton extends Component<Props> {
         return visible ? (
             <AudioSettingsPopup>
                 <ToolboxButtonWithIcon
-                    icon = { IconArrowDown }
-                    iconDisabled = { settingsDisabled }
-                    iconTooltip = { t('toolbar.audioSettings') }
-                    onIconClick = { onAudioOptionsClick }>
+                    icon={IconArrowDown}
+                    iconDisabled={settingsDisabled}
+                    iconTooltip={t('toolbar.audioSettings')}
+                    onIconClick={onAudioOptionsClick}>
                     <AudioMuteButton />
                 </ToolboxButtonWithIcon>
             </AudioSettingsPopup>

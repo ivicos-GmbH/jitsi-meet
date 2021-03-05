@@ -754,7 +754,7 @@ export default {
         // XXX The API will take care of disconnecting from the XMPP
         // server (and, thus, leaving the room) on unload.
         return new Promise((resolve, reject) => {
-            (new ConferenceConnector(resolve, reject)).connect();
+            new ConferenceConnector(resolve, reject).connect();
         });
     },
 

@@ -251,7 +251,7 @@ class AudioSettingsContent extends Component<Props, State> {
                         IconComponent = { IconMicrophoneEmpty }
                         text = { t('settings.microphones') } />
                     {this.state.audioTracks.map((data, i) =>
-                        this._renderMicrophoneEntry(data, i),
+                        this._renderMicrophoneEntry(data, i)
                     )}
                     { outputDevices.length > 0 && (
                         <>
@@ -263,7 +263,7 @@ class AudioSettingsContent extends Component<Props, State> {
                     )
                     }
                     {outputDevices.map((data, i) =>
-                        this._renderSpeakerEntry(data, i),
+                        this._renderSpeakerEntry(data, i)
                     )}
                 </div>
             </div>
