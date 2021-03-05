@@ -1,9 +1,6 @@
 /* @flow */
 
-import DropdownMenu, {
-    DropdownItem,
-    DropdownItemGroup
-} from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import React, { Component } from 'react';
 
 import { translate } from '../../base/i18n/functions';
@@ -12,7 +9,6 @@ import { translate } from '../../base/i18n/functions';
  * The type of the React {@code Component} props of {@link DeviceSelector}.
  */
 type Props = {
-
     /**
      * MediaDeviceInfos used for display in the select element.
      */
@@ -90,9 +86,7 @@ class DeviceSelector extends Component<Props> {
         }
 
         const items = this.props.devices.map(this._createDropdownItem);
-        const defaultSelected = this.props.devices.find(item =>
-            item.deviceId === this.props.selectedDeviceId
-        );
+        const defaultSelected = this.props.devices.find((item) => item.deviceId === this.props.selectedDeviceId);
 
         return this._createDropdown({
             defaultSelected,
@@ -113,10 +107,8 @@ class DeviceSelector extends Component<Props> {
      */
     _createDropdownTrigger(triggerText) {
         return (
-            <div className = 'device-selector-trigger'>
-                <span className = 'device-selector-trigger-text'>
-                    { triggerText }
-                </span>
+            <div className="device-selector-trigger">
+                <span className="device-selector-trigger-text">{triggerText}</span>
             </div>
         );
     }
@@ -134,15 +126,14 @@ class DeviceSelector extends Component<Props> {
     _createDropdownItem(device) {
         return (
             <DropdownItem
-                key = { device.deviceId }
+                key={device.deviceId}
                 // eslint-disable-next-line react/jsx-no-bind
-                onClick = {
-                    e => {
-                        e.stopPropagation();
-                        this._onSelect(device.deviceId);
-                    }
-                }>
-                { device.label || device.deviceId }
+                onClick={(e) => {
+                    e.stopPropagation();
+                    this._onSelect(device.deviceId);
+                }}
+            >
+                {device.label || device.deviceId}
             </DropdownItem>
         );
     }
@@ -164,31 +155,24 @@ class DeviceSelector extends Component<Props> {
      * @returns {ReactElement}
      */
     _createDropdown(options) {
-        const triggerText
-            = (options.defaultSelected && (options.defaultSelected.label || options.defaultSelected.deviceId))
-                || options.placeholder;
+        const triggerText = (options.defaultSelected && (options.defaultSelected.label || options.defaultSelected.deviceId)) || options.placeholder;
         const trigger = this._createDropdownTrigger(triggerText);
 
         if (options.isDisabled || !options.items.length) {
-            return (
-                <div className = 'device-selector-trigger-disabled'>
-                    { trigger }
-                </div>
-            );
+            return <div className="device-selector-trigger-disabled">{trigger}</div>;
         }
 
         return (
-            <div className = 'dropdown-menu'>
+            <div className="dropdown-menu">
                 <DropdownMenu
-                    shouldFitContainer = { true }
-                    trigger = { triggerText }
-                    triggerButtonProps = {{
+                    shouldFitContainer={true}
+                    trigger={triggerText}
+                    triggerButtonProps={{
                         shouldFitContainer: true
                     }}
-                    triggerType = 'button'>
-                    <DropdownItemGroup>
-                        { options.items }
-                    </DropdownItemGroup>
+                    triggerType="button"
+                >
+                    <DropdownItemGroup>{options.items}</DropdownItemGroup>
                 </DropdownMenu>
             </div>
         );

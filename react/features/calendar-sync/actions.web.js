@@ -34,13 +34,8 @@ export function bootstrapCalendarIntegration(): Function {
             return Promise.reject();
         }
 
-        const {
-            googleApiApplicationClientID
-        } = state['features/base/config'];
-        const {
-            integrationReady,
-            integrationType
-        } = state['features/calendar-sync'];
+        const { googleApiApplicationClientID } = state['features/base/config'];
+        const { integrationReady, integrationType } = state['features/calendar-sync'];
 
         return Promise.resolve()
             .then(() => {
@@ -53,8 +48,7 @@ export function bootstrapCalendarIntegration(): Function {
                     return;
                 }
 
-                const integrationToLoad
-                    = _getCalendarIntegration(integrationType);
+                const integrationToLoad = _getCalendarIntegration(integrationType);
 
                 if (!integrationToLoad) {
                     dispatch(clearCalendarIntegration());
@@ -62,15 +56,14 @@ export function bootstrapCalendarIntegration(): Function {
                     return;
                 }
 
-                return dispatch(integrationToLoad._isSignedIn())
-                    .then(signedIn => {
-                        if (signedIn) {
-                            dispatch(setIntegrationReady(integrationType));
-                            dispatch(updateProfile(integrationType));
-                        } else {
-                            dispatch(clearCalendarIntegration());
-                        }
-                    });
+                return dispatch(integrationToLoad._isSignedIn()).then((signedIn) => {
+                    if (signedIn) {
+                        dispatch(setIntegrationReady(integrationType));
+                        dispatch(updateProfile(integrationType));
+                    } else {
+                        dispatch(clearCalendarIntegration());
+                    }
+                });
             });
     };
 }
@@ -99,8 +92,7 @@ export function clearCalendarIntegration() {
  * @param {string} calendarId - The calendar id.
  * @returns {Function}
  */
-export function openUpdateCalendarEventDialog(
-        eventId: string, calendarId: string) {
+export function openUpdateCalendarEventDialog(eventId: string, calendarId: string) {
     return updateCalendarEvent(eventId, calendarId);
 }
 
@@ -210,10 +202,8 @@ export function signIn(calendarType: string): Function {
             .then(() => dispatch(updateProfile(calendarType)))
             .then(() => dispatch(refreshCalendar()))
             .then(() => sendAnalytics(createCalendarConnectedEvent()))
-            .catch(error => {
-                logger.error(
-                    'Error occurred while signing into calendar integration',
-                    error);
+            .catch((error) => {
+                logger.error('Error occurred while signing into calendar integration', error);
 
                 return Promise.reject(error);
             });
@@ -230,7 +220,6 @@ export function signIn(calendarType: string): Function {
  */
 export function updateCalendarEvent(id: string, calendarId: string): Function {
     return (dispatch: Dispatch<any>, getState: Function) => {
-
         const { integrationType } = getState()['features/calendar-sync'];
         const integration = _getCalendarIntegration(integrationType);
 
@@ -246,24 +235,20 @@ export function updateCalendarEvent(id: string, calendarId: string): Function {
 
         const roomURL = `${href}${newRoomName}`;
 
-        return dispatch(integration.updateCalendarEvent(
-                id, calendarId, roomURL))
-            .then(() => {
-                // make a copy of the array
-                const events
-                    = getState()['features/calendar-sync'].events.slice(0);
+        return dispatch(integration.updateCalendarEvent(id, calendarId, roomURL)).then(() => {
+            // make a copy of the array
+            const events = getState()['features/calendar-sync'].events.slice(0);
 
-                const eventIx = events.findIndex(
-                    e => e.id === id && e.calendarId === calendarId);
+            const eventIx = events.findIndex((e) => e.id === id && e.calendarId === calendarId);
 
-                // clone the event we will modify
-                const newEvent = Object.assign({}, events[eventIx]);
+            // clone the event we will modify
+            const newEvent = Object.assign({}, events[eventIx]);
 
-                newEvent.url = roomURL;
-                events[eventIx] = newEvent;
+            newEvent.url = roomURL;
+            events[eventIx] = newEvent;
 
-                return dispatch(setCalendarEvents(events));
-            });
+            return dispatch(setCalendarEvents(events));
+        });
     };
 }
 
@@ -283,9 +268,8 @@ export function updateProfile(calendarType: string): Function {
             return Promise.reject('No integration found');
         }
 
-        return dispatch(integration.getCurrentEmail())
-            .then(email => {
-                dispatch(setCalendarProfileEmail(email));
-            });
+        return dispatch(integration.getCurrentEmail()).then((email) => {
+            dispatch(setCalendarProfileEmail(email));
+        });
     };
 }

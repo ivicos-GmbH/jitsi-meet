@@ -3,7 +3,6 @@
 import React from 'react';
 
 type Props = {
-
     /**
      * The text for the Label.
      */
@@ -22,7 +21,7 @@ type Props = {
     /**
      * The click handler.
      */
-    onClick?: Function,
+    onClick?: Function
 };
 
 /**
@@ -31,15 +30,11 @@ type Props = {
  *  @returns {ReactElement}
  */
 function Label({ children, className, number, onClick }: Props) {
-    const containerClass = className
-        ? `prejoin-dialog-label ${className}`
-        : 'prejoin-dialog-label';
+    const containerClass = className ? `prejoin-dialog-label ${className}` : 'prejoin-dialog-label';
 
     return (
-        <div
-            className = { containerClass }
-            onClick = { onClick }>
-            {number && <div className = 'prejoin-dialog-label-num'>{number}</div>}
+        <div className={containerClass} onClick={onClick}>
+            {number && <div className="prejoin-dialog-label-num">{number}</div>}
             <span>{children}</span>
         </div>
     );

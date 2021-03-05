@@ -2,11 +2,7 @@
 
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    SET_DYNAMIC_BRANDING_DATA,
-    SET_DYNAMIC_BRANDING_FAILED,
-    SET_DYNAMIC_BRANDING_READY
-} from './actionTypes';
+import { SET_DYNAMIC_BRANDING_DATA, SET_DYNAMIC_BRANDING_FAILED, SET_DYNAMIC_BRANDING_READY } from './actionTypes';
 
 /**
  * The name of the redux store/state property which is the root of the redux
@@ -104,43 +100,35 @@ const DEFAULT_STATE = {
  */
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case SET_DYNAMIC_BRANDING_DATA: {
-        const {
-            backgroundColor,
-            backgroundImageUrl,
-            defaultBranding,
-            didPageUrl,
-            inviteDomain,
-            logoClickUrl,
-            logoImageUrl
-        } = action.value;
+        case SET_DYNAMIC_BRANDING_DATA: {
+            const { backgroundColor, backgroundImageUrl, defaultBranding, didPageUrl, inviteDomain, logoClickUrl, logoImageUrl } = action.value;
 
-        return {
-            backgroundColor,
-            backgroundImageUrl,
-            defaultBranding,
-            didPageUrl,
-            inviteDomain,
-            logoClickUrl,
-            logoImageUrl,
-            customizationFailed: false,
-            customizationReady: true,
-            useDynamicBrandingData: true
-        };
-    }
-    case SET_DYNAMIC_BRANDING_FAILED: {
-        return {
-            ...state,
-            customizationReady: true,
-            customizationFailed: true,
-            useDynamicBrandingData: true
-        };
-    }
-    case SET_DYNAMIC_BRANDING_READY:
-        return {
-            ...state,
-            customizationReady: true
-        };
+            return {
+                backgroundColor,
+                backgroundImageUrl,
+                defaultBranding,
+                didPageUrl,
+                inviteDomain,
+                logoClickUrl,
+                logoImageUrl,
+                customizationFailed: false,
+                customizationReady: true,
+                useDynamicBrandingData: true
+            };
+        }
+        case SET_DYNAMIC_BRANDING_FAILED: {
+            return {
+                ...state,
+                customizationReady: true,
+                customizationFailed: true,
+                useDynamicBrandingData: true
+            };
+        }
+        case SET_DYNAMIC_BRANDING_READY:
+            return {
+                ...state,
+                customizationReady: true
+            };
     }
 
     return state;

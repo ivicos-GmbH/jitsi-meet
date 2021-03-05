@@ -12,7 +12,7 @@ import VideoLayout from '../videolayout/VideoLayout';
 function bubbleIframeMouseMove(iframe) {
     const existingOnMouseMove = iframe.contentWindow.onmousemove;
 
-    iframe.contentWindow.onmousemove = function(e) {
+    iframe.contentWindow.onmousemove = function (e) {
         if (existingOnMouseMove) {
             existingOnMouseMove(e);
         }
@@ -74,7 +74,7 @@ class Etherpad extends LargeContainer {
 
         this.container.appendChild(iframe);
 
-        iframe.onload = function() {
+        iframe.onload = function () {
             // eslint-disable-next-line no-self-assign
             document.domain = document.domain;
             bubbleIframeMouseMove(iframe);
@@ -125,9 +125,7 @@ class Etherpad extends LargeContainer {
             width = containerWidth;
         }
 
-        $(this.iframe)
-            .width(width)
-            .height(height);
+        $(this.iframe).width(width).height(height);
     }
 
     /**
@@ -138,7 +136,7 @@ class Etherpad extends LargeContainer {
         const $container = $(this.container);
         const self = this;
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             $iframe.fadeIn(300, () => {
                 self.bodyBackground = document.body.style.background;
                 document.body.style.background = '#eeeeee';
@@ -161,7 +159,7 @@ class Etherpad extends LargeContainer {
 
         document.body.style.background = this.bodyBackground;
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             $iframe.fadeOut(300, () => {
                 $iframe.css({ visibility: 'hidden' });
                 $container.css({ zIndex: 0 });
@@ -212,10 +210,7 @@ export default class EtherpadManager {
      */
     openEtherpad() {
         this.etherpad = new Etherpad(getSharedDocumentUrl(APP.store.getState));
-        VideoLayout.addLargeVideoContainer(
-            ETHERPAD_CONTAINER_TYPE,
-            this.etherpad
-        );
+        VideoLayout.addLargeVideoContainer(ETHERPAD_CONTAINER_TYPE, this.etherpad);
     }
 
     /**
@@ -229,8 +224,7 @@ export default class EtherpadManager {
 
         const isVisible = this.isVisible();
 
-        VideoLayout.showLargeVideoContainer(
-            ETHERPAD_CONTAINER_TYPE, !isVisible);
+        VideoLayout.showLargeVideoContainer(ETHERPAD_CONTAINER_TYPE, !isVisible);
 
         APP.store.dispatch(setDocumentEditingState(!isVisible));
     }

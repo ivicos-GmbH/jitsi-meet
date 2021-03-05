@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { Icon } from '../../icons';
 
 type Props = {
-
     /**
      * The decorated component (ToolboxButton).
      */
@@ -29,15 +28,14 @@ type Props = {
     /**
      * Additional styles.
      */
-    styles?: Object,
+    styles?: Object
 };
 
 type State = {
-
     /**
      * Whether the button is hovered or not.
      */
-    isHovered: boolean,
+    isHovered: boolean
 };
 
 /**
@@ -46,7 +44,6 @@ type State = {
  * @returns {ReactElement}
  */
 export default class ToolboxButtonWithIcon extends Component<Props, State> {
-
     /**
      * Initializes a new {@code ToolboxButtonWithIcon} instance.
      *
@@ -95,20 +92,13 @@ export default class ToolboxButtonWithIcon extends Component<Props, State> {
      * @returns {React$Node}
      */
     render() {
-        const {
-            children,
-            icon,
-            iconDisabled,
-            onIconClick,
-            styles
-        } = this.props;
+        const { children, icon, iconDisabled, onIconClick, styles } = this.props;
 
         const iconProps = {};
         let size = 9;
 
         if (iconDisabled) {
-            iconProps.className
-                = 'settings-button-small-icon settings-button-small-icon--disabled';
+            iconProps.className = 'settings-button-small-icon settings-button-small-icon--disabled';
         } else {
             iconProps.className = 'settings-button-small-icon';
             iconProps.onClick = onIconClick;
@@ -120,17 +110,10 @@ export default class ToolboxButtonWithIcon extends Component<Props, State> {
         }
 
         return (
-            <div
-                className = 'settings-button-container'
-                styles = { styles }>
+            <div className="settings-button-container" styles={styles}>
                 {children}
-                <div
-                    onMouseEnter = { this._onMouseEnter }
-                    onMouseLeave = { this._onMouseLeave }>
-                    <Icon
-                        { ...iconProps }
-                        size = { size }
-                        src = { icon } />
+                <div onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave}>
+                    <Icon {...iconProps} size={size} src={icon} />
                 </div>
             </div>
         );

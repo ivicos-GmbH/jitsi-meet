@@ -13,17 +13,15 @@ const INITIAL_STATE = {
     connectionState: ''
 };
 
-ReducerRegistry.register(
-    'features/testing',
-    (state = INITIAL_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/testing', (state = INITIAL_STATE, action) => {
+    switch (action.type) {
         case SET_CONNECTION_STATE:
             return _setConnectionState(state, action);
 
         default:
             return state;
-        }
-    });
+    }
+});
 
 /**
  * Reduces a specific Redux action SET_CONNECTION_STATE of the feature

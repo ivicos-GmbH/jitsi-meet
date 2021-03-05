@@ -5,7 +5,6 @@ import { Component } from 'react';
 import { NOTIFICATION_TYPE } from '../constants';
 
 export type Props = {
-
     /**
      * Display appearance for the component, passed directly to the
      * notification.
@@ -122,7 +121,7 @@ export default class AbstractNotification<P: Props> extends Component<P> {
         this._onDismissed = this._onDismissed.bind(this);
     }
 
-    _getDescription: () => Array<string>
+    _getDescription: () => Array<string>;
 
     /**
      * Returns the description array to be displayed.
@@ -131,24 +130,18 @@ export default class AbstractNotification<P: Props> extends Component<P> {
      * @returns {Array<string>}
      */
     _getDescription() {
-        const {
-            description,
-            descriptionArguments,
-            descriptionKey,
-            t
-        } = this.props;
+        const { description, descriptionArguments, descriptionKey, t } = this.props;
 
         const descriptionArray = [];
 
-        descriptionKey
-            && descriptionArray.push(t(descriptionKey, descriptionArguments));
+        descriptionKey && descriptionArray.push(t(descriptionKey, descriptionArguments));
 
         description && descriptionArray.push(description);
 
         return descriptionArray;
     }
 
-    _getDescriptionKey: () => string
+    _getDescriptionKey: () => string;
 
     /**
      * Returns the description key that was used if any.

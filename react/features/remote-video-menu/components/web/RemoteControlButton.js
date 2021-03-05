@@ -2,10 +2,7 @@
 
 import React, { Component } from 'react';
 
-import {
-    createRemoteVideoMenuButtonEvent,
-    sendAnalytics
-} from '../../../analytics';
+import { createRemoteVideoMenuButtonEvent, sendAnalytics } from '../../../analytics';
 import { translate } from '../../../base/i18n';
 import { IconRemoteControlStart, IconRemoteControlStop } from '../../../base/icons';
 
@@ -24,7 +21,6 @@ export const REMOTE_CONTROL_MENU_STATES = {
  * The type of the React {@code Component} props of {@link RemoteControlButton}.
  */
 type Props = {
-
     /**
      * The callback to invoke when the component is clicked.
      */
@@ -75,39 +71,36 @@ class RemoteControlButton extends Component<Props> {
      * @returns {null|ReactElement}
      */
     render() {
-        const {
-            participantID,
-            remoteControlState,
-            t
-        } = this.props;
+        const { participantID, remoteControlState, t } = this.props;
 
         let className, icon;
 
         switch (remoteControlState) {
-        case REMOTE_CONTROL_MENU_STATES.NOT_STARTED:
-            icon = IconRemoteControlStart;
-            break;
-        case REMOTE_CONTROL_MENU_STATES.REQUESTING:
-            className = ' disabled';
-            icon = IconRemoteControlStart;
-            break;
-        case REMOTE_CONTROL_MENU_STATES.STARTED:
-            icon = IconRemoteControlStop;
-            break;
-        case REMOTE_CONTROL_MENU_STATES.NOT_SUPPORTED:
+            case REMOTE_CONTROL_MENU_STATES.NOT_STARTED:
+                icon = IconRemoteControlStart;
+                break;
+            case REMOTE_CONTROL_MENU_STATES.REQUESTING:
+                className = ' disabled';
+                icon = IconRemoteControlStart;
+                break;
+            case REMOTE_CONTROL_MENU_STATES.STARTED:
+                icon = IconRemoteControlStop;
+                break;
+            case REMOTE_CONTROL_MENU_STATES.NOT_SUPPORTED:
 
             // Intentionally fall through.
-        default:
-            return null;
+            default:
+                return null;
         }
 
         return (
             <RemoteVideoMenuButton
-                buttonText = { t('videothumbnail.remoteControl') }
-                displayClass = { className }
-                icon = { icon }
-                id = { `remoteControl_${participantID}` }
-                onClick = { this._onClick } />
+                buttonText={t('videothumbnail.remoteControl')}
+                displayClass={className}
+                icon={icon}
+                id={`remoteControl_${participantID}`}
+                onClick={this._onClick}
+            />
         );
     }
 
@@ -124,18 +117,15 @@ class RemoteControlButton extends Component<Props> {
         const { onClick, participantID, remoteControlState } = this.props;
 
         // TODO: What do we do in case the state is e.g. "requesting"?
-        if (remoteControlState === REMOTE_CONTROL_MENU_STATES.STARTED
-            || remoteControlState === REMOTE_CONTROL_MENU_STATES.NOT_STARTED) {
+        if (remoteControlState === REMOTE_CONTROL_MENU_STATES.STARTED || remoteControlState === REMOTE_CONTROL_MENU_STATES.NOT_STARTED) {
+            const enable = remoteControlState === REMOTE_CONTROL_MENU_STATES.NOT_STARTED;
 
-            const enable
-                = remoteControlState === REMOTE_CONTROL_MENU_STATES.NOT_STARTED;
-
-            sendAnalytics(createRemoteVideoMenuButtonEvent(
-                'remote.control.button',
-                {
+            sendAnalytics(
+                createRemoteVideoMenuButtonEvent('remote.control.button', {
                     enable,
-                    'participant_id': participantID
-                }));
+                    participant_id: participantID
+                })
+            );
         }
 
         if (onClick) {

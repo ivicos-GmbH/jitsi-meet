@@ -9,12 +9,11 @@ import Text from './Text';
 import styles from './styles';
 
 type Props = {
-
     /**
      * A section containing the data to be rendered
      */
     section: SetionListSection
-}
+};
 
 /**
  * Implements a React/Native {@link Component} that renders the section header
@@ -32,10 +31,8 @@ export default class NavigateSectionListSectionHeader extends Component<Props> {
         const { section } = this.props.section;
 
         return (
-            <Container style = { styles.listSection }>
-                <Text style = { styles.listSectionText }>
-                    { section.title }
-                </Text>
+            <Container style={styles.listSection}>
+                <Text style={styles.listSectionText}>{section.title}</Text>
             </Container>
         );
     }

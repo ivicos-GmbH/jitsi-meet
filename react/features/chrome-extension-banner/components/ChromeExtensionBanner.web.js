@@ -3,22 +3,15 @@
 import { jitsiLocalStorage } from '@jitsi/js-utils';
 import React, { PureComponent } from 'react';
 
-import {
-    createChromeExtensionBannerEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createChromeExtensionBannerEvent, sendAnalytics } from '../../analytics';
 import { getCurrentConference } from '../../base/conference/functions';
-import {
-    checkChromeExtensionsInstalled,
-    isMobileBrowser
-} from '../../base/environment/utils';
+import { checkChromeExtensionsInstalled, isMobileBrowser } from '../../base/environment/utils';
 import { translate } from '../../base/i18n';
 import { Icon, IconClose } from '../../base/icons';
 import { browser } from '../../base/lib-jitsi-meet';
 import { connect } from '../../base/redux';
 import { isVpaasMeeting } from '../../billing-counter/functions';
 import logger from '../logger';
-
 
 declare var interfaceConfig: Object;
 
@@ -35,7 +28,6 @@ const DONT_SHOW_AGAIN_CHECKED = 'hide_chrome_extension_banner';
  * The type of the React {@code PureComponent} props of {@link ChromeExtensionBanner}.
  */
 type Props = {
-
     /**
      * Contains info about installed/to be installed chrome extension(s).
      */
@@ -59,14 +51,13 @@ type Props = {
     /**
      * Invoked to obtain translated strings.
      */
-    t: Function,
+    t: Function
 };
 
 /**
  * The type of the React {@link PureComponent} state of {@link ChromeExtensionBanner}.
  */
 type State = {
-
     /**
      * Keeps the current value of dont show again checkbox
      */
@@ -80,7 +71,7 @@ type State = {
     /**
      * Tells whether should show the banner or not based on extension being installed or not.
      */
-    shouldShow: boolean,
+    shouldShow: boolean
 };
 
 /**
@@ -133,12 +124,7 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
 
         const hasExtensions = await checkChromeExtensionsInstalled(this.props.bannerCfg);
 
-        if (
-            hasExtensions
-            && hasExtensions.length
-            && hasExtensions.every(ext => !ext)
-            && !this.state.shouldShow
-        ) {
+        if (hasExtensions && hasExtensions.length && hasExtensions.every((ext) => !ext) && !this.state.shouldShow) {
             this.setState({ shouldShow: true }); // eslint-disable-line
         }
     }
@@ -150,11 +136,7 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
      * @returns {boolean}
      */
     _isSupportedEnvironment() {
-        return interfaceConfig.SHOW_CHROME_EXTENSION_BANNER
-            && browser.isChrome()
-            && !browser.isTwa()
-            && !isMobileBrowser()
-            && !this.props.isVpaas;
+        return interfaceConfig.SHOW_CHROME_EXTENSION_BANNER && browser.isChrome() && !browser.isTwa() && !isMobileBrowser() && !this.props.isVpaas;
     }
 
     _onClosePressed: () => void;
@@ -196,21 +178,17 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
 
         const dontShowAgain = jitsiLocalStorage.getItem(DONT_SHOW_AGAIN_CHECKED) === 'true';
 
-        return !this.props.bannerCfg.url
-            || dontShowAgain
-            || this.state.closePressed
-            || !this.state.shouldShow
-            || this.props.iAmRecorder;
+        return !this.props.bannerCfg.url || dontShowAgain || this.state.closePressed || !this.state.shouldShow || this.props.iAmRecorder;
     }
 
     _onDontShowAgainChange: (object: Object) => void;
 
     /**
-    * Handles the current `don't show again` checkbox state.
-    *
-    * @param {Object} event - Input change event.
-    * @returns {void}
-    */
+     * Handles the current `don't show again` checkbox state.
+     *
+     * @param {Object} event - Input change event.
+     * @returns {void}
+     */
     _onDontShowAgainChange(event) {
         this.setState({ dontShowAgainChecked: event.target.checked });
     }
@@ -230,46 +208,26 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
             return null;
         }
         const { t } = this.props;
-        const mainClassNames = this.props.conference
-            ? 'chrome-extension-banner chrome-extension-banner__pos_in_meeting'
-            : 'chrome-extension-banner';
+        const mainClassNames = this.props.conference ? 'chrome-extension-banner chrome-extension-banner__pos_in_meeting' : 'chrome-extension-banner';
 
         return (
-            <div className = { mainClassNames }>
-                <div className = 'chrome-extension-banner__container'>
-                    <div
-                        className = 'chrome-extension-banner__icon-container' />
-                    <div
-                        className = 'chrome-extension-banner__text-container'>
-                        { t('chromeExtensionBanner.installExtensionText') }
-                    </div>
-                    <div
-                        className = 'chrome-extension-banner__close-container'
-                        onClick = { this._onClosePressed }>
-                        <Icon
-                            className = 'gray'
-                            size = { 12 }
-                            src = { IconClose } />
+            <div className={mainClassNames}>
+                <div className="chrome-extension-banner__container">
+                    <div className="chrome-extension-banner__icon-container" />
+                    <div className="chrome-extension-banner__text-container">{t('chromeExtensionBanner.installExtensionText')}</div>
+                    <div className="chrome-extension-banner__close-container" onClick={this._onClosePressed}>
+                        <Icon className="gray" size={12} src={IconClose} />
                     </div>
                 </div>
-                <div
-                    className = 'chrome-extension-banner__button-container'>
-                    <div
-                        className = 'chrome-extension-banner__button-open-url'
-                        onClick = { this._onInstallExtensionClick }>
-                        <div
-                            className = 'chrome-extension-banner__button-text'>
-                            { t('chromeExtensionBanner.buttonText') }
-                        </div>
+                <div className="chrome-extension-banner__button-container">
+                    <div className="chrome-extension-banner__button-open-url" onClick={this._onInstallExtensionClick}>
+                        <div className="chrome-extension-banner__button-text">{t('chromeExtensionBanner.buttonText')}</div>
                     </div>
                 </div>
-                <div className = 'chrome-extension-banner__checkbox-container'>
-                    <label className = 'chrome-extension-banner__checkbox-label'>
-                        <input
-                            checked = { this.state.dontShowAgainChecked }
-                            onChange = { this._onDontShowAgainChange }
-                            type = 'checkbox' />
-                        &nbsp;{ t('chromeExtensionBanner.dontShowAgain') }
+                <div className="chrome-extension-banner__checkbox-container">
+                    <label className="chrome-extension-banner__checkbox-label">
+                        <input checked={this.state.dontShowAgainChecked} onChange={this._onDontShowAgainChange} type="checkbox" />
+                        &nbsp;{t('chromeExtensionBanner.dontShowAgain')}
                     </label>
                 </div>
             </div>
@@ -283,7 +241,7 @@ class ChromeExtensionBanner extends PureComponent<Props, State> {
  * @param {Object} state - Redux state.
  * @returns {Object}
  */
-const _mapStateToProps = state => {
+const _mapStateToProps = (state) => {
     return {
         // Using emptyObject so that we don't change the reference every time when _mapStateToProps is called.
         bannerCfg: state['features/base/config'].chromeExtensionBanner || emptyObject,

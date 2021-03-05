@@ -44,7 +44,7 @@ const options = {
         escapeValue: false // not needed for react as it escapes by default
     },
     load: 'languageOnly',
-    ns: [ 'main', 'languages', 'countries' ],
+    ns: ['main', 'languages', 'countries'],
     react: {
         useSuspense: false
     },
@@ -62,24 +62,9 @@ i18next
     .init(options);
 
 // Add default language which is preloaded from the source code.
-i18next.addResourceBundle(
-    DEFAULT_LANGUAGE,
-    'countries',
-    COUNTRIES_RESOURCES,
-    /* deep */ true,
-    /* overwrite */ true);
-i18next.addResourceBundle(
-    DEFAULT_LANGUAGE,
-    'languages',
-    LANGUAGES_RESOURCES,
-    /* deep */ true,
-    /* overwrite */ true);
-i18next.addResourceBundle(
-    DEFAULT_LANGUAGE,
-    'main',
-    MAIN_RESOURCES,
-    /* deep */ true,
-    /* overwrite */ true);
+i18next.addResourceBundle(DEFAULT_LANGUAGE, 'countries', COUNTRIES_RESOURCES, /* deep */ true, /* overwrite */ true);
+i18next.addResourceBundle(DEFAULT_LANGUAGE, 'languages', LANGUAGES_RESOURCES, /* deep */ true, /* overwrite */ true);
+i18next.addResourceBundle(DEFAULT_LANGUAGE, 'main', MAIN_RESOURCES, /* deep */ true, /* overwrite */ true);
 
 // Add builtin languages.
 // XXX: Note we are using require here, because we want the side-effects of the

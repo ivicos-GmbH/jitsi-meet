@@ -18,7 +18,6 @@ const BASE_STYLE = {
  * {@code TintedView}'s React {@code Component} prop types.
  */
 type Props = {
-
     /**
      * The children components of this component.
      */
@@ -46,20 +45,10 @@ export default class TintedView extends Component<Props> {
 
         // XXX Don't tint the children, tint the background only.
         return (
-            <View
-                pointerEvents = 'box-none'
-                style = { BASE_STYLE }>
-                <View
-                    pointerEvents = 'none'
-                    style = { [
-                        BASE_STYLE,
-                        TINTED_VIEW_DEFAULT,
-                        style
-                    ] } />
-                <View
-                    pointerEvents = 'box-none'
-                    style = { BASE_STYLE }>
-                    { children }
+            <View pointerEvents="box-none" style={BASE_STYLE}>
+                <View pointerEvents="none" style={[BASE_STYLE, TINTED_VIEW_DEFAULT, style]} />
+                <View pointerEvents="box-none" style={BASE_STYLE}>
+                    {children}
                 </View>
             </View>
         );

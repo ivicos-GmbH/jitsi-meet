@@ -30,14 +30,12 @@ class Recorder {
         // which are to be followed so don't forget to removeCommand before
         // sendCommand!
         commands.removeCommand(_USER_INFO_COMMAND);
-        commands.sendCommand(
-            _USER_INFO_COMMAND,
-            {
-                attributes: {
-                    xmlns: 'http://jitsi.org/jitmeet/userinfo',
-                    robot: true
-                }
-            });
+        commands.sendCommand(_USER_INFO_COMMAND, {
+            attributes: {
+                xmlns: 'http://jitsi.org/jitmeet/userinfo',
+                robot: true
+            }
+        });
     }
 }
 

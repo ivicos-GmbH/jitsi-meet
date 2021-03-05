@@ -5,7 +5,7 @@ import { ExpandedLabel, type Props as AbstractProps } from '../../base/label';
 
 type Props = AbstractProps & {
     t: Function
-}
+};
 
 /**
  * A react {@code Component} that implements an expanded label as tooltip-like

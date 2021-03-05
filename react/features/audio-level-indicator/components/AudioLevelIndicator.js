@@ -18,7 +18,6 @@ const CENTER_DOT_INDEX = Math.floor(AUDIO_LEVEL_DOTS / 2);
  * The type of the React {@code Component} props of {@link AudioLevelIndicator}.
  */
 type Props = {
-
     /**
      * The current audio level to display. The value should be a number between
      * 0 and 1.
@@ -42,8 +41,7 @@ class AudioLevelIndicator extends Component<Props> {
         const { audioLevel: passedAudioLevel } = this.props;
 
         // First make sure we are sensitive enough.
-        const audioLevel = typeof passedAudioLevel === 'number' && !isNaN(passedAudioLevel)
-            ? Math.min(passedAudioLevel * 1.2, 1) : 0;
+        const audioLevel = typeof passedAudioLevel === 'number' && !isNaN(passedAudioLevel) ? Math.min(passedAudioLevel * 1.2, 1) : 0;
 
         // Let's now stretch the audio level over the number of dots we have.
         const stretchedAudioLevel = AUDIO_LEVEL_DOTS * audioLevel;
@@ -52,10 +50,8 @@ class AudioLevelIndicator extends Component<Props> {
 
         for (let i = 0; i < AUDIO_LEVEL_DOTS; i++) {
             const distanceFromCenter = CENTER_DOT_INDEX - i;
-            const audioLevelFromCenter
-                = stretchedAudioLevel - Math.abs(distanceFromCenter);
-            const cappedOpacity = Math.min(
-                1, Math.max(0, audioLevelFromCenter));
+            const audioLevelFromCenter = stretchedAudioLevel - Math.abs(distanceFromCenter);
+            const cappedOpacity = Math.min(1, Math.max(0, audioLevelFromCenter));
             let className;
 
             if (distanceFromCenter === 0) {
@@ -66,19 +62,10 @@ class AudioLevelIndicator extends Component<Props> {
                 className = 'audiodot-bottom';
             }
 
-            audioLevelDots.push(
-                <span
-                    className = { className }
-                    key = { i }
-                    style = {{ opacity: cappedOpacity }} />
-            );
+            audioLevelDots.push(<span className={className} key={i} style={{ opacity: cappedOpacity }} />);
         }
 
-        return (
-            <span className = 'audioindicator in-react'>
-                { audioLevelDots }
-            </span>
-        );
+        return <span className="audioindicator in-react">{audioLevelDots}</span>;
     }
 }
 

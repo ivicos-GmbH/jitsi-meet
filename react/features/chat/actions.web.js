@@ -19,7 +19,7 @@ export * from './actions.any';
  * }}
  */
 export function openChat(participant: Object) {
-    return function(dispatch: (Object) => Object) {
+    return function (dispatch: (Object) => Object) {
         dispatch({
             participant,
             type: OPEN_CHAT

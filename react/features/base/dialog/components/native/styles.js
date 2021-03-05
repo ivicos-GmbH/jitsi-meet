@@ -52,7 +52,6 @@ export const bottomSheetStyles = {
 };
 
 export const brandedDialog = {
-
     /**
      * The style of bold {@code Text} rendered by the {@code Dialog}s of the
      * feature authentication.
@@ -153,7 +152,7 @@ ColorSchemeRegistry.register('BottomSheet', {
             flexShrink: 1,
             fontSize: MD_FONT_SIZE,
             marginLeft: 32,
-            opacity: 0.90
+            opacity: 0.9
         },
 
         /**

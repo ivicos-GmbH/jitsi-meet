@@ -3,24 +3,17 @@
 import { openDialog } from '../../../base/dialog';
 import { IconLiveStreaming } from '../../../base/icons';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
-import {
-    getLocalParticipant,
-    isLocalParticipantModerator
-} from '../../../base/participants';
+import { getLocalParticipant, isLocalParticipantModerator } from '../../../base/participants';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { getActiveSession } from '../../functions';
 
-import {
-    StartLiveStreamDialog,
-    StopLiveStreamDialog
-} from './_';
+import { StartLiveStreamDialog, StopLiveStreamDialog } from './_';
 
 /**
  * The type of the React {@code Component} props of
  * {@link AbstractLiveStreamButton}.
  */
 export type Props = AbstractButtonProps & {
-
     /**
      * True if there is a running active live stream, false otherwise.
      */
@@ -76,9 +69,7 @@ export default class AbstractLiveStreamButton<P: Props> extends AbstractButton<P
     _handleClick() {
         const { _isLiveStreamRunning, dispatch } = this.props;
 
-        dispatch(openDialog(
-            _isLiveStreamRunning ? StopLiveStreamDialog : StartLiveStreamDialog
-        ));
+        dispatch(openDialog(_isLiveStreamRunning ? StopLiveStreamDialog : StartLiveStreamDialog));
     }
 
     /**
@@ -129,10 +120,7 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
         // above all, but if not, the button should be autonomus and decide on
         // its own to be visible or not.
         const isModerator = isLocalParticipantModerator(state);
-        const {
-            enableFeaturesBasedOnToken,
-            liveStreamingEnabled
-        } = state['features/base/config'];
+        const { enableFeaturesBasedOnToken, liveStreamingEnabled } = state['features/base/config'];
         const { features = {} } = getLocalParticipant(state);
 
         visible = isModerator && liveStreamingEnabled;
@@ -157,8 +145,7 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
 
     return {
         _disabled,
-        _isLiveStreamRunning: Boolean(
-            getActiveSession(state, JitsiRecordingConstants.mode.STREAM)),
+        _isLiveStreamRunning: Boolean(getActiveSession(state, JitsiRecordingConstants.mode.STREAM)),
         _tooltip,
         visible
     };

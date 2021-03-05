@@ -10,7 +10,6 @@ import { muteRemote } from '../actions';
  * {@link AbstractMuteRemoteParticipantsVideoDialog}.
  */
 export type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -32,8 +31,7 @@ export type Props = {
  *
  * @extends Component
  */
-export default class AbstractMuteRemoteParticipantsVideoDialog<P:Props = Props>
-    extends Component<P> {
+export default class AbstractMuteRemoteParticipantsVideoDialog<P: Props = Props> extends Component<P> {
     /**
      * Initializes a new {@code AbstractMuteRemoteParticipantsVideoDialog} instance.
      *

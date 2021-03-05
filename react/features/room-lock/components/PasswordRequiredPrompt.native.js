@@ -12,7 +12,6 @@ import { _cancelPasswordRequiredPrompt } from '../actions';
  * {@code PasswordRequiredPrompt}'s React {@code Component} prop types.
  */
 type Props = {
-
     /**
      * The previously entered password, if any.
      */
@@ -32,12 +31,11 @@ type Props = {
 };
 
 type State = {
-
     /**
      * The previously entered password, if any.
      */
     password: ?string
-}
+};
 
 /**
  * Implements a React {@code Component} which prompts the user when a password
@@ -92,14 +90,15 @@ class PasswordRequiredPrompt extends Component<Props, State> {
 
         return (
             <InputDialog
-                contentKey = 'dialog.passwordLabel'
-                initialValue = { password }
-                messageKey = { password ? 'dialog.incorrectRoomLockPassword' : undefined }
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                textInputProps = {{
+                contentKey="dialog.passwordLabel"
+                initialValue={password}
+                messageKey={password ? 'dialog.incorrectRoomLockPassword' : undefined}
+                onCancel={this._onCancel}
+                onSubmit={this._onSubmit}
+                textInputProps={{
                     secureTextEntry: true
-                }} />
+                }}
+            />
         );
     }
 
@@ -113,8 +112,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
      * otherwise, {@code false}.
      */
     _onCancel() {
-        this.props.dispatch(
-            _cancelPasswordRequiredPrompt(this.props.conference));
+        this.props.dispatch(_cancelPasswordRequiredPrompt(this.props.conference));
 
         return true;
     }

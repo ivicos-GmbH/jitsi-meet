@@ -41,7 +41,6 @@ export function setMaxReceiverVideoQuality(maxReceiverVideoQuality: number) {
     };
 }
 
-
 /**
  * Sets the maximum video size the local participant should send and receive from
  * remote participants.

@@ -2,10 +2,7 @@
 
 import { translate } from '../../../../base/i18n';
 import { connect } from '../../../../base/redux';
-import AbstractLiveStreamButton, {
-    _mapStateToProps as _abstractMapStateToProps,
-    type Props
-} from '../AbstractLiveStreamButton';
+import AbstractLiveStreamButton, { _mapStateToProps as _abstractMapStateToProps, type Props } from '../AbstractLiveStreamButton';
 
 declare var interfaceConfig: Object;
 

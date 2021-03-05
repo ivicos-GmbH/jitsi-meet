@@ -2,24 +2,18 @@
 
 import React, { Component } from 'react';
 
-import {
-    createCalendarClickedEvent,
-    createCalendarSelectedEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createCalendarClickedEvent, createCalendarSelectedEvent, sendAnalytics } from '../../analytics';
 import { appNavigate } from '../../app/actions';
 import { getLocalizedDateFormatter, translate } from '../../base/i18n';
 import { NavigateSectionList } from '../../base/react';
 import { connect } from '../../base/redux';
 import { refreshCalendar, openUpdateCalendarEventDialog } from '../actions';
 
-
 /**
  * The type of the React {@code Component} props of
  * {@link CalendarListContent}.
  */
 type Props = {
-
     /**
      * The calendar event list.
      */
@@ -96,13 +90,13 @@ class CalendarListContent extends Component<Props> {
 
         return (
             <NavigateSectionList
-                disabled = { disabled }
-                onPress = { this._onPress }
-                onRefresh = { this._onRefresh }
-                onSecondaryAction = { this._onSecondaryAction }
-                renderListEmptyComponent
-                    = { listEmptyComponent }
-                sections = { this._toDisplayableList() } />
+                disabled={disabled}
+                onPress={this._onPress}
+                onRefresh={this._onRefresh}
+                onSecondaryAction={this._onSecondaryAction}
+                renderListEmptyComponent={listEmptyComponent}
+                sections={this._toDisplayableList()}
+            />
         );
     }
 
@@ -135,7 +129,7 @@ class CalendarListContent extends Component<Props> {
         this.props.dispatch(refreshCalendar(true));
     }
 
-    _onSecondaryAction: string => void;
+    _onSecondaryAction: (string) => void;
 
     /**
      * Handles the list's secondary action.
@@ -149,7 +143,7 @@ class CalendarListContent extends Component<Props> {
         this.props.dispatch(openUpdateCalendarEventDialog(id, ''));
     }
 
-    _toDateString: Object => string;
+    _toDateString: (Object) => string;
 
     /**
      * Generates a date string for a given event.
@@ -159,13 +153,12 @@ class CalendarListContent extends Component<Props> {
      * @returns {string}
      */
     _toDateString(event) {
-        const startDateTime
-            = getLocalizedDateFormatter(event.startDate).format('MMM Do, YYYY');
+        const startDateTime = getLocalizedDateFormatter(event.startDate).format('MMM Do, YYYY');
 
         return `${startDateTime}`;
     }
 
-    _toDisplayableItem: Object => Object;
+    _toDisplayableItem: (Object) => Object;
 
     /**
      * Creates a displayable object from an event.
@@ -178,10 +171,7 @@ class CalendarListContent extends Component<Props> {
         return {
             id: event.id,
             key: `${event.id}-${event.startDate}`,
-            lines: [
-                event.url,
-                this._toTimeString(event)
-            ],
+            lines: [event.url, this._toTimeString(event)],
             title: event.title,
             url: event.url
         };
@@ -212,8 +202,7 @@ class CalendarListContent extends Component<Props> {
                 let todaySection = sectionMap.get(TODAY_SECTION);
 
                 if (!todaySection) {
-                    todaySection
-                        = createSection(t('calendarSync.today'), TODAY_SECTION);
+                    todaySection = createSection(t('calendarSync.today'), TODAY_SECTION);
                     sectionMap.set(TODAY_SECTION, todaySection);
                 }
 
@@ -225,8 +214,7 @@ class CalendarListContent extends Component<Props> {
                     section.data.push(displayableEvent);
                 }
             } else {
-                const newSection
-                    = createSection(this._toDateString(event), startDate);
+                const newSection = createSection(this._toDateString(event), startDate);
 
                 sectionMap.set(startDate, newSection);
                 newSection.data.push(displayableEvent);
@@ -236,7 +224,7 @@ class CalendarListContent extends Component<Props> {
         return Array.from(sectionMap.values());
     }
 
-    _toTimeString: Object => string;
+    _toTimeString: (Object) => string;
 
     /**
      * Generates a time (interval) string for a given event.
@@ -246,10 +234,8 @@ class CalendarListContent extends Component<Props> {
      * @returns {string}
      */
     _toTimeString(event) {
-        const startDateTime
-            = getLocalizedDateFormatter(event.startDate).format('lll');
-        const endTime
-            = getLocalizedDateFormatter(event.endDate).format('LT');
+        const startDateTime = getLocalizedDateFormatter(event.startDate).format('lll');
+        const endTime = getLocalizedDateFormatter(event.endDate).format('LT');
 
         return `${startDateTime} - ${endTime}`;
     }

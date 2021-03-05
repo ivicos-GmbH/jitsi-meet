@@ -12,7 +12,6 @@ import Video from './Video';
  * The type of the React {@code Component} props of {@link VideoTrack}.
  */
 type Props = AbstractVideoTrackProps & {
-
     /**
      * CSS classes to add to the video element.
      */
@@ -59,17 +58,17 @@ class VideoTrack extends AbstractVideoTrack<Props> {
     render() {
         return (
             <Video
-                autoPlay = { !this.props._noAutoPlayVideo }
-                className = { this.props.className }
-                id = { this.props.id }
-                onVideoPlaying = { this._onVideoPlaying }
-                videoTrack = { this.props.videoTrack } />
+                autoPlay={!this.props._noAutoPlayVideo}
+                className={this.props.className}
+                id={this.props.id}
+                onVideoPlaying={this._onVideoPlaying}
+                videoTrack={this.props.videoTrack}
+            />
         );
     }
 
     _onVideoPlaying: () => void;
 }
-
 
 /**
  * Maps (parts of) the Redux state to the associated VideoTracks props.

@@ -2,14 +2,7 @@
 
 import type { Dispatch } from 'redux';
 
-import {
-    getCalendarEntries,
-    googleApi,
-    loadGoogleAPI,
-    signIn,
-    updateCalendarEvent,
-    updateProfile
-} from '../../google-api';
+import { getCalendarEntries, googleApi, loadGoogleAPI, signIn, updateCalendarEvent, updateProfile } from '../../google-api';
 
 /**
  * A stateless collection of action creators that implements the expected

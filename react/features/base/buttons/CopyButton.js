@@ -6,9 +6,7 @@ import { Icon, IconCheck, IconCopy } from '../../base/icons';
 import { translate } from '../i18n';
 import { copyText } from '../util';
 
-
 type Props = {
-
     /**
      * Css class to apply on container
      */
@@ -41,8 +39,8 @@ type Props = {
  * @returns {React$Element<any>}
  */
 function CopyButton({ className, displayedText, textToCopy, textOnHover, textOnCopySuccess }: Props) {
-    const [ isClicked, setIsClicked ] = useState(false);
-    const [ isHovered, setIsHovered ] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     /**
      * Click handler for the element.
@@ -89,31 +87,23 @@ function CopyButton({ className, displayedText, textToCopy, textOnHover, textOnC
         if (isClicked) {
             return (
                 <>
-                    <div className = 'copy-button-content selected'>
-                        {textOnCopySuccess}
-                    </div>
-                    <Icon src = { IconCheck } />
+                    <div className="copy-button-content selected">{textOnCopySuccess}</div>
+                    <Icon src={IconCheck} />
                 </>
             );
         }
 
         return (
             <>
-                <div className = 'copy-button-content'>
-                    {isHovered ? textOnHover : displayedText}
-                </div>
-                <Icon src = { IconCopy } />
+                <div className="copy-button-content">{isHovered ? textOnHover : displayedText}</div>
+                <Icon src={IconCopy} />
             </>
         );
     }
 
     return (
-        <div
-            className = { `${className} copy-button${isClicked ? ' clicked' : ''}` }
-            onClick = { onClick }
-            onMouseOut = { onHoverOut }
-            onMouseOver = { onHoverIn }>
-            { renderContent() }
+        <div className={`${className} copy-button${isClicked ? ' clicked' : ''}`} onClick={onClick} onMouseOut={onHoverOut} onMouseOver={onHoverIn}>
+            {renderContent()}
         </div>
     );
 }

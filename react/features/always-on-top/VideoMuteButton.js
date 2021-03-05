@@ -11,7 +11,6 @@ const { api } = window.alwaysOnTop;
  * The type of the React {@code Component} state of {@link VideoMuteButton}.
  */
 type State = {
-
     /**
      * Whether video is available is not.
      */
@@ -26,9 +25,7 @@ type State = {
 /**
  * Stateless "mute/unmute video" button for the Always-on-Top windows.
  */
-export default class VideoMuteButton
-    extends AbstractVideoMuteButton<Props, State> {
-
+export default class VideoMuteButton extends AbstractVideoMuteButton<Props, State> {
     accessibilityLabel = 'Video mute';
 
     /**
@@ -46,8 +43,7 @@ export default class VideoMuteButton
         };
 
         // Bind event handlers so they are only bound once per instance.
-        this._videoAvailabilityListener
-            = this._videoAvailabilityListener.bind(this);
+        this._videoAvailabilityListener = this._videoAvailabilityListener.bind(this);
         this._videoMutedListener = this._videoMutedListener.bind(this);
     }
 
@@ -61,15 +57,13 @@ export default class VideoMuteButton
         api.on('videoAvailabilityChanged', this._videoAvailabilityListener);
         api.on('videoMuteStatusChanged', this._videoMutedListener);
 
-        Promise.all([
-            api.isVideoAvailable(),
-            api.isVideoMuted()
-        ])
-            .then(([ videoAvailable, videoMuted ]) =>
+        Promise.all([api.isVideoAvailable(), api.isVideoMuted()])
+            .then(([videoAvailable, videoMuted]) =>
                 this.setState({
                     videoAvailable,
                     videoMuted
-                }))
+                })
+            )
             .catch(console.error);
     }
 
@@ -80,12 +74,8 @@ export default class VideoMuteButton
      * @returns {void}
      */
     componentWillUnmount() {
-        api.removeListener(
-            'videoAvailabilityChanged',
-            this._videoAvailabilityListener);
-        api.removeListener(
-            'videoMuteStatusChanged',
-            this._videoMutedListener);
+        api.removeListener('videoAvailabilityChanged', this._videoAvailabilityListener);
+        api.removeListener('videoMuteStatusChanged', this._videoMutedListener);
     }
 
     /**
@@ -118,7 +108,8 @@ export default class VideoMuteButton
      * @protected
      * @returns {void}
      */
-    _setVideoMuted(videoMuted: boolean) { // eslint-disable-line no-unused-vars
+    _setVideoMuted(videoMuted: boolean) {
+        // eslint-disable-line no-unused-vars
         this.state.videoAvailable && api.executeCommand('toggleVideo');
     }
 

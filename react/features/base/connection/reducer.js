@@ -4,22 +4,14 @@ import { SET_ROOM } from '../conference';
 import { JitsiConnectionErrors } from '../lib-jitsi-meet';
 import { assign, set, ReducerRegistry } from '../redux';
 
-import {
-    CONNECTION_DISCONNECTED,
-    CONNECTION_ESTABLISHED,
-    CONNECTION_FAILED,
-    CONNECTION_WILL_CONNECT,
-    SET_LOCATION_URL
-} from './actionTypes';
+import { CONNECTION_DISCONNECTED, CONNECTION_ESTABLISHED, CONNECTION_FAILED, CONNECTION_WILL_CONNECT, SET_LOCATION_URL } from './actionTypes';
 import type { ConnectionFailedError } from './actions.native';
 
 /**
  * Reduces the Redux actions of the feature base/connection.
  */
-ReducerRegistry.register(
-    'features/base/connection',
-    (state: Object = {}, action: Object) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/connection', (state: Object = {}, action: Object) => {
+    switch (action.type) {
         case CONNECTION_DISCONNECTED:
             return _connectionDisconnected(state, action);
 
@@ -37,10 +29,10 @@ ReducerRegistry.register(
 
         case SET_ROOM:
             return _setRoom(state);
-        }
+    }
 
-        return state;
-    });
+    return state;
+});
 
 /**
  * Reduces a specific Redux action CONNECTION_DISCONNECTED of the feature
@@ -52,9 +44,7 @@ ReducerRegistry.register(
  * @returns {Object} The new state of the feature base/connection after the
  * reduction of the specified action.
  */
-function _connectionDisconnected(
-        state: Object,
-        { connection }: { connection: Object }) {
+function _connectionDisconnected(state: Object, { connection }: { connection: Object }) {
     const connection_ = _getCurrentConnection(state);
 
     if (connection_ !== connection) {
@@ -79,11 +69,15 @@ function _connectionDisconnected(
  * reduction of the specified action.
  */
 function _connectionEstablished(
-        state: Object,
-        { connection, timeEstablished }: {
-            connection: Object,
-            timeEstablished: number
-        }) {
+    state: Object,
+    {
+        connection,
+        timeEstablished
+    }: {
+        connection: Object,
+        timeEstablished: number
+    }
+) {
     return assign(state, {
         connecting: undefined,
         connection,
@@ -104,11 +98,15 @@ function _connectionEstablished(
  * reduction of the specified action.
  */
 function _connectionFailed(
-        state: Object,
-        { connection, error }: {
-            connection: Object,
-            error: ConnectionFailedError
-        }) {
+    state: Object,
+    {
+        connection,
+        error
+    }: {
+        connection: Object,
+        error: ConnectionFailedError
+    }
+) {
     const connection_ = _getCurrentConnection(state);
 
     if (connection_ && connection_ !== connection) {
@@ -119,9 +117,7 @@ function _connectionFailed(
         connecting: undefined,
         connection: undefined,
         error,
-        passwordRequired:
-            error.name === JitsiConnectionErrors.PASSWORD_REQUIRED
-                ? connection : undefined
+        passwordRequired: error.name === JitsiConnectionErrors.PASSWORD_REQUIRED ? connection : undefined
     });
 }
 
@@ -135,9 +131,7 @@ function _connectionFailed(
  * @returns {Object} The new state of the feature base/connection after the
  * reduction of the specified action.
  */
-function _connectionWillConnect(
-        state: Object,
-        { connection }: { connection: Object }) {
+function _connectionWillConnect(state: Object, { connection }: { connection: Object }) {
     return assign(state, {
         connecting: connection,
 
@@ -174,9 +168,7 @@ function _getCurrentConnection(baseConnectionState: Object): ?Object {
  * @returns {Object} The new state of the feature base/connection after the
  * reduction of the specified action.
  */
-function _setLocationURL(
-        state: Object,
-        { locationURL }: { locationURL: ?URL }) {
+function _setLocationURL(state: Object, { locationURL }: { locationURL: ?URL }) {
     return set(state, 'locationURL', locationURL);
 }
 

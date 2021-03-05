@@ -3,7 +3,6 @@
 import { PureComponent } from 'react';
 
 export type Props = {
-
     /**
      * Color of the (initials based) avatar, if needed.
      */
@@ -22,7 +21,7 @@ export type Props = {
     /**
      * Expected size of the avatar.
      */
-    size?: number;
+    size?: number,
 
     /**
      * The URL of the avatar to render.

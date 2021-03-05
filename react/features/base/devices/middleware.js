@@ -10,26 +10,9 @@ import JitsiMeetJS, { JitsiMediaDevicesEvents, JitsiTrackErrors } from '../lib-j
 import { MiddlewareRegistry } from '../redux';
 import { updateSettings } from '../settings';
 
-import {
-    CHECK_AND_NOTIFY_FOR_NEW_DEVICE,
-    NOTIFY_CAMERA_ERROR,
-    NOTIFY_MIC_ERROR,
-    SET_AUDIO_INPUT_DEVICE,
-    SET_VIDEO_INPUT_DEVICE,
-    UPDATE_DEVICE_LIST
-} from './actionTypes';
-import {
-    devicePermissionsChanged,
-    removePendingDeviceRequests,
-    setAudioInputDevice,
-    setVideoInputDevice
-} from './actions';
-import {
-    areDeviceLabelsInitialized,
-    formatDeviceLabel,
-    groupDevicesByKind,
-    setAudioOutputDeviceId
-} from './functions';
+import { CHECK_AND_NOTIFY_FOR_NEW_DEVICE, NOTIFY_CAMERA_ERROR, NOTIFY_MIC_ERROR, SET_AUDIO_INPUT_DEVICE, SET_VIDEO_INPUT_DEVICE, UPDATE_DEVICE_LIST } from './actionTypes';
+import { devicePermissionsChanged, removePendingDeviceRequests, setAudioInputDevice, setVideoInputDevice } from './actions';
+import { areDeviceLabelsInitialized, formatDeviceLabel, groupDevicesByKind, setAudioOutputDeviceId } from './functions';
 import logger from './logger';
 
 const JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP = {
@@ -50,7 +33,6 @@ const JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP = {
     }
 };
 
-
 /**
  * A listener for device permissions changed reported from lib-jitsi-meet.
  */
@@ -63,15 +45,12 @@ let permissionsListener;
  * @returns {string}
  */
 function logDeviceList(deviceList) {
-    const devicesToStr = list => list.map(device => `\t\t${device.label}[${device.deviceId}]`).join('\n');
+    const devicesToStr = (list) => list.map((device) => `\t\t${device.label}[${device.deviceId}]`).join('\n');
     const audioInputs = devicesToStr(deviceList.audioInput);
     const audioOutputs = devicesToStr(deviceList.audioOutput);
     const videoInputs = devicesToStr(deviceList.videoInput);
 
-    logger.debug('Device list updated:\n'
-        + `audioInput:\n${audioInputs}\n`
-        + `audioOutput:\n${audioOutputs}\n`
-        + `videoInput:\n${videoInputs}`);
+    logger.debug('Device list updated:\n' + `audioInput:\n${audioInputs}\n` + `audioOutput:\n${audioOutputs}\n` + `videoInput:\n${videoInputs}`);
 }
 
 /**
@@ -81,118 +60,109 @@ function logDeviceList(deviceList) {
  * @returns {Function}
  */
 // eslint-disable-next-line no-unused-vars
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT: {
-        const _permissionsListener = permissions => {
-            store.dispatch(devicePermissionsChanged(permissions));
-        };
-        const { mediaDevices } = JitsiMeetJS;
+        case APP_WILL_MOUNT: {
+            const _permissionsListener = (permissions) => {
+                store.dispatch(devicePermissionsChanged(permissions));
+            };
+            const { mediaDevices } = JitsiMeetJS;
 
-        permissionsListener = _permissionsListener;
-        mediaDevices.addEventListener(JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
-        Promise.all([
-            mediaDevices.isDevicePermissionGranted('audio'),
-            mediaDevices.isDevicePermissionGranted('video')
-        ])
-        .then(results => {
-            _permissionsListener({
-                audio: results[0],
-                video: results[1]
-            });
-        })
-        .catch(() => {
-            // Ignore errors.
-        });
-        break;
-    }
-    case APP_WILL_UNMOUNT:
-        if (typeof permissionsListener === 'function') {
-            JitsiMeetJS.mediaDevices.removeEventListener(
-                JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
-            permissionsListener = undefined;
-        }
-        break;
-    case NOTIFY_CAMERA_ERROR: {
-        if (typeof APP !== 'object' || !action.error) {
+            permissionsListener = _permissionsListener;
+            mediaDevices.addEventListener(JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
+            Promise.all([mediaDevices.isDevicePermissionGranted('audio'), mediaDevices.isDevicePermissionGranted('video')])
+                .then((results) => {
+                    _permissionsListener({
+                        audio: results[0],
+                        video: results[1]
+                    });
+                })
+                .catch(() => {
+                    // Ignore errors.
+                });
             break;
         }
+        case APP_WILL_UNMOUNT:
+            if (typeof permissionsListener === 'function') {
+                JitsiMeetJS.mediaDevices.removeEventListener(JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
+                permissionsListener = undefined;
+            }
+            break;
+        case NOTIFY_CAMERA_ERROR: {
+            if (typeof APP !== 'object' || !action.error) {
+                break;
+            }
 
-        const { message, name } = action.error;
+            const { message, name } = action.error;
 
-        const cameraJitsiTrackErrorMsg
-            = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
-        const cameraErrorMsg = cameraJitsiTrackErrorMsg
-            || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
-                .camera[JitsiTrackErrors.GENERAL];
-        const additionalCameraErrorMsg = cameraJitsiTrackErrorMsg ? null : message;
-        const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
-            ? 'deviceError.cameraPermission' : 'deviceError.cameraError';
+            const cameraJitsiTrackErrorMsg = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
+            const cameraErrorMsg = cameraJitsiTrackErrorMsg || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[JitsiTrackErrors.GENERAL];
+            const additionalCameraErrorMsg = cameraJitsiTrackErrorMsg ? null : message;
+            const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED ? 'deviceError.cameraPermission' : 'deviceError.cameraError';
 
-        store.dispatch(showWarningNotification({
-            description: additionalCameraErrorMsg,
-            descriptionKey: cameraErrorMsg,
-            titleKey
-        }));
+            store.dispatch(
+                showWarningNotification({
+                    description: additionalCameraErrorMsg,
+                    descriptionKey: cameraErrorMsg,
+                    titleKey
+                })
+            );
 
-        if (isPrejoinPageVisible(store.getState())) {
-            store.dispatch(setDeviceStatusWarning(titleKey));
-        }
+            if (isPrejoinPageVisible(store.getState())) {
+                store.dispatch(setDeviceStatusWarning(titleKey));
+            }
 
-        break;
-    }
-    case NOTIFY_MIC_ERROR: {
-        if (typeof APP !== 'object' || !action.error) {
             break;
         }
+        case NOTIFY_MIC_ERROR: {
+            if (typeof APP !== 'object' || !action.error) {
+                break;
+            }
 
-        const { message, name } = action.error;
+            const { message, name } = action.error;
 
-        const micJitsiTrackErrorMsg
-            = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[name];
-        const micErrorMsg = micJitsiTrackErrorMsg
-            || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
-                .microphone[JitsiTrackErrors.GENERAL];
-        const additionalMicErrorMsg = micJitsiTrackErrorMsg ? null : message;
-        const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
-            ? 'deviceError.microphonePermission'
-            : 'deviceError.microphoneError';
+            const micJitsiTrackErrorMsg = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[name];
+            const micErrorMsg = micJitsiTrackErrorMsg || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[JitsiTrackErrors.GENERAL];
+            const additionalMicErrorMsg = micJitsiTrackErrorMsg ? null : message;
+            const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED ? 'deviceError.microphonePermission' : 'deviceError.microphoneError';
 
-        store.dispatch(showWarningNotification({
-            description: additionalMicErrorMsg,
-            descriptionKey: micErrorMsg,
-            titleKey
-        }));
+            store.dispatch(
+                showWarningNotification({
+                    description: additionalMicErrorMsg,
+                    descriptionKey: micErrorMsg,
+                    titleKey
+                })
+            );
 
-        if (isPrejoinPageVisible(store.getState())) {
-            store.dispatch(setDeviceStatusWarning(titleKey));
+            if (isPrejoinPageVisible(store.getState())) {
+                store.dispatch(setDeviceStatusWarning(titleKey));
+            }
+
+            break;
         }
-
-        break;
-    }
-    case SET_AUDIO_INPUT_DEVICE:
-        if (isPrejoinPageVisible(store.getState())) {
-            store.dispatch(replaceAudioTrackById(action.deviceId));
-        } else {
-            APP.UI.emitEvent(UIEvents.AUDIO_DEVICE_CHANGED, action.deviceId);
-        }
-        break;
-    case SET_VIDEO_INPUT_DEVICE:
-        if (isPrejoinPageVisible(store.getState())) {
-            store.dispatch(replaceVideoTrackById(action.deviceId));
-        } else {
-            APP.UI.emitEvent(UIEvents.VIDEO_DEVICE_CHANGED, action.deviceId);
-        }
-        break;
-    case UPDATE_DEVICE_LIST:
-        logDeviceList(groupDevicesByKind(action.devices));
-        if (areDeviceLabelsInitialized(store.getState())) {
-            return _processPendingRequests(store, next, action);
-        }
-        break;
-    case CHECK_AND_NOTIFY_FOR_NEW_DEVICE:
-        _checkAndNotifyForNewDevice(store, action.newDevices, action.oldDevices);
-        break;
+        case SET_AUDIO_INPUT_DEVICE:
+            if (isPrejoinPageVisible(store.getState())) {
+                store.dispatch(replaceAudioTrackById(action.deviceId));
+            } else {
+                APP.UI.emitEvent(UIEvents.AUDIO_DEVICE_CHANGED, action.deviceId);
+            }
+            break;
+        case SET_VIDEO_INPUT_DEVICE:
+            if (isPrejoinPageVisible(store.getState())) {
+                store.dispatch(replaceVideoTrackById(action.deviceId));
+            } else {
+                APP.UI.emitEvent(UIEvents.VIDEO_DEVICE_CHANGED, action.deviceId);
+            }
+            break;
+        case UPDATE_DEVICE_LIST:
+            logDeviceList(groupDevicesByKind(action.devices));
+            if (areDeviceLabelsInitialized(store.getState())) {
+                return _processPendingRequests(store, next, action);
+            }
+            break;
+        case CHECK_AND_NOTIFY_FOR_NEW_DEVICE:
+            _checkAndNotifyForNewDevice(store, action.newDevices, action.oldDevices);
+            break;
     }
 
     return next(action);
@@ -220,12 +190,8 @@ function _processPendingRequests({ dispatch, getState }, next, action) {
         return result;
     }
 
-    pendingRequests.forEach(request => {
-        processExternalDeviceRequest(
-            dispatch,
-            getState,
-            request,
-            request.responseCallback);
+    pendingRequests.forEach((request) => {
+        processExternalDeviceRequest(dispatch, getState, request, request.responseCallback);
     });
     dispatch(removePendingDeviceRequests());
 
@@ -250,9 +216,7 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
 
     // let's intersect both newDevices and oldDevices and handle thew newly
     // added devices
-    const onlyNewDevices = newDevices.filter(
-        nDevice => !oldDevices.find(
-            device => device.deviceId === nDevice.deviceId));
+    const onlyNewDevices = newDevices.filter((nDevice) => !oldDevices.find((device) => device.deviceId === nDevice.deviceId));
 
     // we group devices by groupID which normally is the grouping by physical device
     // plugging in headset we provide normally two device, one input and one output
@@ -264,8 +228,7 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
         return accumulated;
     }, {});
 
-    Object.values(devicesGroupBy).forEach(devicesArray => {
-
+    Object.values(devicesGroupBy).forEach((devicesArray) => {
         if (devicesArray.length < 1) {
             return;
         }
@@ -281,23 +244,25 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
         let titleKey;
 
         switch (newDevice.kind) {
-        case 'videoinput': {
-            titleKey = 'notify.newDeviceCameraTitle';
-            break;
-        }
-        case 'audioinput' :
-        case 'audiooutput': {
-            titleKey = 'notify.newDeviceAudioTitle';
-            break;
-        }
+            case 'videoinput': {
+                titleKey = 'notify.newDeviceCameraTitle';
+                break;
+            }
+            case 'audioinput':
+            case 'audiooutput': {
+                titleKey = 'notify.newDeviceAudioTitle';
+                break;
+            }
         }
 
-        dispatch(showNotification({
-            description,
-            titleKey,
-            customActionNameKey: 'notify.newDeviceAction',
-            customActionHandler: _useDevice.bind(undefined, store, devicesArray)
-        }));
+        dispatch(
+            showNotification({
+                description,
+                titleKey,
+                customActionNameKey: 'notify.newDeviceAction',
+                customActionHandler: _useDevice.bind(undefined, store, devicesArray)
+            })
+        );
     });
 }
 
@@ -311,42 +276,38 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
  * @private
  */
 function _useDevice({ dispatch }, devices) {
-    devices.forEach(device => {
+    devices.forEach((device) => {
         switch (device.kind) {
-        case 'videoinput': {
-            dispatch(updateSettings({
-                userSelectedCameraDeviceId: device.deviceId,
-                userSelectedCameraDeviceLabel: device.label
-            }));
+            case 'videoinput': {
+                dispatch(
+                    updateSettings({
+                        userSelectedCameraDeviceId: device.deviceId,
+                        userSelectedCameraDeviceLabel: device.label
+                    })
+                );
 
-            dispatch(setVideoInputDevice(device.deviceId));
-            break;
-        }
-        case 'audioinput': {
-            dispatch(updateSettings({
-                userSelectedMicDeviceId: device.deviceId,
-                userSelectedMicDeviceLabel: device.label
-            }));
+                dispatch(setVideoInputDevice(device.deviceId));
+                break;
+            }
+            case 'audioinput': {
+                dispatch(
+                    updateSettings({
+                        userSelectedMicDeviceId: device.deviceId,
+                        userSelectedMicDeviceLabel: device.label
+                    })
+                );
 
-            dispatch(setAudioInputDevice(device.deviceId));
-            break;
-        }
-        case 'audiooutput': {
-            setAudioOutputDeviceId(
-                device.deviceId,
-                dispatch,
-                true,
-                device.label)
-                .then(() => logger.log('changed audio output device'))
-                .catch(err => {
-                    logger.warn(
-                        'Failed to change audio output device.',
-                        'Default or previously set audio output device will',
-                        ' be used instead.',
-                        err);
-                });
-            break;
-        }
+                dispatch(setAudioInputDevice(device.deviceId));
+                break;
+            }
+            case 'audiooutput': {
+                setAudioOutputDeviceId(device.deviceId, dispatch, true, device.label)
+                    .then(() => logger.log('changed audio output device'))
+                    .catch((err) => {
+                        logger.warn('Failed to change audio output device.', 'Default or previously set audio output device will', ' be used instead.', err);
+                    });
+                break;
+            }
         }
     });
 

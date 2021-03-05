@@ -12,7 +12,6 @@ import StatelessDialog from './StatelessDialog';
  * The type of the React {@code Component} props of {@link Dialog}.
  */
 type Props = AbstractDialogProps & {
-
     /**
      * True if listening for the Enter key should be disabled.
      */
@@ -73,7 +72,7 @@ class Dialog extends AbstractDialog<Props, State> {
         // $FlowExpectedError
         delete props.dispatch;
 
-        return <StatelessDialog { ...props } />;
+        return <StatelessDialog {...props} />;
     }
 
     _onCancel: () => void;

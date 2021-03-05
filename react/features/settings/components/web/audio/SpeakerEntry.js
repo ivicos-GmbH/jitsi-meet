@@ -13,7 +13,6 @@ const TEST_SOUND_PATH = 'sounds/ring.wav';
  * The type of the React {@code Component} props of {@link SpeakerEntry}.
  */
 type Props = {
-
     /**
      * The text label for the entry.
      */
@@ -32,7 +31,7 @@ type Props = {
     /**
      * Click handler for the component.
      */
-    onClick: Function,
+    onClick: Function
 };
 
 /**
@@ -72,7 +71,7 @@ export default class SpeakerEntry extends Component<Props> {
         this.props.onClick(this.props.deviceId);
     }
 
-    _onTestButtonClick: Object => void;
+    _onTestButtonClick: (Object) => void;
 
     /**
      * Click handler for Test button.
@@ -101,19 +100,12 @@ export default class SpeakerEntry extends Component<Props> {
         const { children, isSelected, deviceId } = this.props;
 
         return (
-            <div
-                className = 'audio-preview-speaker'
-                onClick = { this._onClick }>
-                <AudioSettingsEntry
-                    isSelected = { isSelected }
-                    key = { deviceId }>
+            <div className="audio-preview-speaker" onClick={this._onClick}>
+                <AudioSettingsEntry isSelected={isSelected} key={deviceId}>
                     {children}
                 </AudioSettingsEntry>
-                <TestButton onClick = { this._onTestButtonClick } />
-                <audio
-                    preload = 'auto'
-                    ref = { this.audioRef }
-                    src = { TEST_SOUND_PATH } />
+                <TestButton onClick={this._onTestButtonClick} />
+                <audio preload="auto" ref={this.audioRef} src={TEST_SOUND_PATH} />
             </div>
         );
     }

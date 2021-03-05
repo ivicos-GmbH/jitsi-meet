@@ -17,7 +17,6 @@ declare var __DEV__;
  * The type of the React {@code Component} props of {@link Root}.
  */
 type Props = {
-
     /**
      * The URL, if any, with which the app was launched.
      */
@@ -39,10 +38,7 @@ class Root extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <App
-                { ...this.props } />
-        );
+        return <App {...this.props} />;
     }
 }
 
@@ -67,7 +63,6 @@ if (!__DEV__) {
 
     /* eslint-enable */
 }
-
 
 // Register the main/root Component of JitsiMeetView.
 AppRegistry.registerComponent('App', () => Root);

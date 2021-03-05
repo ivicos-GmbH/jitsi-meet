@@ -7,7 +7,6 @@ import { Component } from 'react';
  * {@link AbstractUserMediaPermissionsOverlay}.
  */
 type Props = {
-
     /**
      * The browser which is used currently. The text is different for every
      * browser.
@@ -24,8 +23,7 @@ type Props = {
  * Implements a React {@link Component} for overlay with guidance how to proceed
  * with gUM prompt.
  */
-export default class AbstractUserMediaPermissionsOverlay
-    extends Component<Props> {
+export default class AbstractUserMediaPermissionsOverlay extends Component<Props> {
     /**
      * Determines whether this overlay needs to be rendered (according to a
      * specific redux state). Called by {@link OverlayContainer}.

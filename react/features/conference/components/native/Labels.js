@@ -6,16 +6,11 @@ import { TouchableOpacity, View } from 'react-native';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { connect } from '../../../base/redux';
 import { ASPECT_RATIO_WIDE } from '../../../base/responsive-ui/constants';
-import {
-    RecordingExpandedLabel
-} from '../../../recording';
+import { RecordingExpandedLabel } from '../../../recording';
 import { TranscribingExpandedLabel } from '../../../transcribing';
 import { VideoQualityExpandedLabel } from '../../../video-quality';
 import { shouldDisplayNotifications } from '../../functions';
-import AbstractLabels, {
-    _abstractMapStateToProps,
-    type Props as AbstractLabelsProps
-} from '../AbstractLabels';
+import AbstractLabels, { _abstractMapStateToProps, type Props as AbstractLabelsProps } from '../AbstractLabels';
 
 import InsecureRoomNameExpandedLabel from './InsecureRoomNameExpandedLabel';
 import styles from './styles';
@@ -24,7 +19,6 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@link Labels}.
  */
 type Props = AbstractLabelsProps & {
-
     /**
      * Application's aspect ratio.
      */
@@ -42,7 +36,6 @@ type Props = AbstractLabelsProps & {
 };
 
 type State = {
-
     /**
      * Layout object of the outermost container. For stucture please see:
      * https://facebook.github.io/react-native/docs/view#onlayout
@@ -74,7 +67,7 @@ type State = {
      * label IDs below.)
      */
     visibleExpandedLabel: ?string
-}
+};
 
 const LABEL_ID_QUALITY = 'quality';
 const LABEL_ID_RECORDING = 'recording';
@@ -160,73 +153,25 @@ class Labels extends AbstractLabels<Props, State> {
         const wide = _aspectRatio === ASPECT_RATIO_WIDE;
 
         return (
-            <View
-                pointerEvents = 'box-none'
-                style = { styles.labelWrapper }>
-                <View
-                    onLayout = { this._onTopViewLayout }
-                    pointerEvents = 'box-none'
-                    style = { [
-                        styles.indicatorContainer,
-                        wide && _filmstripVisible
-                            && styles.indicatorContainerWide
-                    ] }>
-                    <TouchableOpacity
-                        onLayout = { this._createOnLayout(LABEL_ID_RECORDING) }
-                        onPress = { this._createOnPress(LABEL_ID_RECORDING) } >
-                        {
-                            this._renderRecordingLabel(
-                                JitsiRecordingConstants.mode.FILE)
-                        }
+            <View pointerEvents="box-none" style={styles.labelWrapper}>
+                <View onLayout={this._onTopViewLayout} pointerEvents="box-none" style={[styles.indicatorContainer, wide && _filmstripVisible && styles.indicatorContainerWide]}>
+                    <TouchableOpacity onLayout={this._createOnLayout(LABEL_ID_RECORDING)} onPress={this._createOnPress(LABEL_ID_RECORDING)}>
+                        {this._renderRecordingLabel(JitsiRecordingConstants.mode.FILE)}
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onLayout = { this._createOnLayout(LABEL_ID_STREAMING) }
-                        onPress = { this._createOnPress(LABEL_ID_STREAMING) } >
-                        {
-                            this._renderRecordingLabel(
-                                JitsiRecordingConstants.mode.STREAM)
-                        }
+                    <TouchableOpacity onLayout={this._createOnLayout(LABEL_ID_STREAMING)} onPress={this._createOnPress(LABEL_ID_STREAMING)}>
+                        {this._renderRecordingLabel(JitsiRecordingConstants.mode.STREAM)}
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onLayout = {
-                            this._createOnLayout(LABEL_ID_TRANSCRIBING)
-                        }
-                        onPress = {
-                            this._createOnPress(LABEL_ID_TRANSCRIBING)
-                        } >
-                        {
-                            this._renderTranscribingLabel()
-                        }
+                    <TouchableOpacity onLayout={this._createOnLayout(LABEL_ID_TRANSCRIBING)} onPress={this._createOnPress(LABEL_ID_TRANSCRIBING)}>
+                        {this._renderTranscribingLabel()}
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onLayout = {
-                            this._createOnLayout(LABEL_ID_INSECURE_ROOM_NAME)
-                        }
-                        onPress = {
-                            this._createOnPress(LABEL_ID_INSECURE_ROOM_NAME)
-                        } >
-                        {
-                            this._renderInsecureRoomNameLabel()
-                        }
+                    <TouchableOpacity onLayout={this._createOnLayout(LABEL_ID_INSECURE_ROOM_NAME)} onPress={this._createOnPress(LABEL_ID_INSECURE_ROOM_NAME)}>
+                        {this._renderInsecureRoomNameLabel()}
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onLayout = {
-                            this._createOnLayout(LABEL_ID_QUALITY) }
-                        onPress = {
-                            this._createOnPress(LABEL_ID_QUALITY) } >
-                        { this._renderVideoQualityLabel() }
+                    <TouchableOpacity onLayout={this._createOnLayout(LABEL_ID_QUALITY)} onPress={this._createOnPress(LABEL_ID_QUALITY)}>
+                        {this._renderVideoQualityLabel()}
                     </TouchableOpacity>
                 </View>
-                <View
-                    style = { [
-                        styles.indicatorContainer,
-                        wide && _filmstripVisible
-                            && styles.indicatorContainerWide
-                    ] }>
-                    {
-                        this._renderExpandedLabel()
-                    }
-                </View>
+                <View style={[styles.indicatorContainer, wide && _filmstripVisible && styles.indicatorContainerWide]}>{this._renderExpandedLabel()}</View>
             </View>
         );
     }
@@ -265,10 +210,7 @@ class Labels extends AbstractLabels<Props, State> {
      */
     _createOnPress(label) {
         return () => {
-            const {
-                containerLayout,
-                labelLayouts
-            } = this.state;
+            const { containerLayout, labelLayouts } = this.state;
             let { visibleExpandedLabel } = this.state;
 
             if (containerLayout) {
@@ -278,8 +220,7 @@ class Labels extends AbstractLabels<Props, State> {
                 // positioned right anymore.
                 const right = containerLayout.width - labelLayout.x;
 
-                visibleExpandedLabel
-                    = visibleExpandedLabel === label ? undefined : label;
+                visibleExpandedLabel = visibleExpandedLabel === label ? undefined : label;
 
                 clearTimeout(this.expandedLabelTimeout);
                 this.setState({
@@ -298,7 +239,7 @@ class Labels extends AbstractLabels<Props, State> {
         };
     }
 
-    _onTopViewLayout: Object => void
+    _onTopViewLayout: (Object) => void;
 
     /**
      * Invoked when the View containing the {@code Label}s is laid out.
@@ -337,7 +278,7 @@ class Labels extends AbstractLabels<Props, State> {
         return null;
     }
 
-    _renderRecordingLabel: string => React$Element<any>;
+    _renderRecordingLabel: (string) => React$Element<any>;
 
     _renderTranscribingLabel: () => React$Element<any>;
 

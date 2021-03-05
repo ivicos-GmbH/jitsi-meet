@@ -5,14 +5,9 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { Icon, IconCheck, IconExclamation } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import {
-    getDeviceStatusType,
-    getDeviceStatusText,
-    getRawError
-} from '../../functions';
+import { getDeviceStatusType, getDeviceStatusText, getRawError } from '../../functions';
 
 export type Props = {
-
     /**
      * The text to be displayed in relation to the status of the audio/video devices.
      */
@@ -56,15 +51,10 @@ function DeviceStatus({ deviceStatusType, deviceStatusText, rawError, t }: Props
     const { src, className } = iconMap[deviceStatusType];
 
     return (
-        <div className = { `prejoin-preview-status ${className}` }>
-            <Icon
-                className = 'prejoin-preview-icon'
-                size = { 16 }
-                src = { src } />
-            <span className = 'prejoin-preview-error-desc'>{t(deviceStatusText)}</span>
-            { rawError && <span>
-                { rawError }
-            </span> }
+        <div className={`prejoin-preview-status ${className}`}>
+            <Icon className="prejoin-preview-icon" size={16} src={src} />
+            <span className="prejoin-preview-error-desc">{t(deviceStatusText)}</span>
+            {rawError && <span>{rawError}</span>}
         </div>
     );
 }

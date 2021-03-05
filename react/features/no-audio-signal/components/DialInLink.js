@@ -10,7 +10,6 @@ import { getDialInfoPageURL, shouldDisplayDialIn } from '../../invite';
  * The type of the React {@code Component} props of {@link DialInLink}.
  */
 type Props = {
-
     /**
      * The redux state representing the dial-in numbers feature.
      */
@@ -48,11 +47,9 @@ class DialInLink extends Component<Props> {
         }
 
         return (
-            <div>{t('toolbar.noAudioSignalDialInDesc')}&nbsp;
-                <a
-                    href = { _dialInfoPageUrl }
-                    rel = 'noopener noreferrer'
-                    target = '_blank'>
+            <div>
+                {t('toolbar.noAudioSignalDialInDesc')}&nbsp;
+                <a href={_dialInfoPageUrl} rel="noopener noreferrer" target="_blank">
                     {t('toolbar.noAudioSignalDialInLinkDesc')}
                 </a>
             </div>

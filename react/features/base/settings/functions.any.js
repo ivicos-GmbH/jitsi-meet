@@ -23,14 +23,11 @@ import { DEFAULT_SERVER_URL } from './constants';
  * configuration/preference/setting sources to consider/retrieve values from.
  * @returns {any}
  */
-export function getPropertyValue(
-        stateful: Object | Function,
-        propertyName: string,
-        sources?: Object
-) {
+export function getPropertyValue(stateful: Object | Function, propertyName: string, sources?: Object) {
     // Default values don't play nicely with partial objects and we want to make
     // the function easy to use without exhaustively defining all flags:
-    sources = { // eslint-disable-line no-param-reassign
+    sources = {
+        // eslint-disable-line no-param-reassign
         // Defaults:
         config: true,
         jwt: true,
@@ -56,8 +53,7 @@ export function getPropertyValue(
     // urlParams
     if (sources.urlParams) {
         if (CONFIG_WHITELIST.indexOf(propertyName) !== -1) {
-            const urlParams
-                = parseURLParams(state['features/base/connection'].locationURL);
+            const urlParams = parseURLParams(state['features/base/connection'].locationURL);
             const value = urlParams[`config.${propertyName}`];
 
             if (typeof value !== 'undefined') {
@@ -110,10 +106,7 @@ export function getServerURL(stateful: Object | Function) {
  */
 export function getUserSelectedCameraDeviceId(stateful: Object | Function) {
     const state = toState(stateful);
-    const {
-        userSelectedCameraDeviceId,
-        userSelectedCameraDeviceLabel
-    } = state['features/base/settings'];
+    const { userSelectedCameraDeviceId, userSelectedCameraDeviceLabel } = state['features/base/settings'];
     const { videoInput } = state['features/base/devices'].availableDevices;
 
     return _getUserSelectedDeviceId({
@@ -138,10 +131,7 @@ export function getUserSelectedCameraDeviceId(stateful: Object | Function) {
  */
 export function getUserSelectedMicDeviceId(stateful: Object | Function) {
     const state = toState(stateful);
-    const {
-        userSelectedMicDeviceId,
-        userSelectedMicDeviceLabel
-    } = state['features/base/settings'];
+    const { userSelectedMicDeviceId, userSelectedMicDeviceLabel } = state['features/base/settings'];
     const { audioInput } = state['features/base/devices'].availableDevices;
 
     return _getUserSelectedDeviceId({
@@ -166,10 +156,7 @@ export function getUserSelectedMicDeviceId(stateful: Object | Function) {
  */
 export function getUserSelectedOutputDeviceId(stateful: Object | Function) {
     const state = toState(stateful);
-    const {
-        userSelectedAudioOutputDeviceId,
-        userSelectedAudioOutputDeviceLabel
-    } = state['features/base/settings'];
+    const { userSelectedAudioOutputDeviceId, userSelectedAudioOutputDeviceLabel } = state['features/base/settings'];
     const { audioOutput } = state['features/base/devices'].availableDevices;
 
     return _getUserSelectedDeviceId({
@@ -204,13 +191,7 @@ export function getUserSelectedOutputDeviceId(stateful: Object | Function) {
  * @returns {string} The preferred device ID to use for media.
  */
 function _getUserSelectedDeviceId(options) {
-    const {
-        availableDevices,
-        matchRegex,
-        userSelectedDeviceId,
-        userSelectedDeviceLabel,
-        replacement
-    } = options;
+    const { availableDevices, matchRegex, userSelectedDeviceId, userSelectedDeviceLabel, replacement } = options;
 
     // If there is no label at all, there is no need to fall back to checking
     // the label for a fuzzy match.
@@ -218,18 +199,15 @@ function _getUserSelectedDeviceId(options) {
         return userSelectedDeviceId;
     }
 
-    const foundMatchingBasedonDeviceId = availableDevices.find(
-        candidate => candidate.deviceId === userSelectedDeviceId);
+    const foundMatchingBasedonDeviceId = availableDevices.find((candidate) => candidate.deviceId === userSelectedDeviceId);
 
     // Prioritize matching the deviceId
     if (foundMatchingBasedonDeviceId) {
         return userSelectedDeviceId;
     }
 
-    const strippedDeviceLabel
-        = matchRegex ? userSelectedDeviceLabel.replace(matchRegex, replacement)
-            : userSelectedDeviceLabel;
-    const foundMatchBasedOnLabel = availableDevices.find(candidate => {
+    const strippedDeviceLabel = matchRegex ? userSelectedDeviceLabel.replace(matchRegex, replacement) : userSelectedDeviceLabel;
+    const foundMatchBasedOnLabel = availableDevices.find((candidate) => {
         const { label } = candidate;
 
         if (!label) {
@@ -238,13 +216,10 @@ function _getUserSelectedDeviceId(options) {
             return true;
         }
 
-        const strippedCandidateLabel
-            = label.replace(matchRegex, replacement);
+        const strippedCandidateLabel = label.replace(matchRegex, replacement);
 
         return strippedDeviceLabel === strippedCandidateLabel;
     });
 
-    return foundMatchBasedOnLabel
-        ? foundMatchBasedOnLabel.deviceId : userSelectedDeviceId;
+    return foundMatchBasedOnLabel ? foundMatchBasedOnLabel.deviceId : userSelectedDeviceId;
 }
-

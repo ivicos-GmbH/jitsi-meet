@@ -19,13 +19,13 @@ import { _CONFIG_STORE_PREFIX } from './constants';
  * @private
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        return _appWillMount(store, next, action);
+        case APP_WILL_MOUNT:
+            return _appWillMount(store, next, action);
 
-    case SET_CONFIG:
-        return _setConfig(store, next, action);
+        case SET_CONFIG:
+            return _setConfig(store, next, action);
     }
 
     return next(action);
@@ -59,14 +59,13 @@ function _appWillMount(store, next, action) {
     const prefix = `${_CONFIG_STORE_PREFIX}/`;
     const knownDomains = [];
 
-    for (let i = 0; /* localStorage.key(i) */; ++i) {
+    for (let i = 0 /* localStorage.key(i) */; ; ++i) {
         const key = jitsiLocalStorage.key(i);
 
         if (key) {
             let baseURL;
 
-            if (key.startsWith(prefix)
-                    && (baseURL = key.substring(prefix.length))) {
+            if (key.startsWith(prefix) && (baseURL = key.substring(prefix.length))) {
                 const uri = parseURIString(baseURL);
                 let host;
 

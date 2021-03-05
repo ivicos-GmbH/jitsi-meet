@@ -10,7 +10,6 @@ import Text from './Text';
 import styles from './styles';
 
 type Props = {
-
     /**
      * item containing data to be rendered
      */
@@ -30,7 +29,7 @@ type Props = {
      * Function to be invoked when secondary action was performed on an Item.
      */
     secondaryAction: ?Function
-}
+};
 
 /**
  * Implements a React/Native {@link Component} that renders the Navigate Section
@@ -67,16 +66,13 @@ export default class NavigateSectionListItem extends Component<Props> {
         }
 
         return (
-            <Text
-                key = { index }
-                numberOfLines = { 1 }
-                style = { styles.listItemText }>
+            <Text key={index} numberOfLines={1} style={styles.listItemText}>
                 {line}
             </Text>
         );
     }
 
-    _renderItemLines: Array<string> => Array<React$Node>;
+    _renderItemLines: (Array<string>) => Array<React$Node>;
 
     /**
      * Renders the additional item lines, if any.
@@ -99,10 +95,8 @@ export default class NavigateSectionListItem extends Component<Props> {
         const { secondaryAction } = this.props;
 
         return (
-            <Container
-                onClick = { secondaryAction }
-                style = { styles.secondaryActionContainer }>
-                <Text style = { styles.secondaryActionLabel }>+</Text>
+            <Container onClick={secondaryAction} style={styles.secondaryActionContainer}>
+                <Text style={styles.secondaryActionLabel}>+</Text>
             </Container>
         );
     }
@@ -116,11 +110,8 @@ export default class NavigateSectionListItem extends Component<Props> {
         const { item, onLongPress, onPress, secondaryAction } = this.props;
 
         return (
-            <AvatarListItem
-                item = { item }
-                onLongPress = { onLongPress }
-                onPress = { onPress } >
-                { secondaryAction && this._renderSecondaryAction() }
+            <AvatarListItem item={item} onLongPress={onLongPress} onPress={onPress}>
+                {secondaryAction && this._renderSecondaryAction()}
             </AvatarListItem>
         );
     }

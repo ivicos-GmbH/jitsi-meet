@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
 type Props = {
-
     /**
      * React Elements to display within the component.
      */
@@ -33,11 +32,8 @@ export default class ButtonImpl extends Component<Props> {
      */
     render() {
         return (
-            <TouchableOpacity
-                onPress = { this.props.onValueChange } >
-                <Text style = { this.props.style }>
-                    { this.props.children }
-                </Text>
+            <TouchableOpacity onPress={this.props.onValueChange}>
+                <Text style={this.props.style}>{this.props.children}</Text>
             </TouchableOpacity>
         );
     }

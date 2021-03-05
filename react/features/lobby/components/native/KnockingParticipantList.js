@@ -6,10 +6,7 @@ import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { Avatar } from '../../../base/avatar';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-import AbstractKnockingParticipantList, {
-    mapStateToProps as abstractMapStateToProps,
-    type Props
-} from '../AbstractKnockingParticipantList';
+import AbstractKnockingParticipantList, { mapStateToProps as abstractMapStateToProps, type Props } from '../AbstractKnockingParticipantList';
 
 import styles from './styles';
 
@@ -30,48 +27,28 @@ class KnockingParticipantList extends AbstractKnockingParticipantList {
         }
 
         return (
-            <ScrollView
-                style = { styles.knockingParticipantList }>
-                { _participants.map(p => (
-                    <View
-                        key = { p.id }
-                        style = { styles.knockingParticipantListEntry }>
-                        <Avatar
-                            displayName = { p.name }
-                            size = { 48 }
-                            url = { p.loadableAvatarUrl } />
-                        <View style = { styles.knockingParticipantListDetails }>
-                            <Text style = { styles.knockingParticipantListText }>
-                                { p.name }
-                            </Text>
-                            { p.email && (
-                                <Text style = { styles.knockingParticipantListText }>
-                                    { p.email }
-                                </Text>
-                            ) }
+            <ScrollView style={styles.knockingParticipantList}>
+                {_participants.map((p) => (
+                    <View key={p.id} style={styles.knockingParticipantListEntry}>
+                        <Avatar displayName={p.name} size={48} url={p.loadableAvatarUrl} />
+                        <View style={styles.knockingParticipantListDetails}>
+                            <Text style={styles.knockingParticipantListText}>{p.name}</Text>
+                            {p.email && <Text style={styles.knockingParticipantListText}>{p.email}</Text>}
                         </View>
                         <TouchableOpacity
-                            onPress = { this._onRespondToParticipant(p.id, true) }
-                            style = { [
-                                styles.knockingParticipantListButton,
-                                styles.knockingParticipantListPrimaryButton
-                            ] }>
-                            <Text style = { styles.knockingParticipantListText }>
-                                { t('lobby.allow') }
-                            </Text>
+                            onPress={this._onRespondToParticipant(p.id, true)}
+                            style={[styles.knockingParticipantListButton, styles.knockingParticipantListPrimaryButton]}
+                        >
+                            <Text style={styles.knockingParticipantListText}>{t('lobby.allow')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress = { this._onRespondToParticipant(p.id, false) }
-                            style = { [
-                                styles.knockingParticipantListButton,
-                                styles.knockingParticipantListSecondaryButton
-                            ] }>
-                            <Text style = { styles.knockingParticipantListText }>
-                                { t('lobby.reject') }
-                            </Text>
+                            onPress={this._onRespondToParticipant(p.id, false)}
+                            style={[styles.knockingParticipantListButton, styles.knockingParticipantListSecondaryButton]}
+                        >
+                            <Text style={styles.knockingParticipantListText}>{t('lobby.reject')}</Text>
                         </TouchableOpacity>
                     </View>
-                )) }
+                ))}
             </ScrollView>
         );
     }

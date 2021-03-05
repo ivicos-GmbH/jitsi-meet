@@ -8,7 +8,7 @@ import { resume, pause } from './actions';
  * Listens for large video participant ID changes.
  */
 StateListenerRegistry.register(
-    /* selector */ state => {
+    /* selector */ (state) => {
         const { participantId } = state['features/large-video'];
         const { controller } = state['features/remote-control'];
         const { controlled } = controller;

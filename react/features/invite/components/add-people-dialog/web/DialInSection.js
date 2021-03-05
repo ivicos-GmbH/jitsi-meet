@@ -9,7 +9,6 @@ import { getDialInfoPageURL } from '../../../functions';
 import DialInNumber from './DialInNumber';
 
 type Props = {
-
     /**
      * The object representing the dialIn feature.
      */
@@ -30,7 +29,6 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-
 };
 
 /**
@@ -40,28 +38,16 @@ type Props = {
  * @private
  * @returns {null|ReactElement}
  */
-function DialInSection({
-    _dialIn,
-    _dialInfoPageUrl,
-    phoneNumber,
-    t
-}: Props) {
+function DialInSection({ _dialIn, _dialInfoPageUrl, phoneNumber, t }: Props) {
     return (
-        <div className = 'invite-more-dialog dial-in-display'>
-            <DialInNumber
-                conferenceID = { _dialIn.conferenceID }
-                phoneNumber = { phoneNumber } />
-            <a
-                className = 'more-numbers'
-                href = { _dialInfoPageUrl }
-                rel = 'noopener noreferrer'
-                target = '_blank'>
-                { t('info.moreNumbers') }
+        <div className="invite-more-dialog dial-in-display">
+            <DialInNumber conferenceID={_dialIn.conferenceID} phoneNumber={phoneNumber} />
+            <a className="more-numbers" href={_dialInfoPageUrl} rel="noopener noreferrer" target="_blank">
+                {t('info.moreNumbers')}
             </a>
         </div>
     );
 }
-
 
 /**
  * Maps (parts of) the Redux state to the associated props for the

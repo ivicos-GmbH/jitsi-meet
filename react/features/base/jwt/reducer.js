@@ -13,10 +13,8 @@ import { SET_JWT } from './actionTypes';
  * @returns {Object} The next redux state which is the result of reducing the
  * specified {@code action}.
  */
-ReducerRegistry.register(
-    'features/base/jwt',
-    (state = {}, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/jwt', (state = {}, action) => {
+    switch (action.type) {
         case SET_JWT: {
             // eslint-disable-next-line no-unused-vars
             const { type, ...payload } = action;
@@ -26,7 +24,7 @@ ReducerRegistry.register(
 
             return equals(state, nextState) ? state : nextState;
         }
-        }
+    }
 
-        return state;
-    });
+    return state;
+});

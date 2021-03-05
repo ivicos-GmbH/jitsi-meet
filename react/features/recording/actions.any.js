@@ -1,19 +1,9 @@
 // @flow
 
 import JitsiMeetJS, { JitsiRecordingConstants } from '../base/lib-jitsi-meet';
-import {
-    NOTIFICATION_TIMEOUT,
-    hideNotification,
-    showErrorNotification,
-    showNotification
-} from '../notifications';
+import { NOTIFICATION_TIMEOUT, hideNotification, showErrorNotification, showNotification } from '../notifications';
 
-import {
-    CLEAR_RECORDING_SESSIONS,
-    RECORDING_SESSION_UPDATED,
-    SET_PENDING_RECORDING_NOTIFICATION_UID,
-    SET_STREAM_KEY
-} from './actionTypes';
+import { CLEAR_RECORDING_SESSIONS, RECORDING_SESSION_UPDATED, SET_PENDING_RECORDING_NOTIFICATION_UID, SET_STREAM_KEY } from './actionTypes';
 
 /**
  * Clears the data of every recording sessions.
@@ -43,9 +33,7 @@ export function hidePendingRecordingNotification(streamType: string) {
 
         if (pendingNotificationUid) {
             dispatch(hideNotification(pendingNotificationUid));
-            dispatch(
-                _setPendingRecordingNotificationUid(
-                    undefined, streamType));
+            dispatch(_setPendingRecordingNotificationUid(undefined, streamType));
         }
     };
 }
@@ -76,19 +64,22 @@ export function setLiveStreamKey(streamKey: string) {
  */
 export function showPendingRecordingNotification(streamType: string) {
     return async (dispatch: Function) => {
-        const isLiveStreaming
-            = streamType === JitsiMeetJS.constants.recording.mode.STREAM;
-        const dialogProps = isLiveStreaming ? {
-            descriptionKey: 'liveStreaming.pending',
-            titleKey: 'dialog.liveStreaming'
-        } : {
-            descriptionKey: 'recording.pending',
-            titleKey: 'dialog.recording'
-        };
-        const notification = await dispatch(showNotification({
-            isDismissAllowed: false,
-            ...dialogProps
-        }));
+        const isLiveStreaming = streamType === JitsiMeetJS.constants.recording.mode.STREAM;
+        const dialogProps = isLiveStreaming
+            ? {
+                  descriptionKey: 'liveStreaming.pending',
+                  titleKey: 'dialog.liveStreaming'
+              }
+            : {
+                  descriptionKey: 'recording.pending',
+                  titleKey: 'dialog.recording'
+              };
+        const notification = await dispatch(
+            showNotification({
+                isDismissAllowed: false,
+                ...dialogProps
+            })
+        );
 
         if (notification) {
             dispatch(_setPendingRecordingNotificationUid(notification.uid, streamType));
@@ -116,18 +107,19 @@ export function showRecordingError(props: Object) {
  * @returns {showNotification}
  */
 export function showStoppedRecordingNotification(streamType: string, participantName?: string) {
-    const isLiveStreaming
-        = streamType === JitsiMeetJS.constants.recording.mode.STREAM;
+    const isLiveStreaming = streamType === JitsiMeetJS.constants.recording.mode.STREAM;
     const descriptionArguments = { name: participantName };
-    const dialogProps = isLiveStreaming ? {
-        descriptionKey: participantName ? 'liveStreaming.offBy' : 'liveStreaming.off',
-        descriptionArguments,
-        titleKey: 'dialog.liveStreaming'
-    } : {
-        descriptionKey: participantName ? 'recording.offBy' : 'recording.off',
-        descriptionArguments,
-        titleKey: 'dialog.recording'
-    };
+    const dialogProps = isLiveStreaming
+        ? {
+              descriptionKey: participantName ? 'liveStreaming.offBy' : 'liveStreaming.off',
+              descriptionArguments,
+              titleKey: 'dialog.liveStreaming'
+          }
+        : {
+              descriptionKey: participantName ? 'recording.offBy' : 'recording.off',
+              descriptionArguments,
+              titleKey: 'dialog.recording'
+          };
 
     return showNotification(dialogProps, NOTIFICATION_TIMEOUT);
 }
@@ -142,18 +134,19 @@ export function showStoppedRecordingNotification(streamType: string, participant
  * @returns {showNotification}
  */
 export function showStartedRecordingNotification(streamType: string, participantName: string) {
-    const isLiveStreaming
-        = streamType === JitsiMeetJS.constants.recording.mode.STREAM;
+    const isLiveStreaming = streamType === JitsiMeetJS.constants.recording.mode.STREAM;
     const descriptionArguments = { name: participantName };
-    const dialogProps = isLiveStreaming ? {
-        descriptionKey: participantName ? 'liveStreaming.onBy' : 'liveStreaming.on',
-        descriptionArguments,
-        titleKey: 'dialog.liveStreaming'
-    } : {
-        descriptionKey: participantName ? 'recording.onBy' : 'recording.on',
-        descriptionArguments,
-        titleKey: 'dialog.recording'
-    };
+    const dialogProps = isLiveStreaming
+        ? {
+              descriptionKey: participantName ? 'liveStreaming.onBy' : 'liveStreaming.on',
+              descriptionArguments,
+              titleKey: 'dialog.liveStreaming'
+          }
+        : {
+              descriptionKey: participantName ? 'recording.onBy' : 'recording.on',
+              descriptionArguments,
+              titleKey: 'dialog.recording'
+          };
 
     return showNotification(dialogProps, NOTIFICATION_TIMEOUT);
 }
@@ -170,10 +163,7 @@ export function showStartedRecordingNotification(streamType: string, participant
  */
 export function updateRecordingSessionData(session: Object) {
     const status = session.getStatus();
-    const timestamp
-        = status === JitsiRecordingConstants.status.ON
-            ? Date.now() / 1000
-            : undefined;
+    const timestamp = status === JitsiRecordingConstants.status.ON ? Date.now() / 1000 : undefined;
 
     return {
         type: RECORDING_SESSION_UPDATED,

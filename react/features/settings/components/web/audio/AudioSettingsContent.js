@@ -15,37 +15,36 @@ import SpeakerEntry from './SpeakerEntry';
 const browser = JitsiMeetJS.util.browser;
 
 export type Props = {
-
-   /**
-    * The deviceId of the microphone in use.
-    */
+    /**
+     * The deviceId of the microphone in use.
+     */
     currentMicDeviceId: string,
 
-   /**
-    * The deviceId of the output device in use.
-    */
+    /**
+     * The deviceId of the output device in use.
+     */
     currentOutputDeviceId: string,
 
-   /**
-    * Used to set a new microphone as the current one.
-    */
+    /**
+     * Used to set a new microphone as the current one.
+     */
     setAudioInputDevice: Function,
 
-   /**
-    * Used to set a new output device as the current one.
-    */
+    /**
+     * Used to set a new output device as the current one.
+     */
     setAudioOutputDevice: Function,
 
-   /**
-    * A list of objects containing the labels and deviceIds
-    * of all the output devices.
-    */
+    /**
+     * A list of objects containing the labels and deviceIds
+     * of all the output devices.
+     */
     outputDevices: Object[],
 
-   /**
-    * A list with objects containing the labels and deviceIds
-    * of all the input devices.
-    */
+    /**
+     * A list with objects containing the labels and deviceIds
+     * of all the input devices.
+     */
     microphoneDevices: Object[],
 
     /**
@@ -55,13 +54,12 @@ export type Props = {
 };
 
 type State = {
-
-   /**
-    * An list of objects, each containing the microphone label, audio track, device id
-    * and track error if the case.
-    */
+    /**
+     * An list of objects, each containing the microphone label, audio track, device id
+     * and track error if the case.
+     */
     audioTracks: Object[]
-}
+};
 
 /**
  * Implements a React {@link Component} which displayes a list of all
@@ -132,13 +130,7 @@ class AudioSettingsContent extends Component<Props, State> {
         const isSelected = deviceId === this.props.currentMicDeviceId;
 
         return (
-            <MicrophoneEntry
-                deviceId = { deviceId }
-                hasError = { hasError }
-                isSelected = { isSelected }
-                jitsiTrack = { jitsiTrack }
-                key = { `me-${index}` }
-                onClick = { this._onMicrophoneEntryClick }>
+            <MicrophoneEntry deviceId={deviceId} hasError={hasError} isSelected={isSelected} jitsiTrack={jitsiTrack} key={`me-${index}`} onClick={this._onMicrophoneEntryClick}>
                 {label}
             </MicrophoneEntry>
         );
@@ -156,11 +148,7 @@ class AudioSettingsContent extends Component<Props, State> {
         const key = `se-${index}`;
 
         return (
-            <SpeakerEntry
-                deviceId = { deviceId }
-                isSelected = { deviceId === this.props.currentOutputDeviceId }
-                key = { key }
-                onClick = { this._onSpeakerEntryClick }>
+            <SpeakerEntry deviceId={deviceId} isSelected={deviceId === this.props.currentOutputDeviceId} key={key} onClick={this._onSpeakerEntryClick}>
                 {label}
             </SpeakerEntry>
         );
@@ -173,7 +161,6 @@ class AudioSettingsContent extends Component<Props, State> {
      */
     async _setTracks() {
         if (browser.isSafari()) {
-
             // It appears that at the time of this writing, creating audio tracks blocks the browser's main thread for
             // long time on safari. Wasn't able to confirm which part of track creation does the blocking exactly, but
             // not creating the tracks seems to help and makes the UI much more responsive.
@@ -235,7 +222,6 @@ class AudioSettingsContent extends Component<Props, State> {
         }
     }
 
-
     /**
      * Implements React's {@link Component#render}.
      *
@@ -246,21 +232,11 @@ class AudioSettingsContent extends Component<Props, State> {
 
         return (
             <div>
-                <div className = 'audio-preview-content'>
-                    <AudioSettingsHeader
-                        IconComponent = { IconMicrophoneEmpty }
-                        text = { t('settings.microphones') } />
-                    {this.state.audioTracks.map((data, i) =>
-                        this._renderMicrophoneEntry(data, i),
-                    )}
-                    { outputDevices.length > 0 && (
-                        <AudioSettingsHeader
-                            IconComponent = { IconVolumeEmpty }
-                            text = { t('settings.speakers') } />)
-                    }
-                    {outputDevices.map((data, i) =>
-                        this._renderSpeakerEntry(data, i),
-                    )}
+                <div className="audio-preview-content">
+                    <AudioSettingsHeader IconComponent={IconMicrophoneEmpty} text={t('settings.microphones')} />
+                    {this.state.audioTracks.map((data, i) => this._renderMicrophoneEntry(data, i))}
+                    {outputDevices.length > 0 && <AudioSettingsHeader IconComponent={IconVolumeEmpty} text={t('settings.speakers')} />}
+                    {outputDevices.map((data, i) => this._renderSpeakerEntry(data, i))}
                 </div>
             </div>
         );

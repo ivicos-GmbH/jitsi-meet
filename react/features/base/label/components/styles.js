@@ -23,11 +23,10 @@ export const LABEL_SIZE = 36;
  * The styles of the native base/label feature.
  */
 export default {
-
     expandedLabelArrow: {
         backgroundColor: ColorPalette.blue,
         height: 15,
-        transform: [ { rotate: '45deg' }, { translateX: 10 } ],
+        transform: [{ rotate: '45deg' }, { translateX: 10 }],
         width: 15
     },
 

@@ -8,7 +8,6 @@ import { connect } from '../../base/redux';
 import { updateCalendarEvent } from '../actions';
 
 type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -47,11 +46,7 @@ class UpdateCalendarEventDialog extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <ConfirmDialog
-                contentKey = 'calendarSync.confirmAddLink'
-                onSubmit = { this._onSubmit } />
-        );
+        return <ConfirmDialog contentKey="calendarSync.confirmAddLink" onSubmit={this._onSubmit} />;
     }
 
     _onSubmit: () => boolean;

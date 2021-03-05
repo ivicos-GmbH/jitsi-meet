@@ -15,7 +15,6 @@ import styles from './styles';
  * {@link LocalVideoTrackUnderlay}.
  */
 type Props = {
-
     /**
      * The redux representation of the local participant's video track.
      */
@@ -47,15 +46,9 @@ class LocalVideoTrackUnderlay extends Component<Props> {
      */
     render() {
         return (
-            <View
-                style = { [
-                    styles.localVideoTrackUnderlay,
-                    this.props.style
-                ] }>
-                <VideoTrack videoTrack = { this.props._localVideoTrack } />
-                <TintedView>
-                    { this.props.children }
-                </TintedView>
+            <View style={[styles.localVideoTrackUnderlay, this.props.style]}>
+                <VideoTrack videoTrack={this.props._localVideoTrack} />
+                <TintedView>{this.props.children}</TintedView>
             </View>
         );
     }

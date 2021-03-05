@@ -4,7 +4,6 @@ import { translate } from '../../../base/i18n';
 import { IconMenu } from '../../../base/icons';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 
-
 type Props = AbstractButtonProps;
 
 /**
@@ -15,6 +14,5 @@ class MoreOptionsButton extends AbstractButton<Props, any> {
     icon = IconMenu;
     label = 'toolbar.moreOptions';
 }
-
 
 export default translate(MoreOptionsButton);

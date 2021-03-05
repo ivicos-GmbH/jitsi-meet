@@ -3,21 +3,12 @@
 import { Component } from 'react';
 
 import { createInviteDialogEvent, sendAnalytics } from '../../../analytics';
-import {
-    NOTIFICATION_TIMEOUT,
-    showNotification
-} from '../../../notifications';
+import { NOTIFICATION_TIMEOUT, showNotification } from '../../../notifications';
 import { invite } from '../../actions';
-import {
-    getInviteResultsForQuery,
-    getInviteTypeCounts,
-    isAddPeopleEnabled,
-    isDialOutEnabled
-} from '../../functions';
+import { getInviteResultsForQuery, getInviteTypeCounts, isAddPeopleEnabled, isDialOutEnabled } from '../../functions';
 import logger from '../../logger';
 
 export type Props = {
-
     /**
      * Whether or not to show Add People functionality.
      */
@@ -60,7 +51,6 @@ export type Props = {
 };
 
 export type State = {
-
     /**
      * Indicating that an error occurred when adding people to the call.
      */
@@ -75,14 +65,13 @@ export type State = {
     /**
      * The list of invite items.
      */
-    inviteItems: Array<Object>,
+    inviteItems: Array<Object>
 };
 
 /**
  * Implements an abstract dialog to invite people to the conference.
  */
-export default class AbstractAddPeopleDialog<P: Props, S: State>
-    extends Component<P, S> {
+export default class AbstractAddPeopleDialog<P: Props, S: State> extends Component<P, S> {
     /**
      * Constructor of the component.
      *
@@ -108,11 +97,12 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
     _invite(invitees) {
         const inviteTypeCounts = getInviteTypeCounts(invitees);
 
-        sendAnalytics(createInviteDialogEvent(
-            'clicked', 'inviteButton', {
+        sendAnalytics(
+            createInviteDialogEvent('clicked', 'inviteButton', {
                 ...inviteTypeCounts,
                 inviteAllowed: this._isAddDisabled()
-            }));
+            })
+        );
 
         if (this._isAddDisabled()) {
             return Promise.resolve([]);
@@ -124,66 +114,63 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
 
         const { _callFlowsEnabled, dispatch } = this.props;
 
-        return dispatch(invite(invitees))
-            .then(invitesLeftToSend => {
+        return dispatch(invite(invitees)).then((invitesLeftToSend) => {
+            this.setState({
+                addToCallInProgress: false
+            });
+
+            // If any invites are left that means something failed to send
+            // so treat it as an error.
+            if (invitesLeftToSend.length) {
+                const erroredInviteTypeCounts = getInviteTypeCounts(invitesLeftToSend);
+
+                logger.error(`${invitesLeftToSend.length} invites failed`, erroredInviteTypeCounts);
+
+                sendAnalytics(
+                    createInviteDialogEvent('error', 'invite', {
+                        ...erroredInviteTypeCounts
+                    })
+                );
+
                 this.setState({
-                    addToCallInProgress: false
+                    addToCallError: true
                 });
+            } else if (!_callFlowsEnabled) {
+                const invitedCount = invitees.length;
+                let notificationProps;
 
-                // If any invites are left that means something failed to send
-                // so treat it as an error.
-                if (invitesLeftToSend.length) {
-                    const erroredInviteTypeCounts
-                        = getInviteTypeCounts(invitesLeftToSend);
-
-                    logger.error(`${invitesLeftToSend.length} invites failed`,
-                        erroredInviteTypeCounts);
-
-                    sendAnalytics(createInviteDialogEvent(
-                        'error', 'invite', {
-                            ...erroredInviteTypeCounts
-                        }));
-
-                    this.setState({
-                        addToCallError: true
-                    });
-                } else if (!_callFlowsEnabled) {
-                    const invitedCount = invitees.length;
-                    let notificationProps;
-
-                    if (invitedCount >= 3) {
-                        notificationProps = {
-                            titleArguments: {
-                                name: invitees[0].name,
-                                count: invitedCount - 1
-                            },
-                            titleKey: 'notify.invitedThreePlusMembers'
-                        };
-                    } else if (invitedCount === 2) {
-                        notificationProps = {
-                            titleArguments: {
-                                first: invitees[0].name,
-                                second: invitees[1].name
-                            },
-                            titleKey: 'notify.invitedTwoMembers'
-                        };
-                    } else if (invitedCount) {
-                        notificationProps = {
-                            titleArguments: {
-                                name: invitees[0].name
-                            },
-                            titleKey: 'notify.invitedOneMember'
-                        };
-                    }
-
-                    if (notificationProps) {
-                        dispatch(
-                            showNotification(notificationProps, NOTIFICATION_TIMEOUT));
-                    }
+                if (invitedCount >= 3) {
+                    notificationProps = {
+                        titleArguments: {
+                            name: invitees[0].name,
+                            count: invitedCount - 1
+                        },
+                        titleKey: 'notify.invitedThreePlusMembers'
+                    };
+                } else if (invitedCount === 2) {
+                    notificationProps = {
+                        titleArguments: {
+                            first: invitees[0].name,
+                            second: invitees[1].name
+                        },
+                        titleKey: 'notify.invitedTwoMembers'
+                    };
+                } else if (invitedCount) {
+                    notificationProps = {
+                        titleArguments: {
+                            name: invitees[0].name
+                        },
+                        titleKey: 'notify.invitedOneMember'
+                    };
                 }
 
-                return invitesLeftToSend;
-            });
+                if (notificationProps) {
+                    dispatch(showNotification(notificationProps, NOTIFICATION_TIMEOUT));
+                }
+            }
+
+            return invitesLeftToSend;
+        });
     }
 
     /**
@@ -194,8 +181,7 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
      * be disabled, false otherwise.
      */
     _isAddDisabled() {
-        return !this.state.inviteItems.length
-            || this.state.addToCallInProgress;
+        return !this.state.inviteItems.length || this.state.addToCallInProgress;
     }
 
     _query: (?string) => Promise<Array<Object>>;
@@ -227,7 +213,6 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
 
         return getInviteResultsForQuery(query, options);
     }
-
 }
 
 /**
@@ -245,12 +230,7 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
  * }}
  */
 export function _mapStateToProps(state: Object) {
-    const {
-        callFlowsEnabled,
-        dialOutAuthUrl,
-        peopleSearchQueryTypes,
-        peopleSearchUrl
-    } = state['features/base/config'];
+    const { callFlowsEnabled, dialOutAuthUrl, peopleSearchQueryTypes, peopleSearchUrl } = state['features/base/config'];
 
     return {
         _addPeopleEnabled: isAddPeopleEnabled(state),

@@ -1,10 +1,7 @@
 import rtcstatsInit from 'rtcstats/rtcstats';
 import traceInit from 'rtcstats/trace-ws';
 
-import {
-    createRTCStatsTraceCloseEvent,
-    sendAnalytics
-} from '../analytics';
+import { createRTCStatsTraceCloseEvent, sendAnalytics } from '../analytics';
 
 import logger from './logger';
 
@@ -44,7 +41,7 @@ class RTCStats {
     init(options) {
         this.handleTraceWSClose = this.handleTraceWSClose.bind(this);
         this.trace = traceInit(options.rtcstatsEndpoint, this.handleTraceWSClose);
-        rtcstatsInit(this.trace, options.rtcstatsPollInterval, [ '' ], connectionFilter);
+        rtcstatsInit(this.trace, options.rtcstatsPollInterval, [''], connectionFilter);
         this.initialized = true;
     }
 

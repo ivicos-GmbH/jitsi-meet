@@ -10,7 +10,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { MuteEveryoneDialog } from '../../remote-video-menu/components';
 
 type Props = AbstractButtonProps & {
-
     /**
      * The Redux dispatch function.
      */
@@ -47,9 +46,11 @@ class MuteEveryoneButton extends AbstractButton<Props, *> {
         const { dispatch, localParticipantId } = this.props;
 
         sendAnalytics(createToolbarEvent('mute.everyone.pressed'));
-        dispatch(openDialog(MuteEveryoneDialog, {
-            exclude: [ localParticipantId ]
-        }));
+        dispatch(
+            openDialog(MuteEveryoneDialog, {
+                exclude: [localParticipantId]
+            })
+        );
     }
 }
 

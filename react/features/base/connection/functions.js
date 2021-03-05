@@ -40,10 +40,7 @@ export function getCurrentConferenceUrl(stateful: Function | Object) {
  */
 export function getInviteURL(stateOrGetState: Function | Object): string {
     const state = toState(stateOrGetState);
-    let locationURL
-        = state instanceof URL
-            ? state
-            : state['features/base/connection'].locationURL;
+    let locationURL = state instanceof URL ? state : state['features/base/connection'].locationURL;
 
     // If there's no locationURL on the base/connection feature try the base/config where it's set earlier.
     if (!locationURL) {
@@ -58,8 +55,7 @@ export function getInviteURL(stateOrGetState: Function | Object): string {
     const urlWithoutParams = getURLWithoutParams(locationURL);
 
     if (inviteDomain) {
-        const meetingId
-            = state['features/base/config'].brandingRoomAlias || urlWithoutParams.pathname.replace(/\//, '');
+        const meetingId = state['features/base/config'].brandingRoomAlias || urlWithoutParams.pathname.replace(/\//, '');
 
         return `${inviteDomain}/${meetingId}`;
     }

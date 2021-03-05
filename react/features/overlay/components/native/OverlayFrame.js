@@ -9,11 +9,10 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@code OverlayFrame}.
  */
 type Props = {
-
     /**
      * The children components to be displayed into the overlay frame.
      */
-    children: Node,
+    children: Node
 };
 
 /**
@@ -28,10 +27,8 @@ export default class OverlayFrame extends Component<Props> {
      */
     render() {
         return (
-            <View style = { styles.container }>
-                <SafeAreaView style = { styles.safeContainer } >
-                    { this.props.children }
-                </SafeAreaView>
+            <View style={styles.container}>
+                <SafeAreaView style={styles.safeContainer}>{this.props.children}</SafeAreaView>
             </View>
         );
     }

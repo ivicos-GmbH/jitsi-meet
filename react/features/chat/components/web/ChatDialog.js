@@ -7,12 +7,11 @@ import { Dialog } from '../../../base/dialog';
 import Header from './ChatDialogHeader';
 
 type Props = {
-
     /**
      * Children of the component.
      */
     children: React$Node
-}
+};
 
 /**
  * Component that renders the content of the chat in a modal.
@@ -21,16 +20,8 @@ type Props = {
  */
 function ChatDialog({ children }: Props) {
     return (
-        <Dialog
-            customHeader = { Header }
-            disableEnter = { true }
-            disableFooter = { true }
-            hideCancelButton = { true }
-            submitDisabled = { true }
-            titleKey = 'chat.title'>
-            <div className = 'chat-dialog'>
-                {children}
-            </div>
+        <Dialog customHeader={Header} disableEnter={true} disableFooter={true} hideCancelButton={true} submitDisabled={true} titleKey="chat.title">
+            <div className="chat-dialog">{children}</div>
         </Dialog>
     );
 }

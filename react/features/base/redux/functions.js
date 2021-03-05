@@ -19,7 +19,8 @@ import { connect as reduxConnect } from 'react-redux';
 export function assign(target: Object, source: Object) {
     let t = target;
 
-    for (const property in source) { // eslint-disable-line guard-for-in
+    for (const property in source) {
+        // eslint-disable-line guard-for-in
         t = _set(t, property, source[property], t === target);
     }
 
@@ -34,8 +35,7 @@ export function assign(target: Object, source: Object) {
  * @param {Function?} mapDispatchToProps - Redux mapDispatchToProps function.
  * @returns {Connector}
  */
-export function connect(
-        mapStateToProps?: Function, mapDispatchToProps?: Function) {
+export function connect(mapStateToProps?: Function, mapDispatchToProps?: Function) {
     return reduxConnect<*, *, *, *, *, *>(mapStateToProps, mapDispatchToProps);
 }
 
@@ -93,15 +93,10 @@ export function set(state: Object, property: string, value: any) {
  * {@code state} by setting the specified {@code property} to the specified
  * {@code value}.
  */
-function _set(
-        state: Object,
-        property: string,
-        value: any,
-        copyOnWrite: boolean) {
+function _set(state: Object, property: string, value: any, copyOnWrite: boolean) {
     // Delete state properties that are to be set to undefined. (It is a matter
     // of personal preference, mostly.)
-    if (typeof value === 'undefined'
-            && Object.prototype.hasOwnProperty.call(state, property)) {
+    if (typeof value === 'undefined' && Object.prototype.hasOwnProperty.call(state, property)) {
         const newState = copyOnWrite ? { ...state } : state;
 
         if (delete newState[property]) {

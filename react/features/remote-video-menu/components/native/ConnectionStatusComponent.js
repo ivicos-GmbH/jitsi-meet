@@ -21,14 +21,9 @@ import styles from './styles';
  */
 const AVATAR_SIZE = 25;
 
-const CONNECTION_QUALITY = [
-    'Low',
-    'Medium',
-    'Good'
-];
+const CONNECTION_QUALITY = ['Low', 'Medium', 'Good'];
 
 export type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -58,7 +53,7 @@ export type Props = {
      * The function to be used to translate i18n labels.
      */
     t: Function
-}
+};
 
 /**
  * The type of the React {@code Component} state of {@link ConnectionStatusComponent}.
@@ -81,7 +76,6 @@ let ConnectionStatusComponent_;
  * Class to implement a popup menu that show the connection statistics.
  */
 class ConnectionStatusComponent extends Component<Props, State> {
-
     /**
      * Constructor of the component.
      *
@@ -119,75 +113,53 @@ class ConnectionStatusComponent extends Component<Props, State> {
         const { t } = this.props;
 
         return (
-            <BottomSheet
-                onCancel = { this._onCancel }
-                renderHeader = { this._renderMenuHeader }>
-                <View style = { styles.statsWrapper }>
-                    <View style = { styles.statsInfoCell }>
-                        <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.status')} ` }
-                        </Text>
-                        <Text style = { styles.statsInfoText }>
-                            { this.state.connectionString }
-                        </Text>
+            <BottomSheet onCancel={this._onCancel} renderHeader={this._renderMenuHeader}>
+                <View style={styles.statsWrapper}>
+                    <View style={styles.statsInfoCell}>
+                        <Text style={styles.statsTitleText}>{`${t('connectionindicator.status')} `}</Text>
+                        <Text style={styles.statsInfoText}>{this.state.connectionString}</Text>
                     </View>
-                    <View style = { styles.statsInfoCell }>
-                        <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.bitrate')}` }
-                        </Text>
+                    <View style={styles.statsInfoCell}>
+                        <Text style={styles.statsTitleText}>{`${t('connectionindicator.bitrate')}`}</Text>
                         <BaseIndicator
-                            icon = { IconArrowDownLarge }
-                            iconStyle = {{
+                            icon={IconArrowDownLarge}
+                            iconStyle={{
                                 color: ColorPalette.darkGrey
-                            }} />
-                        <Text style = { styles.statsInfoText }>
-                            { this.state.downloadString }
-                        </Text>
+                            }}
+                        />
+                        <Text style={styles.statsInfoText}>{this.state.downloadString}</Text>
                         <BaseIndicator
-                            icon = { IconArrowUpLarge }
-                            iconStyle = {{
+                            icon={IconArrowUpLarge}
+                            iconStyle={{
                                 color: ColorPalette.darkGrey
-                            }} />
-                        <Text style = { styles.statsInfoText }>
-                            { `${this.state.uploadString} Kbps` }
-                        </Text>
+                            }}
+                        />
+                        <Text style={styles.statsInfoText}>{`${this.state.uploadString} Kbps`}</Text>
                     </View>
-                    <View style = { styles.statsInfoCell }>
-                        <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.packetloss')}` }
-                        </Text>
+                    <View style={styles.statsInfoCell}>
+                        <Text style={styles.statsTitleText}>{`${t('connectionindicator.packetloss')}`}</Text>
                         <BaseIndicator
-                            icon = { IconArrowDownLarge }
-                            iconStyle = {{
+                            icon={IconArrowDownLarge}
+                            iconStyle={{
                                 color: ColorPalette.darkGrey
-                            }} />
-                        <Text style = { styles.statsInfoText }>
-                            { this.state.packetLostDownloadString }
-                        </Text>
+                            }}
+                        />
+                        <Text style={styles.statsInfoText}>{this.state.packetLostDownloadString}</Text>
                         <BaseIndicator
-                            icon = { IconArrowUpLarge }
-                            iconStyle = {{
+                            icon={IconArrowUpLarge}
+                            iconStyle={{
                                 color: ColorPalette.darkGrey
-                            }} />
-                        <Text style = { styles.statsInfoText }>
-                            { this.state.packetLostUploadString }
-                        </Text>
+                            }}
+                        />
+                        <Text style={styles.statsInfoText}>{this.state.packetLostUploadString}</Text>
                     </View>
-                    <View style = { styles.statsInfoCell }>
-                        <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.resolution')} ` }
-                        </Text>
-                        <Text style = { styles.statsInfoText }>
-                            { this.state.resolutionString }
-                        </Text>
+                    <View style={styles.statsInfoCell}>
+                        <Text style={styles.statsTitleText}>{`${t('connectionindicator.resolution')} `}</Text>
+                        <Text style={styles.statsInfoText}>{this.state.resolutionString}</Text>
                     </View>
-                    <View style = { styles.statsInfoCell }>
-                        <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.codecs')}` }
-                        </Text>
-                        <Text style = { styles.statsInfoText }>
-                            { this.state.codecString }
-                        </Text>
+                    <View style={styles.statsInfoCell}>
+                        <Text style={styles.statsTitleText}>{`${t('connectionindicator.codecs')}`}</Text>
+                        <Text style={styles.statsInfoText}>{this.state.codecString}</Text>
                     </View>
                 </View>
             </BottomSheet>
@@ -201,8 +173,7 @@ class ConnectionStatusComponent extends Component<Props, State> {
      * returns {void}
      */
     componentDidMount() {
-        statsEmitter.subscribeToClientStats(
-            this.props.participantID, this._onStatsUpdated);
+        statsEmitter.subscribeToClientStats(this.props.participantID, this._onStatsUpdated);
     }
 
     /**
@@ -213,14 +184,12 @@ class ConnectionStatusComponent extends Component<Props, State> {
      */
     componentDidUpdate(prevProps: Props) {
         if (prevProps.participantID !== this.props.participantID) {
-            statsEmitter.unsubscribeToClientStats(
-                prevProps.participantID, this._onStatsUpdated);
-            statsEmitter.subscribeToClientStats(
-                this.props.participantID, this._onStatsUpdated);
+            statsEmitter.unsubscribeToClientStats(prevProps.participantID, this._onStatsUpdated);
+            statsEmitter.subscribeToClientStats(this.props.participantID, this._onStatsUpdated);
         }
     }
 
-    _onStatsUpdated: Object => void;
+    _onStatsUpdated: (Object) => void;
 
     /**
      * Callback invoked when new connection stats associated with the passed in
@@ -253,10 +222,8 @@ class ConnectionStatusComponent extends Component<Props, State> {
             resolutionString: this._extractResolutionString(stats) ?? this.state.resolutionString,
             downloadString: downloadBitrate ?? this.state.downloadString,
             uploadString: uploadBitrate ?? this.state.uploadString,
-            packetLostDownloadString: downloadPacketLost === undefined
-                ? this.state.packetLostDownloadString : `${downloadPacketLost}%`,
-            packetLostUploadString: uploadPacketLost === undefined
-                ? this.state.packetLostUploadString : `${uploadPacketLost}%`,
+            packetLostDownloadString: downloadPacketLost === undefined ? this.state.packetLostDownloadString : `${downloadPacketLost}%`,
+            packetLostUploadString: uploadPacketLost === undefined ? this.state.packetLostUploadString : `${uploadPacketLost}%`,
             serverRegionString: this._extractServer(stats) ?? this.state.serverRegionString,
             codecString: this._extractCodecs(stats) ?? this.state.codecString,
             connectionString: this._extractConnection(stats) ?? this.state.connectionString
@@ -273,17 +240,19 @@ class ConnectionStatusComponent extends Component<Props, State> {
     _extractResolutionString(stats) {
         const { framerate, resolution } = stats;
 
-        const resolutionString = Object.keys(resolution || {})
-        .map(ssrc => {
-            const { width, height } = resolution[ssrc];
+        const resolutionString =
+            Object.keys(resolution || {})
+                .map((ssrc) => {
+                    const { width, height } = resolution[ssrc];
 
-            return `${width}x${height}`;
-        })
-        .join(', ') || null;
+                    return `${width}x${height}`;
+                })
+                .join(', ') || null;
 
-        const frameRateString = Object.keys(framerate || {})
-            .map(ssrc => framerate[ssrc])
-            .join(', ') || null;
+        const frameRateString =
+            Object.keys(framerate || {})
+                .map((ssrc) => framerate[ssrc])
+                .join(', ') || null;
 
         return resolutionString && frameRateString ? `${resolutionString}@${frameRateString}fps` : undefined;
     }
@@ -334,12 +303,11 @@ class ConnectionStatusComponent extends Component<Props, State> {
         let codecString;
 
         // Only report one codec, in case there are multiple for a user.
-        Object.keys(codec || {})
-            .forEach(ssrc => {
-                const { audio, video } = codec[ssrc];
+        Object.keys(codec || {}).forEach((ssrc) => {
+            const { audio, video } = codec[ssrc];
 
-                codecString = `${audio}, ${video}`;
-            });
+            codecString = `${audio}, ${video}`;
+        });
 
         return codecString;
     }
@@ -370,8 +338,7 @@ class ConnectionStatusComponent extends Component<Props, State> {
      * @returns {boolean}
      */
     _onCancel() {
-        statsEmitter.unsubscribeToClientStats(
-            this.props.participantID, this._onStatsUpdated);
+        statsEmitter.unsubscribeToClientStats(this.props.participantID, this._onStatsUpdated);
 
         if (this.props._isOpen) {
             this.props.dispatch(hideDialog(ConnectionStatusComponent_));
@@ -393,16 +360,9 @@ class ConnectionStatusComponent extends Component<Props, State> {
         const { _bottomSheetStyles, participantID } = this.props;
 
         return (
-            <View
-                style = { [
-                    _bottomSheetStyles.sheet,
-                    styles.participantNameContainer ] }>
-                <Avatar
-                    participantId = { participantID }
-                    size = { AVATAR_SIZE } />
-                <Text style = { styles.participantNameLabel }>
-                    { this.props._participantDisplayName }
-                </Text>
+            <View style={[_bottomSheetStyles.sheet, styles.participantNameContainer]}>
+                <Avatar participantId={participantID} size={AVATAR_SIZE} />
+                <Text style={styles.participantNameLabel}>{this.props._participantDisplayName}</Text>
             </View>
         );
     }

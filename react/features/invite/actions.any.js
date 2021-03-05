@@ -15,11 +15,7 @@ import {
     UPDATE_DIAL_IN_NUMBERS_FAILED,
     UPDATE_DIAL_IN_NUMBERS_SUCCESS
 } from './actionTypes';
-import {
-    getDialInConferenceID,
-    getDialInNumbers,
-    invitePeopleAndChatRooms
-} from './functions';
+import { getDialInConferenceID, getDialInNumbers, invitePeopleAndChatRooms } from './functions';
 import logger from './logger';
 
 /**
@@ -51,7 +47,6 @@ export function hideAddPeopleDialog() {
     };
 }
 
-
 /**
  * Invites (i.e. Sends invites to) an array of invitees (which may be a
  * combination of users, rooms, phone numbers, and video rooms.
@@ -62,21 +57,13 @@ export function hideAddPeopleDialog() {
  * @returns {Promise<Array<Object>>} A {@code Promise} resolving with an array
  * of invitees who were not invited (i.e. Invites were not sent to them).
  */
-export function invite(
-        invitees: Array<Object>,
-        showCalleeInfo: boolean = false) {
-    return (
-            dispatch: Dispatch<any>,
-            getState: Function): Promise<Array<Object>> => {
+export function invite(invitees: Array<Object>, showCalleeInfo: boolean = false) {
+    return (dispatch: Dispatch<any>, getState: Function): Promise<Array<Object>> => {
         const state = getState();
         const participants = getParticipants(state);
         const { calleeInfoVisible } = state['features/invite'];
 
-        if (showCalleeInfo
-                && !calleeInfoVisible
-                && invitees.length === 1
-                && invitees[0].type === 'user'
-                && participants.length === 1) {
+        if (showCalleeInfo && !calleeInfoVisible && invitees.length === 1 && invitees[0].type === 'user' && participants.length === 1) {
             dispatch(setCalleeInfoVisible(true, invitees[0]));
         }
 
@@ -85,66 +72,51 @@ export function invite(
         if (typeof conference === 'undefined') {
             // Invite will fail before CONFERENCE_JOIN. The request will be
             // cached in order to be executed on CONFERENCE_JOIN.
-            return new Promise(resolve => {
-                dispatch(addPendingInviteRequest({
-                    invitees,
-                    callback: failedInvitees => resolve(failedInvitees)
-                }));
+            return new Promise((resolve) => {
+                dispatch(
+                    addPendingInviteRequest({
+                        invitees,
+                        callback: (failedInvitees) => resolve(failedInvitees)
+                    })
+                );
             });
         }
 
         let allInvitePromises = [];
-        let invitesLeftToSend = [ ...invitees ];
+        let invitesLeftToSend = [...invitees];
 
-        const {
-            callFlowsEnabled,
-            inviteServiceUrl,
-            inviteServiceCallFlowsUrl
-        } = state['features/base/config'];
+        const { callFlowsEnabled, inviteServiceUrl, inviteServiceCallFlowsUrl } = state['features/base/config'];
         const inviteUrl = getInviteURL(state);
         const { jwt } = state['features/base/jwt'];
 
         // First create all promises for dialing out.
-        const phoneNumbers
-            = invitesLeftToSend.filter(({ type }) => type === 'phone');
+        const phoneNumbers = invitesLeftToSend.filter(({ type }) => type === 'phone');
 
         // For each number, dial out. On success, remove the number from
         // {@link invitesLeftToSend}.
-        const phoneInvitePromises = phoneNumbers.map(item => {
+        const phoneInvitePromises = phoneNumbers.map((item) => {
             const numberToInvite = item.number;
 
-            return conference.dial(numberToInvite)
+            return conference
+                .dial(numberToInvite)
                 .then(() => {
-                    invitesLeftToSend
-                        = invitesLeftToSend.filter(
-                            invitee => invitee !== item);
+                    invitesLeftToSend = invitesLeftToSend.filter((invitee) => invitee !== item);
                 })
-                .catch(error =>
-                    logger.error('Error inviting phone number:', error));
+                .catch((error) => logger.error('Error inviting phone number:', error));
         });
 
         allInvitePromises = allInvitePromises.concat(phoneInvitePromises);
 
-        const usersAndRooms
-            = invitesLeftToSend.filter(
-                ({ type }) => type === 'user' || type === 'room');
+        const usersAndRooms = invitesLeftToSend.filter(({ type }) => type === 'user' || type === 'room');
 
         if (usersAndRooms.length) {
             // Send a request to invite all the rooms and users. On success,
             // filter all rooms and users from {@link invitesLeftToSend}.
-            const peopleInvitePromise
-                = invitePeopleAndChatRooms(
-                    callFlowsEnabled
-                        ? inviteServiceCallFlowsUrl : inviteServiceUrl,
-                    inviteUrl,
-                    jwt,
-                    usersAndRooms)
+            const peopleInvitePromise = invitePeopleAndChatRooms(callFlowsEnabled ? inviteServiceCallFlowsUrl : inviteServiceUrl, inviteUrl, jwt, usersAndRooms)
                 .then(() => {
-                    invitesLeftToSend
-                        = invitesLeftToSend.filter(
-                            ({ type }) => type !== 'user' && type !== 'room');
+                    invitesLeftToSend = invitesLeftToSend.filter(({ type }) => type !== 'user' && type !== 'room');
                 })
-                .catch(error => {
+                .catch((error) => {
                     dispatch(setCalleeInfoVisible(false));
                     logger.error('Error inviting people:', error);
                 });
@@ -154,19 +126,13 @@ export function invite(
 
         // Sipgw calls are fire and forget. Invite them to the conference, then
         // immediately remove them from invitesLeftToSend.
-        const vrooms
-            = invitesLeftToSend.filter(({ type }) => type === 'videosipgw');
+        const vrooms = invitesLeftToSend.filter(({ type }) => type === 'videosipgw');
 
-        conference
-            && vrooms.length > 0
-            && dispatch(inviteVideoRooms(conference, vrooms));
+        conference && vrooms.length > 0 && dispatch(inviteVideoRooms(conference, vrooms));
 
-        invitesLeftToSend
-            = invitesLeftToSend.filter(({ type }) => type !== 'videosipgw');
+        invitesLeftToSend = invitesLeftToSend.filter(({ type }) => type !== 'videosipgw');
 
-        return (
-            Promise.all(allInvitePromises)
-                .then(() => invitesLeftToSend));
+        return Promise.all(allInvitePromises).then(() => invitesLeftToSend);
     };
 }
 
@@ -178,8 +144,7 @@ export function invite(
 export function updateDialInNumbers() {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
-        const { dialInConfCodeUrl, dialInNumbersUrl, hosts }
-            = state['features/base/config'];
+        const { dialInConfCodeUrl, dialInNumbersUrl, hosts } = state['features/base/config'];
         const { numbersFetched } = state['features/invite'];
         const mucURL = hosts && hosts.muc;
 
@@ -190,11 +155,8 @@ export function updateDialInNumbers() {
 
         const { room } = state['features/base/conference'];
 
-        Promise.all([
-            getDialInNumbers(dialInNumbersUrl, room, mucURL),
-            getDialInConferenceID(dialInConfCodeUrl, room, mucURL)
-        ])
-            .then(([ dialInNumbers, { conference, id, message } ]) => {
+        Promise.all([getDialInNumbers(dialInNumbersUrl, room, mucURL), getDialInConferenceID(dialInConfCodeUrl, room, mucURL)])
+            .then(([dialInNumbers, { conference, id, message }]) => {
                 if (!conference || !id) {
                     return Promise.reject(message);
                 }
@@ -205,7 +167,7 @@ export function updateDialInNumbers() {
                     dialInNumbers
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 dispatch({
                     type: UPDATE_DIAL_IN_NUMBERS_FAILED,
                     error
@@ -227,9 +189,7 @@ export function updateDialInNumbers() {
  *     initialCalleeInfo
  * }}
  */
-export function setCalleeInfoVisible(
-        calleeInfoVisible: boolean,
-        initialCalleeInfo: ?Object) {
+export function setCalleeInfoVisible(calleeInfoVisible: boolean, initialCalleeInfo: ?Object) {
     return {
         type: SET_CALLEE_INFO_VISIBLE,
         calleeInfoVisible,
@@ -246,8 +206,7 @@ export function setCalleeInfoVisible(
  *     request: Object
  * }}
  */
-export function addPendingInviteRequest(
-        request: { invitees: Array<Object>, callback: Function }) {
+export function addPendingInviteRequest(request: { invitees: Array<Object>, callback: Function }) {
     return {
         type: ADD_PENDING_INVITE_REQUEST,
         request

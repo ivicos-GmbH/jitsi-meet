@@ -9,7 +9,6 @@ import { Tooltip } from '../../tooltip';
  * The type of the React {@code Component} props of {@link OverflowMenuItem}.
  */
 type Props = {
-
     /**
      * A succinct description of what the item does. Used by accessibility tools
      * and torture tests.
@@ -88,19 +87,12 @@ class OverflowMenuItem extends Component<Props> {
         className += this.props.disabled ? ' disabled' : '';
 
         return (
-            <li
-                aria-label = { accessibilityLabel }
-                className = { className }
-                onClick = { disabled ? null : onClick }>
-                <span className = 'overflow-menu-item-icon'>
-                    <Icon
-                        id = { iconId }
-                        src = { icon } />
+            <li aria-label={accessibilityLabel} className={className} onClick={disabled ? null : onClick}>
+                <span className="overflow-menu-item-icon">
+                    <Icon id={iconId} src={icon} />
                 </span>
-                { this._renderText() }
-                {
-                    elementAfter || null
-                }
+                {this._renderText()}
+                {elementAfter || null}
             </li>
         );
     }
@@ -112,18 +104,12 @@ class OverflowMenuItem extends Component<Props> {
      * @returns {ReactElement}
      */
     _renderText() {
-        const textElement = (
-            <span className = 'overflow-menu-item-text'>
-                { this.props.text }
-            </span>
-        );
+        const textElement = <span className="overflow-menu-item-text">{this.props.text}</span>;
 
         if (this.props.tooltip) {
             return (
-                <Tooltip
-                    content = { this.props.tooltip }
-                    position = { this.props.tooltipPosition }>
-                    { textElement }
+                <Tooltip content={this.props.tooltip} position={this.props.tooltipPosition}>
+                    {textElement}
                 </Tooltip>
             );
         }

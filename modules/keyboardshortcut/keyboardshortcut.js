@@ -2,15 +2,9 @@
 
 import Logger from 'jitsi-meet-logger';
 
-import {
-    ACTION_SHORTCUT_PRESSED as PRESSED,
-    ACTION_SHORTCUT_RELEASED as RELEASED,
-    createShortcutEvent,
-    sendAnalytics
-} from '../../react/features/analytics';
+import { ACTION_SHORTCUT_PRESSED as PRESSED, ACTION_SHORTCUT_RELEASED as RELEASED, createShortcutEvent, sendAnalytics } from '../../react/features/analytics';
 import { toggleDialog } from '../../react/features/base/dialog';
-import { KeyboardShortcutsDialog }
-    from '../../react/features/keyboard-shortcuts';
+import { KeyboardShortcutsDialog } from '../../react/features/keyboard-shortcuts';
 import { SpeakerStats } from '../../react/features/speaker-stats';
 
 const logger = Logger.getLogger(__filename);
@@ -41,37 +35,30 @@ const KeyboardShortcut = {
     init() {
         this._initGlobalShortcuts();
 
-        window.onkeyup = e => {
+        window.onkeyup = (e) => {
             if (!enabled) {
                 return;
             }
             const key = this._getKeyboardKey(e).toUpperCase();
             const num = parseInt(key, 10);
 
-            if (!($(':focus').is('input[type=text]')
-                || $(':focus').is('input[type=password]')
-                || $(':focus').is('textarea'))) {
+            if (!($(':focus').is('input[type=text]') || $(':focus').is('input[type=password]') || $(':focus').is('textarea'))) {
                 if (_shortcuts.has(key)) {
                     _shortcuts.get(key).function(e);
                 } else if (!isNaN(num) && num >= 0 && num <= 9) {
                     APP.UI.clickOnVideo(num);
                 }
-
             }
         };
 
-        window.onkeydown = e => {
+        window.onkeydown = (e) => {
             if (!enabled) {
                 return;
             }
-            if (!($(':focus').is('input[type=text]')
-                || $(':focus').is('input[type=password]')
-                || $(':focus').is('textarea'))) {
+            if (!($(':focus').is('input[type=text]') || $(':focus').is('input[type=password]') || $(':focus').is('textarea'))) {
                 if (this._getKeyboardKey(e).toUpperCase() === ' ') {
                     if (APP.conference.isLocalAudioMuted()) {
-                        sendAnalytics(createShortcutEvent(
-                            'push.to.talk',
-                            PRESSED));
+                        sendAnalytics(createShortcutEvent('push.to.talk', PRESSED));
                         logger.log('Talk shortcut pressed');
                         APP.conference.muteAudio(false);
                     }
@@ -94,9 +81,11 @@ const KeyboardShortcut = {
      * @returns {void}
      */
     openDialog() {
-        APP.store.dispatch(toggleDialog(KeyboardShortcutsDialog, {
-            shortcutDescriptions: _shortcutsHelp
-        }));
+        APP.store.dispatch(
+            toggleDialog(KeyboardShortcutsDialog, {
+                shortcutDescriptions: _shortcutsHelp
+            })
+        );
     },
 
     /**
@@ -110,11 +99,7 @@ const KeyboardShortcut = {
      * @param helpDescription the description of the shortcut that would appear
      * in the help menu
      */
-    registerShortcut(// eslint-disable-line max-params
-            shortcutChar,
-            shortcutAttr,
-            exec,
-            helpDescription) {
+    registerShortcut(shortcutChar, shortcutAttr, exec, helpDescription) { // eslint-disable-line max-params
         _shortcuts.set(shortcutChar, {
             character: shortcutChar,
             function: exec,
@@ -150,25 +135,22 @@ const KeyboardShortcut = {
         if (typeof e.key === 'string' && e.key !== 'Unidentified') {
             return e.key;
         }
-        if (e.type === 'keypress'
-                && ((e.which >= 32 && e.which <= 126)
-                    || (e.which >= 160 && e.which <= 255))) {
+        if (e.type === 'keypress' && ((e.which >= 32 && e.which <= 126) || (e.which >= 160 && e.which <= 255))) {
             return String.fromCharCode(e.which);
         }
 
         // try to fallback (0-9A-Za-z and QWERTY keyboard)
         switch (e.which) {
-        case 27:
-            return 'Escape';
-        case 191:
-            return e.shiftKey ? '?' : '/';
+            case 27:
+                return 'Escape';
+            case 191:
+                return e.shiftKey ? '?' : '/';
         }
         if (e.shiftKey || e.type === 'keypress') {
             return String.fromCharCode(e.which);
         }
 
         return String.fromCharCode(e.which).toLowerCase();
-
     },
 
     /**
@@ -189,10 +171,15 @@ const KeyboardShortcut = {
      * triggered _only_ with a shortcut.
      */
     _initGlobalShortcuts() {
-        this.registerShortcut('?', null, () => {
-            sendAnalytics(createShortcutEvent('help'));
-            this.openDialog();
-        }, 'keyboardShortcuts.toggleShortcuts');
+        this.registerShortcut(
+            '?',
+            null,
+            () => {
+                sendAnalytics(createShortcutEvent('help'));
+                this.openDialog();
+            },
+            'keyboardShortcuts.toggleShortcuts'
+        );
 
         // register SPACE shortcut in two steps to insure visibility of help
         // message
@@ -203,12 +190,19 @@ const KeyboardShortcut = {
         });
         this._addShortcutToHelp('SPACE', 'keyboardShortcuts.pushToTalk');
 
-        this.registerShortcut('T', null, () => {
-            sendAnalytics(createShortcutEvent('speaker.stats'));
-            APP.store.dispatch(toggleDialog(SpeakerStats, {
-                conference: APP.conference
-            }));
-        }, 'keyboardShortcuts.showSpeakerStats');
+        this.registerShortcut(
+            'T',
+            null,
+            () => {
+                sendAnalytics(createShortcutEvent('speaker.stats'));
+                APP.store.dispatch(
+                    toggleDialog(SpeakerStats, {
+                        conference: APP.conference
+                    })
+                );
+            },
+            'keyboardShortcuts.showSpeakerStats'
+        );
 
         /**
          * FIXME: Currently focus keys are directly implemented below in

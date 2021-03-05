@@ -15,7 +15,6 @@ type Props = {
  * @extends {Component}
  */
 class BetaTag extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -24,10 +23,8 @@ class BetaTag extends Component<Props> {
      */
     render() {
         return (
-            <Container className = 'beta-tag'>
-                <Text>
-                    { this.props.t('recording.beta') }
-                </Text>
+            <Container className="beta-tag">
+                <Text>{this.props.t('recording.beta')}</Text>
             </Container>
         );
     }

@@ -5,18 +5,16 @@ import React, { useEffect, useRef } from 'react';
 import { isMobileBrowser } from '../../../base/environment/utils';
 
 type Props = {
-
     /**
      * The component(s) that need to be scrollable on mobile.
      */
-   children: React$Node,
+    children: React$Node,
 
     /**
      * Whether the component is rendered within a modal.
      */
     isModal: boolean
 };
-
 
 /**
  * Component that disables {@code touchmove} propagation below it.
@@ -56,9 +54,7 @@ function TouchmoveHack({ children, isModal }: Props) {
     }, []);
 
     return (
-        <div
-            className = 'touchmove-hack'
-            ref = { touchMoveElementRef }>
+        <div className="touchmove-hack" ref={touchMoveElementRef}>
             {children}
         </div>
     );

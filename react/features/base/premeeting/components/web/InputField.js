@@ -5,7 +5,6 @@ import React, { PureComponent } from 'react';
 import { getFieldValue } from '../../../react';
 
 type Props = {
-
     /**
      * If the input should be focused on display.
      */
@@ -48,7 +47,6 @@ type Props = {
 };
 
 type State = {
-
     /**
      * True if the field is focused, false otherwise.
      */
@@ -58,7 +56,7 @@ type State = {
      * The current value of the field.
      */
     value: string
-}
+};
 
 /**
  * Implements a pre-styled input field to be used on pre-meeting screens.
@@ -114,16 +112,17 @@ export default class InputField extends PureComponent<Props, State> {
     render() {
         return (
             <input
-                autoFocus = { this.props.autoFocus }
-                className = { `field ${this.state.focused ? 'focused' : ''} ${this.props.className || ''}` }
-                data-testid = { this.props.testId ? this.props.testId : undefined }
-                onBlur = { this._onBlur }
-                onChange = { this._onChange }
-                onFocus = { this._onFocus }
-                onKeyDown = { this._onKeyDown }
-                placeholder = { this.props.placeHolder }
-                type = { this.props.type }
-                value = { this.state.value } />
+                autoFocus={this.props.autoFocus}
+                className={`field ${this.state.focused ? 'focused' : ''} ${this.props.className || ''}`}
+                data-testid={this.props.testId ? this.props.testId : undefined}
+                onBlur={this._onBlur}
+                onChange={this._onChange}
+                onFocus={this._onFocus}
+                onKeyDown={this._onKeyDown}
+                placeholder={this.props.placeHolder}
+                type={this.props.type}
+                value={this.state.value}
+            />
         );
     }
 
@@ -140,7 +139,7 @@ export default class InputField extends PureComponent<Props, State> {
         });
     }
 
-    _onChange: Object => void;
+    _onChange: (Object) => void;
 
     /**
      * Callback for the onChange event of the field.
@@ -173,7 +172,7 @@ export default class InputField extends PureComponent<Props, State> {
         });
     }
 
-    _onKeyDown: Object => void;
+    _onKeyDown: (Object) => void;
 
     /**
      * Joins the conference on 'Enter'.

@@ -9,7 +9,6 @@ import { copyText } from '../../../base/util';
 import PasswordForm from './PasswordForm';
 
 type Props = {
-
     /**
      * Whether or not the current user can modify the current password.
      */
@@ -63,17 +62,7 @@ type Props = {
  *
  * @returns {React$Element<any>}
  */
-function PasswordSection({
-    canEditPassword,
-    conference,
-    locked,
-    password,
-    passwordEditEnabled,
-    passwordNumberOfDigits,
-    setPassword,
-    setPasswordEditEnabled,
-    t }: Props) {
-
+function PasswordSection({ canEditPassword, conference, locked, password, passwordEditEnabled, passwordNumberOfDigits, setPassword, setPasswordEditEnabled, t }: Props) {
     const formRef: Object = useRef(null);
 
     /**
@@ -146,8 +135,8 @@ function PasswordSection({
         if (passwordEditEnabled) {
             return (
                 <>
-                    <a onClick = { onTogglePasswordEditState }>{ t('dialog.Cancel') }</a>
-                    <a onClick = { onPasswordSave }>{ t('dialog.add') }</a>
+                    <a onClick={onTogglePasswordEditState}>{t('dialog.Cancel')}</a>
+                    <a onClick={onPasswordSave}>{t('dialog.add')}</a>
                 </>
             );
         }
@@ -155,48 +144,44 @@ function PasswordSection({
         if (locked) {
             return (
                 <>
-                    <a
-                        className = 'remove-password'
-                        onClick = { onPasswordRemove }>{ t('dialog.Remove') }</a>
+                    <a className="remove-password" onClick={onPasswordRemove}>
+                        {t('dialog.Remove')}
+                    </a>
                     {
-
                         // There are cases like lobby and grant moderator when password is not available
-                        password ? <>
-                            <a
-                                className = 'copy-password'
-                                onClick = { onPasswordCopy }>{ t('dialog.copy') }</a>
-                        </> : null
+                        password ? (
+                            <>
+                                <a className="copy-password" onClick={onPasswordCopy}>
+                                    {t('dialog.copy')}
+                                </a>
+                            </>
+                        ) : null
                     }
                 </>
             );
         }
 
         return (
-            <a
-                className = 'add-password'
-                onClick = { onTogglePasswordEditState }>{ t('info.addPassword') }</a>
+            <a className="add-password" onClick={onTogglePasswordEditState}>
+                {t('info.addPassword')}
+            </a>
         );
     }
 
     return (
-        <div className = 'security-dialog password-section'>
-            <p className = 'description'>
-                { t(canEditPassword ? 'security.about' : 'security.aboutReadOnly') }
-            </p>
-            <div className = 'security-dialog password'>
-                <div
-                    className = 'info-dialog info-dialog-column info-dialog-password'
-                    ref = { formRef }>
+        <div className="security-dialog password-section">
+            <p className="description">{t(canEditPassword ? 'security.about' : 'security.aboutReadOnly')}</p>
+            <div className="security-dialog password">
+                <div className="info-dialog info-dialog-column info-dialog-password" ref={formRef}>
                     <PasswordForm
-                        editEnabled = { passwordEditEnabled }
-                        locked = { locked }
-                        onSubmit = { onPasswordSubmit }
-                        password = { password }
-                        passwordNumberOfDigits = { passwordNumberOfDigits } />
+                        editEnabled={passwordEditEnabled}
+                        locked={locked}
+                        onSubmit={onPasswordSubmit}
+                        password={password}
+                        passwordNumberOfDigits={passwordNumberOfDigits}
+                    />
                 </div>
-                <div className = 'security-dialog password-actions'>
-                    { renderPasswordActions() }
-                </div>
+                <div className="security-dialog password-actions">{renderPasswordActions()}</div>
             </div>
         </div>
     );

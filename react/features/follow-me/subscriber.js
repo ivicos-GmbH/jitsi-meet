@@ -1,10 +1,7 @@
 // @flow
 
 import { getCurrentConference } from '../base/conference';
-import {
-    getPinnedParticipant,
-    isLocalParticipantModerator
-} from '../base/participants';
+import { getPinnedParticipant, isLocalParticipantModerator } from '../base/participants';
 import { StateListenerRegistry } from '../base/redux';
 import { shouldDisplayTileView } from '../video-layout/functions';
 
@@ -17,20 +14,22 @@ import { FOLLOW_ME_COMMAND } from './constants';
  * notify all listeners.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/conference'].followMeEnabled,
-    /* listener */ (newSelectedValue, store) => _sendFollowMeCommand(newSelectedValue || 'off', store));
+    /* selector */ (state) => state['features/base/conference'].followMeEnabled,
+    /* listener */ (newSelectedValue, store) => _sendFollowMeCommand(newSelectedValue || 'off', store)
+);
 
 /**
  * Subscribes to changes to the currently pinned participant in the user
  * interface of the local participant.
  */
 StateListenerRegistry.register(
-    /* selector */ state => {
+    /* selector */ (state) => {
         const pinnedParticipant = getPinnedParticipant(state);
 
         return pinnedParticipant ? pinnedParticipant.id : null;
     },
-    /* listener */ _sendFollowMeCommand);
+    /* listener */ _sendFollowMeCommand
+);
 
 /**
  * Subscribes to changes to the shared document (etherpad) visibility in the
@@ -39,25 +38,19 @@ StateListenerRegistry.register(
  * @param sharedDocumentVisible {Boolean} {true} if the shared document was
  * shown (as a result of the toggle) or {false} if it was hidden
  */
-StateListenerRegistry.register(
-    /* selector */ state => state['features/etherpad'].editing,
-    /* listener */ _sendFollowMeCommand);
+StateListenerRegistry.register(/* selector */ (state) => state['features/etherpad'].editing, /* listener */ _sendFollowMeCommand);
 
 /**
  * Subscribes to changes to the filmstrip visibility in the user interface of
  * the local participant.
  */
-StateListenerRegistry.register(
-    /* selector */ state => state['features/filmstrip'].visible,
-    /* listener */ _sendFollowMeCommand);
+StateListenerRegistry.register(/* selector */ (state) => state['features/filmstrip'].visible, /* listener */ _sendFollowMeCommand);
 
 /**
  * Subscribes to changes to the tile view setting in the user interface of the
  * local participant.
  */
-StateListenerRegistry.register(
-    /* selector */ state => state['features/video-layout'].tileViewEnabled,
-    /* listener */ _sendFollowMeCommand);
+StateListenerRegistry.register(/* selector */ (state) => state['features/video-layout'].tileViewEnabled, /* listener */ _sendFollowMeCommand);
 
 /**
  * Private selector for returning state from redux that should be respected by
@@ -85,8 +78,8 @@ function _getFollowMeState(state) {
  * @private
  * @returns {void}
  */
-function _sendFollowMeCommand(
-        newSelectedValue, store) { // eslint-disable-line no-unused-vars
+function _sendFollowMeCommand(newSelectedValue, store) {
+    // eslint-disable-line no-unused-vars
     const state = store.getState();
     const conference = getCurrentConference(state);
 
@@ -103,18 +96,12 @@ function _sendFollowMeCommand(
         // if the change is to off, local user turned off follow me and
         // we want to signal this
 
-        conference.sendCommandOnce(
-            FOLLOW_ME_COMMAND,
-            { attributes: { off: true } }
-        );
+        conference.sendCommandOnce(FOLLOW_ME_COMMAND, { attributes: { off: true } });
 
         return;
     } else if (!state['features/base/conference'].followMeEnabled) {
         return;
     }
 
-    conference.sendCommand(
-        FOLLOW_ME_COMMAND,
-        { attributes: _getFollowMeState(state) }
-    );
+    conference.sendCommand(FOLLOW_ME_COMMAND, { attributes: _getFollowMeState(state) });
 }

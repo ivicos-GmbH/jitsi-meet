@@ -19,7 +19,7 @@ export default createStyleSheet({
         opacity: 0.8
     },
 
-    'ringing__avatar': {
+    ringing__avatar: {
         borderRadius: 50,
         flex: 0,
         height: 100,
@@ -33,7 +33,7 @@ export default createStyleSheet({
         justifyContent: 'center'
     },
 
-    'ringing__content': {
+    ringing__content: {
         alignItems: 'center',
         flex: 0,
         flexDirection: 'column',
@@ -43,7 +43,7 @@ export default createStyleSheet({
     /**
      * The style of {@code Text} within {@code CalleeInfo}.
      */
-    'ringing__text': {
+    ringing__text: {
         color: ColorPalette.white
     }
 });

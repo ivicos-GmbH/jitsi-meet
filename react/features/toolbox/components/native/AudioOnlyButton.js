@@ -10,7 +10,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/
  * The type of the React {@code Component} props of {@link AudioOnlyButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether the current conference is in audio only mode or not.
      */

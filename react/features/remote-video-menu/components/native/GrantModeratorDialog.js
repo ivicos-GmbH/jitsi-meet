@@ -5,8 +5,7 @@ import React from 'react';
 import { ConfirmDialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-import AbstractGrantModeratorDialog
-    from '../AbstractGrantModeratorDialog';
+import AbstractGrantModeratorDialog from '../AbstractGrantModeratorDialog';
 
 /**
  * Dialog to confirm a remote participant kick action.
@@ -19,11 +18,7 @@ class GrantModeratorDialog extends AbstractGrantModeratorDialog {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <ConfirmDialog
-                contentKey = 'dialog.grantModeratorDialog'
-                onSubmit = { this._onSubmit } />
-        );
+        return <ConfirmDialog contentKey="dialog.grantModeratorDialog" onSubmit={this._onSubmit} />;
     }
 
     _onSubmit: () => boolean;

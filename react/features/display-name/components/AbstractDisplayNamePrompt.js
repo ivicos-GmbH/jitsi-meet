@@ -10,7 +10,6 @@ import { updateSettings } from '../../base/settings';
  * {@link AbstractDisplayNamePrompt}.
  */
 export type Props = {
-
     /**
      * Invoked to update the local participant's display name.
      */
@@ -30,8 +29,7 @@ export type Props = {
 /**
  * Implements an abstract class for {@code DisplayNamePrompt}.
  */
-export default class AbstractDisplayNamePrompt<S: *>
-    extends Component<Props, S> {
+export default class AbstractDisplayNamePrompt<S: *> extends Component<Props, S> {
     /**
      * Instantiates a new component.
      *
@@ -43,7 +41,7 @@ export default class AbstractDisplayNamePrompt<S: *>
         this._onSetDisplayName = this._onSetDisplayName.bind(this);
     }
 
-    _onSetDisplayName: string => boolean;
+    _onSetDisplayName: (string) => boolean;
 
     /**
      * Dispatches an action to update the local participant's display name. A
@@ -64,9 +62,11 @@ export default class AbstractDisplayNamePrompt<S: *>
         const { dispatch, onPostSubmit } = this.props;
 
         // Store display name in settings
-        dispatch(updateSettings({
-            displayName
-        }));
+        dispatch(
+            updateSettings({
+                displayName
+            })
+        );
 
         onPostSubmit && onPostSubmit();
 

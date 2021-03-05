@@ -16,15 +16,8 @@ import {
     PIN_PARTICIPANT,
     SET_LOADABLE_AVATAR_URL
 } from './actionTypes';
-import {
-    DISCO_REMOTE_CONTROL_FEATURE
-} from './constants';
-import {
-    getLocalParticipant,
-    getNormalizedDisplayName,
-    getParticipantDisplayName,
-    getParticipantById
-} from './functions';
+import { DISCO_REMOTE_CONTROL_FEATURE } from './constants';
+import { getLocalParticipant, getNormalizedDisplayName, getParticipantDisplayName, getParticipantById } from './functions';
 import logger from './logger';
 
 /**
@@ -99,9 +92,7 @@ export function localParticipantConnectionStatusChanged(connectionStatus) {
         const participant = getLocalParticipant(getState);
 
         if (participant) {
-            return dispatch(participantConnectionStatusChanged(
-                participant.id,
-                connectionStatus));
+            return dispatch(participantConnectionStatusChanged(participant.id, connectionStatus));
         }
     };
 }
@@ -155,19 +146,20 @@ export function localParticipantLeft() {
         const participant = getLocalParticipant(getState);
 
         if (participant) {
-            return (
-                dispatch(
-                    participantLeft(
-                        participant.id,
+            return dispatch(
+                participantLeft(
+                    participant.id,
 
-                        // XXX Only the local participant is allowed to leave
-                        // without stating the JitsiConference instance because
-                        // the local participant is uniquely identified by the
-                        // very fact that there is only one local participant
-                        // (and the fact that the local participant "joins" at
-                        // the beginning of the app and "leaves" at the end of
-                        // the app).
-                        undefined)));
+                    // XXX Only the local participant is allowed to leave
+                    // without stating the JitsiConference instance because
+                    // the local participant is uniquely identified by the
+                    // very fact that there is only one local participant
+                    // (and the fact that the local participant "joins" at
+                    // the beginning of the app and "leaves" at the end of
+                    // the app).
+                    undefined
+                )
+            );
         }
     };
 }
@@ -256,8 +248,7 @@ export function participantJoined(participant) {
     const { conference } = participant;
 
     if (!conference) {
-        throw Error(
-            'A remote participant must be associated with a JitsiConference!');
+        throw Error('A remote participant must be associated with a JitsiConference!');
     }
 
     return (dispatch, getState) => {
@@ -267,11 +258,9 @@ export function participantJoined(participant) {
         // sneak a PARTICIPANT_JOINED in if its leave is delayed for any purpose
         // (which is not outragous given that leaving involves network
         // requests.)
-        const stateFeaturesBaseConference
-            = getState()['features/base/conference'];
+        const stateFeaturesBaseConference = getState()['features/base/conference'];
 
-        if (conference === stateFeaturesBaseConference.conference
-                || conference === stateFeaturesBaseConference.joining) {
+        if (conference === stateFeaturesBaseConference.conference || conference === stateFeaturesBaseConference.joining) {
             return dispatch({
                 type: PARTICIPANT_JOINED,
                 participant
@@ -285,10 +274,10 @@ export function participantJoined(participant) {
  *
  * @param {JitsiParticipant} jitsiParticipant - The ID of the participant.
  * @returns {{
-*     type: PARTICIPANT_UPDATED,
-*     participant: Participant
-* }}
-*/
+ *     type: PARTICIPANT_UPDATED,
+ *     participant: Participant
+ * }}
+ */
 export function updateRemoteParticipantFeatures(jitsiParticipant) {
     return (dispatch, getState) => {
         if (!jitsiParticipant) {
@@ -297,8 +286,9 @@ export function updateRemoteParticipantFeatures(jitsiParticipant) {
 
         const id = jitsiParticipant.getId();
 
-        jitsiParticipant.getFeatures()
-            .then(features => {
+        jitsiParticipant
+            .getFeatures()
+            .then((features) => {
                 const supportsRemoteControl = features.has(DISCO_REMOTE_CONTROL_FEATURE);
                 const participant = getParticipantById(getState(), id);
 
@@ -316,7 +306,7 @@ export function updateRemoteParticipantFeatures(jitsiParticipant) {
                     });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 logger.error(`Failed to get participant features for ${id}!`, error);
             });
     };
@@ -466,14 +456,15 @@ export function participantMutedUs(participant, track) {
 
         const isAudio = track.isAudioTrack();
 
-        dispatch(showNotification({
-            descriptionKey: isAudio ? 'notify.mutedRemotelyDescription' : 'notify.videoMutedRemotelyDescription',
-            titleKey: isAudio ? 'notify.mutedRemotelyTitle' : 'notify.videoMutedRemotelyTitle',
-            titleArguments: {
-                participantDisplayName:
-                    getParticipantDisplayName(getState, participant.getId())
-            }
-        }));
+        dispatch(
+            showNotification({
+                descriptionKey: isAudio ? 'notify.mutedRemotelyDescription' : 'notify.videoMutedRemotelyDescription',
+                titleKey: isAudio ? 'notify.mutedRemotelyTitle' : 'notify.videoMutedRemotelyTitle',
+                titleArguments: {
+                    participantDisplayName: getParticipantDisplayName(getState, participant.getId())
+                }
+            })
+        );
     };
 }
 
@@ -486,22 +477,24 @@ export function participantMutedUs(participant, track) {
  */
 export function participantKicked(kicker, kicked) {
     return (dispatch, getState) => {
-
         dispatch({
             type: PARTICIPANT_KICKED,
             kicked: kicked.getId(),
             kicker: kicker.getId()
         });
 
-        dispatch(showNotification({
-            titleArguments: {
-                kicked:
-                    getParticipantDisplayName(getState, kicked.getId()),
-                kicker:
-                    getParticipantDisplayName(getState, kicker.getId())
-            },
-            titleKey: 'notify.kickParticipant'
-        }, NOTIFICATION_TIMEOUT * 2)); // leave more time for this
+        dispatch(
+            showNotification(
+                {
+                    titleArguments: {
+                        kicked: getParticipantDisplayName(getState, kicked.getId()),
+                        kicker: getParticipantDisplayName(getState, kicker.getId())
+                    },
+                    titleKey: 'notify.kickParticipant'
+                },
+                NOTIFICATION_TIMEOUT * 2
+            )
+        ); // leave more time for this
     };
 }
 
@@ -538,7 +531,7 @@ export function pinParticipant(id) {
  *         loadableAvatarUrl: string
  *     }
  * }}
-*/
+ */
 export function setLoadableAvatarUrl(participantId, url) {
     return {
         type: SET_LOADABLE_AVATAR_URL,
@@ -548,4 +541,3 @@ export function setLoadableAvatarUrl(participantId, url) {
         }
     };
 }
-

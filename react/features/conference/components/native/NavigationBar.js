@@ -14,7 +14,6 @@ import ConferenceTimer from '../ConferenceTimer';
 import styles, { NAVBAR_GRADIENT_COLORS } from './styles';
 
 type Props = {
-
     /**
      * Whether displaying the current conference timer is enabled or not.
      */
@@ -52,40 +51,24 @@ class NavigationBar extends Component<Props> {
         }
 
         return [
-            <LinearGradient
-                colors = { NAVBAR_GRADIENT_COLORS }
-                key = { 1 }
-                pointerEvents = 'none'
-                style = { styles.gradient }>
+            <LinearGradient colors={NAVBAR_GRADIENT_COLORS} key={1} pointerEvents="none" style={styles.gradient}>
                 <SafeAreaView>
-                    <View style = { styles.gradientStretchTop } />
+                    <View style={styles.gradientStretchTop} />
                 </SafeAreaView>
             </LinearGradient>,
-            <View
-                key = { 2 }
-                pointerEvents = 'box-none'
-                style = { styles.navBarWrapper }>
-                <PictureInPictureButton
-                    styles = { styles.navBarButton } />
-                <View
-                    pointerEvents = 'box-none'
-                    style = { styles.roomNameWrapper }>
-                    {
-                        this.props._meetingNameEnabled
-                        && <Text
-                            numberOfLines = { 1 }
-                            style = { styles.roomName }>
-                            { this.props._meetingName }
+            <View key={2} pointerEvents="box-none" style={styles.navBarWrapper}>
+                <PictureInPictureButton styles={styles.navBarButton} />
+                <View pointerEvents="box-none" style={styles.roomNameWrapper}>
+                    {this.props._meetingNameEnabled && (
+                        <Text numberOfLines={1} style={styles.roomName}>
+                            {this.props._meetingName}
                         </Text>
-                    }
-                    {
-                        this.props._conferenceTimerEnabled && <ConferenceTimer />
-                    }
+                    )}
+                    {this.props._conferenceTimerEnabled && <ConferenceTimer />}
                 </View>
             </View>
         ];
     }
-
 }
 
 /**
@@ -98,11 +81,9 @@ function _mapStateToProps(state) {
     const { hideConferenceTimer, hideConferenceSubject } = state['features/base/config'];
 
     return {
-        _conferenceTimerEnabled:
-            getFeatureFlag(state, CONFERENCE_TIMER_ENABLED, true) && !hideConferenceTimer,
+        _conferenceTimerEnabled: getFeatureFlag(state, CONFERENCE_TIMER_ENABLED, true) && !hideConferenceTimer,
         _meetingName: getConferenceName(state),
-        _meetingNameEnabled:
-            getFeatureFlag(state, MEETING_NAME_ENABLED, true) && !hideConferenceSubject,
+        _meetingNameEnabled: getFeatureFlag(state, MEETING_NAME_ENABLED, true) && !hideConferenceSubject,
         _visible: isToolboxVisible(state)
     };
 }

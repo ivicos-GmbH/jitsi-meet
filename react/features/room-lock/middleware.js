@@ -1,19 +1,11 @@
 // @flow
 
 import UIEvents from '../../../service/UI/UIEvents';
-import {
-    CONFERENCE_FAILED,
-    CONFERENCE_JOINED,
-    LOCK_STATE_CHANGED,
-    SET_PASSWORD_FAILED
-} from '../base/conference';
+import { CONFERENCE_FAILED, CONFERENCE_JOINED, LOCK_STATE_CHANGED, SET_PASSWORD_FAILED } from '../base/conference';
 import { hideDialog } from '../base/dialog';
 import { JitsiConferenceErrors } from '../base/lib-jitsi-meet';
 import { MiddlewareRegistry } from '../base/redux';
-import {
-    NOTIFICATION_TIMEOUT,
-    showNotification
-} from '../notifications';
+import { NOTIFICATION_TIMEOUT, showNotification } from '../notifications';
 
 import { _openPasswordRequiredPrompt } from './actions';
 import { PasswordRequiredPrompt, RoomLockPrompt } from './components';
@@ -29,43 +21,51 @@ declare var APP: Object;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case CONFERENCE_FAILED:
-        return _conferenceFailed(store, next, action);
+        case CONFERENCE_FAILED:
+            return _conferenceFailed(store, next, action);
 
-    case CONFERENCE_JOINED:
-        return _conferenceJoined(store, next, action);
+        case CONFERENCE_JOINED:
+            return _conferenceJoined(store, next, action);
 
-    case LOCK_STATE_CHANGED: {
-        // TODO Remove this logic when all components interested in the lock
-        // state change event are moved into react/redux.
-        if (typeof APP !== 'undefined') {
-            APP.UI.emitEvent(UIEvents.TOGGLE_ROOM_LOCK, action.locked);
+        case LOCK_STATE_CHANGED: {
+            // TODO Remove this logic when all components interested in the lock
+            // state change event are moved into react/redux.
+            if (typeof APP !== 'undefined') {
+                APP.UI.emitEvent(UIEvents.TOGGLE_ROOM_LOCK, action.locked);
+            }
+
+            const previousLockedState = store.getState()['features/base/conference'].locked;
+
+            const result = next(action);
+
+            const currentLockedState = store.getState()['features/base/conference'].locked;
+
+            if (currentLockedState === LOCKED_REMOTELY) {
+                store.dispatch(
+                    showNotification(
+                        {
+                            titleKey: 'notify.passwordSetRemotely'
+                        },
+                        NOTIFICATION_TIMEOUT
+                    )
+                );
+            } else if (previousLockedState === LOCKED_REMOTELY && !currentLockedState) {
+                store.dispatch(
+                    showNotification(
+                        {
+                            titleKey: 'notify.passwordRemovedRemotely'
+                        },
+                        NOTIFICATION_TIMEOUT
+                    )
+                );
+            }
+
+            return result;
         }
-
-        const previousLockedState = store.getState()['features/base/conference'].locked;
-
-        const result = next(action);
-
-        const currentLockedState = store.getState()['features/base/conference'].locked;
-
-        if (currentLockedState === LOCKED_REMOTELY) {
-            store.dispatch(
-                showNotification({
-                    titleKey: 'notify.passwordSetRemotely'
-                }, NOTIFICATION_TIMEOUT));
-        } else if (previousLockedState === LOCKED_REMOTELY && !currentLockedState) {
-            store.dispatch(
-                showNotification({
-                    titleKey: 'notify.passwordRemovedRemotely'
-                }, NOTIFICATION_TIMEOUT));
-        }
-
-        return result;
-    }
-    case SET_PASSWORD_FAILED:
-        return _setPasswordFailed(store, next, action);
+        case SET_PASSWORD_FAILED:
+            return _setPasswordFailed(store, next, action);
     }
 
     return next(action);

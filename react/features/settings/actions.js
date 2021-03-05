@@ -6,10 +6,7 @@ import { i18next } from '../base/i18n';
 import { updateSettings } from '../base/settings';
 import { setPrejoinPageVisibility } from '../prejoin/actions';
 
-import {
-    SET_AUDIO_SETTINGS_VISIBILITY,
-    SET_VIDEO_SETTINGS_VISIBILITY
-} from './actionTypes';
+import { SET_AUDIO_SETTINGS_VISIBILITY, SET_VIDEO_SETTINGS_VISIBILITY } from './actionTypes';
 import { SettingsDialog } from './components';
 import { getMoreTabProps, getProfileTabProps } from './functions';
 
@@ -74,15 +71,15 @@ export function submitMoreTab(newState: Object): Function {
             if (showPrejoinPage && getState()['features/prejoin']?.showPrejoin) {
                 dispatch(setPrejoinPageVisibility(false));
             }
-            dispatch(updateSettings({
-                userSelectedSkipPrejoin: !showPrejoinPage
-            }));
+            dispatch(
+                updateSettings({
+                    userSelectedSkipPrejoin: !showPrejoinPage
+                })
+            );
         }
 
-        if (newState.startAudioMuted !== currentState.startAudioMuted
-            || newState.startVideoMuted !== currentState.startVideoMuted) {
-            dispatch(setStartMutedPolicy(
-                newState.startAudioMuted, newState.startVideoMuted));
+        if (newState.startAudioMuted !== currentState.startAudioMuted || newState.startVideoMuted !== currentState.startVideoMuted) {
+            dispatch(setStartMutedPolicy(newState.startAudioMuted, newState.startVideoMuted));
         }
 
         if (newState.currentLanguage !== currentState.currentLanguage) {

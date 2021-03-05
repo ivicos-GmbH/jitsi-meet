@@ -19,12 +19,9 @@ export function authorizeDropbox() {
         // configuration (not multiple for all the tenants).
         // In case deployment is running in subfolder dropbox.redirectURI
         // can be configured.
-        const redirectURI
-            = dropbox.redirectURI || `${locationURL.origin}/static/oauth.html`;
+        const redirectURI = dropbox.redirectURI || `${locationURL.origin}/static/oauth.html`;
 
-        _authorizeDropbox(dropbox.appKey, redirectURI)
-            .then(
-                token => dispatch(updateDropboxToken(token)));
+        _authorizeDropbox(dropbox.appKey, redirectURI).then((token) => dispatch(updateDropboxToken(token)));
     };
 }
 

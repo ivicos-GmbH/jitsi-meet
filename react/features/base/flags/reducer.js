@@ -22,11 +22,11 @@ const DEFAULT_STATE = {};
  */
 ReducerRegistry.register('features/base/flags', (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case UPDATE_FLAGS: {
-        const newState = _.merge({}, state, action.flags);
+        case UPDATE_FLAGS: {
+            const newState = _.merge({}, state, action.flags);
 
-        return _.isEqual(state, newState) ? state : newState;
-    }
+            return _.isEqual(state, newState) ? state : newState;
+        }
     }
 
     return state;

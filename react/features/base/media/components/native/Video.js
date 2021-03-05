@@ -85,30 +85,15 @@ export default class Video extends Component<Props> {
         if (stream) {
             // RTCView
             const style = styles.video;
-            const objectFit
-                = zoomEnabled
-                    ? 'contain'
-                    : (style && style.objectFit) || 'cover';
-            const rtcView
-                = (
-                    <RTCView
-                        mirror = { this.props.mirror }
-                        objectFit = { objectFit }
-                        streamURL = { stream.toURL() }
-                        style = { style }
-                        zOrder = { this.props.zOrder } />
-                );
+            const objectFit = zoomEnabled ? 'contain' : (style && style.objectFit) || 'cover';
+            const rtcView = <RTCView mirror={this.props.mirror} objectFit={objectFit} streamURL={stream.toURL()} style={style} zOrder={this.props.zOrder} />;
 
             // VideoTransform implements "pinch to zoom". As part of "pinch to
             // zoom", it implements onPress, of course.
             if (zoomEnabled) {
                 return (
-                    <VideoTransform
-                        enabled = { zoomEnabled }
-                        onPress = { onPress }
-                        streamId = { stream.id }
-                        style = { style }>
-                        { rtcView }
+                    <VideoTransform enabled={zoomEnabled} onPress={onPress} streamId={stream.id} style={style}>
+                        {rtcView}
                     </VideoTransform>
                 );
             }
@@ -119,11 +104,7 @@ export default class Video extends Component<Props> {
             // detection which is forgiving to imperceptible movements while
             // pressing. It's not acceptable to be so picky, especially when
             // "pinch to zoom" is not enabled.
-            return (
-                <Pressable onPress = { onPress }>
-                    { rtcView }
-                </Pressable>
-            );
+            return <Pressable onPress={onPress}>{rtcView}</Pressable>;
         }
 
         // RTCView has peculiarities which may or may not be platform specific.

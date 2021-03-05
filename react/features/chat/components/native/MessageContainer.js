@@ -7,14 +7,12 @@ import { ColorSchemeRegistry } from '../../../base/color-scheme';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 import { StyleType } from '../../../base/styles';
-import AbstractMessageContainer, { type Props as AbstractProps }
-    from '../AbstractMessageContainer';
+import AbstractMessageContainer, { type Props as AbstractProps } from '../AbstractMessageContainer';
 
 import ChatMessageGroup from './ChatMessageGroup';
 import styles from './styles';
 
 type Props = AbstractProps & {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -53,22 +51,22 @@ class MessageContainer extends AbstractMessageContainer<Props> {
 
         return (
             <FlatList
-                ListEmptyComponent = { this._renderListEmptyComponent }
-                data = { data }
-
+                ListEmptyComponent={this._renderListEmptyComponent}
+                data={data}
                 // Workaround for RN bug:
                 // https://github.com/facebook/react-native/issues/21196
-                inverted = { Boolean(data.length) }
-                keyExtractor = { this._keyExtractor }
-                keyboardShouldPersistTaps = 'always'
-                renderItem = { this._renderMessageGroup }
-                style = { styles.messageContainer } />
+                inverted={Boolean(data.length)}
+                keyExtractor={this._keyExtractor}
+                keyboardShouldPersistTaps="always"
+                renderItem={this._renderMessageGroup}
+                style={styles.messageContainer}
+            />
         );
     }
 
     _getMessagesGroupedBySender: () => Array<Array<Object>>;
 
-    _keyExtractor: Object => string
+    _keyExtractor: (Object) => string;
 
     /**
      * Key extractor for the flatlist.
@@ -93,15 +91,13 @@ class MessageContainer extends AbstractMessageContainer<Props> {
         const { _styles, t } = this.props;
 
         return (
-            <View style = { styles.emptyComponentWrapper }>
-                <Text style = { _styles.emptyComponentText }>
-                    { t('chat.noMessagesMessage') }
-                </Text>
+            <View style={styles.emptyComponentWrapper}>
+                <Text style={_styles.emptyComponentText}>{t('chat.noMessagesMessage')}</Text>
             </View>
         );
     }
 
-    _renderMessageGroup: Object => React$Element<any>;
+    _renderMessageGroup: (Object) => React$Element<any>;
 
     /**
      * Renders a single chat message.
@@ -110,7 +106,7 @@ class MessageContainer extends AbstractMessageContainer<Props> {
      * @returns {React$Element<*>}
      */
     _renderMessageGroup({ item: messages }) {
-        return <ChatMessageGroup messages = { messages } />;
+        return <ChatMessageGroup messages={messages} />;
     }
 }
 

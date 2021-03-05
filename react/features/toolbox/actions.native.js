@@ -12,7 +12,6 @@ import {
     TOGGLE_TOOLBOX_VISIBLE
 } from './actionTypes';
 
-
 /**
  * Signals that toolbox timeout should be cleared.
  *
@@ -103,8 +102,7 @@ export function setToolboxEnabled(enabled: boolean): Object {
  *     timeoutMS: number
  * }}
  */
-export function setToolboxTimeout(handler: Function, timeoutMS: number)
-      : Object {
+export function setToolboxTimeout(handler: Function, timeoutMS: number): Object {
     return {
         type: SET_TOOLBOX_TIMEOUT,
         handler,

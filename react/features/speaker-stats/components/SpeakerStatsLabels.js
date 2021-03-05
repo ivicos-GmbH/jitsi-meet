@@ -8,7 +8,6 @@ import { translate } from '../../base/i18n';
  * The type of the React {@code Component} props of {@link SpeakerStatsLabels}.
  */
 type Props = {
-
     /**
      * The function to translate human-readable text.
      */
@@ -31,14 +30,10 @@ class SpeakerStatsLabels extends Component<Props> {
         const { t } = this.props;
 
         return (
-            <div className = 'speaker-stats-item__labels'>
-                <div className = 'speaker-stats-item__status' />
-                <div className = 'speaker-stats-item__name'>
-                    { t('speakerStats.name') }
-                </div>
-                <div className = 'speaker-stats-item__time'>
-                    { t('speakerStats.speakerTime') }
-                </div>
+            <div className="speaker-stats-item__labels">
+                <div className="speaker-stats-item__status" />
+                <div className="speaker-stats-item__name">{t('speakerStats.name')}</div>
+                <div className="speaker-stats-item__time">{t('speakerStats.speakerTime')}</div>
             </div>
         );
     }

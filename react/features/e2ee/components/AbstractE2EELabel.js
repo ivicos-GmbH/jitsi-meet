@@ -1,8 +1,6 @@
 // @flow
 
-
 export type Props = {
-
     /**
      * True if the label needs to be rendered, false otherwise.
      */
@@ -25,6 +23,6 @@ export function _mapStateToProps(state: Object) {
     const participants = state['features/base/participants'];
 
     return {
-        _showLabel: participants.every(p => p.e2eeEnabled)
+        _showLabel: participants.every((p) => p.e2eeEnabled)
     };
 }

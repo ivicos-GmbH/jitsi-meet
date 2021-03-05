@@ -57,7 +57,7 @@ export const KEYS = {
 
     PERIOD: '.',
     SEMICOLON: ';',
-    QUOTE: '\'',
+    QUOTE: "'",
     BRACKET_LEFT: '[',
     BRACKET_RIGHT: ']',
     BACKQUOTE: '`',

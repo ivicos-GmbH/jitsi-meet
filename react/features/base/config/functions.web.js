@@ -8,7 +8,8 @@ export * from './functions.any';
  * @param {*} config - The configuration which needs to be cleaned up.
  * @returns {void}
  */
-export function _cleanupConfig(config: Object) { // eslint-disable-line no-unused-vars
+export function _cleanupConfig(config: Object) {
+    // eslint-disable-line no-unused-vars
 }
 
 /**

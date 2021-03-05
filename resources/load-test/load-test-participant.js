@@ -112,8 +112,7 @@ function onLocalTracks(tracks = []) {
                 localTracks[i].mute();
             }
 
-            $('body').append(
-                `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
+            $('body').append(`<audio autoplay='1' muted='true' id='localAudio${i}' />`);
             localTracks[i].attach($(`#localAudio${i}`)[0]);
         }
         room.addTrack(localTracks[i]);
@@ -125,8 +124,7 @@ function onLocalTracks(tracks = []) {
  * @param track JitsiTrack object
  */
 function onRemoteTrack(track) {
-    if (track.isLocal()
-            || (track.getType() === 'video' && !remoteVideo) || (track.getType() === 'audio' && !remoteAudio)) {
+    if (track.isLocal() || (track.getType() === 'video' && !remoteVideo) || (track.getType() === 'audio' && !remoteAudio)) {
         return;
     }
     const participant = track.getParticipantId();
@@ -203,7 +201,7 @@ function onConnectionSuccess() {
     room.on(JitsiMeetJS.events.conference.STARTED_MUTED, onStartMuted);
     room.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
     room.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
-    room.on(JitsiMeetJS.events.conference.USER_JOINED, id => {
+    room.on(JitsiMeetJS.events.conference.USER_JOINED, (id) => {
         numParticipants++;
         setNumberOfParticipants();
         remoteTracks[id] = [];
@@ -226,7 +224,7 @@ function onConnectionSuccess() {
             .then(() => {
                 room.join();
             })
-            .catch(error => {
+            .catch((error) => {
                 throw error;
             });
     } else {
@@ -248,15 +246,9 @@ function onConnectionFailed() {
  */
 function disconnect() {
     console.log('disconnect!');
-    connection.removeEventListener(
-        JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
-        onConnectionSuccess);
-    connection.removeEventListener(
-        JitsiMeetJS.events.connection.CONNECTION_FAILED,
-        onConnectionFailed);
-    connection.removeEventListener(
-        JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED,
-        disconnect);
+    connection.removeEventListener(JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED, onConnectionSuccess);
+    connection.removeEventListener(JitsiMeetJS.events.connection.CONNECTION_FAILED, onConnectionFailed);
+    connection.removeEventListener(JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED, disconnect);
 }
 
 /**

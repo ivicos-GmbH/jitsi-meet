@@ -7,7 +7,6 @@ const NOTIFICATION_SIZE = 55;
  * {@code CalendarList}.
  */
 export default createStyleSheet({
-
     /**
      * Button style of the open settings button.
      */

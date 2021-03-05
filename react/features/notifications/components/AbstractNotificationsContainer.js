@@ -6,7 +6,6 @@ import { hideNotification } from '../actions';
 import { areThereNotifications } from '../functions';
 
 export type Props = {
-
     /**
      * The notifications to be displayed, with the first index being the
      * notification at the top and the rest shown below it in order.
@@ -30,8 +29,7 @@ declare var interfaceConfig: Object;
 /**
  * Abstract class for {@code NotificationsContainer} component.
  */
-export default class AbstractNotificationsContainer<P: Props>
-    extends Component<P> {
+export default class AbstractNotificationsContainer<P: Props> extends Component<P> {
     /**
      * A timeout id returned by setTimeout.
      */
@@ -90,22 +88,13 @@ export default class AbstractNotificationsContainer<P: Props>
 
         if (_notifications.length) {
             const notification = _notifications[0];
-            const previousNotification
-                = prevProps && prevProps._notifications.length
-                    ? prevProps._notifications[0]
-                    : undefined;
+            const previousNotification = prevProps && prevProps._notifications.length ? prevProps._notifications[0] : undefined;
 
             if (notification !== previousNotification) {
                 this._clearNotificationDismissTimeout();
 
-                if (notification
-                        && (notification.timeout
-                            || typeof autoDismissTimeout === 'number')
-                        && notification.props.isDismissAllowed !== false) {
-                    const {
-                        timeout = autoDismissTimeout,
-                        uid
-                    } = notification;
+                if (notification && (notification.timeout || typeof autoDismissTimeout === 'number') && notification.props.isDismissAllowed !== false) {
+                    const { timeout = autoDismissTimeout, uid } = notification;
 
                     this._notificationDismissTimeout = setTimeout(() => {
                         // Perform a no-op if a timeout is not specified.
@@ -130,7 +119,7 @@ export default class AbstractNotificationsContainer<P: Props>
         this._clearNotificationDismissTimeout();
     }
 
-    _onDismissed: number => void;
+    _onDismissed: (number) => void;
 
     /**
      * Clears the running notification dismiss timeout, if any.
@@ -138,8 +127,7 @@ export default class AbstractNotificationsContainer<P: Props>
      * @returns {void}
      */
     _clearNotificationDismissTimeout() {
-        this._notificationDismissTimeout
-            && clearTimeout(this._notificationDismissTimeout);
+        this._notificationDismissTimeout && clearTimeout(this._notificationDismissTimeout);
 
         this._notificationDismissTimeout = null;
     }
@@ -181,8 +169,9 @@ export function _abstractMapStateToProps(state: Object) {
 
     return {
         _notifications: _visible ? notifications : [],
-        autoDismissTimeout: typeof interfaceConfig === 'undefined'
-            ? undefined // Ignore for the case of mobile
-            : interfaceConfig.ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT
+        autoDismissTimeout:
+            typeof interfaceConfig === 'undefined'
+                ? undefined // Ignore for the case of mobile
+                : interfaceConfig.ENFORCE_NOTIFICATION_AUTO_DISMISS_TIMEOUT
     };
 }

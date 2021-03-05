@@ -13,7 +13,6 @@ import { toggleBlurEffect } from '../actions';
  * The type of the React {@code Component} props of {@link VideoBlurButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * True if the video background is blurred or false if it is not.
      */
@@ -28,7 +27,6 @@ type Props = AbstractButtonProps & {
      * The redux {@code dispatch} function.
      */
     dispatch: Function
-
 };
 
 /**
@@ -99,4 +97,3 @@ function _mapStateToProps(state): Object {
 }
 
 export default translate(connect(_mapStateToProps)(VideoBlurButton));
-

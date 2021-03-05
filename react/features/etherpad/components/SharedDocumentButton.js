@@ -9,9 +9,7 @@ import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { toggleDocument } from '../actions';
 
-
 type Props = AbstractButtonProps & {
-
     /**
      * Whether the shared document is being edited or not.
      */
@@ -20,7 +18,7 @@ type Props = AbstractButtonProps & {
     /**
      * Redux dispatch function.
      */
-    dispatch: Dispatch<any>,
+    dispatch: Dispatch<any>
 };
 
 /**
@@ -39,11 +37,11 @@ class SharedDocumentButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        sendAnalytics(createToolbarEvent(
-            'toggle.etherpad',
-            {
+        sendAnalytics(
+            createToolbarEvent('toggle.etherpad', {
                 enable: !this.props._editing
-            }));
+            })
+        );
         this.props.dispatch(toggleDocument());
     }
 

@@ -26,7 +26,6 @@ declare var __DEV__;
  * The type of React {@code Component} props of {@link App}.
  */
 type Props = AbstractAppProps & {
-
     /**
      * An object of colors that override the default colors of the app/sdk.
      */
@@ -126,12 +125,7 @@ export class App extends AbstractApp {
      * @override
      */
     _createMainElement(component, props) {
-        return (
-            <DimensionsDetector
-                onDimensionsChanged = { this._onDimensionsChanged }>
-                { super._createMainElement(component, props) }
-            </DimensionsDetector>
-        );
+        return <DimensionsDetector onDimensionsChanged={this._onDimensionsChanged}>{super._createMainElement(component, props)}</DimensionsDetector>;
     }
 
     /**
@@ -193,9 +187,7 @@ export class App extends AbstractApp {
      * @returns {React$Element}
      */
     _renderDialogContainer() {
-        return (
-            <DialogContainer />
-        );
+        return <DialogContainer />;
     }
 }
 

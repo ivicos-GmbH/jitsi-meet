@@ -4,11 +4,7 @@ import React, { Component } from 'react';
 
 import { Avatar } from '../../../base/avatar';
 import { MEDIA_TYPE } from '../../../base/media';
-import {
-    getParticipants,
-    getParticipantDisplayName,
-    getParticipantPresenceStatus
-} from '../../../base/participants';
+import { getParticipants, getParticipantDisplayName, getParticipantPresenceStatus } from '../../../base/participants';
 import { Container, Text } from '../../../base/react';
 import { connect } from '../../../base/redux';
 import { isLocalTrackMuted } from '../../../base/tracks';
@@ -20,7 +16,6 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@link CalleeInfo}.
  */
 type Props = {
-
     /**
      * The callee's information such as display name.
      */
@@ -28,7 +23,6 @@ type Props = {
 
     _isVideoMuted: boolean
 };
-
 
 /**
  * Implements a React {@link Component} which depicts the establishment of a
@@ -44,32 +38,18 @@ class CalleeInfo extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            id,
-            name,
-            status = CALLING
-        } = this.props._callee;
+        const { id, name, status = CALLING } = this.props._callee;
         const className = this.props._isVideoMuted ? 'solidBG' : undefined;
 
         return (
-            <Container
-                { ...this._style('ringing', className) }
-                id = 'ringOverlay'>
-                <Container
-                    { ...this._style('ringing__content') }>
-                    <Avatar
-                        { ...this._style('ringing__avatar') }
-                        participantId = { id } />
-                    <Container { ...this._style('ringing__status') }>
-                        <PresenceLabel
-                            defaultPresence = { status }
-                            { ...this._style('ringing__text') } />
+            <Container {...this._style('ringing', className)} id="ringOverlay">
+                <Container {...this._style('ringing__content')}>
+                    <Avatar {...this._style('ringing__avatar')} participantId={id} />
+                    <Container {...this._style('ringing__status')}>
+                        <PresenceLabel defaultPresence={status} {...this._style('ringing__text')} />
                     </Container>
-                    <Container { ...this._style('ringing__name') }>
-                        <Text
-                            { ...this._style('ringing__text') }>
-                            { name }
-                        </Text>
+                    <Container {...this._style('ringing__name')}>
+                        <Text {...this._style('ringing__text')}>{name}</Text>
                     </Container>
                 </Container>
             </Container>
@@ -133,10 +113,8 @@ class CalleeInfo extends Component<Props> {
  * }}
  */
 function _mapStateToProps(state) {
-    const _isVideoMuted
-        = isLocalTrackMuted(state['features/base/tracks'], MEDIA_TYPE.VIDEO);
-    const poltergeist
-        = getParticipants(state).find(p => p.botType === 'poltergeist');
+    const _isVideoMuted = isLocalTrackMuted(state['features/base/tracks'], MEDIA_TYPE.VIDEO);
+    const poltergeist = getParticipants(state).find((p) => p.botType === 'poltergeist');
 
     if (poltergeist) {
         const { id } = poltergeist;

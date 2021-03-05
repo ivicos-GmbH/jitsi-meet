@@ -3,19 +3,13 @@
 import type { AudioElement } from '../media';
 import { assign, ReducerRegistry } from '../redux';
 
-import {
-    _ADD_AUDIO_ELEMENT,
-    _REMOVE_AUDIO_ELEMENT,
-    REGISTER_SOUND,
-    UNREGISTER_SOUND
-} from './actionTypes';
+import { _ADD_AUDIO_ELEMENT, _REMOVE_AUDIO_ELEMENT, REGISTER_SOUND, UNREGISTER_SOUND } from './actionTypes';
 import logger from './logger';
 
 /**
  * The structure use by this reducer to describe a sound.
  */
 export type Sound = {
-
     /**
      * The HTMLAudioElement which implements the audio playback functionality.
      * Becomes available once the sound resource gets loaded and the sound can
@@ -34,7 +28,7 @@ export type Sound = {
      * This field is container for all optional parameters related to the sound.
      */
     options: Object
-}
+};
 
 /**
  * Initial/default state of the feature {@code base/sounds}. It is a {@code Map}
@@ -47,10 +41,8 @@ const DEFAULT_STATE = new Map();
 /**
  * The base/sounds feature's reducer.
  */
-ReducerRegistry.register(
-    'features/base/sounds',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/sounds', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case _ADD_AUDIO_ELEMENT:
         case _REMOVE_AUDIO_ELEMENT:
             return _addOrRemoveAudioElement(state, action);
@@ -63,8 +55,8 @@ ReducerRegistry.register(
 
         default:
             return state;
-        }
-    });
+    }
+});
 
 /**
  * Adds or removes {@link AudioElement} associated with a {@link Sound}.
@@ -84,15 +76,19 @@ function _addOrRemoveAudioElement(state, action) {
 
     if (sound) {
         if (isAddAction) {
-            nextState.set(soundId,
+            nextState.set(
+                soundId,
                 assign(sound, {
                     audioElement: action.audioElement
-                }));
+                })
+            );
         } else {
-            nextState.set(soundId,
+            nextState.set(
+                soundId,
                 assign(sound, {
                     audioElement: undefined
-                }));
+                })
+            );
         }
     } else {
         logger.warn(`${action.type}: no sound for id: ${soundId}`);

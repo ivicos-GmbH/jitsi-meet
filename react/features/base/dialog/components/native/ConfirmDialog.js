@@ -13,7 +13,6 @@ import BaseSubmitDialog from './BaseSubmitDialog';
 import { brandedDialog } from './styles';
 
 type Props = BaseProps & {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -26,10 +25,10 @@ type Props = BaseProps & {
      * translated using the provided params. See i18n function
      * {@code translate(string, Object)} for more details.
      */
-    contentKey: string | { key: string, params: Object},
+    contentKey: string | { key: string, params: Object },
 
     t: Function
-}
+};
 
 /**
  * Implements a confirm dialog component.
@@ -58,16 +57,8 @@ class ConfirmDialog extends BaseSubmitDialog<Props, *> {
         const { _dialogStyles, cancelKey, t } = this.props;
 
         return (
-            <TouchableOpacity
-                onPress = { this._onCancel }
-                style = { [
-                    _dialogStyles.button,
-                    brandedDialog.buttonFarLeft,
-                    _dialogStyles.buttonSeparator
-                ] }>
-                <Text style = { _dialogStyles.buttonLabel }>
-                    { t(cancelKey || 'dialog.confirmNo') }
-                </Text>
+            <TouchableOpacity onPress={this._onCancel} style={[_dialogStyles.button, brandedDialog.buttonFarLeft, _dialogStyles.buttonSeparator]}>
+                <Text style={_dialogStyles.buttonLabel}>{t(cancelKey || 'dialog.confirmNo')}</Text>
             </TouchableOpacity>
         );
     }
@@ -83,19 +74,12 @@ class ConfirmDialog extends BaseSubmitDialog<Props, *> {
         }
 
         const { _dialogStyles, contentKey, t } = this.props;
-        const content
-            = typeof contentKey === 'string'
-                ? t(contentKey)
-                : this._renderHTML(t(contentKey.key, contentKey.params));
+        const content = typeof contentKey === 'string' ? t(contentKey) : this._renderHTML(t(contentKey.key, contentKey.params));
 
-        return (
-            <Text style = { _dialogStyles.text }>
-                { content }
-            </Text>
-        );
+        return <Text style={_dialogStyles.text}>{content}</Text>;
     }
 
-    _renderHTML: string => Object | string
+    _renderHTML: (string) => Object | string;
 }
 
 export default translate(connect(_abstractMapStateToProps)(ConfirmDialog));

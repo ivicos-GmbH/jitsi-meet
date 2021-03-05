@@ -67,9 +67,7 @@ export function createFakeConfig(baseURL: string) {
  * }.
  * @returns {void}
  */
-export function overrideConfigJSON(
-        config: ?Object, interfaceConfig: ?Object, loggingConfig: ?Object,
-        json: Object) {
+export function overrideConfigJSON(config: ?Object, interfaceConfig: ?Object, loggingConfig: ?Object, json: Object) {
     for (const configName of Object.keys(json)) {
         let configObj;
 
@@ -81,17 +79,13 @@ export function overrideConfigJSON(
             configObj = loggingConfig;
         }
         if (configObj) {
-            const configJSON
-                = _getWhitelistedJSON(configName, json[configName]);
+            const configJSON = _getWhitelistedJSON(configName, json[configName]);
 
             if (!_.isEmpty(configJSON)) {
-                logger.info(
-                    `Extending ${configName} with: ${
-                        JSON.stringify(configJSON)}`);
+                logger.info(`Extending ${configName} with: ${JSON.stringify(configJSON)}`);
 
                 // eslint-disable-next-line arrow-body-style
                 _.mergeWith(configObj, configJSON, (oldValue, newValue) => {
-
                     // XXX We don't want to merge the arrays, we want to
                     // overwrite them.
                     return Array.isArray(oldValue) ? newValue : undefined;
@@ -170,11 +164,7 @@ export function restoreConfig(baseURL: string): ?Object {
  * @param {URI} location - The new location to which the app is navigating to.
  * @returns {void}
  */
-export function setConfigFromURLParams(
-        config: ?Object,
-        interfaceConfig: ?Object,
-        loggingConfig: ?Object,
-        location: Object) {
+export function setConfigFromURLParams(config: ?Object, interfaceConfig: ?Object, loggingConfig: ?Object, location: Object) {
     const params = parseURLParams(location);
     const json = {};
 

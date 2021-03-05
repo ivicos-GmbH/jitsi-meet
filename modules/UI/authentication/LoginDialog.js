@@ -1,18 +1,14 @@
 /* global $, APP, config */
 
 import { toJid } from '../../../react/features/base/connection/functions';
-import {
-    JitsiConnectionErrors
-} from '../../../react/features/base/lib-jitsi-meet';
+import { JitsiConnectionErrors } from '../../../react/features/base/lib-jitsi-meet';
 
 /**
  * Build html for "password required" dialog.
  * @returns {string} html string
  */
 function getPasswordInputHtml() {
-    const placeholder = config.hosts.authdomain
-        ? 'user identity'
-        : 'user@domain.net';
+    const placeholder = config.hosts.authdomain ? 'user identity' : 'user@domain.net';
 
     return `
         <input name="username" type="text"
@@ -47,14 +43,18 @@ function cancelButton() {
  * @param {function} [cancelCallback] callback to invoke if user canceled.
  */
 function LoginDialog(successCallback, cancelCallback) {
-    const loginButtons = [ {
-        title: APP.translation.generateTranslationHTML('dialog.Ok'),
-        value: true
-    } ];
-    const finishedButtons = [ {
-        title: APP.translation.generateTranslationHTML('dialog.retry'),
-        value: 'retry'
-    } ];
+    const loginButtons = [
+        {
+            title: APP.translation.generateTranslationHTML('dialog.Ok'),
+            value: true
+        }
+    ];
+    const finishedButtons = [
+        {
+            title: APP.translation.generateTranslationHTML('dialog.retry'),
+            value: 'retry'
+        }
+    ];
 
     // show "cancel" button only if cancelCallback provided
     if (cancelCallback) {
@@ -69,7 +69,8 @@ function LoginDialog(successCallback, cancelCallback) {
             html: getPasswordInputHtml(),
             titleKey: 'dialog.passwordRequired',
 
-            submit(e, v, m, f) { // eslint-disable-line max-params
+            submit(e, v, m, f) {
+                // eslint-disable-line max-params
                 e.preventDefault();
                 if (v) {
                     const jid = f.username;
@@ -126,8 +127,7 @@ function LoginDialog(successCallback, cancelCallback) {
      * @param error the key to the error to be displayed.
      * @param options the options to the error message (optional)
      */
-    this.displayError = function(error, options) {
-
+    this.displayError = function (error, options) {
         const finishedState = connDialog.getState('finished');
 
         const errorMessageElem = finishedState.find('#errorMessage');
@@ -142,7 +142,7 @@ function LoginDialog(successCallback, cancelCallback) {
             messageKey = 'dialog.connectErrorWithMsg';
 
             if (!options) {
-                options = {};// eslint-disable-line no-param-reassign
+                options = {}; // eslint-disable-line no-param-reassign
             }
 
             options.msg = error;
@@ -159,7 +159,7 @@ function LoginDialog(successCallback, cancelCallback) {
      *  Show message as connection status.
      * @param {string} messageKey the key to the message
      */
-    this.displayConnectionStatus = function(messageKey) {
+    this.displayConnectionStatus = function (messageKey) {
         const connectingState = connDialog.getState('connecting');
 
         const connectionStatus = connectingState.find('#connectionStatus');
@@ -171,13 +171,12 @@ function LoginDialog(successCallback, cancelCallback) {
     /**
      * Closes LoginDialog.
      */
-    this.close = function() {
+    this.close = function () {
         connDialog.close();
     };
 }
 
 export default {
-
     /**
      * Show new auth dialog for JitsiConnection.
      *
@@ -198,7 +197,9 @@ export default {
      */
     showExternalAuthDialog(url, callback) {
         const dialog = APP.UI.messageHandler.openCenteredPopup(
-            url, 910, 660,
+            url,
+            910,
+            660,
 
             // On closed
             callback
@@ -225,32 +226,23 @@ export default {
      * @returns dialog
      */
     showAuthRequiredDialog(room, onAuthNow) {
-        const msg = APP.translation.generateTranslationHTML(
-            '[html]dialog.WaitForHostMsg',
-            { room }
-        );
-        const buttonTxt = APP.translation.generateTranslationHTML(
-            'dialog.IamHost'
-        );
-        const buttons = [ {
-            title: buttonTxt,
-            value: 'authNow'
-        } ];
-
-        return APP.UI.messageHandler.openDialog(
-            'dialog.WaitingForHost',
-            msg,
-            true,
-            buttons,
-            (e, submitValue) => {
-                // Do not close the dialog yet.
-                e.preventDefault();
-
-                // Open login popup.
-                if (submitValue === 'authNow') {
-                    onAuthNow();
-                }
+        const msg = APP.translation.generateTranslationHTML('[html]dialog.WaitForHostMsg', { room });
+        const buttonTxt = APP.translation.generateTranslationHTML('dialog.IamHost');
+        const buttons = [
+            {
+                title: buttonTxt,
+                value: 'authNow'
             }
-        );
+        ];
+
+        return APP.UI.messageHandler.openDialog('dialog.WaitingForHost', msg, true, buttons, (e, submitValue) => {
+            // Do not close the dialog yet.
+            e.preventDefault();
+
+            // Open login popup.
+            if (submitValue === 'authNow') {
+                onAuthNow();
+            }
+        });
     }
 };

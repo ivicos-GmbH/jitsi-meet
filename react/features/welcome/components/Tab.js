@@ -5,7 +5,6 @@ import React, { Component } from 'react';
  * The type of the React {@code Component} props of {@link Tab}
  */
 type Props = {
-
     /**
      * The index of the tab.
      */
@@ -25,7 +24,7 @@ type Props = {
      * Handler for selecting the tab.
      */
     onSelect: Function
-}
+};
 
 /**
  * A React component that implements tabs.
@@ -66,11 +65,9 @@ export default class Tab extends Component<Props> {
         const className = `tab${isSelected ? ' selected' : ''}`;
 
         return (
-            <div
-                className = { className }
-                key = { index }
-                onClick = { this._onSelect }>
-                { label }
-            </div>);
+            <div className={className} key={index} onClick={this._onSelect}>
+                {label}
+            </div>
+        );
     }
 }

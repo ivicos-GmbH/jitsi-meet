@@ -6,7 +6,6 @@ import { getParticipantById } from '../../base/participants';
 import { sendMessage, setPrivateMessageRecipient } from '../actions';
 
 type Props = {
-
     /**
      * The message that is about to be sent.
      */
@@ -96,7 +95,7 @@ export function _mapDispatchToProps(dispatch: Function): $Shape<Props> {
             dispatch(sendMessage(message, true));
         },
 
-        _onSetMessageRecipient: participant => {
+        _onSetMessageRecipient: (participant) => {
             dispatch(setPrivateMessageRecipient(participant));
         }
     };

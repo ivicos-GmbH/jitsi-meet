@@ -14,7 +14,6 @@ declare var interfaceConfig: Object;
  * {@link OverflowMenuProfileItem}.
  */
 type Props = {
-
     /**
      * The redux representation of the local participant.
      */
@@ -65,8 +64,7 @@ class OverflowMenuProfileItem extends Component<Props> {
      */
     render() {
         const { _localParticipant, _unclickable, t } = this.props;
-        const classNames = `overflow-menu-item ${
-            _unclickable ? 'unclickable' : ''}`;
+        const classNames = `overflow-menu-item ${_unclickable ? 'unclickable' : ''}`;
         let displayName;
 
         if (_localParticipant && _localParticipant.name) {
@@ -76,18 +74,11 @@ class OverflowMenuProfileItem extends Component<Props> {
         }
 
         return (
-            <li
-                aria-label = { t('toolbar.accessibilityLabel.profile') }
-                className = { classNames }
-                onClick = { this._onClick }>
-                <span className = 'overflow-menu-item-icon'>
-                    <Avatar
-                        participantId = { _localParticipant.id }
-                        size = { 20 } />
+            <li aria-label={t('toolbar.accessibilityLabel.profile')} className={classNames} onClick={this._onClick}>
+                <span className="overflow-menu-item-icon">
+                    <Avatar participantId={_localParticipant.id} size={20} />
                 </span>
-                <span className = 'profile-text'>
-                    { displayName }
-                </span>
+                <span className="profile-text">{displayName}</span>
             </li>
         );
     }
@@ -120,8 +111,7 @@ class OverflowMenuProfileItem extends Component<Props> {
 function _mapStateToProps(state) {
     return {
         _localParticipant: getLocalParticipant(state),
-        _unclickable: state['features/base/config'].disableProfile
-            || !interfaceConfig.SETTINGS_SECTIONS.includes('profile')
+        _unclickable: state['features/base/config'].disableProfile || !interfaceConfig.SETTINGS_SECTIONS.includes('profile')
     };
 }
 

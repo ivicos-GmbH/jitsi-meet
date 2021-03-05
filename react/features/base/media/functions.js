@@ -5,7 +5,6 @@ import { getPropertyValue } from '../settings';
 
 import { VIDEO_MUTISM_AUTHORITY } from './constants';
 
-
 // XXX The configurations/preferences/settings startWithAudioMuted and startWithVideoMuted were introduced for
 // conferences/meetings. So it makes sense for these to not be considered outside of conferences/meetings
 // (e.g. WelcomePage). Later on, though, we introduced a "Video <-> Voice" toggle on the WelcomePage which utilizes
@@ -44,8 +43,7 @@ export function isAudioMuted(stateful: Function | Object) {
  * @returns {boolean}
  */
 export function isVideoMutedByAudioOnly(stateful: Function | Object) {
-    return (
-        _isVideoMutedByAuthority(stateful, VIDEO_MUTISM_AUTHORITY.AUDIO_ONLY));
+    return _isVideoMutedByAuthority(stateful, VIDEO_MUTISM_AUTHORITY.AUDIO_ONLY);
 }
 
 /**
@@ -59,9 +57,7 @@ export function isVideoMutedByAudioOnly(stateful: Function | Object) {
  * @returns {boolean} If video is currently muted by the specified
  * {@code videoMutismAuthority}, then {@code true}; otherwise, {@code false}.
  */
-function _isVideoMutedByAuthority(
-        stateful: Function | Object,
-        videoMutismAuthority: number) {
+function _isVideoMutedByAuthority(stateful: Function | Object, videoMutismAuthority: number) {
     const { muted } = toState(stateful)['features/base/media'].video;
 
     // eslint-disable-next-line no-bitwise
@@ -109,11 +105,6 @@ export function isVideoMutedByUser(stateful: Function | Object) {
  * @returns {boolean} True if the specified videoTrack should be renderd;
  * otherwise, false.
  */
-export function shouldRenderVideoTrack(
-        videoTrack: ?{ muted: boolean, videoStarted: boolean },
-        waitForVideoStarted: boolean) {
-    return (
-        videoTrack
-            && !videoTrack.muted
-            && (!waitForVideoStarted || videoTrack.videoStarted));
+export function shouldRenderVideoTrack(videoTrack: ?{ muted: boolean, videoStarted: boolean }, waitForVideoStarted: boolean) {
+    return videoTrack && !videoTrack.muted && (!waitForVideoStarted || videoTrack.videoStarted);
 }

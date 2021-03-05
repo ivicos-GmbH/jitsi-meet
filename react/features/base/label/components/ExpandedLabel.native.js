@@ -6,7 +6,6 @@ import { Animated, Text, View } from 'react-native';
 import styles, { DEFAULT_COLOR, LABEL_MARGIN, LABEL_SIZE } from './styles';
 
 export type Props = {
-
     /**
      * The position of the parent element (from right to left) to display the
      * arrow.
@@ -15,7 +14,6 @@ export type Props = {
 };
 
 type State = {
-
     /**
      * The opacity animation Object.
      */
@@ -64,9 +62,10 @@ export default class ExpandedLabel<P: Props> extends Component<P, State> {
             velocity: 1,
             useNativeDriver: true
         }).start(({ finished }) => {
-            finished && this.setState({
-                showArrow: true
-            });
+            finished &&
+                this.setState({
+                    showArrow: true
+                });
         });
     }
 
@@ -76,35 +75,35 @@ export default class ExpandedLabel<P: Props> extends Component<P, State> {
      * @inheritdoc
      */
     render() {
-        const arrowPosition
-            = this.props.parentPosition - LABEL_MARGIN - (LABEL_SIZE / 2);
+        const arrowPosition = this.props.parentPosition - LABEL_MARGIN - LABEL_SIZE / 2;
 
         return (
             <Animated.View
-                style = { [
+                style={[
                     styles.expandedLabelWrapper,
                     {
                         opacity: this.state.opacityAnimation
                     }
-                ] } >
+                ]}
+            >
                 <View
-                    style = { [
+                    style={[
                         styles.expandedLabelArrow,
                         {
                             backgroundColor: this._getColor() || DEFAULT_COLOR,
                             marginRight: arrowPosition + ARROW_OFFSET
                         }
-                    ] } />
+                    ]}
+                />
                 <View
-                    style = { [
+                    style={[
                         styles.expandedLabelContainer,
                         {
                             backgroundColor: this._getColor() || DEFAULT_COLOR
                         }
-                    ] }>
-                    <Text style = { styles.expandedLabelText }>
-                        { this._getLabel() }
-                    </Text>
+                    ]}
+                >
+                    <Text style={styles.expandedLabelText}>{this._getLabel()}</Text>
                 </View>
             </Animated.View>
         );
@@ -116,9 +115,9 @@ export default class ExpandedLabel<P: Props> extends Component<P, State> {
      *
      * @returns {string}
      */
-    _getLabel: () => string
+    _getLabel: () => string;
 
-    _getColor: () => string
+    _getColor: () => string;
 
     /**
      * Defines the color of the expanded label. This function returns a default

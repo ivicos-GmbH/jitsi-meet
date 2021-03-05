@@ -79,10 +79,11 @@ export default class Storage {
      * @returns {Promise}
      */
     _getItemAsync(key) {
-        return (
-            (this._initializing || Promise.resolve())
-                .catch(() => { /* _getItemAsync should always resolve! */ })
-                .then(() => this.getItem(key)));
+        return (this._initializing || Promise.resolve())
+            .catch(() => {
+                /* _getItemAsync should always resolve! */
+            })
+            .then(() => this.getItem(key));
     }
 
     /**
@@ -97,28 +98,20 @@ export default class Storage {
             // Load all previously persisted data items from React Native's
             // AsyncStorage.
 
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 AsyncStorage.getAllKeys().then((...getAllKeysCallbackArgs) => {
                     // XXX The keys argument of getAllKeys' callback may or may
                     // not be preceded by an error argument.
-                    const keys
-                        = getAllKeysCallbackArgs[
-                            getAllKeysCallbackArgs.length - 1
-                        ].filter(key => key.startsWith(this._keyPrefix));
+                    const keys = getAllKeysCallbackArgs[getAllKeysCallbackArgs.length - 1].filter((key) => key.startsWith(this._keyPrefix));
 
-                    AsyncStorage.multiGet(keys)
-                    .then((...multiGetCallbackArgs) => {
+                    AsyncStorage.multiGet(keys).then((...multiGetCallbackArgs) => {
                         // XXX The result argument of multiGet may or may not be
                         // preceded by an errors argument.
-                        const result
-                            = multiGetCallbackArgs[
-                                multiGetCallbackArgs.length - 1
-                            ];
-                        const keyPrefixLength
-                            = this._keyPrefix && this._keyPrefix.length;
+                        const result = multiGetCallbackArgs[multiGetCallbackArgs.length - 1];
+                        const keyPrefixLength = this._keyPrefix && this._keyPrefix.length;
 
                         // eslint-disable-next-line prefer-const
-                        for (let [ key, value ] of result) {
+                        for (let [key, value] of result) {
                             key = key.substring(keyPrefixLength);
 
                             // XXX The loading of the previously persisted data
@@ -171,8 +164,7 @@ export default class Storage {
      */
     removeItem(key) {
         delete this[key];
-        typeof this._keyPrefix === 'undefined'
-            || AsyncStorage.removeItem(`${String(this._keyPrefix)}${key}`);
+        typeof this._keyPrefix === 'undefined' || AsyncStorage.removeItem(`${String(this._keyPrefix)}${key}`);
     }
 
     /**
@@ -186,7 +178,6 @@ export default class Storage {
     setItem(key, value) {
         value = String(value); // eslint-disable-line no-param-reassign
         this[key] = value;
-        typeof this._keyPrefix === 'undefined'
-            || AsyncStorage.setItem(`${String(this._keyPrefix)}${key}`, value);
+        typeof this._keyPrefix === 'undefined' || AsyncStorage.setItem(`${String(this._keyPrefix)}${key}`, value);
     }
 }

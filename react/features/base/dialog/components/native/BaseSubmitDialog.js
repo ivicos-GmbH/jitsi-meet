@@ -6,19 +6,16 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { StyleType } from '../../../styles';
 
 import BaseDialog, { type Props as BaseProps } from './BaseDialog';
-import {
-    brandedDialog
-} from './styles';
+import { brandedDialog } from './styles';
 
 type Props = BaseProps & {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
     _dialogStyles: StyleType,
 
     t: Function
-}
+};
 
 /**
  * Abstract dialog to submit something. E.g. a confirmation or a form.
@@ -57,23 +54,15 @@ class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
 
         return (
             <View>
-                <View style = { brandedDialog.mainWrapper }>
-                    { this._renderSubmittable() }
-                </View>
-                <View style = { brandedDialog.buttonWrapper }>
-                    { additionalButtons }
+                <View style={brandedDialog.mainWrapper}>{this._renderSubmittable()}</View>
+                <View style={brandedDialog.buttonWrapper}>
+                    {additionalButtons}
                     <TouchableOpacity
-                        disabled = { this.props.okDisabled }
-                        onPress = { this._onSubmit }
-                        style = { [
-                            _dialogStyles.button,
-                            additionalButtons
-                                ? null : brandedDialog.buttonFarLeft,
-                            brandedDialog.buttonFarRight
-                        ] }>
-                        <Text style = { _dialogStyles.buttonLabel }>
-                            { t(this._getSubmitButtonKey()) }
-                        </Text>
+                        disabled={this.props.okDisabled}
+                        onPress={this._onSubmit}
+                        style={[_dialogStyles.button, additionalButtons ? null : brandedDialog.buttonFarLeft, brandedDialog.buttonFarRight]}
+                    >
+                        <Text style={_dialogStyles.buttonLabel}>{t(this._getSubmitButtonKey())}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -84,7 +73,7 @@ class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
 
     _onSubmit: () => boolean;
 
-    _renderHTML: string => Object | string
+    _renderHTML: (string) => Object | string;
 
     /**
      * Renders the actual content of the dialog defining what is about to be
@@ -93,7 +82,7 @@ class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
      *
      * @returns {Object}
      */
-    _renderSubmittable: () => Object
+    _renderSubmittable: () => Object;
 }
 
 export default BaseSubmitDialog;

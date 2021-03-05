@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Icon, IconArrowUpWide, IconArrowDownWide } from '../../../base/icons';
 
 type Props = {
-
     /**
      * Whether the drawer should have a button that expands its size or not.
      */
@@ -32,12 +31,8 @@ type Props = {
  *
  * @returns {ReactElement}
  */
-function Drawer({
-    canExpand,
-    children,
-    isOpen,
-    onClose }: Props) {
-    const [ expanded, setExpanded ] = useState(false);
+function Drawer({ canExpand, children, isOpen, onClose }: Props) {
+    const [expanded, setExpanded] = useState(false);
     const drawerRef: Object = useRef(null);
 
     /**
@@ -58,7 +53,7 @@ function Drawer({
         return () => {
             window.removeEventListener('mousedown', handleOutsideClick);
         };
-    }, [ drawerRef ]);
+    }, [drawerRef]);
 
     /**
      * Toggles the menu state between expanded/collapsed.
@@ -69,22 +64,16 @@ function Drawer({
         setExpanded(!expanded);
     }
 
-    return (
-        isOpen ? (
-            <div
-                className = { `drawer-menu${expanded ? ' expanded' : ''}` }
-                ref = { drawerRef }>
-                {canExpand && (
-                    <div
-                        className = 'drawer-toggle'
-                        onClick = { toggleExpanded }>
-                        <Icon src = { expanded ? IconArrowDownWide : IconArrowUpWide } />
-                    </div>
-                )}
-                {children}
-            </div>
-        ) : null
-    );
+    return isOpen ? (
+        <div className={`drawer-menu${expanded ? ' expanded' : ''}`} ref={drawerRef}>
+            {canExpand && (
+                <div className="drawer-toggle" onClick={toggleExpanded}>
+                    <Icon src={expanded ? IconArrowDownWide : IconArrowUpWide} />
+                </div>
+            )}
+            {children}
+        </div>
+    ) : null;
 }
 
 export default Drawer;

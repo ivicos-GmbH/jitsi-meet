@@ -5,11 +5,7 @@ import type { Dispatch } from 'redux';
 import { FEEDBACK_REQUEST_IN_PROGRESS } from '../../../modules/UI/UIErrors';
 import { openDialog } from '../base/dialog';
 
-import {
-    CANCEL_FEEDBACK,
-    SUBMIT_FEEDBACK_ERROR,
-    SUBMIT_FEEDBACK_SUCCESS
-} from './actionTypes';
+import { CANCEL_FEEDBACK, SUBMIT_FEEDBACK_ERROR, SUBMIT_FEEDBACK_SUCCESS } from './actionTypes';
 import { FeedbackDialog } from './components';
 
 declare var config: Object;
@@ -71,15 +67,17 @@ export function maybeOpenFeedbackDialog(conference: Object) {
                 showThankYou: true
             });
         } else if (conference.isCallstatsEnabled() && feedbackPercentage > Math.random() * 100) {
-            return new Promise(resolve => {
-                dispatch(openFeedbackDialog(conference, () => {
-                    const { submitted } = getState()['features/feedback'];
+            return new Promise((resolve) => {
+                dispatch(
+                    openFeedbackDialog(conference, () => {
+                        const { submitted } = getState()['features/feedback'];
 
-                    resolve({
-                        feedbackSubmitted: submitted,
-                        showThankYou: false
-                    });
-                }));
+                        resolve({
+                            feedbackSubmitted: submitted,
+                            showThankYou: false
+                        });
+                    })
+                );
             });
         }
 
@@ -121,14 +119,11 @@ export function openFeedbackDialog(conference: Object, onClose: ?Function) {
  * feedback is being left.
  * @returns {Function}
  */
-export function submitFeedback(
-        score: number,
-        message: string,
-        conference: Object) {
-    return (dispatch: Dispatch<any>) => conference.sendFeedback(score, message)
-        .then(
+export function submitFeedback(score: number, message: string, conference: Object) {
+    return (dispatch: Dispatch<any>) =>
+        conference.sendFeedback(score, message).then(
             () => dispatch({ type: SUBMIT_FEEDBACK_SUCCESS }),
-            error => {
+            (error) => {
                 dispatch({
                     type: SUBMIT_FEEDBACK_ERROR,
                     error

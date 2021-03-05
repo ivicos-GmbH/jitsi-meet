@@ -5,10 +5,7 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import React from 'react';
 
 import UIEvents from '../../../../../service/UI/UIEvents';
-import {
-    sendAnalytics,
-    createProfilePanelButtonEvent
-} from '../../../analytics';
+import { sendAnalytics, createProfilePanelButtonEvent } from '../../../analytics';
 import { AbstractDialogTab } from '../../../base/dialog';
 import type { Props as AbstractDialogTabProps } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
@@ -45,7 +42,7 @@ export type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * React {@code Component} for modifying the local user's profile.
@@ -78,49 +75,40 @@ class ProfileTab extends AbstractDialogTab<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            authEnabled,
-            displayName,
-            email,
-            t
-        } = this.props;
+        const { authEnabled, displayName, email, t } = this.props;
 
         return (
             <div>
-                <div className = 'profile-edit'>
-                    <div className = 'profile-edit-field'>
+                <div className="profile-edit">
+                    <div className="profile-edit-field">
                         <FieldTextStateless
-                            autoFocus = { true }
-                            compact = { true }
-                            id = 'setDisplayName'
-                            label = { t('profile.setDisplayNameLabel') }
+                            autoFocus={true}
+                            compact={true}
+                            id="setDisplayName"
+                            label={t('profile.setDisplayNameLabel')}
                             // eslint-disable-next-line react/jsx-no-bind
-                            onChange = {
-                                ({ target: { value } }) =>
-                                    super._onChange({ displayName: value })
-                            }
-                            placeholder = { t('settings.name') }
-                            shouldFitContainer = { true }
-                            type = 'text'
-                            value = { displayName } />
+                            onChange={({ target: { value } }) => super._onChange({ displayName: value })}
+                            placeholder={t('settings.name')}
+                            shouldFitContainer={true}
+                            type="text"
+                            value={displayName}
+                        />
                     </div>
-                    <div className = 'profile-edit-field'>
+                    <div className="profile-edit-field">
                         <FieldTextStateless
-                            compact = { true }
-                            id = 'setEmail'
-                            label = { t('profile.setEmailLabel') }
+                            compact={true}
+                            id="setEmail"
+                            label={t('profile.setEmailLabel')}
                             // eslint-disable-next-line react/jsx-no-bind
-                            onChange = {
-                                ({ target: { value } }) =>
-                                    super._onChange({ email: value })
-                            }
-                            placeholder = { t('profile.setEmailInput') }
-                            shouldFitContainer = { true }
-                            type = 'text'
-                            value = { email } />
+                            onChange={({ target: { value } }) => super._onChange({ email: value })}
+                            placeholder={t('profile.setEmailInput')}
+                            shouldFitContainer={true}
+                            type="text"
+                            value={email}
+                        />
                     </div>
                 </div>
-                { authEnabled && this._renderAuth() }
+                {authEnabled && this._renderAuth()}
             </div>
         );
     }
@@ -164,26 +152,14 @@ class ProfileTab extends AbstractDialogTab<Props> {
      * @returns {ReactElement}
      */
     _renderAuth() {
-        const {
-            authLogin,
-            t
-        } = this.props;
+        const { authLogin, t } = this.props;
 
         return (
             <div>
-                <div className = 'mock-atlaskit-label'>
-                    { t('toolbar.authenticate') }
-                </div>
-                { authLogin
-                    && <div className = 'auth-name'>
-                        { t('settings.loggedIn', { name: authLogin }) }
-                    </div> }
-                <Button
-                    appearance = 'primary'
-                    id = 'login_button'
-                    onClick = { this._onAuthToggle }
-                    type = 'button'>
-                    { authLogin ? t('toolbar.logout') : t('toolbar.login') }
+                <div className="mock-atlaskit-label">{t('toolbar.authenticate')}</div>
+                {authLogin && <div className="auth-name">{t('settings.loggedIn', { name: authLogin })}</div>}
+                <Button appearance="primary" id="login_button" onClick={this._onAuthToggle} type="button">
+                    {authLogin ? t('toolbar.logout') : t('toolbar.login')}
                 </Button>
             </div>
         );

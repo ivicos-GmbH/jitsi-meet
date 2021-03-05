@@ -13,13 +13,13 @@ declare var APP: Object;
  * @returns {Function}
  */
 // eslint-disable-next-line no-unused-vars
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case OPEN_KEYBOARD_SHORTCUTS_DIALOG:
-        if (typeof APP === 'object') {
-            APP.keyboardshortcut.openDialog();
-        }
-        break;
+        case OPEN_KEYBOARD_SHORTCUTS_DIALOG:
+            if (typeof APP === 'object') {
+                APP.keyboardshortcut.openDialog();
+            }
+            break;
     }
 
     return next(action);

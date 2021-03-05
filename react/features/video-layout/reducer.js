@@ -2,10 +2,7 @@
 
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW
-} from './actionTypes';
+import { SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED, SET_TILE_VIEW } from './actionTypes';
 
 const DEFAULT_STATE = {
     remoteScreenShares: [],
@@ -27,18 +24,18 @@ const STORE_NAME = 'features/video-layout';
 
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED: {
-        return {
-            ...state,
-            remoteScreenShares: action.participantIds
-        };
-    }
+        case SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED: {
+            return {
+                ...state,
+                remoteScreenShares: action.participantIds
+            };
+        }
 
-    case SET_TILE_VIEW:
-        return {
-            ...state,
-            tileViewEnabled: action.enabled
-        };
+        case SET_TILE_VIEW:
+            return {
+                ...state,
+                tileViewEnabled: action.enabled
+            };
     }
 
     return state;

@@ -8,7 +8,7 @@ import { connect } from '../../../base/redux';
 declare var config: Object;
 
 type Props = {
-    _message?: string,
+    _message?: string
 };
 
 /**
@@ -17,7 +17,6 @@ type Props = {
  * @class Notice
  */
 class Notice extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -30,10 +29,8 @@ class Notice extends Component<Props> {
         }
 
         return (
-            <div className = 'notice'>
-                <span className = 'notice__message' >
-                    { this.props._message }
-                </span>
+            <div className="notice">
+                <span className="notice__message">{this.props._message}</span>
             </div>
         );
     }
@@ -50,9 +47,7 @@ class Notice extends Component<Props> {
  * }}
  */
 function _mapStateToProps(state) {
-    const {
-        noticeMessage
-    } = state['features/base/config'];
+    const { noticeMessage } = state['features/base/config'];
 
     return {
         _message: noticeMessage

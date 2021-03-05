@@ -9,7 +9,7 @@ import BaseSubmitDialog from './BaseSubmitDialog';
 
 type Props = BaseProps & {
     t: Function
-}
+};
 
 /**
  * Implements a submit dialog component that can have free content.
@@ -25,5 +25,4 @@ class CustomSubmitDialog extends BaseSubmitDialog<Props, *> {
     }
 }
 
-export default translate(
-    connect(_abstractMapStateToProps)(CustomSubmitDialog));
+export default translate(connect(_abstractMapStateToProps)(CustomSubmitDialog));

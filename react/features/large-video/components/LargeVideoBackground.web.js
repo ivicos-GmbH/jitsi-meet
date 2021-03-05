@@ -23,8 +23,7 @@ export const ORIENTATION = {
  * {@link LargeVideoBackgroundCanvas}.
  */
 type Props = {
-
-   /**
+    /**
      * Whether or not the layout should change to support tile view mode.
      *
      * @protected
@@ -59,7 +58,6 @@ type Props = {
      */
     videoElement: Object
 };
-
 
 /**
  * Implements a React Component which shows a video element intended to be used
@@ -109,8 +107,7 @@ export class LargeVideoBackground extends Component<Props> {
      */
     componentDidUpdate(prevProps: Props) {
         const wasCanvasUpdating = !prevProps.hidden && !prevProps._shouldDisplayTileView && prevProps.videoElement;
-        const shouldCanvasUpdating
-            = !this.props.hidden && !this.props._shouldDisplayTileView && this.props.videoElement;
+        const shouldCanvasUpdating = !this.props.hidden && !this.props._shouldDisplayTileView && this.props.videoElement;
 
         if (wasCanvasUpdating !== shouldCanvasUpdating) {
             if (shouldCanvasUpdating) {
@@ -139,17 +136,12 @@ export class LargeVideoBackground extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            hidden,
-            mirror
-        } = this.props;
+        const { hidden, mirror } = this.props;
         const classNames = `large-video-background ${mirror ? 'flip-x' : ''} ${hidden ? 'invisible' : ''}`;
 
         return (
-            <div className = { classNames }>
-                <canvas
-                    id = 'largeVideoBackground'
-                    ref = { this._setCanvasEl } />
+            <div className={classNames}>
+                <canvas id="largeVideoBackground" ref={this._setCanvasEl} />
             </div>
         );
     }
@@ -163,8 +155,7 @@ export class LargeVideoBackground extends Component<Props> {
     _clearCanvas() {
         const cavnasContext = this._canvasEl.getContext('2d');
 
-        cavnasContext.clearRect(
-            0, 0, this._canvasEl.width, this._canvasEl.height);
+        cavnasContext.clearRect(0, 0, this._canvasEl.width, this._canvasEl.height);
     }
 
     /**
@@ -219,29 +210,23 @@ export class LargeVideoBackground extends Component<Props> {
         // because we don't have a good way to do it.
         // All other cases when the canvas is not visible are handled trough the component props
         // (hidden, _shouldDisplayTileView).
-        if (!this._canvasEl || this._canvasEl.offsetParent === null
-                || window.innerHeight === 0 || window.innerWidth === 0) {
+        if (!this._canvasEl || this._canvasEl.offsetParent === null || window.innerHeight === 0 || window.innerWidth === 0) {
             return;
         }
 
         const { videoElement } = this.props;
         const { videoWidth, videoHeight } = videoElement;
-        const {
-            height: canvasHeight,
-            width: canvasWidth
-        } = this._canvasEl;
+        const { height: canvasHeight, width: canvasWidth } = this._canvasEl;
         const cavnasContext = this._canvasEl.getContext('2d');
 
         if (this.props.orientationFit === ORIENTATION.LANDSCAPE) {
             const heightScaledToFit = (canvasWidth / videoWidth) * videoHeight;
 
-            cavnasContext.drawImage(
-                videoElement, 0, 0, canvasWidth, heightScaledToFit);
+            cavnasContext.drawImage(videoElement, 0, 0, canvasWidth, heightScaledToFit);
         } else {
             const widthScaledToFit = (canvasHeight / videoHeight) * videoWidth;
 
-            cavnasContext.drawImage(
-                videoElement, 0, 0, widthScaledToFit, canvasHeight);
+            cavnasContext.drawImage(videoElement, 0, 0, widthScaledToFit, canvasHeight);
         }
     }
 }
@@ -261,6 +246,4 @@ function _mapStateToProps(state) {
     };
 }
 
-
 export default connect(_mapStateToProps)(LargeVideoBackground);
-

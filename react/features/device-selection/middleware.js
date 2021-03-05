@@ -12,7 +12,7 @@ declare var APP: Object;
  * @returns {Function}
  */
 // eslint-disable-next-line no-unused-vars
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     if (action.type === UPDATE_DEVICE_LIST) {

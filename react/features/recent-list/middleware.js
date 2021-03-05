@@ -1,11 +1,7 @@
 // @flow
 
 import { APP_WILL_MOUNT } from '../base/app';
-import {
-    CONFERENCE_WILL_LEAVE,
-    SET_ROOM,
-    JITSI_CONFERENCE_URL_KEY
-} from '../base/conference';
+import { CONFERENCE_WILL_LEAVE, SET_ROOM, JITSI_CONFERENCE_URL_KEY } from '../base/conference';
 import { addKnownDomains } from '../base/known-domains';
 import { MiddlewareRegistry } from '../base/redux';
 import { parseURIString } from '../base/util';
@@ -22,17 +18,17 @@ declare var APP: Object;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     if (isRecentListEnabled()) {
         switch (action.type) {
-        case APP_WILL_MOUNT:
-            return _appWillMount(store, next, action);
+            case APP_WILL_MOUNT:
+                return _appWillMount(store, next, action);
 
-        case CONFERENCE_WILL_LEAVE:
-            return _conferenceWillLeave(store, next, action);
+            case CONFERENCE_WILL_LEAVE:
+                return _conferenceWillLeave(store, next, action);
 
-        case SET_ROOM:
-            return _setRoom(store, next, action);
+            case SET_ROOM:
+                return _setRoom(store, next, action);
         }
     }
 
@@ -107,9 +103,7 @@ function _conferenceWillLeave({ dispatch, getState }, next, action) {
         } else {
             locationURL = getState()['features/base/connection'].locationURL;
         }
-        dispatch(
-            _updateConferenceDuration(
-                locationURL));
+        dispatch(_updateConferenceDuration(locationURL));
     }
 
     return next(action);

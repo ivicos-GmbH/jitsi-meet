@@ -7,14 +7,12 @@ import Video from '../../../../base/media/components/Video';
 import { equals } from '../../../../base/redux';
 import { createLocalVideoTracks } from '../../../functions';
 
-
 const videoClassName = 'video-preview-video flipVideoX';
 
 /**
  * The type of the React {@code Component} props of {@link VideoSettingsContent}.
  */
 export type Props = {
-
     /**
      * The deviceId of the camera device currently being used.
      */
@@ -38,18 +36,17 @@ export type Props = {
     /**
      * All the camera device ids currently connected.
      */
-    videoDeviceIds: string[],
+    videoDeviceIds: string[]
 };
 
 /**
  * The type of the React {@code Component} state of {@link VideoSettingsContent}.
  */
 type State = {
-
     /**
      * An array of all the jitsiTracks and eventual errors.
      */
-    trackData: Object[],
+    trackData: Object[]
 };
 
 /**
@@ -139,10 +136,8 @@ class VideoSettingsContent extends Component<Props, State> {
 
         if (error) {
             return (
-                <div
-                    className = { className }
-                    key = { key }>
-                    <div className = 'video-preview-error'>{t(error)}</div>
+                <div className={className} key={key}>
+                    <div className="video-preview-error">{t(error)}</div>
                 </div>
             );
         }
@@ -160,13 +155,10 @@ class VideoSettingsContent extends Component<Props, State> {
         }
 
         return (
-            <div { ...props }>
-                <div className = 'video-preview-label'>{label}</div>
-                <div className = 'video-preview-overlay' />
-                <Video
-                    className = { videoClassName }
-                    playsinline = { true }
-                    videoTrack = {{ jitsiTrack }} />
+            <div {...props}>
+                <div className="video-preview-label">{label}</div>
+                <div className="video-preview-overlay" />
+                <Video className={videoClassName} playsinline={true} videoTrack={{ jitsiTrack }} />
             </div>
         );
     }
@@ -210,14 +202,11 @@ class VideoSettingsContent extends Component<Props, State> {
         const { trackData } = this.state;
 
         return (
-            <div className = 'video-preview-container'>
-                <div className = 'video-preview'>
-                    {trackData.map((data, i) => this._renderPreviewEntry(data, i))}
-                </div>
+            <div className="video-preview-container">
+                <div className="video-preview">{trackData.map((data, i) => this._renderPreviewEntry(data, i))}</div>
             </div>
         );
     }
 }
-
 
 export default translate(VideoSettingsContent);

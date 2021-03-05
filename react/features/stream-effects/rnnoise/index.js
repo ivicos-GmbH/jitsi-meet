@@ -21,5 +21,5 @@ export function createRnnoiseProcessor() {
         rnnoiseModule = rnnoiseWasmInit();
     }
 
-    return rnnoiseModule.then(mod => new RnnoiseProcessor(mod));
+    return rnnoiseModule.then((mod) => new RnnoiseProcessor(mod));
 }

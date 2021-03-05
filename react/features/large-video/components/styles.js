@@ -11,7 +11,6 @@ export const AVATAR_SIZE = 200;
  * Color schemed styles for the @{LargeVideo} component.
  */
 ColorSchemeRegistry.register('LargeVideo', {
-
     /**
      * Large video container style.
      */

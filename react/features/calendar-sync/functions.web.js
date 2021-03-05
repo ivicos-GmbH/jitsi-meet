@@ -2,18 +2,9 @@
 
 import { toState } from '../base/redux';
 
-import {
-    clearCalendarIntegration,
-    setCalendarError,
-    setLoadingCalendarEvents
-} from './actions';
+import { clearCalendarIntegration, setCalendarError, setLoadingCalendarEvents } from './actions';
 export * from './functions.any';
-import {
-    CALENDAR_TYPE,
-    ERRORS,
-    FETCH_END_DAYS,
-    FETCH_START_DAYS
-} from './constants';
+import { CALENDAR_TYPE, ERRORS, FETCH_END_DAYS, FETCH_START_DAYS } from './constants';
 import { _updateCalendarEntries } from './functions';
 import logger from './logger';
 import { googleCalendarApi } from './web/googleCalendar';
@@ -28,11 +19,7 @@ import { microsoftCalendarApi } from './web/microsoftCalendar';
  * otherwise, {@code false}.
  */
 export function isCalendarEnabled(stateful: Function | Object) {
-    const {
-        enableCalendarIntegration,
-        googleApiApplicationClientID,
-        microsoftApiApplicationClientID
-    } = toState(stateful)['features/base/config'] || {};
+    const { enableCalendarIntegration, googleApiApplicationClientID, microsoftApiApplicationClientID } = toState(stateful)['features/base/config'] || {};
 
     return Boolean(enableCalendarIntegration && (googleApiApplicationClientID || microsoftApiApplicationClientID));
 }
@@ -49,10 +36,7 @@ export function isCalendarEnabled(stateful: Function | Object) {
  * @private
  * @returns {void}
  */
-export function _fetchCalendarEntries(
-        store: Object,
-        maybePromptForPermission: boolean,
-        forcePermission: ?boolean) {
+export function _fetchCalendarEntries(store: Object, maybePromptForPermission: boolean, forcePermission: ?boolean) {
     /* eslint-enable no-unused-vars */
     const { dispatch, getState } = store;
 
@@ -69,7 +53,7 @@ export function _fetchCalendarEntries(
 
     dispatch(integration.load())
         .then(() => dispatch(integration._isSignedIn()))
-        .then(signedIn => {
+        .then((signedIn) => {
             if (signedIn) {
                 return Promise.resolve();
             }
@@ -78,23 +62,30 @@ export function _fetchCalendarEntries(
                 error: ERRORS.AUTH_FAILED
             });
         })
-        .then(() => dispatch(integration.getCalendarEntries(
-            FETCH_START_DAYS, FETCH_END_DAYS)))
-        .then(events => _updateCalendarEntries.call({
-            dispatch,
-            getState
-        }, events))
-        .then(() => {
-            dispatch(setCalendarError());
-        }, error => {
-            logger.error('Error fetching calendar.', error);
+        .then(() => dispatch(integration.getCalendarEntries(FETCH_START_DAYS, FETCH_END_DAYS)))
+        .then((events) =>
+            _updateCalendarEntries.call(
+                {
+                    dispatch,
+                    getState
+                },
+                events
+            )
+        )
+        .then(
+            () => {
+                dispatch(setCalendarError());
+            },
+            (error) => {
+                logger.error('Error fetching calendar.', error);
 
-            if (error.error === ERRORS.AUTH_FAILED) {
-                dispatch(clearCalendarIntegration());
+                if (error.error === ERRORS.AUTH_FAILED) {
+                    dispatch(clearCalendarIntegration());
+                }
+
+                dispatch(setCalendarError(error));
             }
-
-            dispatch(setCalendarError(error));
-        })
+        )
         .then(() => dispatch(setLoadingCalendarEvents(false)));
 }
 
@@ -108,9 +99,9 @@ export function _fetchCalendarEntries(
  */
 export function _getCalendarIntegration(calendarType: string) {
     switch (calendarType) {
-    case CALENDAR_TYPE.GOOGLE:
-        return googleCalendarApi;
-    case CALENDAR_TYPE.MICROSOFT:
-        return microsoftCalendarApi;
+        case CALENDAR_TYPE.GOOGLE:
+            return googleCalendarApi;
+        case CALENDAR_TYPE.MICROSOFT:
+            return microsoftCalendarApi;
     }
 }

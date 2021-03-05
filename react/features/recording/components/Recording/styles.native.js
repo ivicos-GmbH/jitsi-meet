@@ -15,7 +15,6 @@ const _PADDING = BoxModel.padding * 1.5;
  * Color schemed styles for the @{code StartRecordingDialogContent} component.
  */
 ColorSchemeRegistry.register('StartRecordingDialogContent', {
-
     container: {
         flex: 0,
         flexDirection: 'column'

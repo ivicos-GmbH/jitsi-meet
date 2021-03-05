@@ -15,7 +15,6 @@ import { _cancelPasswordRequiredPrompt } from '../actions';
  * {@link PasswordRequiredPrompt}.
  */
 type Props = {
-
     /**
      * The JitsiConference which requires a password.
      */
@@ -37,12 +36,11 @@ type Props = {
  * {@link PasswordRequiredPrompt}.
  */
 type State = {
-
     /**
      * The password entered by the local participant.
      */
     password: string
-}
+};
 
 /**
  * Implements a React Component which prompts the user when a password is
@@ -76,14 +74,8 @@ class PasswordRequiredPrompt extends Component<Props, State> {
      */
     render() {
         return (
-            <Dialog
-                disableBlanketClickDismiss = { true }
-                isModal = { false }
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.passwordRequired'
-                width = 'small'>
-                { this._renderBody() }
+            <Dialog disableBlanketClickDismiss={true} isModal={false} onCancel={this._onCancel} onSubmit={this._onSubmit} titleKey="dialog.passwordRequired" width="small">
+                {this._renderBody()}
             </Dialog>
         );
     }
@@ -98,19 +90,20 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         return (
             <div>
                 <TextField
-                    autoFocus = { true }
-                    compact = { true }
-                    label = { this.props.t('dialog.passwordLabel') }
-                    name = 'lockKey'
-                    onChange = { this._onPasswordChanged }
-                    shouldFitContainer = { true }
-                    type = 'password'
-                    value = { this.state.password } />
+                    autoFocus={true}
+                    compact={true}
+                    label={this.props.t('dialog.passwordLabel')}
+                    name="lockKey"
+                    onChange={this._onPasswordChanged}
+                    shouldFitContainer={true}
+                    type="password"
+                    value={this.state.password}
+                />
             </div>
         );
     }
 
-    _onPasswordChanged: ({ target: { value: * }}) => void;
+    _onPasswordChanged: ({ target: { value: * } }) => void;
 
     /**
      * Notifies this dialog that password has changed.
@@ -134,9 +127,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
      * @returns {boolean}
      */
     _onCancel() {
-
-        this.props.dispatch(
-            _cancelPasswordRequiredPrompt(this.props.conference));
+        this.props.dispatch(_cancelPasswordRequiredPrompt(this.props.conference));
 
         return true;
     }
@@ -157,8 +148,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         // succeeds (maybe someone removed the password meanwhile). If it is
         // still locked, another password required will be received and the room
         // again will be marked as locked.
-        this.props.dispatch(
-            setPassword(conference, conference.join, this.state.password));
+        this.props.dispatch(setPassword(conference, conference.join, this.state.password));
 
         // We have used the password so let's clean it.
         this.setState({

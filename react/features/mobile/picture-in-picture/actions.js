@@ -26,17 +26,17 @@ export function enterPictureInPicture() {
         // fine to enter PiP mode.
         if (getFeatureFlag(getState, PIP_ENABLED)) {
             const { PictureInPicture } = NativeModules;
-            const p
-                = Platform.OS === 'android'
+            const p =
+                Platform.OS === 'android'
                     ? PictureInPicture
                         ? PictureInPicture.enterPictureInPicture()
-                        : Promise.reject(
-                            new Error('Picture-in-Picture not supported'))
+                        : Promise.reject(new Error('Picture-in-Picture not supported'))
                     : Promise.resolve();
 
             p.then(
                 () => dispatch({ type: ENTER_PICTURE_IN_PICTURE }),
-                e => logger.warn(`Error entering PiP mode: ${e}`));
+                (e) => logger.warn(`Error entering PiP mode: ${e}`)
+            );
         }
     };
 }

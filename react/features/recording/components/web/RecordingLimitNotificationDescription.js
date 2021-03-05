@@ -9,7 +9,6 @@ import { connect } from '../../../base/redux';
  * The type of the React {@code Component} props of {@link RecordingLimitNotificationDescription}.
  */
 type Props = {
-
     /**
      * The limit of time in minutes for the recording.
      */
@@ -47,19 +46,14 @@ function RecordingLimitNotificationDescription(props: Props) {
 
     return (
         <span>
-            {
-                translateToHTML(
-                    t,
-                    `${isLiveStreaming ? 'liveStreaming' : 'recording'}.limitNotificationDescriptionWeb`, {
-                        limit: _limit,
-                        app: _appName,
-                        url: _appURL
-                    })
-            }
+            {translateToHTML(t, `${isLiveStreaming ? 'liveStreaming' : 'recording'}.limitNotificationDescriptionWeb`, {
+                limit: _limit,
+                app: _appName,
+                url: _appURL
+            })}
         </span>
     );
 }
-
 
 /**
  * Maps part of the Redix state to the props of this component.

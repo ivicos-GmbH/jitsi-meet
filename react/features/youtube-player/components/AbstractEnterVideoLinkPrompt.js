@@ -8,7 +8,6 @@ import type { Dispatch } from 'redux';
  * {@link AbstractEnterVideoLinkPrompt}.
  */
 export type Props = {
-
     /**
      * Invoked to update the shared youtube video link.
      */
@@ -23,7 +22,7 @@ export type Props = {
 /**
  * Implements an abstract class for {@code EnterVideoLinkPrompt}.
  */
-export default class AbstractEnterVideoLinkPrompt<S: *> extends Component < Props, S > {
+export default class AbstractEnterVideoLinkPrompt<S: *> extends Component<Props, S> {
     /**
      * Instantiates a new component.
      *
@@ -36,7 +35,7 @@ export default class AbstractEnterVideoLinkPrompt<S: *> extends Component < Prop
         this._onSetVideoLink = this._onSetVideoLink.bind(this);
     }
 
-    _onSetVideoLink: string => boolean;
+    _onSetVideoLink: (string) => boolean;
 
     /**
      * Validates the entered video link by extractibg the id and dispatches it.
@@ -76,7 +75,7 @@ export default class AbstractEnterVideoLinkPrompt<S: *> extends Component < Prop
  * @returns {boolean}
  */
 function getYoutubeLink(url) {
-    const p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|(?:m\.)?youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;// eslint-disable-line max-len
+    const p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|(?:m\.)?youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/; // eslint-disable-line max-len
     const result = url.match(p);
 
     return result ? result[1] : false;

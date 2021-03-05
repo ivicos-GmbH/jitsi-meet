@@ -61,7 +61,6 @@ type Transform = {
 };
 
 type Props = {
-
     /**
      * The children components of this view.
      */
@@ -100,7 +99,6 @@ type Props = {
 };
 
 type State = {
-
     /**
      * The current (non-transformed) layout of the View.
      */
@@ -154,27 +152,23 @@ class VideoTransform extends Component<Props, State> {
 
         this.state = {
             layout: null,
-            transform:
-                this._getSavedTransform(props.streamId) || DEFAULT_TRANSFORM
+            transform: this._getSavedTransform(props.streamId) || DEFAULT_TRANSFORM
         };
 
         this._didMove = this._didMove.bind(this);
         this._getTransformStyle = this._getTransformStyle.bind(this);
         this._onGesture = this._onGesture.bind(this);
         this._onLayout = this._onLayout.bind(this);
-        this._onMoveShouldSetPanResponder
-            = this._onMoveShouldSetPanResponder.bind(this);
+        this._onMoveShouldSetPanResponder = this._onMoveShouldSetPanResponder.bind(this);
         this._onPanResponderGrant = this._onPanResponderGrant.bind(this);
         this._onPanResponderMove = this._onPanResponderMove.bind(this);
         this._onPanResponderRelease = this._onPanResponderRelease.bind(this);
-        this._onStartShouldSetPanResponder
-            = this._onStartShouldSetPanResponder.bind(this);
+        this._onStartShouldSetPanResponder = this._onStartShouldSetPanResponder.bind(this);
 
         // The move threshold should be adaptive to the pixel ratio of the
         // screen to avoid making it too sensitive or difficult to handle on
         // different pixel ratio screens.
-        this.moveThreshold
-            = PixelRatio.get() * MOVE_THRESHOLD_DISMISSES_TOUCH;
+        this.moveThreshold = PixelRatio.get() * MOVE_THRESHOLD_DISMISSES_TOUCH;
 
         this.gestureHandlers = PanResponder.create({
             onPanResponderGrant: this._onPanResponderGrant,
@@ -217,21 +211,8 @@ class VideoTransform extends Component<Props, State> {
         const { children, style } = this.props;
 
         return (
-            <View
-                onLayout = { this._onLayout }
-                pointerEvents = 'box-only'
-                style = { [
-                    styles.videoTransformedViewContainer,
-                    style
-                ] }
-                { ...this.gestureHandlers.panHandlers }>
-                <View
-                    style = { [
-                        styles.videoTranformedView,
-                        this._getTransformStyle()
-                    ] }>
-                    { children }
-                </View>
+            <View onLayout={this._onLayout} pointerEvents="box-only" style={[styles.videoTransformedViewContainer, style]} {...this.gestureHandlers.panHandlers}>
+                <View style={[styles.videoTranformedView, this._getTransformStyle()]}>{children}</View>
             </View>
         );
     }
@@ -245,16 +226,8 @@ class VideoTransform extends Component<Props, State> {
      * @returns {Transform}
      */
     _calculateTransformIncrement(transform: Transform) {
-        let {
-            scale,
-            translateX,
-            translateY
-        } = this.state.transform;
-        const {
-            scale: newScale,
-            translateX: newTranslateX,
-            translateY: newTranslateY
-        } = transform;
+        let { scale, translateX, translateY } = this.state.transform;
+        const { scale: newScale, translateX: newTranslateX, translateY: newTranslateY } = transform;
 
         // Note: We don't limit MIN_SCALE here yet, as we need to detect a scale
         // down gesture even if the scale is already at MIN_SCALE to let the
@@ -262,8 +235,8 @@ class VideoTransform extends Component<Props, State> {
         // to MIN_SCALE right before it gets applied.
         scale = Math.min(scale * (newScale || 1), MAX_SCALE);
 
-        translateX = translateX + ((newTranslateX || 0) / scale);
-        translateY = translateY + ((newTranslateY || 0) / scale);
+        translateX = translateX + (newTranslateX || 0) / scale;
+        translateY = translateY + (newTranslateY || 0) / scale;
 
         return {
             scale,
@@ -272,7 +245,7 @@ class VideoTransform extends Component<Props, State> {
         };
     }
 
-    _didMove: Object => boolean
+    _didMove: (Object) => boolean;
 
     /**
      * Determines if there was large enough movement to be handled.
@@ -281,8 +254,7 @@ class VideoTransform extends Component<Props, State> {
      * @returns {boolean}
      */
     _didMove({ dx, dy }) {
-        return Math.abs(dx) > this.moveThreshold
-                || Math.abs(dy) > this.moveThreshold;
+        return Math.abs(dx) > this.moveThreshold || Math.abs(dy) > this.moveThreshold;
     }
 
     /**
@@ -299,7 +271,7 @@ class VideoTransform extends Component<Props, State> {
         return (enabled && _transforms[streamId]) || null;
     }
 
-    _getTouchDistance: Object => number;
+    _getTouchDistance: (Object) => number;
 
     /**
      * Calculates the touch distance on a pinch event.
@@ -315,7 +287,7 @@ class VideoTransform extends Component<Props, State> {
         return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     }
 
-    _getTouchPosition: Object => Object
+    _getTouchPosition: (Object) => Object;
 
     /**
      * Calculates the position of the touch event.
@@ -331,7 +303,7 @@ class VideoTransform extends Component<Props, State> {
         };
     }
 
-    _getTransformStyle: () => Object
+    _getTransformStyle: () => Object;
 
     /**
      * Generates a transform style object to be used on the component.
@@ -345,18 +317,10 @@ class VideoTransform extends Component<Props, State> {
             return null;
         }
 
-        const {
-            scale,
-            translateX,
-            translateY
-        } = this.state.transform;
+        const { scale, translateX, translateY } = this.state.transform;
 
         return {
-            transform: [
-                { scale },
-                { translateX },
-                { translateY }
-            ]
+            transform: [{ scale }, { translateX }, { translateY }]
         };
     }
 
@@ -377,10 +341,7 @@ class VideoTransform extends Component<Props, State> {
         if (layout) {
             const { scale } = this.state.transform;
             const { scale: newScaleUnlimited } = transform;
-            let {
-                translateX: newTranslateX,
-                translateY: newTranslateY
-            } = transform;
+            let { translateX: newTranslateX, translateY: newTranslateY } = transform;
 
             // Scale is only limited to MIN_SCALE here to detect downscale
             // gesture later.
@@ -400,8 +361,8 @@ class VideoTransform extends Component<Props, State> {
 
             // The center point (midpoint) of the transformed View.
             const transformedCenterPoint = {
-                x: ((layout.x + layout.width) / 2) + (newTranslateX * newScale),
-                y: ((layout.y + layout.height) / 2) + (newTranslateY * newScale)
+                x: (layout.x + layout.width) / 2 + newTranslateX * newScale,
+                y: (layout.y + layout.height) / 2 + newTranslateY * newScale
             };
 
             // The size of the transformed View.
@@ -413,12 +374,12 @@ class VideoTransform extends Component<Props, State> {
             // The A and D points of the transformed View.
             const transformedLayout = {
                 a: {
-                    x: transformedCenterPoint.x - (transformedSize.width / 2),
-                    y: transformedCenterPoint.y - (transformedSize.height / 2)
+                    x: transformedCenterPoint.x - transformedSize.width / 2,
+                    y: transformedCenterPoint.y - transformedSize.height / 2
                 },
                 d: {
-                    x: transformedCenterPoint.x + (transformedSize.width / 2),
-                    y: transformedCenterPoint.y + (transformedSize.height / 2)
+                    x: transformedCenterPoint.x + transformedSize.width / 2,
+                    y: transformedCenterPoint.y + transformedSize.height / 2
                 }
             };
 
@@ -433,22 +394,10 @@ class VideoTransform extends Component<Props, State> {
 
             // Correct move matrix if it goes out of the view
             // too much (_MAX_OFFSET).
-            newTranslateX
-                -= Math.max(
-                    transformedLayout.a.x - originalLayout.a.x - _MAX_OFFSET,
-                    0);
-            newTranslateX
-                += Math.max(
-                    originalLayout.d.x - transformedLayout.d.x - _MAX_OFFSET,
-                    0);
-            newTranslateY
-                -= Math.max(
-                    transformedLayout.a.y - originalLayout.a.y - _MAX_OFFSET,
-                    0);
-            newTranslateY
-                += Math.max(
-                    originalLayout.d.y - transformedLayout.d.y - _MAX_OFFSET,
-                    0);
+            newTranslateX -= Math.max(transformedLayout.a.x - originalLayout.a.x - _MAX_OFFSET, 0);
+            newTranslateX += Math.max(originalLayout.d.x - transformedLayout.d.x - _MAX_OFFSET, 0);
+            newTranslateY -= Math.max(transformedLayout.a.y - originalLayout.a.y - _MAX_OFFSET, 0);
+            newTranslateY += Math.max(originalLayout.d.y - transformedLayout.d.y - _MAX_OFFSET, 0);
 
             this.setState({
                 transform: {
@@ -460,7 +409,7 @@ class VideoTransform extends Component<Props, State> {
         }
     }
 
-    _onGesture: (string, ?Object | number) => void
+    _onGesture: (string, ?Object | number) => void;
 
     /**
      * Handles gestures and converts them to transforms.
@@ -485,37 +434,36 @@ class VideoTransform extends Component<Props, State> {
         let transform;
 
         switch (type) {
-        case 'move':
-            transform = {
-                ...DEFAULT_TRANSFORM,
-                translateX: value.x,
-                translateY: value.y
-            };
-            break;
-        case 'scale':
-            transform = {
-                ...DEFAULT_TRANSFORM,
-                scale: value
-            };
-            break;
+            case 'move':
+                transform = {
+                    ...DEFAULT_TRANSFORM,
+                    translateX: value.x,
+                    translateY: value.y
+                };
+                break;
+            case 'scale':
+                transform = {
+                    ...DEFAULT_TRANSFORM,
+                    scale: value
+                };
+                break;
 
-        case 'press': {
-            const { onPress } = this.props;
+            case 'press': {
+                const { onPress } = this.props;
 
-            typeof onPress === 'function' && onPress();
-            break;
-        }
+                typeof onPress === 'function' && onPress();
+                break;
+            }
         }
 
         if (transform) {
-            this._limitAndApplyTransformation(
-                this._calculateTransformIncrement(transform));
+            this._limitAndApplyTransformation(this._calculateTransformIncrement(transform));
         }
 
         this.lastTap = 0;
     }
 
-    _onLayout: Object => void
+    _onLayout: (Object) => void;
 
     /**
      * Callback for the onLayout of the component.
@@ -524,7 +472,11 @@ class VideoTransform extends Component<Props, State> {
      * @private
      * @returns {void}
      */
-    _onLayout({ nativeEvent: { layout: { x, y, width, height } } }) {
+    _onLayout({
+        nativeEvent: {
+            layout: { x, y, width, height }
+        }
+    }) {
         this.setState({
             layout: {
                 x,
@@ -535,7 +487,7 @@ class VideoTransform extends Component<Props, State> {
         });
     }
 
-    _onMoveShouldSetPanResponder: (Object, Object) => boolean
+    _onMoveShouldSetPanResponder: (Object, Object) => boolean;
 
     /**
      * Function to decide whether the responder should respond to a move event.
@@ -546,12 +498,10 @@ class VideoTransform extends Component<Props, State> {
      * @returns {boolean}
      */
     _onMoveShouldSetPanResponder(evt, gestureState) {
-        return this.props.enabled
-            && (this._didMove(gestureState)
-                || gestureState.numberActiveTouches === 2);
+        return this.props.enabled && (this._didMove(gestureState) || gestureState.numberActiveTouches === 2);
     }
 
-    _onPanResponderGrant: (Object, Object) => void
+    _onPanResponderGrant: (Object, Object) => void;
 
     /**
      * Calculates the initial touch distance.
@@ -565,13 +515,12 @@ class VideoTransform extends Component<Props, State> {
         if (numberActiveTouches === 1) {
             this.initialPosition = this._getTouchPosition(evt);
             this.lastTap = Date.now();
-
         } else if (numberActiveTouches === 2) {
             this.initialDistance = this._getTouchDistance(evt);
         }
     }
 
-    _onPanResponderMove: (Object, Object) => void
+    _onPanResponderMove: (Object, Object) => void;
 
     /**
      * Handles the PanResponder move (touch move) event.
@@ -584,10 +533,7 @@ class VideoTransform extends Component<Props, State> {
     _onPanResponderMove(evt, gestureState) {
         if (gestureState.numberActiveTouches === 2) {
             // this is a zoom event
-            if (
-                this.initialDistance === undefined
-                || isNaN(this.initialDistance)
-            ) {
+            if (this.initialDistance === undefined || isNaN(this.initialDistance)) {
                 // there is no initial distance because the user started
                 // with only one finger. We calculate it now.
                 this.initialDistance = this._getTouchDistance(evt);
@@ -599,9 +545,7 @@ class VideoTransform extends Component<Props, State> {
 
                 this._onGesture('scale', scale);
             }
-        } else if (gestureState.numberActiveTouches === 1
-                && isNaN(this.initialDistance)
-                && this._didMove(gestureState)) {
+        } else if (gestureState.numberActiveTouches === 1 && isNaN(this.initialDistance) && this._didMove(gestureState)) {
             // this is a move event
             const position = this._getTouchPosition(evt);
             const move = {
@@ -615,7 +559,7 @@ class VideoTransform extends Component<Props, State> {
         }
     }
 
-    _onPanResponderRelease: () => void
+    _onPanResponderRelease: () => void;
 
     /**
      * Handles the PanResponder gesture end event.
@@ -631,7 +575,7 @@ class VideoTransform extends Component<Props, State> {
         delete this.initialPosition;
     }
 
-    _onStartShouldSetPanResponder: () => boolean
+    _onStartShouldSetPanResponder: () => boolean;
 
     /**
      * Function to decide whether the responder should respond to a start

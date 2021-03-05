@@ -12,7 +12,6 @@ import { isButtonEnabled, isToolboxVisible } from '../../../toolbox/functions.we
 declare var interfaceConfig: Object;
 
 type Props = {
-
     /**
      * Whether to show the option to invite more people
      * instead of the subject.
@@ -28,7 +27,7 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * Represents a replacement for the subject, prompting the
@@ -37,27 +36,16 @@ type Props = {
  * @param {Object} props - The props of the component.
  * @returns {React$Element<any>}
  */
-function InviteMore({
-    _visible,
-    onClick,
-    t
-}: Props) {
-    return (
-        _visible
-            ? <div className = 'invite-more-container'>
-                <div className = 'invite-more-header'>
-                    {t('addPeople.inviteMoreHeader')}
-                </div>
-                <div
-                    className = 'invite-more-button'
-                    onClick = { onClick }>
-                    <Icon src = { IconInviteMore } />
-                    <div className = 'invite-more-button-text'>
-                        {t('addPeople.inviteMorePrompt')}
-                    </div>
-                </div>
-            </div> : null
-    );
+function InviteMore({ _visible, onClick, t }: Props) {
+    return _visible ? (
+        <div className="invite-more-container">
+            <div className="invite-more-header">{t('addPeople.inviteMoreHeader')}</div>
+            <div className="invite-more-button" onClick={onClick}>
+                <Icon src={IconInviteMore} />
+                <div className="invite-more-button-text">{t('addPeople.inviteMorePrompt')}</div>
+            </div>
+        </div>
+    ) : null;
 }
 
 /**

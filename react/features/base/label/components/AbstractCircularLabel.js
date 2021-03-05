@@ -3,7 +3,6 @@
 import { Component } from 'react';
 
 export type Props = {
-
     /**
      * An SVG icon to be rendered as the content of the label.
      */
@@ -18,7 +17,4 @@ export type Props = {
 /**
  * Abstract class for the {@code CircularLabel} component.
  */
-export default class AbstractCircularLabel<P: Props, S: *>
-    extends Component<P, S> {
-
-}
+export default class AbstractCircularLabel<P: Props, S: *> extends Component<P, S> {}

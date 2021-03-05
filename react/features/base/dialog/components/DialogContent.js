@@ -8,7 +8,6 @@ import { type StyleType } from '../../styles';
 import styles from './styles';
 
 type Props = {
-
     /**
      * Children of the component.
      */
@@ -30,14 +29,8 @@ export default class DialogContent extends Component<Props> {
     render() {
         const { children, style } = this.props;
 
-        const childrenComponent = typeof children === 'string'
-            ? <Text style = { style }>{ children }</Text>
-            : children;
+        const childrenComponent = typeof children === 'string' ? <Text style={style}>{children}</Text> : children;
 
-        return (
-            <Container style = { styles.dialogContainer }>
-                { childrenComponent }
-            </Container>
-        );
+        return <Container style={styles.dialogContainer}>{childrenComponent}</Container>;
     }
 }

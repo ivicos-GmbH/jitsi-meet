@@ -6,7 +6,6 @@ import { BoxModel, ColorPalette, createStyleSheet } from '../../base/styles';
  * The styles of the React {@code Component}s of the feature subtitles.
  */
 export default createStyleSheet({
-
     /**
      * Style for subtitle paragraph.
      */

@@ -6,7 +6,6 @@ import type { ComponentType, Element } from 'react';
  * Item data for <tt>NavigateSectionList</tt>.
  */
 export type Item = {
-
     /**
      * The avatar URL or icon name.
      */
@@ -43,13 +42,12 @@ export type Item = {
      * lines[2] - server name
      */
     lines: Array<string>
-}
+};
 
 /**
  * web implementation of section data for NavigateSectionList
  */
 export type Section = {
-
     /**
      * section title
      */
@@ -74,8 +72,7 @@ export type Section = {
     keyExtractor?: (item: Object) => string,
 
     renderItem?: ?(info: Object) => ?Element<any>
-
-}
+};
 
 /**
  * native implementation of section data for NavigateSectionList
@@ -87,4 +84,4 @@ export type Section = {
  */
 export type SetionListSection = {
     section: Section
-}
+};

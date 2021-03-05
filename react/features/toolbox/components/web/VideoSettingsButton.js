@@ -12,7 +12,6 @@ import { isVideoSettingsButtonDisabled } from '../../functions';
 import VideoMuteButton from '../VideoMuteButton';
 
 type Props = {
-
     /**
      * Click handler for the small icon. Opens video options.
      */
@@ -48,7 +47,6 @@ type Props = {
  * @returns {ReactElement}
  */
 class VideoSettingsButton extends Component<Props> {
-
     /**
      * Returns true if the settings icon is disabled.
      *
@@ -70,14 +68,13 @@ class VideoSettingsButton extends Component<Props> {
 
         return visible ? (
             <VideoSettingsPopup>
-                <ToolboxButtonWithIcon
-                    icon = { IconArrowDown }
-                    iconDisabled = { this._isIconDisabled() }
-                    onIconClick = { onVideoOptionsClick }>
+                <ToolboxButtonWithIcon icon={IconArrowDown} iconDisabled={this._isIconDisabled()} onIconClick={onVideoOptionsClick}>
                     <VideoMuteButton />
                 </ToolboxButtonWithIcon>
             </VideoSettingsPopup>
-        ) : <VideoMuteButton />;
+        ) : (
+            <VideoMuteButton />
+        );
     }
 }
 
@@ -102,7 +99,4 @@ const mapDispatchToProps = {
     onVideoOptionsClick: toggleVideoSettings
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(VideoSettingsButton);
+export default connect(mapStateToProps, mapDispatchToProps)(VideoSettingsButton);

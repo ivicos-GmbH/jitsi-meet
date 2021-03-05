@@ -16,7 +16,6 @@ declare var APP: Object;
  * {@link RemoteControlAuthorizationDialog}.
  */
 type Props = {
-
     /**
      * The display name of the participant who is requesting authorization for
      * remote desktop control session.
@@ -67,20 +66,9 @@ class RemoteControlAuthorizationDialog extends Component<Props> {
      */
     render() {
         return (
-            <Dialog
-                okKey = { 'dialog.allow' }
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.remoteControlTitle'
-                width = 'small'>
-                {
-                    this.props.t(
-                        'dialog.remoteControlRequestMessage',
-                        { user: this.props._displayName })
-                }
-                {
-                    this._getAdditionalMessage()
-                }
+            <Dialog okKey={'dialog.allow'} onCancel={this._onCancel} onSubmit={this._onSubmit} titleKey="dialog.remoteControlTitle" width="small">
+                {this.props.t('dialog.remoteControlRequestMessage', { user: this.props._displayName })}
+                {this._getAdditionalMessage()}
             </Dialog>
         );
     }
@@ -101,7 +89,7 @@ class RemoteControlAuthorizationDialog extends Component<Props> {
         return (
             <div>
                 <br />
-                { this.props.t('dialog.remoteControlShareScreenWarning') }
+                {this.props.t('dialog.remoteControlShareScreenWarning')}
             </div>
         );
     }
@@ -175,5 +163,4 @@ function _mapStateToProps(state, ownProps) {
     };
 }
 
-export default translate(
-    connect(_mapStateToProps)(RemoteControlAuthorizationDialog));
+export default translate(connect(_mapStateToProps)(RemoteControlAuthorizationDialog));

@@ -16,7 +16,6 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of {@link SpeakerStats}.
  */
 type Props = {
-
     /**
      * The display name for the local participant obtained from the redux store.
      */
@@ -37,7 +36,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link SpeakerStats}.
  */
 type State = {
-
     /**
      * The stats summary provided by the JitsiConference.
      */
@@ -96,16 +94,13 @@ class SpeakerStats extends Component<Props, State> {
      */
     render() {
         const userIds = Object.keys(this.state.stats);
-        const items = userIds.map(userId => this._createStatsItem(userId));
+        const items = userIds.map((userId) => this._createStatsItem(userId));
 
         return (
-            <Dialog
-                cancelKey = { 'dialog.close' }
-                submitDisabled = { true }
-                titleKey = 'speakerStats.speakerStats'>
-                <div className = 'speaker-stats'>
+            <Dialog cancelKey={'dialog.close'} submitDisabled={true} titleKey="speakerStats.speakerStats">
+                <div className="speaker-stats">
                     <SpeakerStatsLabels />
-                    { items }
+                    {items}
                 </div>
             </Dialog>
         );
@@ -137,22 +132,12 @@ class SpeakerStats extends Component<Props, State> {
             const meString = t('me');
 
             displayName = this.props._localDisplayName;
-            displayName
-                = displayName ? `${displayName} (${meString})` : meString;
+            displayName = displayName ? `${displayName} (${meString})` : meString;
         } else {
-            displayName
-                = this.state.stats[userId].getDisplayName()
-                    || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
+            displayName = this.state.stats[userId].getDisplayName() || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
         }
 
-        return (
-            <SpeakerStatsItem
-                displayName = { displayName }
-                dominantSpeakerTime = { dominantSpeakerTime }
-                hasLeft = { hasLeft }
-                isDominantSpeaker = { isDominantSpeaker }
-                key = { userId } />
-        );
+        return <SpeakerStatsItem displayName={displayName} dominantSpeakerTime={dominantSpeakerTime} hasLeft={hasLeft} isDominantSpeaker={isDominantSpeaker} key={userId} />;
     }
 
     _updateStats: () => void;

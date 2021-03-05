@@ -6,7 +6,6 @@ import { isLocalParticipantModerator } from '../../base/participants';
 import { setKnockingParticipantApproval } from '../actions';
 
 export type Props = {
-
     /**
      * The list of participants.
      */

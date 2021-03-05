@@ -6,11 +6,11 @@ import { CONNECTION_TYPE } from './constants';
 
 declare var interfaceConfig: Object;
 
-const LOSS_AUDIO_THRESHOLDS = [ 0.33, 0.05 ];
-const LOSS_VIDEO_THRESHOLDS = [ 0.33, 0.1, 0.05 ];
+const LOSS_AUDIO_THRESHOLDS = [0.33, 0.05];
+const LOSS_VIDEO_THRESHOLDS = [0.33, 0.1, 0.05];
 
-const THROUGHPUT_AUDIO_THRESHOLDS = [ 8, 20 ];
-const THROUGHPUT_VIDEO_THRESHOLDS = [ 60, 750 ];
+const THROUGHPUT_AUDIO_THRESHOLDS = [8, 20];
+const THROUGHPUT_VIDEO_THRESHOLDS = [60, 750];
 
 /**
  * The avatar size to container size ration.
@@ -62,7 +62,7 @@ export function calculateAvatarDimensions(height: number) {
     if (height > lowerHeightLimit) {
         const diff = height - lowerHeightLimit;
         const percent = diff * ratio;
-        const size = Math.floor(maxSize * percent / 100);
+        const size = Math.floor((maxSize * percent) / 100);
         let marginTop = defaultMarginTop;
 
         if (height < 600) {
@@ -94,11 +94,11 @@ function _getLevel(thresholds, value, descending = true) {
     let predicate;
 
     if (descending) {
-        predicate = function(threshold) {
+        predicate = function (threshold) {
             return value > threshold;
         };
     } else {
-        predicate = function(threshold) {
+        predicate = function (threshold) {
             return value < threshold;
         };
     }
@@ -141,12 +141,7 @@ function _getConnectionDataFromTestResults({ fractionalLoss: l, throughput: t })
         // Calls are impossible.
         connectionType = CONNECTION_TYPE.POOR;
         connectionDetails.push('prejoin.connectionDetails.veryPoorConnection');
-    } else if (
-        throughput.audioQuality === 2
-        && throughput.videoQuality === 2
-        && loss.audioQuality === 2
-        && loss.videoQuality === 3
-    ) {
+    } else if (throughput.audioQuality === 2 && throughput.videoQuality === 2 && loss.audioQuality === 2 && loss.videoQuality === 3) {
         // Ideal conditions for both audio and video. Show only one message.
         connectionType = CONNECTION_TYPE.GOOD;
         connectionDetails.push('prejoin.connectionDetails.goodQuality');
@@ -204,7 +199,7 @@ export function getConnectionData(state: Object) {
 
         return {
             connectionType: CONNECTION_TYPE.POOR,
-            connectionDetails: [ 'prejoin.connectionDetails.noMediaConnectivity' ]
+            connectionDetails: ['prejoin.connectionDetails.noMediaConnectivity']
         };
     }
 
@@ -220,7 +215,9 @@ export function getConnectionData(state: Object) {
  * @returns {boolean}
  */
 export function allowUrlSharing() {
-    return typeof interfaceConfig === 'undefined'
-        || typeof interfaceConfig.SHARING_FEATURES === 'undefined'
-        || (interfaceConfig.SHARING_FEATURES.length && interfaceConfig.SHARING_FEATURES.indexOf('url') > -1);
+    return (
+        typeof interfaceConfig === 'undefined' ||
+        typeof interfaceConfig.SHARING_FEATURES === 'undefined' ||
+        (interfaceConfig.SHARING_FEATURES.length && interfaceConfig.SHARING_FEATURES.indexOf('url') > -1)
+    );
 }

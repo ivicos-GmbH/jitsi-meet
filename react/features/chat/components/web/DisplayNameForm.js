@@ -14,7 +14,6 @@ import KeyboardAvoider from './KeyboardAvoider';
  * The type of the React {@code Component} props of {@DisplayNameForm}.
  */
 type Props = {
-
     /**
      * Invoked to set the local participant display name.
      */
@@ -30,7 +29,6 @@ type Props = {
  * The type of the React {@code Component} state of {@DisplayNameForm}.
  */
 type State = {
-
     /**
      * User provided display name when the input text is provided in the view.
      */
@@ -71,23 +69,22 @@ class DisplayNameForm extends Component<Props, State> {
         const { t } = this.props;
 
         return (
-            <div id = 'nickname'>
-                <form onSubmit = { this._onSubmit }>
+            <div id="nickname">
+                <form onSubmit={this._onSubmit}>
                     <FieldTextStateless
-                        autoFocus = { true }
-                        compact = { true }
-                        id = 'nickinput'
-                        label = { t('chat.nickname.title') }
-                        onChange = { this._onDisplayNameChange }
-                        placeholder = { t('chat.nickname.popover') }
-                        shouldFitContainer = { true }
-                        type = 'text'
-                        value = { this.state.displayName } />
+                        autoFocus={true}
+                        compact={true}
+                        id="nickinput"
+                        label={t('chat.nickname.title')}
+                        onChange={this._onDisplayNameChange}
+                        placeholder={t('chat.nickname.popover')}
+                        shouldFitContainer={true}
+                        type="text"
+                        value={this.state.displayName}
+                    />
                 </form>
-                <div
-                    className = { `enter-chat${this.state.displayName.trim() ? '' : ' disabled'}` }
-                    onClick = { this._onSubmit }>
-                    { t('chat.enter') }
+                <div className={`enter-chat${this.state.displayName.trim() ? '' : ' disabled'}`} onClick={this._onSubmit}>
+                    {t('chat.enter')}
                 </div>
                 <KeyboardAvoider />
             </div>
@@ -121,9 +118,11 @@ class DisplayNameForm extends Component<Props, State> {
         event.preventDefault();
 
         // Store display name in settings
-        this.props.dispatch(updateSettings({
-            displayName: this.state.displayName
-        }));
+        this.props.dispatch(
+            updateSettings({
+                displayName: this.state.displayName
+            })
+        );
     }
 }
 

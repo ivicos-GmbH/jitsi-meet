@@ -11,8 +11,7 @@
  * }
  * @public
  */
-export const MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED
-    = 'MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED';
+export const MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED = 'MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED';
 
 /**
  * The type of the Redux action which signals that the overlay for slow gUM is visible or not.

@@ -2,15 +2,8 @@
 
 import { API_ID } from '../../../modules/API/constants';
 import { getName as getAppName } from '../app/functions';
-import {
-    checkChromeExtensionsInstalled,
-    isMobileBrowser
-} from '../base/environment/utils';
-import JitsiMeetJS, {
-    analytics,
-    browser,
-    isAnalyticsEnabled
-} from '../base/lib-jitsi-meet';
+import { checkChromeExtensionsInstalled, isMobileBrowser } from '../base/environment/utils';
+import JitsiMeetJS, { analytics, browser, isAnalyticsEnabled } from '../base/lib-jitsi-meet';
 import { getJitsiMeetGlobalNS, loadScript, parseURIString } from '../base/util';
 
 import { AmplitudeHandler, MatomoHandler } from './handlers';
@@ -72,19 +65,8 @@ export async function createHandlers({ getState }: { getState: Function }) {
     const config = state['features/base/config'];
     const { locationURL } = state['features/base/connection'];
     const host = locationURL ? locationURL.host : '';
-    const {
-        analytics: analyticsConfig = {},
-        deploymentInfo
-    } = config;
-    const {
-        amplitudeAPPKey,
-        blackListedEvents,
-        scriptURLs,
-        googleAnalyticsTrackingId,
-        matomoEndpoint,
-        matomoSiteID,
-        whiteListedEvents
-    } = analyticsConfig;
+    const { analytics: analyticsConfig = {}, deploymentInfo } = config;
+    const { amplitudeAPPKey, blackListedEvents, scriptURLs, googleAnalyticsTrackingId, matomoEndpoint, matomoSiteID, whiteListedEvents } = analyticsConfig;
     const { group, user } = state['features/base/jwt'];
     const handlerConstructorOptions = {
         amplitudeAPPKey,
@@ -161,9 +143,7 @@ export function initAnalytics({ getState }: { getState: Function }, handlers: Ar
 
     const state = getState();
     const config = state['features/base/config'];
-    const {
-        deploymentInfo
-    } = config;
+    const { deploymentInfo } = config;
     const { group, server } = state['features/base/jwt'];
     const roomName = state['features/base/conference'].room;
     const { locationURL = {} } = state['features/base/connection'];
@@ -211,10 +191,10 @@ export function initAnalytics({ getState }: { getState: Function }, handlers: Ar
     if (!isMobileBrowser() && browser.isChrome()) {
         const bannerCfg = state['features/base/config'].chromeExtensionBanner;
 
-        checkChromeExtensionsInstalled(bannerCfg).then(extensionsInstalled => {
+        checkChromeExtensionsInstalled(bannerCfg).then((extensionsInstalled) => {
             if (extensionsInstalled?.length) {
                 analytics.addPermanentProperties({
-                    hasChromeExtension: extensionsInstalled.some(ext => ext)
+                    hasChromeExtension: extensionsInstalled.some((ext) => ext)
                 });
             }
         });
@@ -257,16 +237,18 @@ function _loadHandlers(scriptURLs = [], handlerConstructorOptions) {
                 () => {
                     return { type: 'success' };
                 },
-                error => {
+                (error) => {
                     return {
                         type: 'error',
                         error,
                         url
                     };
-                }));
+                }
+            )
+        );
     }
 
-    return Promise.all(promises).then(values => {
+    return Promise.all(promises).then((values) => {
         for (const el of values) {
             if (el.type === 'error') {
                 logger.warn(`Failed to load ${el.url}: ${el.error}`);
@@ -276,10 +258,7 @@ function _loadHandlers(scriptURLs = [], handlerConstructorOptions) {
         // analyticsHandlers is the handlers we want to use
         // we search for them in the JitsiMeetGlobalNS, but also
         // check the old location to provide legacy support
-        const analyticsHandlers = [
-            ...getJitsiMeetGlobalNS().analyticsHandlers,
-            ...window.analyticsHandlers
-        ];
+        const analyticsHandlers = [...getJitsiMeetGlobalNS().analyticsHandlers, ...window.analyticsHandlers];
         const handlers = [];
 
         for (const Handler of analyticsHandlers) {

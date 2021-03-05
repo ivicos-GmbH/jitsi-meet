@@ -7,8 +7,7 @@
  *     participantIds: Array<string>
  * }}
  */
-export const SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED
-    = 'SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED';
+export const SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED = 'SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED';
 
 /**
  * The type of the action which enables or disables the feature for showing

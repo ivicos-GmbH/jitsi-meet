@@ -648,7 +648,7 @@
         "noAudioSignalDesc": "Jei specialiai nenutildėte tai sistemoje, apsvarstykite perjungti įrangą.",
         "noAudioSignalDescSuggestion": "Jei specialiai nenutildėte tai sistemoje, apsvarstykite perjungti į pasiūlytą įrangą.",
         "noAudioSignalDialInDesc": "Galite skambinti naudodami:",
-        "noAudioSignalDialInLinkDesc" : "Numeriai skambučiams",
+        "noAudioSignalDialInLinkDesc": "Numeriai skambučiams",
         "noisyAudioInputTitle": "Jūsų mikrofonas per garsus!",
         "noisyAudioInputDesc": "Atrodo, kad jūsų mikrofonas turi trikdžių, prašome jį nutildyti arba pakeisti įrangą.",
         "openChat": "Atverti susirašinėjimą",
@@ -773,4 +773,3 @@
         "youAreAlone": "Jūs vienintelis(-ė) šiame susitikime"
     }
 }
-

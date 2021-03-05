@@ -4,13 +4,11 @@
  * Created by hristo on 12/22/14.
  */
 const UIUtil = {
-
     /**
      * Escapes the given text.
      */
     escapeHtml(unsafeText) {
-        return $('<div/>').text(unsafeText)
-            .html();
+        return $('<div/>').text(unsafeText).html();
     },
 
     /**
@@ -50,10 +48,7 @@ const UIUtil = {
      * mode, {false} otherwise
      */
     isFullScreen() {
-        return Boolean(document.fullscreenElement
-            || document.mozFullScreenElement
-            || document.webkitFullscreenElement
-            || document.msFullscreenElement);
+        return Boolean(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
     },
 
     /**

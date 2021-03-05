@@ -10,7 +10,6 @@ import CalleeInfo from './CalleeInfo';
  * The type of the React {@code Component} props of {@code CalleeInfoContainer}.
  */
 type Props = {
-
     /**
      * The indicator which determines whether {@code CalleeInfo} is to be
      * rendered.

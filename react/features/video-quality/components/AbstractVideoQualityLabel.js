@@ -3,7 +3,6 @@
 import { Component } from 'react';
 
 export type Props = {
-
     /**
      * Whether or not the conference is in audio only mode.
      */
@@ -18,9 +17,7 @@ export type Props = {
 /**
  * Abstract class for the {@code VideoQualityLabel} component.
  */
-export default class AbstractVideoQualityLabel<P: Props> extends Component<P> {
-
-}
+export default class AbstractVideoQualityLabel<P: Props> extends Component<P> {}
 
 /**
  * Maps (parts of) the Redux state to the associated

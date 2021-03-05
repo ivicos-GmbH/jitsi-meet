@@ -15,21 +15,19 @@ export default function loadEffects(store: Object): Promise<any> {
     const state = store.getState();
 
     const blurPromise = state['features/blur'].blurEnabled
-        ? getBlurEffect()
-            .catch(error => {
-                logger.error('Failed to obtain the blur effect instance with error: ', error);
+        ? getBlurEffect().catch((error) => {
+              logger.error('Failed to obtain the blur effect instance with error: ', error);
 
-                return Promise.resolve();
-            })
+              return Promise.resolve();
+          })
         : Promise.resolve();
     const screenshotCapturePromise = state['features/screenshot-capture']?.capturesEnabled
-        ? createScreenshotCaptureEffect(state)
-            .catch(error => {
-                logger.error('Failed to obtain the screenshot capture effect effect instance with error: ', error);
+        ? createScreenshotCaptureEffect(state).catch((error) => {
+              logger.error('Failed to obtain the screenshot capture effect effect instance with error: ', error);
 
-                return Promise.resolve();
-            })
+              return Promise.resolve();
+          })
         : Promise.resolve();
 
-    return Promise.all([ blurPromise, screenshotCapturePromise ]);
+    return Promise.all([blurPromise, screenshotCapturePromise]);
 }

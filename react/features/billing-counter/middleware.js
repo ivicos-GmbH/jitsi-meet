@@ -13,24 +13,23 @@ import { isVpaasMeeting, extractVpaasTenantFromPath } from './functions';
  * @returns {Function}
  */
 
-MiddlewareRegistry.register(store => next => async action => {
+MiddlewareRegistry.register((store) => (next) => async (action) => {
     switch (action.type) {
-    case CONFERENCE_JOINED: {
-        _maybeTrackVpaasConferenceJoin(store.getState());
+        case CONFERENCE_JOINED: {
+            _maybeTrackVpaasConferenceJoin(store.getState());
 
-        break;
-    }
-
-    case PARTICIPANT_JOINED: {
-        const shouldCount = !store.getState()['features/billing-counter'].endpointCounted
-              && !action.participant.local;
-
-        if (shouldCount) {
-            store.dispatch(countEndpoint());
+            break;
         }
 
-        break;
-    }
+        case PARTICIPANT_JOINED: {
+            const shouldCount = !store.getState()['features/billing-counter'].endpointCounted && !action.participant.local;
+
+            if (shouldCount) {
+                store.dispatch(countEndpoint());
+            }
+
+            break;
+        }
     }
 
     return next(action);
@@ -44,8 +43,6 @@ MiddlewareRegistry.register(store => next => async action => {
  */
 function _maybeTrackVpaasConferenceJoin(state) {
     if (isVpaasMeeting(state)) {
-        sendAnalytics(createVpaasConferenceJoinedEvent(
-            extractVpaasTenantFromPath(
-                state['features/base/connection'].locationURL.pathname)));
+        sendAnalytics(createVpaasConferenceJoinedEvent(extractVpaasTenantFromPath(state['features/base/connection'].locationURL.pathname)));
     }
 }

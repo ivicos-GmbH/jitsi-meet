@@ -8,9 +8,7 @@ import type { Props } from './AbstractButton';
 /**
  * An abstract implementation of a button for toggling video mute.
  */
-export default class AbstractVideoMuteButton<P : Props, S : *>
-    extends AbstractButton<P, S> {
-
+export default class AbstractVideoMuteButton<P: Props, S: *> extends AbstractButton<P, S> {
     icon = IconCamera;
     toggledIcon = IconCameraDisabled;
 
@@ -55,7 +53,8 @@ export default class AbstractVideoMuteButton<P : Props, S : *>
      * @protected
      * @returns {void}
      */
-    _setVideoMuted(videoMuted: boolean) { // eslint-disable-line no-unused-vars
+    _setVideoMuted(videoMuted: boolean) {
+        // eslint-disable-line no-unused-vars
         // To be implemented by subclass.
     }
 }

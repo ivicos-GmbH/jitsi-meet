@@ -6,7 +6,6 @@ import React, { Component } from 'react';
  * The type of the React {@code Component} props of {@link Video}.
  */
 type Props = {
-
     /**
      * CSS classes to add to the video element.
      */
@@ -79,7 +78,6 @@ class Video extends Component<Props> {
          */
         this._videoElement = null;
 
-
         // Bind event handlers so they are only bound once for every instance.
         this._onVideoPlaying = this._onVideoPlaying.bind(this);
         this._setVideoElement = this._setVideoElement.bind(this);
@@ -129,10 +127,8 @@ class Video extends Component<Props> {
      * from React.
      */
     shouldComponentUpdate(nextProps: Props) {
-        const currentJitsiTrack = this.props.videoTrack
-            && this.props.videoTrack.jitsiTrack;
-        const nextJitsiTrack = nextProps.videoTrack
-            && nextProps.videoTrack.jitsiTrack;
+        const currentJitsiTrack = this.props.videoTrack && this.props.videoTrack.jitsiTrack;
+        const nextJitsiTrack = nextProps.videoTrack && nextProps.videoTrack.jitsiTrack;
 
         if (currentJitsiTrack !== nextJitsiTrack) {
             this._detachTrack(this.props.videoTrack);
@@ -149,14 +145,7 @@ class Video extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <video
-                autoPlay = { this.props.autoPlay }
-                className = { this.props.className }
-                id = { this.props.id }
-                playsInline = { this.props.playsinline }
-                ref = { this._setVideoElement } />
-        );
+        return <video autoPlay={this.props.autoPlay} className={this.props.className} id={this.props.id} playsInline={this.props.playsinline} ref={this._setVideoElement} />;
     }
 
     /**

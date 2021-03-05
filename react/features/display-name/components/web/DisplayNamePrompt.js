@@ -6,15 +6,12 @@ import React from 'react';
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-import AbstractDisplayNamePrompt, {
-    type Props
-} from '../AbstractDisplayNamePrompt';
+import AbstractDisplayNamePrompt, { type Props } from '../AbstractDisplayNamePrompt';
 
 /**
  * The type of the React {@code Component} props of {@link DisplayNamePrompt}.
  */
 type State = {
-
     /**
      * The name to show in the display name text field.
      */
@@ -54,21 +51,19 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<State> {
      */
     render() {
         return (
-            <Dialog
-                isModal = { false }
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.displayNameRequired'
-                width = 'small'>
+            <Dialog isModal={false} onSubmit={this._onSubmit} titleKey="dialog.displayNameRequired" width="small">
                 <TextField
-                    autoFocus = { true }
-                    compact = { true }
-                    label = { this.props.t('dialog.enterDisplayName') }
-                    name = 'displayName'
-                    onChange = { this._onDisplayNameChange }
-                    shouldFitContainer = { true }
-                    type = 'text'
-                    value = { this.state.displayName } />
-            </Dialog>);
+                    autoFocus={true}
+                    compact={true}
+                    label={this.props.t('dialog.enterDisplayName')}
+                    name="displayName"
+                    onChange={this._onDisplayNameChange}
+                    shouldFitContainer={true}
+                    type="text"
+                    value={this.state.displayName}
+                />
+            </Dialog>
+        );
     }
 
     _onDisplayNameChange: (Object) => void;
@@ -87,7 +82,7 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<State> {
         });
     }
 
-    _onSetDisplayName: string => boolean;
+    _onSetDisplayName: (string) => boolean;
 
     _onSubmit: () => boolean;
 

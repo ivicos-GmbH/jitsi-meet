@@ -11,13 +11,12 @@ declare var interfaceConfig: Object;
  * The type of the React {@link Component} props of {@code OverlayContainer}.
  */
 type Props = {
-
     /**
      * The React {@link Component} type of overlay to be rendered by the
      * associated {@code OverlayContainer}.
      */
     overlay: ?React$ComponentType<*>
-}
+};
 
 /**
  * Implements a React {@link Component} that will display the correct overlay

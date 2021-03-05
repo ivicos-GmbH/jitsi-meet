@@ -2,11 +2,7 @@
 
 import { Dropbox } from 'dropbox';
 
-import {
-    getJitsiMeetGlobalNS,
-    parseStandardURIString,
-    parseURLParams
-} from '../base/util';
+import { getJitsiMeetGlobalNS, parseStandardURIString, parseURLParams } from '../base/util';
 
 /**
  * Executes the oauth flow.
@@ -20,10 +16,10 @@ function authorize(authUrl: string): Promise<string> {
 
     gloabalNS.oauthCallbacks = gloabalNS.oauthCallbacks || {};
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         const popup = window.open(authUrl, windowName);
 
-        gloabalNS.oauthCallbacks[windowName] = url => {
+        gloabalNS.oauthCallbacks[windowName] = (url) => {
             popup.close();
             delete gloabalNS.oauthCallbacks.windowName;
             resolve(url);
@@ -38,16 +34,12 @@ function authorize(authUrl: string): Promise<string> {
  * @param {string} redirectURI - The return URL.
  * @returns {Promise<string>}
  */
-export function _authorizeDropbox(
-        appKey: string,
-        redirectURI: string
-): Promise<string> {
+export function _authorizeDropbox(appKey: string, redirectURI: string): Promise<string> {
     const dropboxAPI = new Dropbox({ clientId: appKey });
     const url = dropboxAPI.getAuthenticationUrl(redirectURI);
 
-    return authorize(url).then(returnUrl => {
-        const params
-            = parseURLParams(parseStandardURIString(returnUrl), true) || {};
+    return authorize(url).then((returnUrl) => {
+        const params = parseURLParams(parseStandardURIString(returnUrl), true) || {};
 
         return params.access_token;
     });
@@ -66,9 +58,7 @@ export function getDisplayName(token: string, appKey: string) {
         clientId: appKey
     });
 
-    return (
-        dropboxAPI.usersGetCurrentAccount()
-            .then(account => account.name.display_name));
+    return dropboxAPI.usersGetCurrentAccount().then((account) => account.name.display_name);
 }
 
 /**
@@ -84,7 +74,7 @@ export function getSpaceUsage(token: string, appKey: string) {
         clientId: appKey
     });
 
-    return dropboxAPI.usersGetSpaceUsage().then(space => {
+    return dropboxAPI.usersGetSpaceUsage().then((space) => {
         const { allocation, used } = space;
         const { allocated } = allocation;
 

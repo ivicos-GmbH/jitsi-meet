@@ -228,8 +228,7 @@ export function createRecentSelectedEvent(attributes = {}) {
  * @returns {Object} The event in a format suitable for sending via
  * sendAnalytics.
  */
-export function createDeepLinkingPageEvent(
-        action, actionSubject, attributes = {}) {
+export function createDeepLinkingPageEvent(action, actionSubject, attributes = {}) {
     return {
         action,
         actionSubject,
@@ -251,8 +250,8 @@ export function createDeviceChangedEvent(mediaType, deviceType) {
     return {
         action: 'device.changed',
         attributes: {
-            'device_type': deviceType,
-            'media_type': mediaType
+            device_type: deviceType,
+            media_type: mediaType
         }
     };
 }
@@ -292,8 +291,7 @@ export function createFeedbackOpenEvent() {
  * @returns {Object} The event in a format suitable for sending via
  * sendAnalytics.
  */
-export function createInviteDialogEvent(
-        action, actionSubject, attributes = {}) {
+export function createInviteDialogEvent(action, actionSubject, attributes = {}) {
     return {
         action,
         actionSubject,
@@ -406,8 +404,7 @@ export function createProfilePanelButtonEvent(buttonName, attributes = {}) {
  * @returns {Object} The event in a format suitable for sending via
  * sendAnalytics.
  */
-export function createRecordingDialogEvent(
-        dialogName, buttonName, attributes = {}) {
+export function createRecordingDialogEvent(dialogName, buttonName, attributes = {}) {
     return {
         action: 'clicked',
         actionSubject: buttonName,
@@ -513,8 +510,8 @@ export function createRemoteMuteConfirmedEvent(participantId, mediaType) {
         action: 'clicked',
         actionSubject: 'remote.mute.dialog.confirm.button',
         attributes: {
-            'participant_id': participantId,
-            'media_type': mediaType
+            participant_id: participantId,
+            media_type: mediaType
         },
         source: 'remote.mute.dialog',
         type: TYPE_UI
@@ -654,10 +651,7 @@ export function createSharedVideoEvent(action, attributes = {}) {
  * @returns {Object} The event in a format suitable for sending via
  * sendAnalytics.
  */
-export function createShortcutEvent(
-        shortcut,
-        action = ACTION_SHORTCUT_TRIGGERED,
-        attributes = {}) {
+export function createShortcutEvent(shortcut, action = ACTION_SHORTCUT_TRIGGERED, attributes = {}) {
     return {
         action,
         actionSubject: 'keyboard.shortcut',
@@ -709,16 +703,13 @@ export function createStartSilentEvent() {
  * @returns {Object} The event in a format suitable for sending via
  * sendAnalytics.
  */
-export function createStartMutedConfigurationEvent(
-        source,
-        audioMute,
-        videoMute) {
+export function createStartMutedConfigurationEvent(source, audioMute, videoMute) {
     return {
         action: 'start.muted.configuration',
         attributes: {
             source,
-            'audio_mute': audioMute,
-            'video_mute': videoMute
+            audio_mute: audioMute,
+            video_mute: videoMute
         }
     };
 }
@@ -737,7 +728,7 @@ export function createSyncTrackStateEvent(mediaType, muted) {
     return {
         action: 'sync.track.state',
         attributes: {
-            'media_type': mediaType,
+            media_type: mediaType,
             muted
         }
     };
@@ -780,7 +771,7 @@ export function createTrackMutedEvent(mediaType, reason, muted = true) {
     return {
         action: 'track.muted',
         attributes: {
-            'media_type': mediaType,
+            media_type: mediaType,
             muted,
             reason
         }

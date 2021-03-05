@@ -9,7 +9,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/
 import ConnectionStatusComponent from './ConnectionStatusComponent';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */
@@ -42,9 +41,11 @@ class ConnectionStatusButton extends AbstractButton<Props, *> {
     _handleClick() {
         const { dispatch, participantID } = this.props;
 
-        dispatch(openDialog(ConnectionStatusComponent, {
-            participantID
-        }));
+        dispatch(
+            openDialog(ConnectionStatusComponent, {
+                participantID
+            })
+        );
     }
 }
 

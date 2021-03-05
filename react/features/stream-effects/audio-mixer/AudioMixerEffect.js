@@ -66,5 +66,4 @@ export class AudioMixerEffect {
     stopEffect() {
         this._audioMixer.reset();
     }
-
 }

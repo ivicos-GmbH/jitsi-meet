@@ -9,7 +9,6 @@ export const REC_LABEL_COLOR = ColorPalette.red;
  * The styles of the React {@code Components} of the feature recording.
  */
 export default createStyleSheet({
-
     /**
      * Style for the recording indicator.
      */

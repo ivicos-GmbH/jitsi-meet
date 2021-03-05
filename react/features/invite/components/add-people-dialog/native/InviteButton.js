@@ -10,7 +10,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../../../base/toolb
 import { doInvitePeople } from '../../../actions.native';
 
 type Props = AbstractButtonProps & {
-
     /**
      * The Redux dispatch function.
      */
@@ -52,6 +51,5 @@ function _mapStateToProps(state, ownProps: Props) {
         visible: flag && !disableInviteFunctions && ownProps.visible
     };
 }
-
 
 export default translate(connect(_mapStateToProps)(InviteButton));

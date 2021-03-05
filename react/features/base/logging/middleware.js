@@ -4,10 +4,7 @@ import Logger from 'jitsi-meet-logger';
 
 import { APP_WILL_MOUNT } from '../app';
 import { CONFERENCE_JOINED, getCurrentConference } from '../conference';
-import JitsiMeetJS, {
-    LIB_WILL_INIT,
-    JitsiConferenceEvents
-} from '../lib-jitsi-meet';
+import JitsiMeetJS, { LIB_WILL_INIT, JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MiddlewareRegistry } from '../redux';
 import { isTestModeEnabled } from '../testing';
 
@@ -26,19 +23,19 @@ declare var APP: Object;
  * @returns {Function}
  * @private
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        return _appWillMount(store, next, action);
+        case APP_WILL_MOUNT:
+            return _appWillMount(store, next, action);
 
-    case CONFERENCE_JOINED:
-        return _conferenceJoined(store, next, action);
+        case CONFERENCE_JOINED:
+            return _conferenceJoined(store, next, action);
 
-    case LIB_WILL_INIT:
-        return _libWillInit(store, next, action);
+        case LIB_WILL_INIT:
+            return _libWillInit(store, next, action);
 
-    case SET_LOGGING_CONFIG:
-        return _setLoggingConfig(store, next, action);
+        case SET_LOGGING_CONFIG:
+            return _setLoggingConfig(store, next, action);
     }
 
     return next(action);
@@ -85,7 +82,6 @@ function _appWillMount({ getState }, next, action) {
  * @returns {*}
  */
 function _conferenceJoined({ getState }, next, action) {
-
     // Wait until the joined event is processed, so that the JitsiMeetLogStorage
     // will be ready.
     const result = next(action);
@@ -111,10 +107,7 @@ function _conferenceJoined({ getState }, next, action) {
         // waiting for someone to join). It will then restart the media session
         // when someone eventually joins the room which will start the stats
         // again.
-        conference.on(
-            JitsiConferenceEvents.BEFORE_STATISTICS_DISPOSED,
-            () => logCollector.flush()
-        );
+        conference.on(JitsiConferenceEvents.BEFORE_STATISTICS_DISPOSED, () => logCollector.flush());
     }
 
     return result;
@@ -139,8 +132,7 @@ function _initLogging({ dispatch, getState }, loggingConfig, isTestingEnabled) {
     // cached, before the JitsiMeetLogStorage gets ready (statistics module is
     // initialized).
     if (!logCollector && !loggingConfig.disableLogCollector) {
-        const _logCollector
-            = new Logger.LogCollector(new JitsiMeetLogStorage(getState));
+        const _logCollector = new Logger.LogCollector(new JitsiMeetLogStorage(getState));
 
         const { apiLogLevels } = getState()['features/base/config'];
 
@@ -159,8 +151,7 @@ function _initLogging({ dispatch, getState }, loggingConfig, isTestingEnabled) {
         // the 'executeScript' method like it's done in torture tests for WEB.
         if (isTestingEnabled && typeof APP === 'object') {
             APP.debugLogs = new JitsiMeetInMemoryLogStorage();
-            const debugLogCollector = new Logger.LogCollector(
-                APP.debugLogs, { storeInterval: 1000 });
+            const debugLogCollector = new Logger.LogCollector(APP.debugLogs, { storeInterval: 1000 });
 
             Logger.addGlobalTransport(debugLogCollector);
             JitsiMeetJS.addGlobalLogTransport(debugLogCollector);
@@ -226,10 +217,14 @@ function _setLoggingConfig({ dispatch, getState }, next, action) {
     _setLogLevels(Logger, newValue);
     _setLogLevels(JitsiMeetJS, newValue);
 
-    _initLogging({
-        dispatch,
-        getState
-    }, newValue, isTestingEnabled);
+    _initLogging(
+        {
+            dispatch,
+            getState
+        },
+        newValue,
+        isTestingEnabled
+    );
 
     return result;
 }
@@ -252,7 +247,5 @@ function _setLogLevels(logger, config) {
     logger.setLogLevel(config.defaultLogLevel);
 
     // Second, set the log level of each logger explictly overriden by config.
-    Object.keys(config).forEach(
-        id =>
-            id === 'defaultLogLevel' || logger.setLogLevelById(config[id], id));
+    Object.keys(config).forEach((id) => id === 'defaultLogLevel' || logger.setLogLevelById(config[id], id));
 }

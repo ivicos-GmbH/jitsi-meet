@@ -1,20 +1,12 @@
 // @flow
 
 import { CONFERENCE_WILL_JOIN } from '../base/conference/actionTypes';
-import {
-    getParticipantById,
-    getPinnedParticipant,
-    PARTICIPANT_LEFT,
-    pinParticipant
-} from '../base/participants';
+import { getParticipantById, getPinnedParticipant, PARTICIPANT_LEFT, pinParticipant } from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
 import { setFilmstripVisible } from '../filmstrip';
 import { setTileView } from '../video-layout';
 
-import {
-    setFollowMeModerator,
-    setFollowMeState
-} from './actions';
+import { setFollowMeModerator, setFollowMeState } from './actions';
 import { FOLLOW_ME_COMMAND } from './constants';
 import { isFollowMeActive } from './functions';
 import logger from './logger';
@@ -56,22 +48,21 @@ let nextOnStageTimer = 0;
  * control the user experience/interface (e.g. filmstrip visibility) of (other)
  * non-moderator participant.
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case CONFERENCE_WILL_JOIN: {
-        const { conference } = action;
+        case CONFERENCE_WILL_JOIN: {
+            const { conference } = action;
 
-        conference.addCommandListener(
-            FOLLOW_ME_COMMAND, ({ attributes }, id) => {
+            conference.addCommandListener(FOLLOW_ME_COMMAND, ({ attributes }, id) => {
                 _onFollowMeCommand(attributes, id, store);
             });
-        break;
-    }
-    case PARTICIPANT_LEFT:
-        if (store.getState()['features/follow-me'].moderator === action.participant.id) {
-            store.dispatch(setFollowMeModerator());
+            break;
         }
-        break;
+        case PARTICIPANT_LEFT:
+            if (store.getState()['features/follow-me'].moderator === action.participant.id) {
+                store.dispatch(setFollowMeModerator());
+            }
+            break;
     }
 
     return next(action);
@@ -141,13 +132,11 @@ function _onFollowMeCommand(attributes = {}, id, store) {
 
     // For now gate etherpad checks behind a web-app check to be extra safe
     // against calling a web-app global.
-    if (typeof APP !== 'undefined'
-        && oldState.sharedDocumentVisible !== attributes.sharedDocumentVisible) {
+    if (typeof APP !== 'undefined' && oldState.sharedDocumentVisible !== attributes.sharedDocumentVisible) {
         const isEtherpadVisible = attributes.sharedDocumentVisible === 'true';
         const documentManager = APP.UI.getSharedDocumentManager();
 
-        if (documentManager
-                && isEtherpadVisible !== state['features/etherpad'].editing) {
+        if (documentManager && isEtherpadVisible !== state['features/etherpad'].editing) {
             documentManager.toggleEtherpad();
         }
     }
@@ -155,9 +144,7 @@ function _onFollowMeCommand(attributes = {}, id, store) {
     const pinnedParticipant = getPinnedParticipant(state);
     const idOfParticipantToPin = attributes.nextOnStage;
 
-    if (typeof idOfParticipantToPin !== 'undefined'
-            && (!pinnedParticipant || idOfParticipantToPin !== pinnedParticipant.id)
-            && oldState.nextOnStage !== attributes.nextOnStage) {
+    if (typeof idOfParticipantToPin !== 'undefined' && (!pinnedParticipant || idOfParticipantToPin !== pinnedParticipant.id) && oldState.nextOnStage !== attributes.nextOnStage) {
         _pinVideoThumbnailById(store, idOfParticipantToPin);
     } else if (typeof idOfParticipantToPin === 'undefined' && pinnedParticipant) {
         store.dispatch(pinParticipant(null));

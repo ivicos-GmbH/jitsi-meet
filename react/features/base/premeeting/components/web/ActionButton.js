@@ -5,7 +5,6 @@ import React from 'react';
 import { Icon, IconArrowDown } from '../../../icons';
 
 type Props = {
-
     /**
      * Text of the button.
      */
@@ -57,33 +56,15 @@ type Props = {
  *
  * @returns {ReactElement}
  */
-function ActionButton({
-    children,
-    className = '',
-    disabled,
-    hasOptions,
-    OptionsIcon = IconArrowDown,
-    testId,
-    type = 'primary',
-    onClick,
-    onOptionsClick
-}: Props) {
+function ActionButton({ children, className = '', disabled, hasOptions, OptionsIcon = IconArrowDown, testId, type = 'primary', onClick, onOptionsClick }: Props) {
     return (
-        <div
-            className = { `action-btn ${className} ${type} ${disabled ? 'disabled' : ''}` }
-            data-testid = { testId ? testId : undefined }
-            onClick = { disabled ? undefined : onClick }>
+        <div className={`action-btn ${className} ${type} ${disabled ? 'disabled' : ''}`} data-testid={testId ? testId : undefined} onClick={disabled ? undefined : onClick}>
             {children}
-            {hasOptions && <div
-                className = 'options'
-                data-testid = 'prejoin.joinOptions'
-                onClick = { disabled ? undefined : onOptionsClick }>
-                <Icon
-                    className = 'icon'
-                    size = { 14 }
-                    src = { OptionsIcon } />
-            </div>
-            }
+            {hasOptions && (
+                <div className="options" data-testid="prejoin.joinOptions" onClick={disabled ? undefined : onOptionsClick}>
+                    <Icon className="icon" size={14} src={OptionsIcon} />
+                </div>
+            )}
         </div>
     );
 }

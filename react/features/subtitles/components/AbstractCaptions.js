@@ -6,7 +6,6 @@ import { Component } from 'react';
  * {@code AbstractCaptions} properties.
  */
 export type AbstractCaptionsProps = {
-
     /**
      * Whether local participant is requesting to see subtitles.
      */
@@ -24,9 +23,7 @@ export type AbstractCaptionsProps = {
  * Abstract React {@code Component} which can display speech-to-text results
  * from Jigasi as subtitles.
  */
-export class AbstractCaptions<P: AbstractCaptionsProps>
-    extends Component<P> {
-
+export class AbstractCaptions<P: AbstractCaptionsProps> extends Component<P> {
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -42,7 +39,7 @@ export class AbstractCaptions<P: AbstractCaptionsProps>
 
         const paragraphs = [];
 
-        for (const [ id, text ] of _transcripts) {
+        for (const [id, text] of _transcripts) {
             paragraphs.push(this._renderParagraph(id, text));
         }
 
@@ -87,7 +84,7 @@ function _constructTranscripts(state: Object): Map<string, string> {
     const { _transcriptMessages } = state['features/subtitles'];
     const transcripts = new Map();
 
-    for (const [ id, transcriptMessage ] of _transcriptMessages) {
+    for (const [id, transcriptMessage] of _transcriptMessages) {
         if (transcriptMessage) {
             let text = `${transcriptMessage.participantName}: `;
 

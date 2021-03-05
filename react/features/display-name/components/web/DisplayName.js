@@ -4,10 +4,7 @@ import React, { Component } from 'react';
 import type { Dispatch } from 'redux';
 
 import { translate } from '../../../base/i18n';
-import {
-    getParticipantDisplayName,
-    getParticipantById
-} from '../../../base/participants';
+import { getParticipantDisplayName, getParticipantById } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { updateSettings } from '../../../base/settings';
 import { appendSuffix } from '../../functions';
@@ -16,7 +13,6 @@ import { appendSuffix } from '../../functions';
  * The type of the React {@code Component} props of {@link DisplayName}.
  */
 type Props = {
-
     /**
      * The participant's current display name which should be shown when in
      * edit mode. Can be different from what is shown when not editing.
@@ -64,7 +60,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link DisplayName}.
  */
 type State = {
-
     /**
      * The current value of the display name in the edit field.
      */
@@ -129,9 +124,7 @@ class DisplayName extends Component<Props, State> {
      * @returns {void}
      */
     componentDidUpdate(previousProps, previousState) {
-        if (!previousState.isEditing
-            && this.state.isEditing
-            && this._nameInput) {
+        if (!previousState.isEditing && this.state.isEditing && this._nameInput) {
             this._nameInput.select();
         }
     }
@@ -143,37 +136,29 @@ class DisplayName extends Component<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _nameToDisplay,
-            allowEditing,
-            displayNameSuffix,
-            elementID,
-            t
-        } = this.props;
+        const { _nameToDisplay, allowEditing, displayNameSuffix, elementID, t } = this.props;
 
         if (allowEditing && this.state.isEditing) {
             return (
                 <input
-                    autoFocus = { true }
-                    className = 'editdisplayname'
-                    id = 'editDisplayName'
-                    onBlur = { this._onSubmit }
-                    onChange = { this._onChange }
-                    onKeyDown = { this._onKeyDown }
-                    placeholder = { t('defaultNickname') }
-                    ref = { this._setNameInputRef }
-                    spellCheck = { 'false' }
-                    type = 'text'
-                    value = { this.state.editDisplayNameValue } />
+                    autoFocus={true}
+                    className="editdisplayname"
+                    id="editDisplayName"
+                    onBlur={this._onSubmit}
+                    onChange={this._onChange}
+                    onKeyDown={this._onKeyDown}
+                    placeholder={t('defaultNickname')}
+                    ref={this._setNameInputRef}
+                    spellCheck={'false'}
+                    type="text"
+                    value={this.state.editDisplayNameValue}
+                />
             );
         }
 
         return (
-            <span
-                className = 'displayname'
-                id = { elementID }
-                onClick = { this._onStartEditing }>
-                { appendSuffix(_nameToDisplay, displayNameSuffix) }
+            <span className="displayname" id={elementID} onClick={this._onStartEditing}>
+                {appendSuffix(_nameToDisplay, displayNameSuffix)}
             </span>
         );
     }
@@ -243,9 +228,11 @@ class DisplayName extends Component<Props, State> {
         const { dispatch } = this.props;
 
         // Store display name in settings
-        dispatch(updateSettings({
-            displayName: editDisplayNameValue
-        }));
+        dispatch(
+            updateSettings({
+                displayName: editDisplayNameValue
+            })
+        );
 
         this.setState({
             isEditing: false,
@@ -288,8 +275,7 @@ function _mapStateToProps(state, ownProps) {
 
     return {
         _configuredDisplayName: participant && participant.name,
-        _nameToDisplay: getParticipantDisplayName(
-            state, participantID)
+        _nameToDisplay: getParticipantDisplayName(state, participantID)
     };
 }
 

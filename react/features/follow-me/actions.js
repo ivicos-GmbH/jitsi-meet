@@ -1,9 +1,6 @@
 // @flow
 
-import {
-    SET_FOLLOW_ME_MODERATOR,
-    SET_FOLLOW_ME_STATE
-} from './actionTypes';
+import { SET_FOLLOW_ME_MODERATOR, SET_FOLLOW_ME_STATE } from './actionTypes';
 
 /**
  * Sets the current moderator id or clears it.

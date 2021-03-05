@@ -5,10 +5,7 @@ import React from 'react';
 import { Dialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
 import { connect } from '../../../../base/redux';
-import AbstractStopRecordingDialog, {
-    type Props,
-    _mapStateToProps
-} from '../AbstractStopRecordingDialog';
+import AbstractStopRecordingDialog, { type Props, _mapStateToProps } from '../AbstractStopRecordingDialog';
 
 /**
  * React Component for getting confirmation to stop a file recording session in
@@ -27,17 +24,13 @@ class StopRecordingDialog extends AbstractStopRecordingDialog<Props> {
         const { t } = this.props;
 
         return (
-            <Dialog
-                okKey = 'dialog.confirm'
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.recording'
-                width = 'small'>
-                { t('dialog.stopRecordingWarning') }
+            <Dialog okKey="dialog.confirm" onSubmit={this._onSubmit} titleKey="dialog.recording" width="small">
+                {t('dialog.stopRecordingWarning')}
             </Dialog>
         );
     }
 
-    _onSubmit: () => boolean
+    _onSubmit: () => boolean;
 }
 
 export default translate(connect(_mapStateToProps)(StopRecordingDialog));

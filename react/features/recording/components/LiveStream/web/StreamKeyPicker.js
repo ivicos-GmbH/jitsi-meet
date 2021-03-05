@@ -1,10 +1,6 @@
 /* @flow */
 
-import {
-    DropdownItem,
-    DropdownItemGroup,
-    DropdownMenuStateless
-} from '@atlaskit/dropdown-menu';
+import { DropdownItem, DropdownItemGroup, DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import React, { PureComponent } from 'react';
 
 import { translate } from '../../../../base/i18n';
@@ -14,7 +10,6 @@ import { YOUTUBE_LIVE_DASHBOARD_URL } from '../constants';
  * The type of the React {@code Component} props of {@link StreamKeyPicker}.
  */
 type Props = {
-
     /**
      * Broadcasts available for selection. Each broadcast item should be an
      * object with a title for display in the dropdown and a boundStreamID to
@@ -44,7 +39,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link StreamKeyPicker}.
  */
 type State = {
-
     /**
      * Whether or not to display the dropdown menu to pick a YouTube broadcast.
      */
@@ -98,52 +92,42 @@ class StreamKeyPicker extends PureComponent<Props, State> {
 
         if (!broadcasts.length) {
             return (
-                <a
-                    className = 'warning-text'
-                    href = { YOUTUBE_LIVE_DASHBOARD_URL }
-                    rel = 'noopener noreferrer'
-                    target = '_blank'>
-                    { t('liveStreaming.getStreamKeyManually') }
+                <a className="warning-text" href={YOUTUBE_LIVE_DASHBOARD_URL} rel="noopener noreferrer" target="_blank">
+                    {t('liveStreaming.getStreamKeyManually')}
                 </a>
             );
         }
 
-        const dropdownItems
-            = broadcasts.map(broadcast => (
-                <DropdownItem
-                    key = { broadcast.boundStreamID }
-
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick = {
-                        e => {
-                            e.stopPropagation();
-                            this._onSelect(broadcast.boundStreamID);
-                        }
-                    }>
-                    { broadcast.title }
-                </DropdownItem>));
-        const selected
-            = this.props.broadcasts.find(
-                broadcast => broadcast.boundStreamID === selectedBoundStreamID);
-        const triggerText
-            = (selected && selected.title) || t('liveStreaming.choose');
+        const dropdownItems = broadcasts.map((broadcast) => (
+            <DropdownItem
+                key={broadcast.boundStreamID}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={(e) => {
+                    e.stopPropagation();
+                    this._onSelect(broadcast.boundStreamID);
+                }}
+            >
+                {broadcast.title}
+            </DropdownItem>
+        ));
+        const selected = this.props.broadcasts.find((broadcast) => broadcast.boundStreamID === selectedBoundStreamID);
+        const triggerText = (selected && selected.title) || t('liveStreaming.choose');
 
         return (
-            <div className = 'broadcast-dropdown dropdown-menu'>
+            <div className="broadcast-dropdown dropdown-menu">
                 <DropdownMenuStateless
-                    isOpen = { this.state.isDropdownOpen }
-                    onItemActivated = { this._onSelect }
-                    onOpenChange = { this._onDropdownOpenChange }
-                    shouldFitContainer = { true }
-                    trigger = { triggerText }
-                    triggerButtonProps = {{
+                    isOpen={this.state.isDropdownOpen}
+                    onItemActivated={this._onSelect}
+                    onOpenChange={this._onDropdownOpenChange}
+                    shouldFitContainer={true}
+                    trigger={triggerText}
+                    triggerButtonProps={{
                         className: 'broadcast-dropdown-trigger',
                         shouldFitContainer: true
                     }}
-                    triggerType = 'button'>
-                    <DropdownItemGroup>
-                        { dropdownItems }
-                    </DropdownItemGroup>
+                    triggerType="button"
+                >
+                    <DropdownItemGroup>{dropdownItems}</DropdownItemGroup>
                 </DropdownMenuStateless>
             </div>
         );
@@ -158,7 +142,7 @@ class StreamKeyPicker extends PureComponent<Props, State> {
      * @returns {Array<Object>}
      */
     _formatBroadcasts(broadcasts) {
-        return broadcasts.map(broadcast => {
+        return broadcasts.map((broadcast) => {
             return {
                 content: broadcast.title,
                 value: broadcast

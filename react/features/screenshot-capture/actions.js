@@ -13,10 +13,10 @@ let ongoingEffect;
  *
  * @param {boolean} enabled - Whether to turn screen captures on or off.
  * @returns {{
-    *      type: START_SCREENSHOT_CAPTURE,
-    *      payload: enabled
-    * }}
-*/
+ *      type: START_SCREENSHOT_CAPTURE,
+ *      payload: enabled
+ * }}
+ */
 function setScreenshotCapture(enabled) {
     return {
         type: SET_SCREENSHOT_CAPTURE,
@@ -25,13 +25,13 @@ function setScreenshotCapture(enabled) {
 }
 
 /**
-* Action that toggles the screenshot captures.
-*
-* @param {boolean} enabled - Bool that represents the intention to start/stop screenshot captures.
-* @returns {Promise}
-*/
+ * Action that toggles the screenshot captures.
+ *
+ * @param {boolean} enabled - Bool that represents the intention to start/stop screenshot captures.
+ * @returns {Promise}
+ */
 export function toggleScreenshotCaptureEffect(enabled: boolean) {
-    return async function(dispatch: (Object) => Object, getState: () => any) {
+    return async function (dispatch: (Object) => Object, getState: () => any) {
         const state = getState();
 
         if (state['features/screenshot-capture'].capturesEnabled !== enabled) {
@@ -45,13 +45,9 @@ export function toggleScreenshotCaptureEffect(enabled: boolean) {
             // switch the stream at the conference level, starting/stopping the effect will suffice here.
             if (enabled) {
                 try {
-                    await ongoingEffect.startEffect(
-                        jitsiTrack.getOriginalStream(),
-                        jitsiTrack.videoType
-                    );
+                    await ongoingEffect.startEffect(jitsiTrack.getOriginalStream(), jitsiTrack.videoType);
                     dispatch(setScreenshotCapture(enabled));
                 } catch {
-
                     // Handle promise rejection from {@code startEffect} due to stream type not being desktop.
                     logger.error('Unsupported stream type.');
                 }

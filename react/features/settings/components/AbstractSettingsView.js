@@ -11,7 +11,6 @@ import { updateSettings } from '../../base/settings';
  * {@link AbstractSettingsView}.
  */
 export type Props = {
-
     /**
      * The default URL for when there is no custom URL set in the settings.
      *
@@ -49,7 +48,6 @@ export type Props = {
  * @abstract
  */
 export class AbstractSettingsView<P: Props, S: *> extends Component<P, S> {
-
     /**
      * Initializes a new {@code AbstractSettingsView} instance.
      *
@@ -63,10 +61,8 @@ export class AbstractSettingsView<P: Props, S: *> extends Component<P, S> {
         this._onChangeDisplayName = this._onChangeDisplayName.bind(this);
         this._onChangeEmail = this._onChangeEmail.bind(this);
         this._onChangeServerURL = this._onChangeServerURL.bind(this);
-        this._onStartAudioMutedChange
-            = this._onStartAudioMutedChange.bind(this);
-        this._onStartVideoMutedChange
-            = this._onStartVideoMutedChange.bind(this);
+        this._onStartAudioMutedChange = this._onStartAudioMutedChange.bind(this);
+        this._onStartVideoMutedChange = this._onStartVideoMutedChange.bind(this);
     }
 
     _onChangeDisplayName: (string) => void;

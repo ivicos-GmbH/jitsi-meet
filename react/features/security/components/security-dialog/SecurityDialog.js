@@ -13,7 +13,6 @@ import { LobbySection } from '../../../lobby';
 import PasswordSection from './PasswordSection';
 
 type Props = {
-
     /**
      * Whether or not the current user can modify the current password.
      */
@@ -62,47 +61,35 @@ type Props = {
  *
  * @returns {React$Element<any>}
  */
-function SecurityDialog({
-    _canEditPassword,
-    _conference,
-    _locked,
-    _password,
-    _passwordNumberOfDigits,
-    _showE2ee,
-    setPassword
-}: Props) {
-    const [ passwordEditEnabled, setPasswordEditEnabled ] = useState(false);
+function SecurityDialog({ _canEditPassword, _conference, _locked, _password, _passwordNumberOfDigits, _showE2ee, setPassword }: Props) {
+    const [passwordEditEnabled, setPasswordEditEnabled] = useState(false);
 
     useEffect(() => {
         if (passwordEditEnabled && _password) {
             setPasswordEditEnabled(false);
         }
-    }, [ _password ]);
+    }, [_password]);
 
     return (
-        <Dialog
-            hideCancelButton = { true }
-            submitDisabled = { true }
-            titleKey = 'security.securityOptions'
-            width = { 'small' }>
-            <div className = 'security-dialog'>
+        <Dialog hideCancelButton={true} submitDisabled={true} titleKey="security.securityOptions" width={'small'}>
+            <div className="security-dialog">
                 <LobbySection />
                 <PasswordSection
-                    canEditPassword = { _canEditPassword }
-                    conference = { _conference }
-                    locked = { _locked }
-                    password = { _password }
-                    passwordEditEnabled = { passwordEditEnabled }
-                    passwordNumberOfDigits = { _passwordNumberOfDigits }
-                    setPassword = { setPassword }
-                    setPasswordEditEnabled = { setPasswordEditEnabled } />
-                {
-                    _showE2ee ? <>
-                        <div className = 'separator-line' />
+                    canEditPassword={_canEditPassword}
+                    conference={_conference}
+                    locked={_locked}
+                    password={_password}
+                    passwordEditEnabled={passwordEditEnabled}
+                    passwordNumberOfDigits={_passwordNumberOfDigits}
+                    setPassword={setPassword}
+                    setPasswordEditEnabled={setPasswordEditEnabled}
+                />
+                {_showE2ee ? (
+                    <>
+                        <div className="separator-line" />
                         <E2EESection />
-                    </> : null
-                }
-
+                    </>
+                ) : null}
             </div>
         </Dialog>
     );
@@ -117,12 +104,7 @@ function SecurityDialog({
  * @returns {Props}
  */
 function mapStateToProps(state) {
-    const {
-        conference,
-        e2eeSupported,
-        locked,
-        password
-    } = state['features/base/conference'];
+    const { conference, e2eeSupported, locked, password } = state['features/base/conference'];
     const { roomPasswordNumberOfDigits } = state['features/base/config'];
 
     return {

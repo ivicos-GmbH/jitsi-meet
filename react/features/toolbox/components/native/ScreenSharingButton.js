@@ -12,7 +12,6 @@ import { toggleScreensharing, isLocalVideoTrackDesktop } from '../../../base/tra
  * The type of the React {@code Component} props of {@link ScreenSharingButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether video is currently muted or not.
      */

@@ -9,14 +9,12 @@ export type StyleType = StyleSheet | Array<StyleSheet>;
 /**
  * RegExp pattern for long HEX color format.
  */
-const HEX_LONG_COLOR_FORMAT
-    = /^#([0-9A-F]{2,2})([0-9A-F]{2,2})([0-9A-F]{2,2})$/i;
+const HEX_LONG_COLOR_FORMAT = /^#([0-9A-F]{2,2})([0-9A-F]{2,2})([0-9A-F]{2,2})$/i;
 
 /**
  * RegExp pattern for short HEX color format.
  */
-const HEX_SHORT_COLOR_FORMAT
-    = /^#([0-9A-F]{1,1})([0-9A-F]{1,1})([0-9A-F]{1,1})$/i;
+const HEX_SHORT_COLOR_FORMAT = /^#([0-9A-F]{1,1})([0-9A-F]{1,1})([0-9A-F]{1,1})$/i;
 
 /**
  * RegExp pattern for RGB color format.
@@ -26,8 +24,7 @@ const RGB_COLOR_FORMAT = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i;
 /**
  * RegExp pattern for RGBA color format.
  */
-const RGBA_COLOR_FORMAT
-    = /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([0-9.]+)\)$/i;
+const RGBA_COLOR_FORMAT = /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([0-9.]+)\)$/i;
 
 /**
  * The list of the well-known style properties which may not be numbers on Web
@@ -35,7 +32,7 @@ const RGBA_COLOR_FORMAT
  *
  * @private
  */
-const _WELL_KNOWN_NUMBER_PROPERTIES = [ 'height', 'width' ];
+const _WELL_KNOWN_NUMBER_PROPERTIES = ['height', 'width'];
 
 /**
  * Function to convert complex StyleType styles into a single flat object,
@@ -101,16 +98,14 @@ export function combineStyles(a: StyleType, b: StyleType): StyleType {
  * (often platform-independent) styles.
  * @returns {StyleSheet}
  */
-export function createStyleSheet(
-        styles: StyleSheet, overrides: StyleSheet = {}): StyleSheet {
+export function createStyleSheet(styles: StyleSheet, overrides: StyleSheet = {}): StyleSheet {
     const combinedStyles = {};
 
     for (const k of Object.keys(styles)) {
-        combinedStyles[k]
-            = _shimStyles({
-                ...styles[k],
-                ...overrides[k]
-            });
+        combinedStyles[k] = _shimStyles({
+            ...styles[k],
+            ...overrides[k]
+        });
     }
 
     return combinedStyles;
@@ -155,8 +150,7 @@ export function getRGBAFormat(color: string, alpha: number): string {
 
     match = color.match(HEX_SHORT_COLOR_FORMAT);
     if (match) {
-        return `#${match[1]}${match[1]}${match[2]}${match[2]}${match[3]}${
-            match[3]}${_getAlphaInHex(alpha)}`;
+        return `#${match[1]}${match[1]}${match[2]}${match[2]}${match[3]}${match[3]}${_getAlphaInHex(alpha)}`;
     }
 
     match = color.match(RGB_COLOR_FORMAT);
@@ -179,9 +173,7 @@ export function getRGBAFormat(color: string, alpha: number): string {
 export function isDarkColor(color: string): boolean {
     const rgb = _getRGBObjectFormat(color);
 
-    return ((_getColorLuminance(rgb.r) * 0.2126)
-    + (_getColorLuminance(rgb.g) * 0.7152)
-    + (_getColorLuminance(rgb.b) * 0.0722)) <= 0.179;
+    return _getColorLuminance(rgb.r) * 0.2126 + _getColorLuminance(rgb.g) * 0.7152 + _getColorLuminance(rgb.b) * 0.0722 <= 0.179;
 }
 
 /**
@@ -191,7 +183,8 @@ export function isDarkColor(color: string): boolean {
  * @returns {string}
  */
 function _getAlphaInHex(alpha: number): string {
-    return Number(Math.round(255 * alpha)).toString(16)
+    return Number(Math.round(255 * alpha))
+        .toString(16)
         .padStart(2, '0');
 }
 
@@ -220,7 +213,7 @@ function _getColorLuminance(c: number): number {
  *     b: number
  * }}
  */
-function _getRGBObjectFormat(color: string): {r: number, g: number, b: number} {
+function _getRGBObjectFormat(color: string): { r: number, g: number, b: number } {
     let match = color.match(HEX_LONG_COLOR_FORMAT);
 
     if (match) {

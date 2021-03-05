@@ -4,15 +4,13 @@ import JitsiMeetJS from '../../base/lib-jitsi-meet';
  * Base class for recording backends.
  */
 export class RecordingAdapter {
-
     /**
      * Starts recording.
      *
      * @param {string} micDeviceId - The microphone to record on.
      * @returns {Promise}
      */
-    start(/* eslint-disable no-unused-vars */
-            micDeviceId/* eslint-enable no-unused-vars */) {
+    start /* eslint-disable no-unused-vars */(micDeviceId /* eslint-enable no-unused-vars */) {
         throw new Error('Not implemented');
     }
 
@@ -40,8 +38,7 @@ export class RecordingAdapter {
      * @param {boolean} muted - Whether to mute or to unmute.
      * @returns {Promise}
      */
-    setMuted(/* eslint-disable no-unused-vars */
-            muted/* eslint-enable no-unused-vars */) {
+    setMuted /* eslint-disable no-unused-vars */(muted /* eslint-enable no-unused-vars */) {
         throw new Error('Not implemented');
     }
 
@@ -51,8 +48,7 @@ export class RecordingAdapter {
      * @param {string} micDeviceId - The new microphone device ID.
      * @returns {Promise}
      */
-    setMicDevice(/* eslint-disable no-unused-vars */
-            micDeviceId/* eslint-enable no-unused-vars */) {
+    setMicDevice /* eslint-disable no-unused-vars */(micDeviceId /* eslint-enable no-unused-vars */) {
         throw new Error('Not implemented');
     }
 
@@ -66,12 +62,11 @@ export class RecordingAdapter {
      */
     _getAudioStream(micDeviceId) {
         return JitsiMeetJS.createLocalTracks({
-            devices: [ 'audio' ],
+            devices: ['audio'],
             micDeviceId
-        }).then(result => {
+        }).then((result) => {
             if (result.length !== 1) {
-                throw new Error('Unexpected number of streams '
-                    + 'from createLocalTracks.');
+                throw new Error('Unexpected number of streams ' + 'from createLocalTracks.');
             }
             const mediaStream = result[0].stream;
 

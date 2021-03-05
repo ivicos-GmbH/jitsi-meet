@@ -13,7 +13,6 @@ export const AVATAR_SIZE = 50;
  * The styles of the feature filmstrip.
  */
 export default {
-
     /**
      * The display name container.
      */
@@ -140,7 +139,6 @@ export default {
  * Color schemed styles for the @{code Thumbnail} component.
  */
 ColorSchemeRegistry.register('Thumbnail', {
-
     /**
      * Tinting style of the on-stage participant thumbnail.
      */

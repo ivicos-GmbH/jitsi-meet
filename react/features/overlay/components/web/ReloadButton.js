@@ -10,7 +10,6 @@ import { connect } from '../../../base/redux';
  * The type of the React {@code Component} props of {@link ReloadButton}.
  */
 type Props = {
-
     /**
      * Reloads the page.
      */
@@ -39,16 +38,13 @@ class ReloadButton extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const className
-            = 'button-control button-control_overlay button-control_center';
+        const className = 'button-control button-control_overlay button-control_center';
 
         /* eslint-disable react/jsx-handler-names */
 
         return (
-            <button
-                className = { className }
-                onClick = { this.props._reloadNow }>
-                { this.props.t(this.props.textKey) }
+            <button className={className} onClick={this.props._reloadNow}>
+                {this.props.t(this.props.textKey)}
             </button>
         );
 

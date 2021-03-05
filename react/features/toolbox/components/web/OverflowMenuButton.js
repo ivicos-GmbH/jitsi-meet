@@ -16,7 +16,6 @@ import ToolbarButton from './ToolbarButton';
  * The type of the React {@code Component} props of {@link OverflowMenuButton}.
  */
 type Props = {
-
     /**
      * A child React Element to display within {@code InlineDialog}.
      */
@@ -60,8 +59,7 @@ class OverflowMenuButton extends Component<Props> {
 
         // Bind event handlers so they are only bound once per instance.
         this._onCloseDialog = this._onCloseDialog.bind(this);
-        this._onToggleDialogVisibility
-            = this._onToggleDialogVisibility.bind(this);
+        this._onToggleDialogVisibility = this._onToggleDialogVisibility.bind(this);
     }
 
     /**
@@ -74,30 +72,21 @@ class OverflowMenuButton extends Component<Props> {
         const { children, isOpen, overflowDrawer } = this.props;
 
         return (
-            <div className = 'toolbox-button-wth-dialog'>
-                {
-                    overflowDrawer ? (
-                        <>
-                            {this._renderToolbarButton()}
-                            <DrawerPortal>
-                                <Drawer
-                                    canExpand = { true }
-                                    isOpen = { isOpen }
-                                    onClose = { this._onCloseDialog }>
-                                    {children}
-                                </Drawer>
-                            </DrawerPortal>
-                        </>
-                    ) : (
-                        <InlineDialog
-                            content = { children }
-                            isOpen = { isOpen }
-                            onClose = { this._onCloseDialog }
-                            placement = 'top-end'>
-                            {this._renderToolbarButton()}
-                        </InlineDialog>
-                    )
-                }
+            <div className="toolbox-button-wth-dialog">
+                {overflowDrawer ? (
+                    <>
+                        {this._renderToolbarButton()}
+                        <DrawerPortal>
+                            <Drawer canExpand={true} isOpen={isOpen} onClose={this._onCloseDialog}>
+                                {children}
+                            </Drawer>
+                        </DrawerPortal>
+                    </>
+                ) : (
+                    <InlineDialog content={children} isOpen={isOpen} onClose={this._onCloseDialog} placement="top-end">
+                        {this._renderToolbarButton()}
+                    </InlineDialog>
+                )}
             </div>
         );
     }
@@ -114,12 +103,12 @@ class OverflowMenuButton extends Component<Props> {
 
         return (
             <ToolbarButton
-                accessibilityLabel =
-                    { t('toolbar.accessibilityLabel.moreActions') }
-                icon = { IconMenuThumb }
-                onClick = { this._onToggleDialogVisibility }
-                toggled = { isOpen }
-                tooltip = { t('toolbar.moreActions') } />
+                accessibilityLabel={t('toolbar.accessibilityLabel.moreActions')}
+                icon={IconMenuThumb}
+                onClick={this._onToggleDialogVisibility}
+                toggled={isOpen}
+                tooltip={t('toolbar.moreActions')}
+            />
         );
     }
 

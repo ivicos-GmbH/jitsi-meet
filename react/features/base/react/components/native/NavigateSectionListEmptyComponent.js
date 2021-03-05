@@ -9,11 +9,10 @@ import { Icon, IconMenuDown } from '../../../icons';
 import styles from './styles';
 
 type Props = {
-
     /**
      * The translate function.
      */
-    t: Function,
+    t: Function
 };
 
 /**
@@ -33,13 +32,9 @@ class NavigateSectionListEmptyComponent extends Component<Props> {
         const { t } = this.props;
 
         return (
-            <View style = { styles.pullToRefresh }>
-                <Text style = { styles.pullToRefreshText }>
-                    { t('sectionList.pullToRefresh') }
-                </Text>
-                <Icon
-                    src = { IconMenuDown }
-                    style = { styles.pullToRefreshIcon } />
+            <View style={styles.pullToRefresh}>
+                <Text style={styles.pullToRefreshText}>{t('sectionList.pullToRefresh')}</Text>
+                <Icon src={IconMenuDown} style={styles.pullToRefreshIcon} />
             </View>
         );
     }

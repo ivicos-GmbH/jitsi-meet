@@ -15,10 +15,6 @@ export default class VideoMutedIndicator extends Component<{}> {
      * @inheritdoc
      */
     render() {
-        return (
-            <BaseIndicator
-                highlight = { false }
-                icon = { IconCameraDisabled } />
-        );
+        return <BaseIndicator highlight={false} icon={IconCameraDisabled} />;
     }
 }

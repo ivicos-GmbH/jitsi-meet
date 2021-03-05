@@ -12,7 +12,6 @@ const BUTTON_HEIGHT = 40;
  * The styles of the React {@code Components} of google-api.
  */
 export default createStyleSheet({
-
     /**
      * Image of the sign in button (Google branded).
      */
@@ -51,5 +50,4 @@ export default createStyleSheet({
         fontSize: 14,
         fontWeight: 'bold'
     }
-
 });

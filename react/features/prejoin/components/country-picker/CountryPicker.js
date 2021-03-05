@@ -14,7 +14,6 @@ import CountrySelector from './CountrySelector';
 const PREFIX_REG = /^(00)|\+/;
 
 type Props = {
-
     /**
      * The country to dial out to.
      */
@@ -38,11 +37,10 @@ type Props = {
     /**
      * Sets the dial out country.
      */
-    setDialOutCountry: Function,
+    setDialOutCountry: Function
 };
 
 type State = {
-
     /**
      * If the country picker is open or not.
      */
@@ -52,7 +50,7 @@ type State = {
      * The value of the input.
      */
     value: string
-}
+};
 
 /**
  * This component displays a country picker with an input for the phone number.
@@ -83,7 +81,6 @@ class CountryPicker extends PureComponent<Props, State> {
         this._onKeyPress = this._onKeyPress.bind(this);
     }
 
-
     /**
      * Implements React's {@link Component#componentDidUnmount()}.
      *
@@ -102,31 +99,14 @@ class CountryPicker extends PureComponent<Props, State> {
     render() {
         const { dialOutCountry, dialOutNumber } = this.props;
         const { isOpen } = this.state;
-        const {
-            inputRef,
-            _onChange,
-            _onCountrySelectorClick,
-            _onDropdownClose,
-            _onKeyPress,
-            _onEntryClick
-        } = this;
+        const { inputRef, _onChange, _onCountrySelectorClick, _onDropdownClose, _onKeyPress, _onEntryClick } = this;
 
         return (
-            <div className = 'cpick-container'>
-                <InlineDialog
-                    content = { <CountryDropDown onEntryClick = { _onEntryClick } /> }
-                    isOpen = { isOpen }
-                    onClose = { _onDropdownClose }>
-                    <div className = 'cpick'>
-                        <CountrySelector
-                            country = { dialOutCountry }
-                            onClick = { _onCountrySelectorClick } />
-                        <input
-                            className = 'cpick-input'
-                            onChange = { _onChange }
-                            onKeyPress = { _onKeyPress }
-                            ref = { inputRef }
-                            value = { dialOutNumber } />
+            <div className="cpick-container">
+                <InlineDialog content={<CountryDropDown onEntryClick={_onEntryClick} />} isOpen={isOpen} onClose={_onDropdownClose}>
+                    <div className="cpick">
+                        <CountrySelector country={dialOutCountry} onClick={_onCountrySelectorClick} />
+                        <input className="cpick-input" onChange={_onChange} onKeyPress={_onKeyPress} ref={inputRef} value={dialOutNumber} />
                     </div>
                 </InlineDialog>
             </div>

@@ -7,7 +7,6 @@ import { connect } from '../../../redux';
 import { getLocalVideoTrack } from '../../../tracks';
 
 export type Props = {
-
     /**
      * Flag signaling the visibility of camera preview.
      */
@@ -16,7 +15,7 @@ export type Props = {
     /**
      * The JitsiLocalTrack to display.
      */
-    videoTrack: ?Object,
+    videoTrack: ?Object
 };
 
 /**
@@ -30,10 +29,8 @@ function Preview(props: Props) {
 
     if (!videoMuted && videoTrack) {
         return (
-            <div id = 'preview'>
-                <Video
-                    className = 'flipVideoX'
-                    videoTrack = {{ jitsiTrack: videoTrack }} />
+            <div id="preview">
+                <Video className="flipVideoX" videoTrack={{ jitsiTrack: videoTrack }} />
             </div>
         );
     }

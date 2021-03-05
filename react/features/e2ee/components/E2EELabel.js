@@ -10,14 +10,12 @@ import { Tooltip } from '../../base/tooltip';
 
 import { _mapStateToProps, type Props } from './AbstractE2EELabel';
 
-
 /**
  * React {@code Component} for displaying a label when everyone has E2EE enabled in a conferene.
  *
  * @extends Component
  */
 class E2EELabel extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -30,12 +28,8 @@ class E2EELabel extends Component<Props> {
         }
 
         return (
-            <Tooltip
-                content = { this.props.t('e2ee.labelToolTip') }
-                position = { 'left' }>
-                <CircularLabel
-                    className = 'e2ee'
-                    icon = { IconE2EE } />
+            <Tooltip content={this.props.t('e2ee.labelToolTip')} position={'left'}>
+                <CircularLabel className="e2ee" icon={IconE2EE} />
             </Tooltip>
         );
     }

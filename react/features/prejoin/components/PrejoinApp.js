@@ -13,7 +13,6 @@ import { initPrejoin, makePrecallTest } from '../actions';
 import Prejoin from './Prejoin';
 
 type Props = {
-
     /**
      * Indicates whether the avatar should be shown when video is off
      */
@@ -27,7 +26,7 @@ type Props = {
     /**
      * Flag signaling the visibility of the skip prejoin toggle
      */
-    showSkipPrejoin: boolean,
+    showSkipPrejoin: boolean
 };
 
 /**
@@ -62,11 +61,13 @@ export default class PrejoinApp extends BaseApp<Props> {
 
             const { startWithAudioMuted, startWithVideoMuted } = store.getState()['features/base/settings'];
 
-            dispatch(setConfig({
-                prejoinPageEnabled: true,
-                startWithAudioMuted,
-                startWithVideoMuted
-            }));
+            dispatch(
+                setConfig({
+                    prejoinPageEnabled: true,
+                    startWithAudioMuted,
+                    startWithVideoMuted
+                })
+            );
 
             const { tryCreateLocalTracks, errors } = createPrejoinTracks();
 
@@ -86,11 +87,7 @@ export default class PrejoinApp extends BaseApp<Props> {
      * @override
      */
     _createMainElement(component, props) {
-        return (
-            <AtlasKitThemeProvider mode = 'dark'>
-                { super._createMainElement(component, props) }
-            </AtlasKitThemeProvider>
-        );
+        return <AtlasKitThemeProvider mode="dark">{super._createMainElement(component, props)}</AtlasKitThemeProvider>;
     }
 
     /**

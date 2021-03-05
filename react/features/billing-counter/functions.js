@@ -13,7 +13,7 @@ import logger from './logger';
  * @returns {string}
  */
 export function extractVpaasTenantFromPath(path: string) {
-    const [ , tenant ] = path.split('/');
+    const [, tenant] = path.split('/');
 
     if (tenant.startsWith(VPAAS_TENANT_PREFIX)) {
         return tenant;
@@ -30,10 +30,7 @@ export function extractVpaasTenantFromPath(path: string) {
  */
 export function isVpaasMeeting(state: Object) {
     return Boolean(
-        state['features/base/config'].billingCounterUrl
-        && state['features/base/jwt'].jwt
-        && extractVpaasTenantFromPath(
-            state['features/base/connection'].locationURL.pathname)
+        state['features/base/config'].billingCounterUrl && state['features/base/jwt'].jwt && extractVpaasTenantFromPath(state['features/base/connection'].locationURL.pathname)
     );
 }
 
@@ -47,15 +44,10 @@ export function isVpaasMeeting(state: Object) {
  * @param {string} tenat - The client tenant.
  * @returns {void}
  */
-export async function sendCountRequest({ baseUrl, billingId, jwt, tenant }: {
-    baseUrl: string,
-    billingId: string,
-    jwt: string,
-    tenant: string
-}) {
+export async function sendCountRequest({ baseUrl, billingId, jwt, tenant }: { baseUrl: string, billingId: string, jwt: string, tenant: string }) {
     const fullUrl = `${baseUrl}/${encodeURIComponent(tenant)}/${billingId}`;
     const headers = {
-        'Authorization': `Bearer ${jwt}`
+        Authorization: `Bearer ${jwt}`
     };
 
     try {

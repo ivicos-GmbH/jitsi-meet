@@ -10,12 +10,12 @@ import { getLocalVideoTrack, isLocalVideoTrackDesktop } from '../tracks/function
 
 import './middleware.any';
 
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case TOGGLE_SCREENSHARING: {
-        _toggleScreenSharing(store);
-        break;
-    }
+        case TOGGLE_SCREENSHARING: {
+            _toggleScreenSharing(store);
+            break;
+        }
     }
 
     return next(action);
@@ -52,23 +52,23 @@ function _toggleScreenSharing(store) {
 function _startScreenSharing(dispatch, state) {
     setPictureInPictureDisabled(true);
 
-    JitsiMeetJS.createLocalTracks({ devices: [ 'desktop' ] })
-    .then(tracks => {
-        const track = tracks[0];
-        const currentLocalTrack = getLocalVideoTrack(state['features/base/tracks']);
-        const currentJitsiTrack = currentLocalTrack && currentLocalTrack.jitsiTrack;
+    JitsiMeetJS.createLocalTracks({ devices: ['desktop'] })
+        .then((tracks) => {
+            const track = tracks[0];
+            const currentLocalTrack = getLocalVideoTrack(state['features/base/tracks']);
+            const currentJitsiTrack = currentLocalTrack && currentLocalTrack.jitsiTrack;
 
-        dispatch(replaceLocalTrack(currentJitsiTrack, track));
+            dispatch(replaceLocalTrack(currentJitsiTrack, track));
 
-        const { enabled: audioOnly } = state['features/base/audio-only'];
+            const { enabled: audioOnly } = state['features/base/audio-only'];
 
-        if (audioOnly) {
-            dispatch(setAudioOnly(false));
-        }
-    })
-    .catch(error => {
-        console.log('ERROR creating ScreeSharing stream ', error);
+            if (audioOnly) {
+                dispatch(setAudioOnly(false));
+            }
+        })
+        .catch((error) => {
+            console.log('ERROR creating ScreeSharing stream ', error);
 
-        setPictureInPictureDisabled(false);
-    });
+            setPictureInPictureDisabled(false);
+        });
 }

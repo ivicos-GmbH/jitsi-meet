@@ -2,10 +2,7 @@
 
 import JitsiMeetJS, { JitsiTrackErrors, browser } from '../lib-jitsi-meet';
 import { MEDIA_TYPE, VIDEO_TYPE, setAudioMuted } from '../media';
-import {
-    getUserSelectedCameraDeviceId,
-    getUserSelectedMicDeviceId
-} from '../settings';
+import { getUserSelectedCameraDeviceId, getUserSelectedMicDeviceId } from '../settings';
 
 import loadEffects from './loadEffects';
 import logger from './logger';
@@ -27,10 +24,9 @@ export async function createLocalPresenterTrack(options, desktopHeight) {
 
     // compute the constraints of the camera track based on the resolution
     // of the desktop screen that is being shared.
-    const cameraHeights = [ 180, 270, 360, 540, 720 ];
+    const cameraHeights = [180, 270, 360, 540, 720];
     const proportion = 5;
-    const result = cameraHeights.find(
-            height => (desktopHeight / proportion) < height);
+    const result = cameraHeights.find((height) => desktopHeight / proportion < height);
     const constraints = {
         video: {
             aspectRatio: 4 / 3,
@@ -39,12 +35,11 @@ export async function createLocalPresenterTrack(options, desktopHeight) {
             }
         }
     };
-    const [ videoTrack ] = await JitsiMeetJS.createLocalTracks(
-        {
-            cameraDeviceId,
-            constraints,
-            devices: [ 'video' ]
-        });
+    const [videoTrack] = await JitsiMeetJS.createLocalTracks({
+        cameraDeviceId,
+        constraints,
+        devices: ['video']
+    });
 
     videoTrack.type = MEDIA_TYPE.PRESENTER;
 
@@ -75,13 +70,7 @@ export async function createLocalPresenterTrack(options, desktopHeight) {
  */
 export function createLocalTracksF(options = {}, store) {
     let { cameraDeviceId, micDeviceId } = options;
-    const {
-        desktopSharingSourceDevice,
-        desktopSharingSources,
-        firePermissionPromptIsShownEvent,
-        fireSlowPromiseEvent,
-        timeout
-    } = options;
+    const { desktopSharingSourceDevice, desktopSharingSources, firePermissionPromptIsShownEvent, fireSlowPromiseEvent, timeout } = options;
 
     if (typeof APP !== 'undefined') {
         // TODO The app's settings should go in the redux store and then the
@@ -106,35 +95,32 @@ export function createLocalTracksF(options = {}, store) {
     } = state['features/base/config'];
     const constraints = options.constraints ?? state['features/base/config'].constraints;
 
-    return (
-        loadEffects(store).then(effectsArray => {
-            // Filter any undefined values returned by Promise.resolve().
-            const effects = effectsArray.filter(effect => Boolean(effect));
+    return loadEffects(store).then((effectsArray) => {
+        // Filter any undefined values returned by Promise.resolve().
+        const effects = effectsArray.filter((effect) => Boolean(effect));
 
-            return JitsiMeetJS.createLocalTracks(
-                {
-                    cameraDeviceId,
-                    constraints,
-                    desktopSharingFrameRate,
-                    desktopSharingSourceDevice,
-                    desktopSharingSources,
+        return JitsiMeetJS.createLocalTracks({
+            cameraDeviceId,
+            constraints,
+            desktopSharingFrameRate,
+            desktopSharingSourceDevice,
+            desktopSharingSources,
 
-                    // Copy array to avoid mutations inside library.
-                    devices: options.devices.slice(0),
-                    effects,
-                    firefox_fake_device, // eslint-disable-line camelcase
-                    firePermissionPromptIsShownEvent,
-                    fireSlowPromiseEvent,
-                    micDeviceId,
-                    resolution,
-                    timeout
-                })
-            .catch(err => {
-                logger.error('Failed to create local tracks', options.devices, err);
+            // Copy array to avoid mutations inside library.
+            devices: options.devices.slice(0),
+            effects,
+            firefox_fake_device, // eslint-disable-line camelcase
+            firePermissionPromptIsShownEvent,
+            fireSlowPromiseEvent,
+            micDeviceId,
+            resolution,
+            timeout
+        }).catch((err) => {
+            logger.error('Failed to create local tracks', options.devices, err);
 
-                return Promise.reject(err);
-            });
-        }));
+            return Promise.reject(err);
+        });
+    });
 }
 
 /**
@@ -147,7 +133,7 @@ export function createLocalTracksF(options = {}, store) {
  */
 export function createPrejoinTracks() {
     const errors = {};
-    const initialDevices = [ 'audio' ];
+    const initialDevices = ['audio'];
     const requestedAudio = true;
     let requestedVideo = false;
     const { startAudioOnly, startWithAudioMuted, startWithVideoMuted } = APP.store.getState()['features/base/settings'];
@@ -175,52 +161,50 @@ export function createPrejoinTracks() {
             devices: initialDevices,
             firePermissionPromptIsShownEvent: true
         })
-                .catch(err => {
-                    if (requestedAudio && requestedVideo) {
+            .catch((err) => {
+                if (requestedAudio && requestedVideo) {
+                    // Try audio only...
+                    errors.audioAndVideoError = err;
 
-                        // Try audio only...
-                        errors.audioAndVideoError = err;
-
-                        return (
-                            createLocalTracksF({
-                                devices: [ 'audio' ],
-                                firePermissionPromptIsShownEvent: true
-                            }));
-                    } else if (requestedAudio && !requestedVideo) {
-                        errors.audioOnlyError = err;
-
-                        return [];
-                    } else if (requestedVideo && !requestedAudio) {
-                        errors.videoOnlyError = err;
-
-                        return [];
-                    }
-                    logger.error('Should never happen');
-                })
-                .catch(err => {
-                    // Log this just in case...
-                    if (!requestedAudio) {
-                        logger.error('The impossible just happened', err);
-                    }
+                    return createLocalTracksF({
+                        devices: ['audio'],
+                        firePermissionPromptIsShownEvent: true
+                    });
+                } else if (requestedAudio && !requestedVideo) {
                     errors.audioOnlyError = err;
 
-                    // Try video only...
-                    return requestedVideo
-                        ? createLocalTracksF({
-                            devices: [ 'video' ],
-                            firePermissionPromptIsShownEvent: true
-                        })
-                        : [];
-                })
-                .catch(err => {
-                    // Log this just in case...
-                    if (!requestedVideo) {
-                        logger.error('The impossible just happened', err);
-                    }
+                    return [];
+                } else if (requestedVideo && !requestedAudio) {
                     errors.videoOnlyError = err;
 
                     return [];
-                });
+                }
+                logger.error('Should never happen');
+            })
+            .catch((err) => {
+                // Log this just in case...
+                if (!requestedAudio) {
+                    logger.error('The impossible just happened', err);
+                }
+                errors.audioOnlyError = err;
+
+                // Try video only...
+                return requestedVideo
+                    ? createLocalTracksF({
+                          devices: ['video'],
+                          firePermissionPromptIsShownEvent: true
+                      })
+                    : [];
+            })
+            .catch((err) => {
+                // Log this just in case...
+                if (!requestedVideo) {
+                    logger.error('The impossible just happened', err);
+                }
+                errors.videoOnlyError = err;
+
+                return [];
+            });
     }
 
     return {
@@ -252,9 +236,7 @@ export function getLocalAudioTrack(tracks) {
  * @returns {(Track|undefined)}
  */
 export function getLocalTrack(tracks, mediaType, includePending = false) {
-    return (
-        getLocalTracks(tracks, includePending)
-            .find(t => t.mediaType === mediaType));
+    return getLocalTracks(tracks, includePending).find((t) => t.mediaType === mediaType);
 }
 
 /**
@@ -277,7 +259,7 @@ export function getLocalTracks(tracks, includePending = false) {
     // has not yet been added to the redux store. Once GUM is cancelled, it will
     // never make it to the store nor there will be any
     // `TRACK_ADDED`/`TRACK_REMOVED` actions dispatched for it.
-    return tracks.filter(t => t.local && (t.jitsiTrack || includePending));
+    return tracks.filter((t) => t.local && (t.jitsiTrack || includePending));
 }
 
 /**
@@ -334,13 +316,8 @@ export function getLocalJitsiAudioTrack(state) {
  * @param {string} participantId - Participant ID.
  * @returns {(Track|undefined)}
  */
-export function getTrackByMediaTypeAndParticipant(
-        tracks,
-        mediaType,
-        participantId) {
-    return tracks.find(
-        t => Boolean(t.jitsiTrack) && t.participantId === participantId && t.mediaType === mediaType
-    );
+export function getTrackByMediaTypeAndParticipant(tracks, mediaType, participantId) {
+    return tracks.find((t) => Boolean(t.jitsiTrack) && t.participantId === participantId && t.mediaType === mediaType);
 }
 
 /**
@@ -352,7 +329,7 @@ export function getTrackByMediaTypeAndParticipant(
  * @returns {(Track|undefined)}
  */
 export function getTrackByJitsiTrack(tracks, jitsiTrack) {
-    return tracks.find(t => t.jitsiTrack === jitsiTrack);
+    return tracks.find((t) => t.jitsiTrack === jitsiTrack);
 }
 
 /**
@@ -363,7 +340,7 @@ export function getTrackByJitsiTrack(tracks, jitsiTrack) {
  * @returns {Track[]}
  */
 export function getTracksByMediaType(tracks, mediaType) {
-    return tracks.filter(t => t.mediaType === mediaType);
+    return tracks.filter((t) => t.mediaType === mediaType);
 }
 
 /**
@@ -382,8 +359,7 @@ export function isLocalCameraTrackMuted(tracks) {
     if (presenterTrack) {
         return isLocalTrackMuted(tracks, MEDIA_TYPE.PRESENTER);
     } else if (videoTrack) {
-        return videoTrack.videoType === 'camera'
-            ? isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO) : true;
+        return videoTrack.videoType === 'camera' ? isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO) : true;
     }
 
     return true;
@@ -416,7 +392,6 @@ export function isLocalVideoTrackDesktop(state) {
     return videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 }
 
-
 /**
  * Returns true if the remote track of the given media type and the given
  * participant is muted, false otherwise.
@@ -427,8 +402,7 @@ export function isLocalVideoTrackDesktop(state) {
  * @returns {boolean}
  */
 export function isRemoteTrackMuted(tracks, mediaType, participantId) {
-    const track = getTrackByMediaTypeAndParticipant(
-        tracks, mediaType, participantId);
+    const track = getTrackByMediaTypeAndParticipant(tracks, mediaType, participantId);
 
     return !track || track.muted;
 }
@@ -441,10 +415,7 @@ export function isRemoteTrackMuted(tracks, mediaType, participantId) {
  * @returns {boolean}
  */
 export function isUserInteractionRequiredForUnmute(state) {
-    return browser.isUserInteractionRequiredForUnmute()
-        && window
-        && window.self !== window.top
-        && !state['features/base/user-interaction'].interacted;
+    return browser.isUserInteractionRequiredForUnmute() && window && window.self !== window.top && !state['features/base/user-interaction'].interacted;
 }
 
 /**
@@ -467,7 +438,7 @@ export function setTrackMuted(track, muted) {
 
     const f = muted ? 'mute' : 'unmute';
 
-    return track[f]().catch(error => {
+    return track[f]().catch((error) => {
         // Track might be already disposed so ignore such an error.
         if (error.name !== JitsiTrackErrors.TRACK_IS_DISPOSED) {
             // FIXME Emit mute failed, so that the app can show error dialog.

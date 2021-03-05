@@ -9,7 +9,6 @@ import { smileys } from '../../smileys';
  * The type of the React {@code Component} props of {@link SmileysPanel}.
  */
 type Props = {
-
     /**
      * Callback to invoke when a smiley is selected. The smiley will be passed
      * back.
@@ -30,27 +29,17 @@ class SmileysPanel extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const smileyItems = Object.keys(smileys).map(smileyKey => {
+        const smileyItems = Object.keys(smileys).map((smileyKey) => {
             const onSelectFunction = this._getOnSmileySelectCallback(smileyKey);
 
             return (
-                <div
-                    className = 'smileyContainer'
-                    id = { smileyKey }
-                    key = { smileyKey }>
-                    <Emoji
-                        onClick = { onSelectFunction }
-                        onlyEmojiClassName = 'smiley'
-                        text = { smileys[smileyKey] } />
+                <div className="smileyContainer" id={smileyKey} key={smileyKey}>
+                    <Emoji onClick={onSelectFunction} onlyEmojiClassName="smiley" text={smileys[smileyKey]} />
                 </div>
             );
         });
 
-        return (
-            <div id = 'smileysContainer'>
-                { smileyItems }
-            </div>
-        );
+        return <div id="smileysContainer">{smileyItems}</div>;
     }
 
     /**

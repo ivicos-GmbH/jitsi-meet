@@ -11,7 +11,6 @@ import { translate } from '../../base/i18n';
  * {@link KeyboardShortcutsDialog}.
  */
 type Props = {
-
     /**
      * A Map with keyboard keys as keys and translation keys as values.
      */
@@ -37,21 +36,13 @@ class KeyboardShortcutsDialog extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const shortcuts = Array.from(this.props.shortcutDescriptions)
-            .map(description => this._renderShortcutsListItem(...description));
+        const shortcuts = Array.from(this.props.shortcutDescriptions).map((description) => this._renderShortcutsListItem(...description));
 
         return (
-            <Dialog
-                cancelKey = { 'dialog.close' }
-                submitDisabled = { true }
-                titleKey = 'keyboardShortcuts.keyboardShortcuts'
-                width = 'small'>
-                <div
-                    id = 'keyboard-shortcuts'>
-                    <ul
-                        className = 'shortcuts-list'
-                        id = 'keyboard-shortcuts-list'>
-                        { shortcuts }
+            <Dialog cancelKey={'dialog.close'} submitDisabled={true} titleKey="keyboardShortcuts.keyboardShortcuts" width="small">
+                <div id="keyboard-shortcuts">
+                    <ul className="shortcuts-list" id="keyboard-shortcuts-list">
+                        {shortcuts}
                     </ul>
                 </div>
             </Dialog>
@@ -68,16 +59,10 @@ class KeyboardShortcutsDialog extends Component<Props> {
      */
     _renderShortcutsListItem(keyboardKey, translationKey) {
         return (
-            <li
-                className = 'shortcuts-list__item'
-                key = { keyboardKey }>
-                <span className = 'shortcuts-list__description'>
-                    { this.props.t(translationKey) }
-                </span>
-                <span className = 'item-action'>
-                    <Lozenge isBold = { true }>
-                        { keyboardKey }
-                    </Lozenge>
+            <li className="shortcuts-list__item" key={keyboardKey}>
+                <span className="shortcuts-list__description">{this.props.t(translationKey)}</span>
+                <span className="item-action">
+                    <Lozenge isBold={true}>{keyboardKey}</Lozenge>
                 </span>
             </li>
         );

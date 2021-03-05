@@ -10,7 +10,6 @@ import type { DialogProps } from '../constants';
  * The type of the React {@code Component} props of {@link AbstractDialog}.
  */
 export type Props = DialogProps & {
-
     /**
      * Used to show/hide the dialog on cancel.
      */
@@ -27,9 +26,7 @@ export type State = {
 /**
  * An abstract implementation of a dialog on Web/React and mobile/react-native.
  */
-export default class AbstractDialog<P : Props, S : State>
-    extends Component<P, S> {
-
+export default class AbstractDialog<P: Props, S: State> extends Component<P, S> {
     _mounted: boolean;
 
     /**
@@ -123,10 +120,10 @@ export default class AbstractDialog<P : Props, S : State>
 
             if (r) {
                 switch (typeof r) {
-                case 'function':
-                case 'object':
-                    then = r.then;
-                    break;
+                    case 'function':
+                    case 'object':
+                        then = r.then;
+                        break;
                 }
             }
             if (typeof then === 'function' && then.length === 2) {

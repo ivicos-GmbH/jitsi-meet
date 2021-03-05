@@ -6,7 +6,6 @@ import { getParticipantDisplayName } from '../../base/participants';
 import { setPrivateMessageRecipient } from '../actions';
 
 export type Props = {
-
     /**
      * Function used to translate i18n labels.
      */
@@ -26,9 +25,7 @@ export type Props = {
 /**
  * Abstract class for the {@code MessageRecipient} component.
  */
-export default class AbstractMessageRecipient<P: Props> extends PureComponent<P> {
-
-}
+export default class AbstractMessageRecipient<P: Props> extends PureComponent<P> {}
 
 /**
  * Maps part of the props of this component to Redux actions.
@@ -54,7 +51,6 @@ export function _mapStateToProps(state: Object): $Shape<Props> {
     const { privateMessageRecipient } = state['features/chat'];
 
     return {
-        _privateMessageRecipient:
-            privateMessageRecipient ? getParticipantDisplayName(state, privateMessageRecipient.id) : undefined
+        _privateMessageRecipient: privateMessageRecipient ? getParticipantDisplayName(state, privateMessageRecipient.id) : undefined
     };
 }

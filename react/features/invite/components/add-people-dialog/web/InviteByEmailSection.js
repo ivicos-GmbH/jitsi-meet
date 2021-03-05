@@ -3,20 +3,11 @@
 import React, { useState } from 'react';
 
 import { translate } from '../../../../base/i18n';
-import {
-    Icon,
-    IconArrowDownSmall,
-    IconCopy,
-    IconEmail,
-    IconGoogle,
-    IconOutlook,
-    IconYahoo
-} from '../../../../base/icons';
+import { Icon, IconArrowDownSmall, IconCopy, IconEmail, IconGoogle, IconOutlook, IconYahoo } from '../../../../base/icons';
 import { Tooltip } from '../../../../base/tooltip';
 import { copyText, openURLInBrowser } from '../../../../base/util';
 
 type Props = {
-
     /**
      * The encoded invitation subject.
      */
@@ -30,7 +21,7 @@ type Props = {
     /**
      * Invoked to obtain translated strings.
      */
-    t: Function,
+    t: Function
 };
 
 /**
@@ -39,7 +30,7 @@ type Props = {
  * @returns {React$Element<any>}
  */
 function InviteByEmailSection({ inviteSubject, inviteText, t }: Props) {
-    const [ isActive, setIsActive ] = useState(false);
+    const [isActive, setIsActive] = useState(false);
     const encodedInviteSubject = encodeURIComponent(inviteSubject);
     const encodedInviteText = encodeURIComponent(inviteText);
 
@@ -59,7 +50,7 @@ function InviteByEmailSection({ inviteSubject, inviteText, t }: Props) {
      * @returns {Function}
      */
     function _onSelectProvider(url) {
-        return function() {
+        return function () {
             openURLInBrowser(url, true);
         };
     }
@@ -106,41 +97,28 @@ function InviteByEmailSection({ inviteSubject, inviteText, t }: Props) {
 
         return (
             <>
-                {
-                    PROVIDER_MAPPING.map(({ icon, tooltipKey, url }, idx) => (
-                        <Tooltip
-                            content = { t(tooltipKey) }
-                            key = { idx }
-                            position = 'top'>
-                            <div
-                                onClick = { _onSelectProvider(url) }>
-                                <Icon src = { icon } />
-                            </div>
-                        </Tooltip>
-                    ))
-                }
+                {PROVIDER_MAPPING.map(({ icon, tooltipKey, url }, idx) => (
+                    <Tooltip content={t(tooltipKey)} key={idx} position="top">
+                        <div onClick={_onSelectProvider(url)}>
+                            <Icon src={icon} />
+                        </div>
+                    </Tooltip>
+                ))}
             </>
         );
-
     }
 
     return (
         <>
             <div>
-                <div
-                    className = { `invite-more-dialog email-container${isActive ? ' active' : ''}` }
-                    onClick = { _onToggleActiveState }>
+                <div className={`invite-more-dialog email-container${isActive ? ' active' : ''}`} onClick={_onToggleActiveState}>
                     <span>{t('addPeople.shareInvite')}</span>
-                    <Icon src = { IconArrowDownSmall } />
+                    <Icon src={IconArrowDownSmall} />
                 </div>
-                <div className = { `invite-more-dialog icon-container${isActive ? ' active' : ''}` }>
-                    <Tooltip
-                        content = { t('addPeople.copyInvite') }
-                        position = 'top'>
-                        <div
-                            className = 'copy-invite-icon'
-                            onClick = { _onCopyText }>
-                            <Icon src = { IconCopy } />
+                <div className={`invite-more-dialog icon-container${isActive ? ' active' : ''}`}>
+                    <Tooltip content={t('addPeople.copyInvite')} position="top">
+                        <div className="copy-invite-icon" onClick={_onCopyText}>
+                            <Icon src={IconCopy} />
                         </div>
                     </Tooltip>
                     {renderEmailIcons()}

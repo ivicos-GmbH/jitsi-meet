@@ -13,7 +13,6 @@ import OverlayFrame from './OverlayFrame';
 import styles from './styles';
 
 type Props = {
-
     /**
      * The color schemed style of the component.
      */
@@ -53,23 +52,10 @@ class LoadConfigOverlay extends Component<Props> {
 
         return (
             <OverlayFrame>
-                <View
-                    style = { [
-                        styles.loadingOverlayWrapper,
-                        _styles.loadingOverlayWrapper
-                    ] }>
+                <View style={[styles.loadingOverlayWrapper, _styles.loadingOverlayWrapper]}>
                     <SafeAreaView>
-                        <LoadingIndicator
-                            color = { _styles.indicatorColor }
-                            size = 'large'
-                            style = { styles.connectIndicator } />
-                        <Text
-                            style = { [
-                                styles.loadingOverlayText,
-                                _styles.loadingOverlayText
-                            ] }>
-                            { this.props.t('connectingOverlay.joiningRoom') }
-                        </Text>
+                        <LoadingIndicator color={_styles.indicatorColor} size="large" style={styles.connectIndicator} />
+                        <Text style={[styles.loadingOverlayText, _styles.loadingOverlayText]}>{this.props.t('connectingOverlay.joiningRoom')}</Text>
                     </SafeAreaView>
                 </View>
             </OverlayFrame>

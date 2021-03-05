@@ -869,7 +869,7 @@
         "header": "Helpcentrum"
     },
     "lobby": {
-        "knockingParticipantList" : "Lijst van aankloppende deelnemers",
+        "knockingParticipantList": "Lijst van aankloppende deelnemers",
         "allow": "Toestaan",
         "backToKnockModeButton": "Geen wachtwoord, vraag om deel te mogen nemen",
         "dialogTitle": "Lobby-modus",

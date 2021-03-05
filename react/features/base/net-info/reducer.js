@@ -13,18 +13,18 @@ const DEFAULT_STATE = {
  */
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case SET_NETWORK_INFO:
-        return assign(state, {
-            isOnline: action.isOnline,
-            networkType: action.networkType,
-            cellularGeneration: action.cellularGeneration,
-            details: action.details
-        });
-    case _STORE_NETWORK_INFO_CLEANUP:
-        return assign(state, {
-            _cleanup: action.cleanup
-        });
-    default:
-        return state;
+        case SET_NETWORK_INFO:
+            return assign(state, {
+                isOnline: action.isOnline,
+                networkType: action.networkType,
+                cellularGeneration: action.cellularGeneration,
+                details: action.details
+            });
+        case _STORE_NETWORK_INFO_CLEANUP:
+            return assign(state, {
+                _cleanup: action.cleanup
+            });
+        default:
+            return state;
     }
 });

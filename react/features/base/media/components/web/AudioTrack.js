@@ -6,12 +6,10 @@ import React, { Component } from 'react';
  * The type of the React {@code Component} props of {@link AudioTrack}.
  */
 type Props = {
-
     /**
      * The value of the id attribute of the audio element.
      */
     id: string,
-
 
     /**
      * The audio track.
@@ -60,7 +58,6 @@ export default class AudioTrack extends Component<Props> {
         id: ''
     };
 
-
     /**
      * Creates new <code>Audio</code> element instance with given props.
      *
@@ -73,7 +70,6 @@ export default class AudioTrack extends Component<Props> {
         // Bind event handlers so they are only bound once for every instance.
         this._setRef = this._setRef.bind(this);
     }
-
 
     /**
      * Attaches the audio track to the audio element and plays it.
@@ -160,12 +156,7 @@ export default class AudioTrack extends Component<Props> {
     render() {
         const { autoPlay, id } = this.props;
 
-        return (
-            <audio
-                autoPlay = { autoPlay }
-                id = { id }
-                ref = { this._setRef } />
-        );
+        return <audio autoPlay={autoPlay} id={id} ref={this._setRef} />;
     }
 
     /**

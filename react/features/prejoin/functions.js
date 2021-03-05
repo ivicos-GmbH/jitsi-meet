@@ -21,8 +21,7 @@ export function isJoinByPhoneButtonVisible(state: Object): boolean {
  * @returns {boolean}
  */
 export function isDeviceStatusVisible(state: Object): boolean {
-    return !(isAudioMuted(state) && isVideoMutedByUser(state))
-    && !state['features/base/config'].startSilent;
+    return !(isAudioMuted(state) && isVideoMutedByUser(state)) && !state['features/base/config'].startSilent;
 }
 
 /**
@@ -32,8 +31,7 @@ export function isDeviceStatusVisible(state: Object): boolean {
  * @returns {boolean}
  */
 export function isDisplayNameRequired(state: Object): boolean {
-    return state['features/prejoin'].isDisplayNameRequired
-        || state['features/base/config'].requireDisplayName;
+    return state['features/prejoin'].isDisplayNameRequired || state['features/base/config'].requireDisplayName;
 }
 
 /**
@@ -147,10 +145,12 @@ export function isJoinByPhoneDialogVisible(state: Object): boolean {
  * @returns {boolean}
  */
 export function isPrejoinPageEnabled(state: Object): boolean {
-    return navigator.product !== 'ReactNative'
-        && state['features/base/config'].prejoinPageEnabled
-        && !state['features/base/settings'].userSelectedSkipPrejoin
-        && !(state['features/base/config'].enableForcedReload && state['features/prejoin'].skipPrejoinOnReload);
+    return (
+        navigator.product !== 'ReactNative' &&
+        state['features/base/config'].prejoinPageEnabled &&
+        !state['features/base/settings'].userSelectedSkipPrejoin &&
+        !(state['features/base/config'].enableForcedReload && state['features/prejoin'].skipPrejoinOnReload)
+    );
 }
 
 /**
@@ -172,6 +172,5 @@ export function isPrejoinPageVisible(state: Object): boolean {
 export function shouldAutoKnock(state: Object): boolean {
     const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
 
-    return (isPrejoinPageEnabled(state) || (iAmRecorder && iAmSipGateway))
-        && !state['features/lobby'].knocking;
+    return (isPrejoinPageEnabled(state) || (iAmRecorder && iAmSipGateway)) && !state['features/lobby'].knocking;
 }

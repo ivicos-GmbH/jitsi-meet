@@ -6,7 +6,6 @@ import { BoxModel, ColorPalette } from '../../../base/styles';
  * The styles of the React {@code Components} of the feature notifications.
  */
 export default {
-
     /**
      * The content (left) column of the notification.
      */

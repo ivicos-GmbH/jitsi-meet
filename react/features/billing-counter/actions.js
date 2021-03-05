@@ -9,7 +9,7 @@ import { extractVpaasTenantFromPath, getBillingId, sendCountRequest } from './fu
  * @returns {Function}
  */
 export function countEndpoint() {
-    return function(dispatch: Function, getState: Function) {
+    return function (dispatch: Function, getState: Function) {
         const state = getState();
         const baseUrl = state['features/base/config'].billingCounterUrl;
         const jwt = state['features/base/jwt'].jwt;

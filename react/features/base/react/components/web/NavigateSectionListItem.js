@@ -12,7 +12,6 @@ import Text from './Text';
  * {@link NavigateSectionListItem}.
  */
 type Props = {
-
     /**
      * Function to be invoked when an item is pressed. The item's URL is passed.
      */
@@ -30,9 +29,7 @@ type Props = {
  *
  * @extends Component
  */
-export default class NavigateSectionListItem<P: Props>
-    extends Component<P> {
-
+export default class NavigateSectionListItem<P: Props> extends Component<P> {
     /**
      * Renders the content of this component.
      *
@@ -59,30 +56,16 @@ export default class NavigateSectionListItem<P: Props>
             duration = lines[1];
         }
 
-        const rootClassName = `navigate-section-list-tile ${
-            onPress ? 'with-click-handler' : 'without-click-handler'}`;
+        const rootClassName = `navigate-section-list-tile ${onPress ? 'with-click-handler' : 'without-click-handler'}`;
 
         return (
-            <Container
-                className = { rootClassName }
-                onClick = { onPress }>
-                <Container className = 'navigate-section-list-tile-info'>
-                    <Text
-                        className = 'navigate-section-tile-title'>
-                        { title }
-                    </Text>
-                    <Text
-                        className = 'navigate-section-tile-body'>
-                        { date }
-                    </Text>
-                    <Text
-                        className = 'navigate-section-tile-body'>
-                        { duration }
-                    </Text>
+            <Container className={rootClassName} onClick={onPress}>
+                <Container className="navigate-section-list-tile-info">
+                    <Text className="navigate-section-tile-title">{title}</Text>
+                    <Text className="navigate-section-tile-body">{date}</Text>
+                    <Text className="navigate-section-tile-body">{duration}</Text>
                 </Container>
-                <Container className = { 'element-after' }>
-                    { elementAfter || null }
-                </Container>
+                <Container className={'element-after'}>{elementAfter || null}</Container>
             </Container>
         );
     }

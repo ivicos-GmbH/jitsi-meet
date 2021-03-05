@@ -10,15 +10,15 @@ ReducerRegistry.register('features/youtube-player', (state = {}, action) => {
     const { videoId, status, time, ownerId } = action;
 
     switch (action.type) {
-    case SET_SHARED_VIDEO_STATUS:
-        return {
-            ...state,
-            videoId,
-            status,
-            time,
-            ownerId
-        };
-    default:
-        return state;
+        case SET_SHARED_VIDEO_STATUS:
+            return {
+                ...state,
+                videoId,
+                status,
+                time,
+                ownerId
+            };
+        default:
+            return state;
     }
 });

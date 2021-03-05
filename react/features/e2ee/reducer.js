@@ -13,13 +13,13 @@ const DEFAULT_STATE = {
  */
 ReducerRegistry.register('features/e2ee', (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case TOGGLE_E2EE:
-        return {
-            ...state,
-            enabled: action.enabled
-        };
+        case TOGGLE_E2EE:
+            return {
+                ...state,
+                enabled: action.enabled
+            };
 
-    default:
-        return state;
+        default:
+            return state;
     }
 });

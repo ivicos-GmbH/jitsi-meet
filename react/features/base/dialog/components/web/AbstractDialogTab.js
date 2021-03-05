@@ -6,7 +6,6 @@ import { Component } from 'react';
  * The type of the React {@code Component} props of {@link AbstractDialogTab}.
  */
 export type Props = {
-
     /**
      * Function that closes the dialog.
      */
@@ -22,7 +21,6 @@ export type Props = {
      */
     tabId: number
 };
-
 
 /**
  * Abstract React {@code Component} for tabs of the DialogWithTabs component.
@@ -61,7 +59,6 @@ class AbstractDialogTab<P: Props, S: *> extends Component<P, S> {
             ...change
         });
     }
-
 }
 
 export default AbstractDialogTab;

@@ -14,7 +14,6 @@ const BUBBLE_RADIUS = 8;
  * for the future).
  */
 export default {
-
     /**
      * Wrapper View for the avatar.
      */

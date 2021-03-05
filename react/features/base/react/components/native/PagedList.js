@@ -12,7 +12,6 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@link PagedList}.
  */
 type Props = {
-
     /**
      * The zero-based index of the page that should be rendered (selected) by
      * default.
@@ -53,7 +52,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link PagedList}.
  */
 type State = {
-
     /**
      * The currently selected page.
      */
@@ -66,7 +64,6 @@ type State = {
  * @extends PagedList
  */
 class PagedList extends Component<Props, State> {
-
     /**
      * Initializes a new {@code PagedList} instance.
      *
@@ -80,8 +77,7 @@ class PagedList extends Component<Props, State> {
         };
 
         // Bind event handlers so they are only bound once per instance.
-        this._maybeRefreshSelectedPage
-            = this._maybeRefreshSelectedPage.bind(this);
+        this._maybeRefreshSelectedPage = this._maybeRefreshSelectedPage.bind(this);
     }
 
     /**
@@ -94,23 +90,17 @@ class PagedList extends Component<Props, State> {
         const pages = this.props.pages.filter(({ component }) => component);
 
         return (
-            <View
-                style = { [
-                    styles.pagedListContainer,
-                    disabled ? styles.pagedListContainerDisabled : null
-                ] }>
-                {
-                    pages.length > 1
-                        ? this._renderPagedList(disabled)
-                        : React.createElement(
-
-                            // $FlowExpectedError
-                            /* type */ pages[0].component,
-                            /* props */ {
-                                disabled,
-                                style: styles.pagedList
-                            })
-                }
+            <View style={[styles.pagedListContainer, disabled ? styles.pagedListContainerDisabled : null]}>
+                {pages.length > 1
+                    ? this._renderPagedList(disabled)
+                    : React.createElement(
+                          // $FlowExpectedError
+                          /* type */ pages[0].component,
+                          /* props */ {
+                              disabled,
+                              style: styles.pagedList
+                          }
+                      )}
             </View>
         );
     }
@@ -130,7 +120,7 @@ class PagedList extends Component<Props, State> {
         return null;
     }
 
-    _maybeRefreshSelectedPage: ?boolean => void;
+    _maybeRefreshSelectedPage: (?boolean) => void;
 
     /**
      * Components that this PagedList displays may have a refresh function to
@@ -190,14 +180,10 @@ class PagedList extends Component<Props, State> {
         }
 
         return (
-            <View style = { styles.pageContainer }>
-                {
-                    React.createElement(
-                        page.component,
-                        {
-                            disabled
-                        })
-                }
+            <View style={styles.pageContainer}>
+                {React.createElement(page.component, {
+                    disabled
+                })}
             </View>
         );
     }
@@ -214,17 +200,9 @@ class PagedList extends Component<Props, State> {
         const { pageIndex } = this.state;
 
         return (
-            <View style = { styles.pagedListContainer }>
-                {
-                    this._renderPage(pages[pageIndex], disabled)
-                }
-                <SafeAreaView style = { styles.pageIndicatorContainer }>
-                    {
-                        pages.map((page, index) => this._renderPageIndicator(
-                            page, index, disabled
-                        ))
-                    }
-                </SafeAreaView>
+            <View style={styles.pagedListContainer}>
+                {this._renderPage(pages[pageIndex], disabled)}
+                <SafeAreaView style={styles.pageIndicatorContainer}>{pages.map((page, index) => this._renderPageIndicator(page, index, disabled))}</SafeAreaView>
             </View>
         );
     }
@@ -245,25 +223,10 @@ class PagedList extends Component<Props, State> {
         }
 
         return (
-            <TouchableOpacity
-                disabled = { disabled }
-                key = { index }
-                onPress = { this._onSelectPage(index) }
-                style = { styles.pageIndicator } >
-                <View style = { styles.pageIndicatorContent }>
-                    <Icon
-                        src = { page.icon }
-                        style = { [
-                            styles.pageIndicatorIcon,
-                            this._getIndicatorStyle(index)
-                        ] } />
-                    <Text
-                        style = { [
-                            styles.pageIndicatorText,
-                            this._getIndicatorStyle(index)
-                        ] }>
-                        { page.title }
-                    </Text>
+            <TouchableOpacity disabled={disabled} key={index} onPress={this._onSelectPage(index)} style={styles.pageIndicator}>
+                <View style={styles.pageIndicatorContent}>
+                    <Icon src={page.icon} style={[styles.pageIndicatorIcon, this._getIndicatorStyle(index)]} />
+                    <Text style={[styles.pageIndicatorText, this._getIndicatorStyle(index)]}>{page.title}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -279,8 +242,7 @@ class PagedList extends Component<Props, State> {
     _validatePageIndex(pageIndex) {
         // pageIndex may point to a non-existing page if some of the pages are
         // disabled (their component property is undefined).
-        const maxPageIndex
-            = this.props.pages.filter(({ component }) => component).length - 1;
+        const maxPageIndex = this.props.pages.filter(({ component }) => component).length - 1;
 
         return Math.max(0, Math.min(maxPageIndex, pageIndex));
     }

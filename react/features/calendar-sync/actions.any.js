@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    REFRESH_CALENDAR,
-    SET_CALENDAR_AUTHORIZATION,
-    SET_CALENDAR_EVENTS
-} from './actionTypes';
+import { REFRESH_CALENDAR, SET_CALENDAR_AUTHORIZATION, SET_CALENDAR_EVENTS } from './actionTypes';
 
 /**
  * Sends an action to refresh the entry list (fetches new data).
@@ -19,8 +15,7 @@ import {
  *     isInteractive: boolean
  * }}
  */
-export function refreshCalendar(
-        forcePermission: boolean = false, isInteractive: boolean = true) {
+export function refreshCalendar(forcePermission: boolean = false, isInteractive: boolean = true) {
     return {
         type: REFRESH_CALENDAR,
         forcePermission,

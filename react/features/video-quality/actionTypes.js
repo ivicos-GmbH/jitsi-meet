@@ -9,7 +9,6 @@
  */
 export const SET_PREFERRED_VIDEO_QUALITY = 'SET_PREFERRED_VIDEO_QUALITY';
 
-
 /**
  * The type of (redux) action which sets the maximum video height that should be
  * received from remote participants, even if the user prefers a larger video

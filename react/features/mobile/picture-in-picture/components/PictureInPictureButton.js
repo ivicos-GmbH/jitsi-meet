@@ -11,7 +11,6 @@ import { isLocalVideoTrackDesktop } from '../../../base/tracks/functions';
 import { enterPictureInPicture } from '../actions';
 
 type Props = AbstractButtonProps & {
-
     /**
      * Whether Picture-in-Picture is enabled or not.
      */

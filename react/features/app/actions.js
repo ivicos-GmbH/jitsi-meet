@@ -4,39 +4,22 @@ import type { Dispatch } from 'redux';
 
 import { API_ID } from '../../../modules/API/constants';
 import { setRoom } from '../base/conference';
-import {
-    configWillLoad,
-    createFakeConfig,
-    loadConfigError,
-    restoreConfig,
-    setConfig,
-    storeConfig
-} from '../base/config';
+import { configWillLoad, createFakeConfig, loadConfigError, restoreConfig, setConfig, storeConfig } from '../base/config';
 import { connect, disconnect, setLocationURL } from '../base/connection';
 import { loadConfig } from '../base/lib-jitsi-meet';
 import { MEDIA_TYPE } from '../base/media';
 import { toState } from '../base/redux';
 import { createDesiredLocalTracks, isLocalCameraTrackMuted, isLocalTrackMuted } from '../base/tracks';
-import {
-    addHashParamsToURL,
-    getBackendSafeRoomName,
-    getLocationContextRoot,
-    parseURIString,
-    toURLString
-} from '../base/util';
+import { addHashParamsToURL, getBackendSafeRoomName, getLocationContextRoot, parseURIString, toURLString } from '../base/util';
 import { isVpaasMeeting } from '../billing-counter/functions';
 import { clearNotifications, showNotification } from '../notifications';
 import { setFatalError } from '../overlay';
 
-import {
-    getDefaultURL,
-    getName
-} from './functions';
+import { getDefaultURL, getName } from './functions';
 import logger from './logger';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
-
 
 /**
  * Triggers an in-app navigation to a specific route. Allows navigation to be
@@ -62,8 +45,7 @@ export function appNavigate(uri: ?string) {
                 // FIXME Turn location's host, hostname, and port properties into
                 // setters in order to reduce the risks of inconsistent state.
                 location.hostname = defaultLocation.hostname;
-                location.pathname
-                    = defaultLocation.pathname + location.pathname.substr(1);
+                location.pathname = defaultLocation.pathname + location.pathname.substr(1);
                 location.port = defaultLocation.port;
                 location.protocol = defaultLocation.protocol;
             } else {
@@ -183,8 +165,7 @@ export function redirectToStaticPage(pathname: string, hashParam: ?string) {
             // A pathname equal to ./ specifies the current directory. It will be
             // fine but pointless to include it because contextRoot is the current
             // directory.
-            newPathname.startsWith('./')
-                && (newPathname = newPathname.substring(2));
+            newPathname.startsWith('./') && (newPathname = newPathname.substring(2));
             newPathname = getLocationContextRoot(windowLocation) + newPathname;
         }
 
@@ -235,11 +216,11 @@ function addTrackStateToURL(url, stateful) {
     const isVideoMuted = isLocalCameraTrackMuted(tracks);
     const isAudioMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.AUDIO);
 
-    return addHashParamsToURL(new URL(url), { // use new URL object in order to not pollute the passed parameter.
+    return addHashParamsToURL(new URL(url), {
+        // use new URL object in order to not pollute the passed parameter.
         'config.startWithAudioMuted': isAudioMuted,
         'config.startWithVideoMuted': isVideoMuted
     });
-
 }
 
 /**
@@ -285,10 +266,7 @@ export function reloadWithStoredParams() {
  */
 export function maybeRedirectToWelcomePage(options: Object = {}) {
     return (dispatch: Dispatch<any>, getState: Function) => {
-
-        const {
-            enableClosePage
-        } = getState()['features/base/config'];
+        const { enableClosePage } = getState()['features/base/config'];
 
         // if close page is enabled redirect to it, without further action
         if (enableClosePage) {
@@ -325,10 +303,12 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
 
         // else: show thankYou dialog only if there is no feedback
         if (options.showThankYou) {
-            dispatch(showNotification({
-                titleArguments: { appName: getName() },
-                titleKey: 'dialog.thankYou'
-            }));
+            dispatch(
+                showNotification({
+                    titleArguments: { appName: getName() },
+                    titleKey: 'dialog.thankYou'
+                })
+            );
         }
 
         // if Welcome page is enabled redirect to welcome page after 3 sec, if
@@ -338,7 +318,8 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
                 () => {
                     dispatch(redirectWithStoredParams('/'));
                 },
-                options.showThankYou ? 3000 : 500);
+                options.showThankYou ? 3000 : 500
+            );
         }
     };
 }

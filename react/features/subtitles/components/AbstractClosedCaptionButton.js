@@ -6,7 +6,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { toggleRequestingSubtitles } from '../actions';
 
 export type AbstractProps = AbstractButtonProps & {
-
     /**
      * Invoked to obtain translated strings.
      */
@@ -26,8 +25,7 @@ export type AbstractProps = AbstractButtonProps & {
 /**
  * The button component which starts/stops the transcription.
  */
-export class AbstractClosedCaptionButton
-    extends AbstractButton<AbstractProps, *> {
+export class AbstractClosedCaptionButton extends AbstractButton<AbstractProps, *> {
     /**
      * Handles clicking / pressing the button.
      *
@@ -38,10 +36,11 @@ export class AbstractClosedCaptionButton
     _handleClick() {
         const { _requestingSubtitles, dispatch } = this.props;
 
-        sendAnalytics(createToolbarEvent('transcribing.ccButton',
-            {
-                'requesting_subtitles': Boolean(_requestingSubtitles)
-            }));
+        sendAnalytics(
+            createToolbarEvent('transcribing.ccButton', {
+                requesting_subtitles: Boolean(_requestingSubtitles)
+            })
+        );
 
         dispatch(toggleRequestingSubtitles());
     }
@@ -89,8 +88,7 @@ export function _abstractMapStateToProps(state: Object, ownProps: Object) {
 
     // if the participant is moderator, it can enable transcriptions and if
     // transcriptions are already started for the meeting, guests can just show them
-    const { visible = Boolean(transcribingEnabled
-        && (isLocalParticipantModerator(state) || isTranscribing)) } = ownProps;
+    const { visible = Boolean(transcribingEnabled && (isLocalParticipantModerator(state) || isTranscribing)) } = ownProps;
 
     return {
         _requestingSubtitles,

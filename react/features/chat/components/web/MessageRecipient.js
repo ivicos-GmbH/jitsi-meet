@@ -5,11 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { Icon, IconCancelSelection } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import AbstractMessageRecipient, {
-    _mapDispatchToProps,
-    _mapStateToProps,
-    type Props
-} from '../AbstractMessageRecipient';
+import AbstractMessageRecipient, { _mapDispatchToProps, _mapStateToProps, type Props } from '../AbstractMessageRecipient';
 
 /**
  * Class to implement the displaying of the recipient of the next message.
@@ -30,15 +26,14 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
         const { t } = this.props;
 
         return (
-            <div id = 'chat-recipient'>
+            <div id="chat-recipient">
                 <span>
-                    { t('chat.messageTo', {
+                    {t('chat.messageTo', {
                         recipient: _privateMessageRecipient
-                    }) }
+                    })}
                 </span>
-                <div onClick = { this.props._onRemovePrivateMessageRecipient }>
-                    <Icon
-                        src = { IconCancelSelection } />
+                <div onClick={this.props._onRemovePrivateMessageRecipient}>
+                    <Icon src={IconCancelSelection} />
                 </div>
             </div>
         );

@@ -30,7 +30,7 @@ declare type PersistencyConfigMap = { [name: string]: ElementConfig };
  */
 class PersistenceRegistry {
     _checksum: string;
-    _defaultStates: { [name: string ]: ?Object} = {};
+    _defaultStates: { [name: string]: ?Object } = {};
     _elements: PersistencyConfigMap = {};
 
     /**
@@ -51,11 +51,7 @@ class PersistenceRegistry {
             // TODO We'll need to introduce functions later that can control the
             // persist key's name. Similar to control serialization and
             // deserialization. But that should be a straightforward change.
-            const persistedSubtree
-                = this._getPersistedSubtree(
-                    subtreeName,
-                    this._elements[subtreeName],
-                    this._defaultStates[subtreeName]);
+            const persistedSubtree = this._getPersistedSubtree(subtreeName, this._elements[subtreeName], this._defaultStates[subtreeName]);
 
             if (persistedSubtree !== undefined) {
                 filteredPersistedState[subtreeName] = persistedSubtree;
@@ -70,10 +66,7 @@ class PersistenceRegistry {
                 try {
                     persistedState = JSON.parse(persistedState);
                 } catch (error) {
-                    logger.error(
-                        'Error parsing persisted state',
-                        persistedState,
-                        error);
+                    logger.error('Error parsing persisted state', persistedState, error);
                     persistedState = {};
                 }
 
@@ -131,10 +124,7 @@ class PersistenceRegistry {
      * pushed into Redux.
      * @returns {void}
      */
-    register(
-            name: string,
-            config?: ElementConfig = true,
-            defaultState?: Object) {
+    register(name: string, config?: ElementConfig = true, defaultState?: Object) {
         this._elements[name] = config;
         this._defaultStates[name] = defaultState;
     }
@@ -169,10 +159,7 @@ class PersistenceRegistry {
 
         for (const name of Object.keys(this._elements)) {
             if (state[name]) {
-                filteredState[name]
-                    = this._getFilteredSubtree(
-                        state[name],
-                        this._elements[name]);
+                filteredState[name] = this._getFilteredSubtree(state[name], this._elements[name]);
             }
         }
 
@@ -225,19 +212,13 @@ class PersistenceRegistry {
             try {
                 persistedSubtree = JSON.parse(persistedSubtree);
 
-                const filteredSubtree
-                    = this._getFilteredSubtree(persistedSubtree, subtreeConfig);
+                const filteredSubtree = this._getFilteredSubtree(persistedSubtree, subtreeConfig);
 
                 if (filteredSubtree !== undefined) {
-                    return this._mergeDefaults(
-                        filteredSubtree, subtreeDefaults);
+                    return this._mergeDefaults(filteredSubtree, subtreeDefaults);
                 }
             } catch (error) {
-                logger.error(
-                    'Error parsing persisted subtree',
-                    subtreeName,
-                    persistedSubtree,
-                    error);
+                logger.error('Error parsing persisted subtree', subtreeName, persistedSubtree, error);
             }
         }
 

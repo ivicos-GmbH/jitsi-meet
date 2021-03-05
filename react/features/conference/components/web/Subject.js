@@ -14,7 +14,6 @@ import ParticipantsCount from './ParticipantsCount';
  * The type of the React {@code Component} props of {@link Subject}.
  */
 type Props = {
-
     /**
      * Whether the conference timer should be shown or not.
      */
@@ -48,7 +47,6 @@ type Props = {
  * @class Subject
  */
 class Subject extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -64,10 +62,10 @@ class Subject extends Component<Props> {
         }
 
         return (
-            <div className = { className }>
-                { _showSubject && <span className = 'subject-text'>{ _subject }</span>}
-                { _showParticipantCount && <ParticipantsCount /> }
-                { !_hideConferenceTimer && <ConferenceTimer /> }
+            <div className={className}>
+                {_showSubject && <span className="subject-text">{_subject}</span>}
+                {_showParticipantCount && <ParticipantsCount />}
+                {!_hideConferenceTimer && <ConferenceTimer />}
             </div>
         );
     }

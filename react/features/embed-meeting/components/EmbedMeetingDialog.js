@@ -9,7 +9,6 @@ import { Dialog } from '../../base/dialog';
 import { translate } from '../../base/i18n';
 
 type Props = {
-
     /**
      * Invoked to obtain translated strings.
      */
@@ -33,32 +32,25 @@ function EmbedMeeting({ t, url }: Props) {
      * @returns {string} The iframe embed code.
      */
     const getEmbedCode = () =>
-        `<iframe allow="camera; microphone; fullscreen; display-capture; autoplay" src="${url}"`
-        + ' style="height: 100%; width: 100%; border: 0px;"></iframe>';
+        `<iframe allow="camera; microphone; fullscreen; display-capture; autoplay" src="${url}"` + ' style="height: 100%; width: 100%; border: 0px;"></iframe>';
 
     return (
-        <Dialog
-            hideCancelButton = { true }
-            submitDisabled = { true }
-            titleKey = { 'embedMeeting.title' }
-            width = 'small'>
-            <div className = 'embed-meeting-dialog'>
-                <textarea
-                    className = 'embed-meeting-code'
-                    readOnly = { true }
-                    value = { getEmbedCode() } />
+        <Dialog hideCancelButton={true} submitDisabled={true} titleKey={'embedMeeting.title'} width="small">
+            <div className="embed-meeting-dialog">
+                <textarea className="embed-meeting-code" readOnly={true} value={getEmbedCode()} />
                 <CopyButton
-                    className = 'embed-meeting-copy'
-                    displayedText = { t('dialog.copy') }
-                    textOnCopySuccess = { t('dialog.copied') }
-                    textOnHover = { t('dialog.copy') }
-                    textToCopy = { getEmbedCode() } />
+                    className="embed-meeting-copy"
+                    displayedText={t('dialog.copy')}
+                    textOnCopySuccess={t('dialog.copied')}
+                    textOnHover={t('dialog.copy')}
+                    textToCopy={getEmbedCode()}
+                />
             </div>
         </Dialog>
     );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         url: getInviteURL(state)
     };

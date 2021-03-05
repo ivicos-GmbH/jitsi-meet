@@ -11,7 +11,6 @@ export function isMobileBrowser() {
     return Platform.OS === 'android' || Platform.OS === 'ios';
 }
 
-
 /**
  * Returns whether or not the current environment is an ios mobile device.
  *
@@ -29,20 +28,19 @@ export function isIosMobileBrowser() {
  * @returns {Promise[]}
  */
 export function checkChromeExtensionsInstalled(config: Object = {}) {
-    const isExtensionInstalled = info => new Promise(resolve => {
-        const img = new Image();
+    const isExtensionInstalled = (info) =>
+        new Promise((resolve) => {
+            const img = new Image();
 
-        img.src = `chrome-extension://${info.id}/${info.path}`;
-        img.onload = function() {
-            resolve(true);
-        };
-        img.onerror = function() {
-            resolve(false);
-        };
-    });
-    const extensionInstalledFunction = info => isExtensionInstalled(info);
+            img.src = `chrome-extension://${info.id}/${info.path}`;
+            img.onload = function () {
+                resolve(true);
+            };
+            img.onerror = function () {
+                resolve(false);
+            };
+        });
+    const extensionInstalledFunction = (info) => isExtensionInstalled(info);
 
-    return Promise.all(
-        (config.chromeExtensionsInfo || []).map(info => extensionInstalledFunction(info))
-    );
+    return Promise.all((config.chromeExtensionsInfo || []).map((info) => extensionInstalledFunction(info)));
 }

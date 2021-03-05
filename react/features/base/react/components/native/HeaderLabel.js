@@ -11,7 +11,6 @@ import { connect } from '../../../redux';
  * The type of the React {@code Component} props of {@link HeaderLabel}
  */
 type Props = {
-
     /**
      * The i18n key of the label to be rendered.
      */
@@ -42,15 +41,8 @@ class HeaderLabel extends Component<Props> {
         const { _headerStyles } = this.props;
 
         return (
-            <View
-                pointerEvents = 'box-none'
-                style = { _headerStyles.headerTextWrapper }>
-                <Text
-                    style = { [
-                        _headerStyles.headerText
-                    ] }>
-                    { this.props.t(this.props.labelKey) }
-                </Text>
+            <View pointerEvents="box-none" style={_headerStyles.headerTextWrapper}>
+                <Text style={[_headerStyles.headerText]}>{this.props.t(this.props.labelKey)}</Text>
             </View>
         );
     }

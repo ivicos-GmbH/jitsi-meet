@@ -22,38 +22,36 @@ import { _setImmersiveListener as _setImmersiveListenerA } from './actions';
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case _SET_IMMERSIVE_LISTENER:
-        return _setImmersiveListenerF(store, next, action);
+        case _SET_IMMERSIVE_LISTENER:
+            return _setImmersiveListenerF(store, next, action);
 
-    case APP_WILL_MOUNT: {
-        const result = next(action);
+        case APP_WILL_MOUNT: {
+            const result = next(action);
 
-        store.dispatch(
-            _setImmersiveListenerA(_onImmersiveChange.bind(undefined, store)));
+            store.dispatch(_setImmersiveListenerA(_onImmersiveChange.bind(undefined, store)));
 
-        return result;
-    }
+            return result;
+        }
 
-    case APP_WILL_UNMOUNT:
-        store.dispatch(_setImmersiveListenerA(undefined));
-        break;
-
+        case APP_WILL_UNMOUNT:
+            store.dispatch(_setImmersiveListenerA(undefined));
+            break;
     }
 
     return next(action);
 });
 
 StateListenerRegistry.register(
-    /* selector */ state => {
+    /* selector */ (state) => {
         const { enabled: audioOnly } = state['features/base/audio-only'];
         const conference = getCurrentConference(state);
         const dialogOpen = isAnyDialogOpen(state);
 
         return conference ? !audioOnly && !dialogOpen : false;
     },
-    /* listener */ fullScreen => _setFullScreen(fullScreen)
+    /* listener */ (fullScreen) => _setFullScreen(fullScreen)
 );
 
 /**

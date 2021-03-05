@@ -5,11 +5,7 @@ import { Platform } from '../base/react';
 import { URI_PROTOCOL_PATTERN } from '../base/util';
 import { isVpaasMeeting } from '../billing-counter/functions';
 
-import {
-    DeepLinkingDesktopPage,
-    DeepLinkingMobilePage,
-    NoMobileApp
-} from './components';
+import { DeepLinkingDesktopPage, DeepLinkingMobilePage, NoMobileApp } from './components';
 import { _openDesktopApp } from './openDesktopApp';
 
 /**
@@ -58,19 +54,17 @@ export function getDeepLinkingPage(state) {
         return Promise.resolve();
     }
 
-    if (isMobileBrowser()) { // mobile
-        const mobileAppPromo
-            = typeof interfaceConfig === 'object'
-                && interfaceConfig.MOBILE_APP_PROMO;
+    if (isMobileBrowser()) {
+        // mobile
+        const mobileAppPromo = typeof interfaceConfig === 'object' && interfaceConfig.MOBILE_APP_PROMO;
 
-        return Promise.resolve(
-            typeof mobileAppPromo === 'undefined' || Boolean(mobileAppPromo)
-                ? DeepLinkingMobilePage : NoMobileApp);
+        return Promise.resolve(typeof mobileAppPromo === 'undefined' || Boolean(mobileAppPromo) ? DeepLinkingMobilePage : NoMobileApp);
     }
 
     return _openDesktopApp(state).then(
         // eslint-disable-next-line no-confusing-arrow
-        result => result ? DeepLinkingDesktopPage : undefined);
+        (result) => (result ? DeepLinkingDesktopPage : undefined)
+    );
 }
 
 /**

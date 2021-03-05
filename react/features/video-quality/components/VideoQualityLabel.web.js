@@ -9,13 +9,9 @@ import { connect } from '../../base/redux';
 import { Tooltip } from '../../base/tooltip';
 import { getTrackByMediaTypeAndParticipant } from '../../base/tracks';
 
-import AbstractVideoQualityLabel, {
-    _abstractMapStateToProps,
-    type Props as AbstractProps
-} from './AbstractVideoQualityLabel';
+import AbstractVideoQualityLabel, { _abstractMapStateToProps, type Props as AbstractProps } from './AbstractVideoQualityLabel';
 
 type Props = AbstractProps & {
-
     /**
      * The message to show within the label.
      */
@@ -49,10 +45,9 @@ const RESOLUTION_TO_TRANSLATION_KEY = {
  *
  * @type {number[]}
  */
-const RESOLUTIONS
-    = Object.keys(RESOLUTION_TO_TRANSLATION_KEY)
-        .map(resolution => parseInt(resolution, 10))
-        .sort((a, b) => a - b);
+const RESOLUTIONS = Object.keys(RESOLUTION_TO_TRANSLATION_KEY)
+    .map((resolution) => parseInt(resolution, 10))
+    .sort((a, b) => a - b);
 
 /**
  * React {@code Component} responsible for displaying a label that indicates
@@ -62,7 +57,6 @@ const RESOLUTIONS
  * being displayed.
  */
 export class VideoQualityLabel extends AbstractVideoQualityLabel<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -70,14 +64,7 @@ export class VideoQualityLabel extends AbstractVideoQualityLabel<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _audioOnly,
-            _labelKey,
-            _tooltipKey,
-            _videoTrack,
-            t
-        } = this.props;
-
+        const { _audioOnly, _labelKey, _tooltipKey, _videoTrack, t } = this.props;
 
         let className, labelContent, tooltipKey;
 
@@ -95,15 +82,9 @@ export class VideoQualityLabel extends AbstractVideoQualityLabel<Props> {
             tooltipKey = _tooltipKey;
         }
 
-
         return (
-            <Tooltip
-                content = { t(tooltipKey) }
-                position = { 'left' }>
-                <CircularLabel
-                    className = { className }
-                    id = 'videoResolutionLabel'
-                    label = { labelContent } />
+            <Tooltip content={t(tooltipKey)} position={'left'}>
+                <CircularLabel className={className} id="videoResolutionLabel" label={labelContent} />
             </Tooltip>
         );
     }
@@ -134,8 +115,7 @@ function _mapResolutionToTranslationsKeys(resolution) {
         }
     }
 
-    const labelKey
-        = RESOLUTION_TO_TRANSLATION_KEY[highestMatchingResolution];
+    const labelKey = RESOLUTION_TO_TRANSLATION_KEY[highestMatchingResolution];
 
     return {
         labelKey,
@@ -158,14 +138,9 @@ function _mapResolutionToTranslationsKeys(resolution) {
 function _mapStateToProps(state) {
     const { enabled: audioOnly } = state['features/base/audio-only'];
     const { resolution, participantId } = state['features/large-video'];
-    const videoTrackOnLargeVideo = getTrackByMediaTypeAndParticipant(
-        state['features/base/tracks'],
-        MEDIA_TYPE.VIDEO,
-        participantId
-    );
+    const videoTrackOnLargeVideo = getTrackByMediaTypeAndParticipant(state['features/base/tracks'], MEDIA_TYPE.VIDEO, participantId);
 
-    const translationKeys
-        = audioOnly ? {} : _mapResolutionToTranslationsKeys(resolution);
+    const translationKeys = audioOnly ? {} : _mapResolutionToTranslationsKeys(resolution);
 
     return {
         ..._abstractMapStateToProps(state),

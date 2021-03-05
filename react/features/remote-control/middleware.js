@@ -6,9 +6,7 @@ import { CONFERENCE_JOINED } from '../base/conference';
 import { PARTICIPANT_LEFT } from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
 
-import {
-    clearRequest, setReceiverTransport, setRemoteControlActive, stopController, stopReceiver
-} from './actions';
+import { clearRequest, setReceiverTransport, setRemoteControlActive, stopController, stopReceiver } from './actions';
 import { REMOTE_CONTROL_MESSAGE_NAME } from './constants';
 import { onRemoteControlAPIEvent } from './functions';
 import './subscriber';
@@ -19,73 +17,77 @@ import './subscriber';
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => async action => {
+MiddlewareRegistry.register((store) => (next) => async (action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT: {
-        const { dispatch } = store;
+        case APP_WILL_MOUNT: {
+            const { dispatch } = store;
 
-        dispatch(setReceiverTransport(new Transport({
-            backend: new PostMessageTransportBackend({
-                postisOptions: { scope: 'jitsi-remote-control' }
-            })
-        })));
+            dispatch(
+                setReceiverTransport(
+                    new Transport({
+                        backend: new PostMessageTransportBackend({
+                            postisOptions: { scope: 'jitsi-remote-control' }
+                        })
+                    })
+                )
+            );
 
-        break;
-    }
-    case APP_WILL_UNMOUNT: {
-        const { getState, dispatch } = store;
-        const { transport } = getState()['features/remote-control'].receiver;
-
-        if (transport) {
-            transport.dispose();
-            dispatch(setReceiverTransport());
+            break;
         }
+        case APP_WILL_UNMOUNT: {
+            const { getState, dispatch } = store;
+            const { transport } = getState()['features/remote-control'].receiver;
 
-        break;
-    }
-    case CONFERENCE_JOINED: {
-        const result = next(action);
-        const { getState } = store;
-        const { transport } = getState()['features/remote-control'].receiver;
+            if (transport) {
+                transport.dispose();
+                dispatch(setReceiverTransport());
+            }
 
-        if (transport) {
-            // We expect here that even if we receive the supported event earlier
-            // it will be cached and we'll receive it.
-            transport.on('event', event => {
-                if (event.name === REMOTE_CONTROL_MESSAGE_NAME) {
-                    onRemoteControlAPIEvent(event, store);
-
-                    return true;
-                }
-
-                return false;
-            });
+            break;
         }
+        case CONFERENCE_JOINED: {
+            const result = next(action);
+            const { getState } = store;
+            const { transport } = getState()['features/remote-control'].receiver;
 
-        return result;
-    }
-    case PARTICIPANT_LEFT: {
-        const { getState, dispatch } = store;
-        const state = getState();
-        const { id } = action.participant;
-        const { receiver, controller } = state['features/remote-control'];
-        const { requestedParticipant, controlled } = controller;
+            if (transport) {
+                // We expect here that even if we receive the supported event earlier
+                // it will be cached and we'll receive it.
+                transport.on('event', (event) => {
+                    if (event.name === REMOTE_CONTROL_MESSAGE_NAME) {
+                        onRemoteControlAPIEvent(event, store);
 
-        if (id === controlled) {
-            dispatch(stopController());
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+
+            return result;
         }
+        case PARTICIPANT_LEFT: {
+            const { getState, dispatch } = store;
+            const state = getState();
+            const { id } = action.participant;
+            const { receiver, controller } = state['features/remote-control'];
+            const { requestedParticipant, controlled } = controller;
 
-        if (id === requestedParticipant) {
-            dispatch(clearRequest());
-            dispatch(setRemoteControlActive(false));
+            if (id === controlled) {
+                dispatch(stopController());
+            }
+
+            if (id === requestedParticipant) {
+                dispatch(clearRequest());
+                dispatch(setRemoteControlActive(false));
+            }
+
+            if (receiver?.controller === id) {
+                dispatch(stopReceiver(false, true));
+            }
+
+            break;
         }
-
-        if (receiver?.controller === id) {
-            dispatch(stopReceiver(false, true));
-        }
-
-        break;
-    }
     }
 
     return next(action);

@@ -7,8 +7,7 @@
  *     status: string
  * }
  */
-export const SIP_GW_AVAILABILITY_CHANGED
-    = 'SIP_GW_AVAILABILITY_CHANGED';
+export const SIP_GW_AVAILABILITY_CHANGED = 'SIP_GW_AVAILABILITY_CHANGED';
 
 /**
  * The type of the action which signals to invite room participants to the

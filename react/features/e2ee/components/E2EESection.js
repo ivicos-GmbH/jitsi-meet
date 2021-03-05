@@ -10,9 +10,7 @@ import { Switch } from '../../base/react';
 import { connect } from '../../base/redux';
 import { toggleE2EE } from '../actions';
 
-
 type Props = {
-
     /**
      * Whether E2EE is currently enabled or not.
      */
@@ -35,7 +33,6 @@ type Props = {
 };
 
 type State = {
-
     /**
      * True if the switch is toggled on.
      */
@@ -61,7 +58,6 @@ class E2EESection extends Component<Props, State> {
      */
     static getDerivedStateFromProps(props: Props, state: Object) {
         if (props._enabled !== state.enabled) {
-
             return {
                 enabled: props._enabled
             };
@@ -100,30 +96,20 @@ class E2EESection extends Component<Props, State> {
         const description = t('dialog.e2eeDescription');
 
         return (
-            <div id = 'e2ee-section'>
-                <p className = 'description'>
-                    { expand && description }
-                    { !expand && description.substring(0, 100) }
-                    { !expand && <span
-                        className = 'read-more'
-                        onClick = { this._onExpand }>
-                            ... { t('dialog.readMore') }
-                    </span> }
-                </p>
-                {
-                    !_everyoneSupportsE2EE
-                        && <span className = 'warning'>
-                            { t('dialog.e2eeWarning') }
+            <div id="e2ee-section">
+                <p className="description">
+                    {expand && description}
+                    {!expand && description.substring(0, 100)}
+                    {!expand && (
+                        <span className="read-more" onClick={this._onExpand}>
+                            ... {t('dialog.readMore')}
                         </span>
-                }
-                <div className = 'control-row'>
-                    <label htmlFor = 'e2ee-section-switch'>
-                        { t('dialog.e2eeLabel') }
-                    </label>
-                    <Switch
-                        id = 'e2ee-section-switch'
-                        onValueChange = { this._onToggle }
-                        value = { enabled } />
+                    )}
+                </p>
+                {!_everyoneSupportsE2EE && <span className="warning">{t('dialog.e2eeWarning')}</span>}
+                <div className="control-row">
+                    <label htmlFor="e2ee-section-switch">{t('dialog.e2eeLabel')}</label>
+                    <Switch id="e2ee-section-switch" onValueChange={this._onToggle} value={enabled} />
                 </div>
             </div>
         );
@@ -171,11 +157,11 @@ class E2EESection extends Component<Props, State> {
  */
 function mapStateToProps(state) {
     const { enabled } = state['features/e2ee'];
-    const participants = getParticipants(state).filter(p => !p.local);
+    const participants = getParticipants(state).filter((p) => !p.local);
 
     return {
         _enabled: enabled,
-        _everyoneSupportsE2EE: participants.every(p => Boolean(p.e2eeSupported))
+        _everyoneSupportsE2EE: participants.every((p) => Boolean(p.e2eeSupported))
     };
 }
 

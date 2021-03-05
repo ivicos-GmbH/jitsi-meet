@@ -6,14 +6,8 @@ import { SafeAreaView, ScrollView, Text } from 'react-native';
 import { Avatar } from '../../base/avatar';
 import { IconInfo, IconSettings, IconHelp } from '../../base/icons';
 import { setActiveModalId } from '../../base/modal';
-import {
-    getLocalParticipant,
-    getParticipantDisplayName
-} from '../../base/participants';
-import {
-    Header,
-    SlidingView
-} from '../../base/react';
+import { getLocalParticipant, getParticipantDisplayName } from '../../base/participants';
+import { Header, SlidingView } from '../../base/react';
 import { connect } from '../../base/redux';
 import { HELP_VIEW_MODAL_ID } from '../../help';
 import { SETTINGS_VIEW_ID } from '../../settings';
@@ -33,7 +27,6 @@ const PRIVACY_URL = 'https://jitsi.org/meet/privacy';
 const TERMS_URL = 'https://jitsi.org/meet/terms';
 
 type Props = {
-
     /**
      * Redux dispatch action
      */
@@ -81,38 +74,17 @@ class WelcomePageSideBar extends Component<Props> {
      */
     render() {
         return (
-            <SlidingView
-                onHide = { this._onHideSideBar }
-                position = 'left'
-                show = { this.props._visible }
-                style = { styles.sideBar } >
-                <Header style = { styles.sideBarHeader }>
-                    <Avatar
-                        participantId = { this.props._localParticipantId }
-                        size = { SIDEBAR_AVATAR_SIZE } />
-                    <Text style = { styles.displayName }>
-                        { this.props._displayName }
-                    </Text>
+            <SlidingView onHide={this._onHideSideBar} position="left" show={this.props._visible} style={styles.sideBar}>
+                <Header style={styles.sideBarHeader}>
+                    <Avatar participantId={this.props._localParticipantId} size={SIDEBAR_AVATAR_SIZE} />
+                    <Text style={styles.displayName}>{this.props._displayName}</Text>
                 </Header>
-                <SafeAreaView style = { styles.sideBarBody }>
-                    <ScrollView
-                        style = { styles.itemContainer }>
-                        <SideBarItem
-                            icon = { IconSettings }
-                            label = 'settings.title'
-                            onPress = { this._onOpenSettings } />
-                        <SideBarItem
-                            icon = { IconInfo }
-                            label = 'welcomepage.terms'
-                            url = { TERMS_URL } />
-                        <SideBarItem
-                            icon = { IconInfo }
-                            label = 'welcomepage.privacy'
-                            url = { PRIVACY_URL } />
-                        <SideBarItem
-                            icon = { IconHelp }
-                            label = 'welcomepage.getHelp'
-                            onPress = { this._onOpenHelpPage } />
+                <SafeAreaView style={styles.sideBarBody}>
+                    <ScrollView style={styles.itemContainer}>
+                        <SideBarItem icon={IconSettings} label="settings.title" onPress={this._onOpenSettings} />
+                        <SideBarItem icon={IconInfo} label="welcomepage.terms" url={TERMS_URL} />
+                        <SideBarItem icon={IconInfo} label="welcomepage.privacy" url={PRIVACY_URL} />
+                        <SideBarItem icon={IconHelp} label="welcomepage.getHelp" onPress={this._onOpenHelpPage} />
                     </ScrollView>
                 </SafeAreaView>
             </SlidingView>

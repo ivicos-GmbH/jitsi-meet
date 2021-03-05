@@ -1,8 +1,5 @@
 import JitsiMeetJS from '../lib-jitsi-meet';
-import {
-    getUserSelectedOutputDeviceId,
-    updateSettings
-} from '../settings';
+import { getUserSelectedOutputDeviceId, updateSettings } from '../settings';
 
 import {
     ADD_PENDING_DEVICE_REQUEST,
@@ -15,13 +12,7 @@ import {
     SET_VIDEO_INPUT_DEVICE,
     UPDATE_DEVICE_LIST
 } from './actionTypes';
-import {
-    areDeviceLabelsInitialized,
-    getDeviceIdByLabel,
-    getDeviceLabelById,
-    getDevicesFromURL,
-    setAudioOutputDeviceId
-} from './functions';
+import { areDeviceLabelsInitialized, getDeviceIdByLabel, getDeviceLabelById, getDevicesFromURL, setAudioOutputDeviceId } from './functions';
 import logger from './logger';
 
 /**
@@ -80,17 +71,19 @@ export function configureInitialDevices() {
                     // The labels are not available if the A/V permissions are
                     // not yet granted.
 
-                    Object.keys(deviceLabels).forEach(key => {
-                        dispatch(addPendingDeviceRequest({
-                            type: 'devices',
-                            name: 'setDevice',
-                            device: {
-                                kind: key.toLowerCase(),
-                                label: deviceLabels[key]
-                            },
-                            // eslint-disable-next-line no-empty-function
-                            responseCallback() {}
-                        }));
+                    Object.keys(deviceLabels).forEach((key) => {
+                        dispatch(
+                            addPendingDeviceRequest({
+                                type: 'devices',
+                                name: 'setDevice',
+                                device: {
+                                    kind: key.toLowerCase(),
+                                    label: deviceLabels[key]
+                                },
+                                // eslint-disable-next-line no-empty-function
+                                responseCallback() {}
+                            })
+                        );
                     });
 
                     return;
@@ -98,7 +91,7 @@ export function configureInitialDevices() {
 
                 const newSettings = {};
 
-                Object.keys(deviceLabels).forEach(key => {
+                Object.keys(deviceLabels).forEach((key) => {
                     const label = deviceLabels[key];
                     const deviceId = getDeviceIdByLabel(state, label, key);
 
@@ -117,14 +110,14 @@ export function configureInitialDevices() {
             updateSettingsPromise = Promise.resolve();
         }
 
-        return updateSettingsPromise
-            .then(() => {
-                const userSelectedAudioOutputDeviceId = getUserSelectedOutputDeviceId(getState());
+        return updateSettingsPromise.then(() => {
+            const userSelectedAudioOutputDeviceId = getUserSelectedOutputDeviceId(getState());
 
-                return setAudioOutputDeviceId(userSelectedAudioOutputDeviceId, dispatch)
-                    .catch(ex => logger.warn(`Failed to set audio output device.
-                        Default audio output device will be used instead ${ex}`));
-            });
+            return setAudioOutputDeviceId(userSelectedAudioOutputDeviceId, dispatch).catch((ex) =>
+                logger.warn(`Failed to set audio output device.
+                        Default audio output device will be used instead ${ex}`)
+            );
+        });
     };
 }
 
@@ -135,20 +128,20 @@ export function configureInitialDevices() {
  * @returns {Function}
  */
 export function getAvailableDevices() {
-    return dispatch => new Promise(resolve => {
-        const { mediaDevices } = JitsiMeetJS;
+    return (dispatch) =>
+        new Promise((resolve) => {
+            const { mediaDevices } = JitsiMeetJS;
 
-        if (mediaDevices.isDeviceListAvailable()
-                && mediaDevices.isDeviceChangeAvailable()) {
-            mediaDevices.enumerateDevices(devices => {
-                dispatch(updateDeviceList(devices));
+            if (mediaDevices.isDeviceListAvailable() && mediaDevices.isDeviceChangeAvailable()) {
+                mediaDevices.enumerateDevices((devices) => {
+                    dispatch(updateDeviceList(devices));
 
-                resolve(devices);
-            });
-        } else {
-            resolve([]);
-        }
-    });
+                    resolve(devices);
+                });
+            } else {
+                resolve([]);
+            }
+        });
 }
 
 /**
@@ -226,14 +219,16 @@ export function setAudioInputDevice(deviceId) {
  * @returns {Function}
  */
 export function setAudioInputDeviceAndUpdateSettings(deviceId) {
-    return function(dispatch, getState) {
+    return function (dispatch, getState) {
         const deviceLabel = getDeviceLabelById(getState(), deviceId, 'audioInput');
 
         dispatch(setAudioInputDevice(deviceId));
-        dispatch(updateSettings({
-            userSelectedMicDeviceId: deviceId,
-            userSelectedMicDeviceLabel: deviceLabel
-        }));
+        dispatch(
+            updateSettings({
+                userSelectedMicDeviceId: deviceId,
+                userSelectedMicDeviceLabel: deviceLabel
+            })
+        );
     };
 }
 
@@ -244,7 +239,7 @@ export function setAudioInputDeviceAndUpdateSettings(deviceId) {
  * @returns {Function}
  */
 export function setAudioOutputDevice(deviceId) {
-    return function(dispatch, getState) {
+    return function (dispatch, getState) {
         const deviceLabel = getDeviceLabelById(getState(), deviceId, 'audioOutput');
 
         return setAudioOutputDeviceId(deviceId, dispatch, true, deviceLabel);
@@ -275,14 +270,16 @@ export function setVideoInputDevice(deviceId) {
  * @returns {Function}
  */
 export function setVideoInputDeviceAndUpdateSettings(deviceId) {
-    return function(dispatch, getState) {
+    return function (dispatch, getState) {
         const deviceLabel = getDeviceLabelById(getState(), deviceId, 'videoInput');
 
         dispatch(setVideoInputDevice(deviceId));
-        dispatch(updateSettings({
-            userSelectedCameraDeviceId: deviceId,
-            userSelectedCameraDeviceLabel: deviceLabel
-        }));
+        dispatch(
+            updateSettings({
+                userSelectedCameraDeviceId: deviceId,
+                userSelectedCameraDeviceLabel: deviceLabel
+            })
+        );
     };
 }
 

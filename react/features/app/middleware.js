@@ -1,29 +1,22 @@
 // @flow
 
-import {
-    createConnectionEvent,
-    sendAnalytics
-} from '../analytics';
+import { createConnectionEvent, sendAnalytics } from '../analytics';
 import { SET_ROOM } from '../base/conference';
-import {
-    CONNECTION_ESTABLISHED,
-    CONNECTION_FAILED,
-    getURLWithoutParams
-} from '../base/connection';
+import { CONNECTION_ESTABLISHED, CONNECTION_FAILED, getURLWithoutParams } from '../base/connection';
 import { MiddlewareRegistry } from '../base/redux';
 
 import { reloadNow } from './actions';
 import { _getRouteToRender } from './getRouteToRender';
 
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case CONNECTION_ESTABLISHED:
-        return _connectionEstablished(store, next, action);
-    case CONNECTION_FAILED:
-        return _connectionFailed(store, next, action);
+        case CONNECTION_ESTABLISHED:
+            return _connectionEstablished(store, next, action);
+        case CONNECTION_FAILED:
+            return _connectionFailed(store, next, action);
 
-    case SET_ROOM:
-        return _setRoom(store, next, action);
+        case SET_ROOM:
+            return _setRoom(store, next, action);
     }
 
     return next(action);
@@ -53,17 +46,11 @@ function _connectionEstablished(store, next, action) {
     // determined by when no one needs them anymore.
     const { history, location } = window;
 
-    if (history
-            && location
-            && history.length
-            && typeof history.replaceState === 'function') {
+    if (history && location && history.length && typeof history.replaceState === 'function') {
         const replacement = getURLWithoutParams(location);
 
         if (location !== replacement) {
-            history.replaceState(
-                history.state,
-                (document && document.title) || '',
-                replacement);
+            history.replaceState(history.state, (document && document.title) || '', replacement);
         }
     }
 
@@ -106,10 +93,7 @@ function _connectionFailed({ dispatch, getState }, next, action) {
  */
 function _isMaybeSplitBrainError(getState, action) {
     const { error } = action;
-    const isShardChangedError = error
-        && error.message === 'item-not-found'
-        && error.details
-        && error.details.shard_changed;
+    const isShardChangedError = error && error.message === 'item-not-found' && error.details && error.details.shard_changed;
 
     if (isShardChangedError) {
         const state = getState();
@@ -121,12 +105,14 @@ function _isMaybeSplitBrainError(getState, action) {
 
         const isWithinSplitBrainThreshold = !timeEstablished || timeSinceConnectionEstablished <= reloadThreshold;
 
-        sendAnalytics(createConnectionEvent('failed', {
-            ...error,
-            connectionEstablished: timeEstablished,
-            splitBrain: isWithinSplitBrainThreshold,
-            timeSinceConnectionEstablished
-        }));
+        sendAnalytics(
+            createConnectionEvent('failed', {
+                ...error,
+                connectionEstablished: timeEstablished,
+                splitBrain: isWithinSplitBrainThreshold,
+                timeSinceConnectionEstablished
+            })
+        );
 
         return isWithinSplitBrainThreshold;
     }
@@ -146,7 +132,7 @@ function _navigate({ getState }) {
     const state = getState();
     const { app } = state['features/base/app'];
 
-    _getRouteToRender(state).then(route => app._navigate(route));
+    _getRouteToRender(state).then((route) => app._navigate(route));
 }
 
 /**

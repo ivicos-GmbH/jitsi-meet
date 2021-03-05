@@ -7,13 +7,13 @@ import { SET_SHARED_VIDEO_STATUS } from './actionTypes';
  */
 ReducerRegistry.register('features/shared-video', (state = {}, action) => {
     switch (action.type) {
-    case SET_SHARED_VIDEO_STATUS:
-        return {
-            ...state,
-            status: action.status
-        };
+        case SET_SHARED_VIDEO_STATUS:
+            return {
+                ...state,
+                status: action.status
+            };
 
-    default:
-        return state;
+        default:
+            return state;
     }
 });

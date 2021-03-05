@@ -14,7 +14,6 @@ import { AVATAR_SIZE } from './styles';
  * The type of the React {@link Component} props of {@link LargeVideo}.
  */
 type Props = {
-
     /**
      * Whether video should be disabled.
      */
@@ -45,14 +44,13 @@ type Props = {
     /**
      * Callback to invoke when the {@code LargeVideo} is clicked/pressed.
      */
-    onClick: Function,
+    onClick: Function
 };
 
 /**
  * The type of the React {@link Component} state of {@link LargeVideo}.
  */
 type State = {
-
     /**
      * Size for the Avatar. It will be dynamically adjusted based on the
      * available size.
@@ -103,7 +101,6 @@ class LargeVideo extends PureComponent<Props, State> {
         }
 
         return DEFAULT_STATE;
-
     }
 
     /**
@@ -113,28 +110,21 @@ class LargeVideo extends PureComponent<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            avatarSize,
-            useConnectivityInfoLabel
-        } = this.state;
-        const {
-            _disableVideo,
-            _participantId,
-            _styles,
-            onClick
-        } = this.props;
+        const { avatarSize, useConnectivityInfoLabel } = this.state;
+        const { _disableVideo, _participantId, _styles, onClick } = this.props;
 
         return (
             <ParticipantView
-                avatarSize = { avatarSize }
-                disableVideo = { _disableVideo }
-                onPress = { onClick }
-                participantId = { _participantId }
-                style = { _styles.largeVideo }
-                testHintId = 'org.jitsi.meet.LargeVideo'
-                useConnectivityInfoLabel = { useConnectivityInfoLabel }
-                zOrder = { 0 }
-                zoomEnabled = { true } />
+                avatarSize={avatarSize}
+                disableVideo={_disableVideo}
+                onPress={onClick}
+                participantId={_participantId}
+                style={_styles.largeVideo}
+                testHintId="org.jitsi.meet.LargeVideo"
+                useConnectivityInfoLabel={useConnectivityInfoLabel}
+                zOrder={0}
+                zoomEnabled={true}
+            />
         );
     }
 }

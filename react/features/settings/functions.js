@@ -3,10 +3,7 @@
 import { SERVER_URL_CHANGE_ENABLED, getFeatureFlag } from '../base/flags';
 import { i18next, DEFAULT_LANGUAGE, LANGUAGES } from '../base/i18n';
 import { createLocalTrack } from '../base/lib-jitsi-meet/functions';
-import {
-    getLocalParticipant,
-    isLocalParticipantModerator
-} from '../base/participants';
+import { getLocalParticipant, isLocalParticipantModerator } from '../base/participants';
 import { toState } from '../base/redux';
 import { parseStandardURIString } from '../base/util';
 import { isFollowMeActive } from '../follow-me';
@@ -55,8 +52,7 @@ export function normalizeUserInputURL(url: string) {
         const urlRegExp = new RegExp('^(\\w+://)?(.+)$');
         const urlComponents = urlRegExp.exec(url);
 
-        if (urlComponents && (!urlComponents[1]
-                || !urlComponents[1].startsWith('http'))) {
+        if (urlComponents && (!urlComponents[1] || !urlComponents[1].startsWith('http'))) {
             url = `https://${urlComponents[2]}`;
         }
 
@@ -81,8 +77,7 @@ export function normalizeUserInputURL(url: string) {
  * @returns {boolean}
  */
 export function shouldShowOnlyDeviceSelection() {
-    return interfaceConfig.SETTINGS_SECTIONS.length === 1
-        && isSettingEnabled('devices');
+    return interfaceConfig.SETTINGS_SECTIONS.length === 1 && isSettingEnabled('devices');
 }
 
 /**
@@ -96,20 +91,12 @@ export function shouldShowOnlyDeviceSelection() {
 export function getMoreTabProps(stateful: Object | Function) {
     const state = toState(stateful);
     const language = i18next.language || DEFAULT_LANGUAGE;
-    const {
-        conference,
-        followMeEnabled,
-        startAudioMutedPolicy,
-        startVideoMutedPolicy
-    } = state['features/base/conference'];
+    const { conference, followMeEnabled, startAudioMutedPolicy, startVideoMutedPolicy } = state['features/base/conference'];
     const followMeActive = isFollowMeActive(state);
     const configuredTabs = interfaceConfig.SETTINGS_SECTIONS || [];
 
     // The settings sections to display.
-    const showModeratorSettings = Boolean(
-        conference
-            && configuredTabs.includes('moderator')
-            && isLocalParticipantModerator(state));
+    const showModeratorSettings = Boolean(conference && configuredTabs.includes('moderator') && isLocalParticipantModerator(state));
 
     return {
         currentLanguage: language,
@@ -136,11 +123,7 @@ export function getMoreTabProps(stateful: Object | Function) {
  */
 export function getProfileTabProps(stateful: Object | Function) {
     const state = toState(stateful);
-    const {
-        authEnabled,
-        authLogin,
-        conference
-    } = state['features/base/conference'];
+    const { authEnabled, authLogin, conference } = state['features/base/conference'];
     const localParticipant = getLocalParticipant(state);
 
     return {
@@ -161,22 +144,25 @@ export function getProfileTabProps(stateful: Object | Function) {
  * @returns {Promise<Object[]>}
  */
 export function createLocalVideoTracks(ids: string[], timeout: ?number) {
-    return Promise.all(ids.map(deviceId => createLocalTrack('video', deviceId, timeout)
-                   .then(jitsiTrack => {
-                       return {
-                           jitsiTrack,
-                           deviceId
-                       };
-                   })
-                   .catch(() => {
-                       return {
-                           jitsiTrack: null,
-                           deviceId,
-                           error: 'deviceSelection.previewUnavailable'
-                       };
-                   })));
+    return Promise.all(
+        ids.map((deviceId) =>
+            createLocalTrack('video', deviceId, timeout)
+                .then((jitsiTrack) => {
+                    return {
+                        jitsiTrack,
+                        deviceId
+                    };
+                })
+                .catch(() => {
+                    return {
+                        jitsiTrack: null,
+                        deviceId,
+                        error: 'deviceSelection.previewUnavailable'
+                    };
+                })
+        )
+    );
 }
-
 
 /**
  * Returns a promise which resolves with a list of objects containing
@@ -209,7 +195,8 @@ export function createLocalAudioTracks(devices: Object[], timeout: ?number) {
                 jitsiTrack,
                 label
             };
-        }));
+        })
+    );
 }
 
 /**

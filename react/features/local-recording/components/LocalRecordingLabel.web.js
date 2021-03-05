@@ -7,12 +7,10 @@ import { CircularLabel } from '../../base/label/index';
 import { connect } from '../../base/redux';
 import { Tooltip } from '../../base/tooltip';
 
-
 /**
  * The type of the React {@code Component} props of {@link LocalRecordingLabel}.
  */
 type Props = {
-
     /**
      * Invoked to obtain translated strings.
      */
@@ -30,7 +28,6 @@ type Props = {
  * @extends Component
  */
 class LocalRecordingLabel extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -43,16 +40,11 @@ class LocalRecordingLabel extends Component<Props> {
         }
 
         return (
-            <Tooltip
-                content = { this.props.t('localRecording.labelToolTip') }
-                position = { 'left' }>
-                <CircularLabel
-                    className = 'local-rec'
-                    label = { this.props.t('localRecording.label') } />
+            <Tooltip content={this.props.t('localRecording.labelToolTip')} position={'left'}>
+                <CircularLabel className="local-rec" label={this.props.t('localRecording.label')} />
             </Tooltip>
         );
     }
-
 }
 
 /**

@@ -7,7 +7,7 @@ import { INSECURE_ROOM_NAME_LABEL_COLOR } from './styles';
 
 type Props = AbstractProps & {
     t: Function
-}
+};
 
 /**
  * A react {@code Component} that implements an expanded label as tooltip-like

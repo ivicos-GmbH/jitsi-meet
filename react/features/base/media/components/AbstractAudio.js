@@ -12,7 +12,7 @@ export type AudioElement = {
     currentTime: number,
     pause: () => void,
     play: () => void,
-    setSinkId?: string => Function,
+    setSinkId?: (string) => Function,
     stop: () => void
 };
 
@@ -20,12 +20,11 @@ export type AudioElement = {
  * {@code AbstractAudio} component's property types.
  */
 type Props = {
-
     /**
      * A callback which will be called with {@code AbstractAudio} instance once
      * the audio element is loaded.
      */
-    setRef?: ?AudioElement => void,
+    setRef?: (?AudioElement) => void,
 
     /**
      * The URL of a media resource to use in the element.
@@ -38,7 +37,7 @@ type Props = {
     src: Object | string,
     stream?: Object,
     loop?: ?boolean
-}
+};
 
 /**
  * The React {@link Component} which is similar to Web's
@@ -84,7 +83,7 @@ export default class AbstractAudio extends Component<Props> {
         this._audioElementImpl && this._audioElementImpl.play();
     }
 
-    setAudioElementImpl: ?AudioElement => void;
+    setAudioElementImpl: (?AudioElement) => void;
 
     /**
      * Set the (reference to the) {@link AudioElement} object which implements
@@ -113,10 +112,9 @@ export default class AbstractAudio extends Component<Props> {
      * @returns {void}
      */
     setSinkId(sinkId: string): void {
-        this._audioElementImpl
-            && typeof this._audioElementImpl.setSinkId === 'function'
-            && this._audioElementImpl.setSinkId(sinkId)
-                .catch(error => logger.error('Error setting sink', error));
+        this._audioElementImpl &&
+            typeof this._audioElementImpl.setSinkId === 'function' &&
+            this._audioElementImpl.setSinkId(sinkId).catch((error) => logger.error('Error setting sink', error));
     }
 
     /**

@@ -7,7 +7,6 @@ import React, { Component } from 'react';
  * {@link MicrosoftSignInButton}.
  */
 type Props = {
-
     // The callback to invoke when {@code MicrosoftSignInButton} is clicked.
     onClick: Function,
 
@@ -29,15 +28,9 @@ export default class MicrosoftSignInButton extends Component<Props> {
      */
     render() {
         return (
-            <div
-                className = 'microsoft-sign-in'
-                onClick = { this.props.onClick }>
-                <img
-                    className = 'microsoft-logo'
-                    src = 'images/microsoftLogo.svg' />
-                <div className = 'microsoft-cta'>
-                    { this.props.text }
-                </div>
+            <div className="microsoft-sign-in" onClick={this.props.onClick}>
+                <img className="microsoft-logo" src="images/microsoftLogo.svg" />
+                <div className="microsoft-cta">{this.props.text}</div>
             </div>
         );
     }

@@ -15,12 +15,7 @@ import { ADD_KNOWN_DOMAINS } from './actionTypes';
  * client and we did not spend a lot of effort to read the associated domains
  * out of the Andorid manifest.
  */
-export const DEFAULT_STATE = [
-    'alpha.jitsi.net',
-    'beta.meet.jit.si',
-    'meet.jit.si',
-    '8x8.vc'
-];
+export const DEFAULT_STATE = ['alpha.jitsi.net', 'beta.meet.jit.si', 'meet.jit.si', '8x8.vc'];
 
 const STORE_NAME = 'features/base/known-domains';
 
@@ -28,15 +23,15 @@ PersistenceRegistry.register(STORE_NAME);
 
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case ADD_KNOWN_DOMAINS:
-        return _addKnownDomains(state, action.knownDomains);
+        case ADD_KNOWN_DOMAINS:
+            return _addKnownDomains(state, action.knownDomains);
 
-    case APP_WILL_MOUNT:
-        // In case persistence has deserialized a weird redux state:
-        return _addKnownDomains(state, DEFAULT_STATE);
+        case APP_WILL_MOUNT:
+            // In case persistence has deserialized a weird redux state:
+            return _addKnownDomains(state, DEFAULT_STATE);
 
-    default:
-        return state;
+        default:
+            return state;
     }
 });
 

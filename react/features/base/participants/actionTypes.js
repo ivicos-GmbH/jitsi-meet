@@ -51,8 +51,7 @@ export const MUTE_REMOTE_PARTICIPANT = 'MUTE_REMOTE_PARTICIPANT';
  *     name: string
  * }
  */
-export const PARTICIPANT_DISPLAY_NAME_CHANGED
-    = 'PARTICIPANT_DISPLAY_NAME_CHANGED';
+export const PARTICIPANT_DISPLAY_NAME_CHANGED = 'PARTICIPANT_DISPLAY_NAME_CHANGED';
 
 /**
  * Action to signal that ID of participant has changed. This happens when
@@ -170,4 +169,3 @@ export const HIDDEN_PARTICIPANT_LEFT = 'HIDDEN_PARTICIPANT_LEFT';
  * }
  */
 export const SET_LOADABLE_AVATAR_URL = 'SET_LOADABLE_AVATAR_URL';
-

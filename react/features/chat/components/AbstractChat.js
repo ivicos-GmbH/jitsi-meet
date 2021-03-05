@@ -12,7 +12,6 @@ import { DESKTOP_SMALL_WIDTH_THRESHOLD, MOBILE_SMALL_WIDTH_THRESHOLD } from '../
  * The type of the React {@code Component} props of {@code AbstractChat}.
  */
 export type Props = {
-
     /**
      * Whether the chat is opened in a modal or not (computed based on window width).
      */
@@ -60,7 +59,6 @@ export type Props = {
  * Implements an abstract chat panel.
  */
 export default class AbstractChat<P: Props> extends Component<P> {
-
     /**
      * Initializes a new {@code AbstractChat} instance.
      *
@@ -77,13 +75,13 @@ export default class AbstractChat<P: Props> extends Component<P> {
     _onSendMessage: (string) => void;
 
     /**
-    * Sends a text message.
-    *
-    * @private
-    * @param {string} text - The text message to be sent.
-    * @returns {void}
-    * @type {Function}
-    */
+     * Sends a text message.
+     *
+     * @private
+     * @param {string} text - The text message to be sent.
+     * @returns {void}
+     * @type {Function}
+     */
     _onSendMessage(text: string) {
         this.props.dispatch(sendMessage(text));
     }
@@ -106,9 +104,7 @@ export function _mapStateToProps(state: Object) {
     const _localParticipant = getLocalParticipant(state);
 
     return {
-        _isModal: isMobileBrowser()
-            ? window.innerWidth <= MOBILE_SMALL_WIDTH_THRESHOLD
-            : window.innerWidth <= DESKTOP_SMALL_WIDTH_THRESHOLD,
+        _isModal: isMobileBrowser() ? window.innerWidth <= MOBILE_SMALL_WIDTH_THRESHOLD : window.innerWidth <= DESKTOP_SMALL_WIDTH_THRESHOLD,
         _isOpen: isOpen,
         _messages: messages,
         _showNamePrompt: !_localParticipant.name

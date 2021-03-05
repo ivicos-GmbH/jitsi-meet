@@ -5,17 +5,16 @@ import { PureComponent } from 'react';
 import isInsecureRoomName from '../../base/util/isInsecureRoomName';
 
 type Props = {
-
     /**
      * True of the label should be visible.
      */
-    _visible: boolean;
+    _visible: boolean,
 
     /**
      * Function to be used to translate i18n labels.
      */
     t: Function
-}
+};
 
 /**
  * Abstrsact class for the {@Code InsecureRoomNameLabel} component.
@@ -54,8 +53,6 @@ export function _mapStateToProps(state: Object): $Shape<Props> {
     const { enableInsecureRoomNameWarning = false } = state['features/base/config'];
 
     return {
-        _visible: enableInsecureRoomNameWarning
-            && room && isInsecureRoomName(room)
-            && !(lobbyEnabled || Boolean(locked))
+        _visible: enableInsecureRoomNameWarning && room && isInsecureRoomName(room) && !(lobbyEnabled || Boolean(locked))
     };
 }

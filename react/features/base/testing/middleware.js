@@ -7,12 +7,7 @@ import { MiddlewareRegistry } from '../redux';
 import { getJitsiMeetGlobalNS } from '../util';
 
 import { setConnectionState } from './actions';
-import {
-    getRemoteVideoType,
-    isLargeVideoReceived,
-    isRemoteVideoReceived,
-    isTestModeEnabled
-} from './functions';
+import { getRemoteVideoType, isLargeVideoReceived, isRemoteVideoReceived, isTestModeEnabled } from './functions';
 import logger from './logger';
 
 /**
@@ -22,18 +17,18 @@ import logger from './logger';
  * @returns {Function}
  * @private
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case CONFERENCE_WILL_JOIN:
-        _bindConferenceConnectionListener(action.conference, store);
-        break;
-    case SET_CONFIG: {
-        const result = next(action);
+        case CONFERENCE_WILL_JOIN:
+            _bindConferenceConnectionListener(action.conference, store);
+            break;
+        case SET_CONFIG: {
+            const result = next(action);
 
-        _bindTortureHelpers(store);
+            _bindTortureHelpers(store);
 
-        return result;
-    }
+            return result;
+        }
     }
 
     return next(action);
@@ -52,19 +47,9 @@ MiddlewareRegistry.register(store => next => action => {
  * @returns {void}
  */
 function _bindConferenceConnectionListener(conference, { dispatch }) {
-
-    conference.on(
-        JitsiConferenceEvents.CONNECTION_ESTABLISHED,
-        _onConnectionEvent.bind(
-            null, JitsiConferenceEvents.CONNECTION_ESTABLISHED, dispatch));
-    conference.on(
-        JitsiConferenceEvents.CONNECTION_RESTORED,
-        _onConnectionEvent.bind(
-            null, JitsiConferenceEvents.CONNECTION_RESTORED, dispatch));
-    conference.on(
-        JitsiConferenceEvents.CONNECTION_INTERRUPTED,
-        _onConnectionEvent.bind(
-            null, JitsiConferenceEvents.CONNECTION_INTERRUPTED, dispatch));
+    conference.on(JitsiConferenceEvents.CONNECTION_ESTABLISHED, _onConnectionEvent.bind(null, JitsiConferenceEvents.CONNECTION_ESTABLISHED, dispatch));
+    conference.on(JitsiConferenceEvents.CONNECTION_RESTORED, _onConnectionEvent.bind(null, JitsiConferenceEvents.CONNECTION_RESTORED, dispatch));
+    conference.on(JitsiConferenceEvents.CONNECTION_INTERRUPTED, _onConnectionEvent.bind(null, JitsiConferenceEvents.CONNECTION_INTERRUPTED, dispatch));
 }
 
 /**
@@ -102,14 +87,13 @@ function _bindTortureHelpers(store) {
  */
 function _onConnectionEvent(event, dispatch) {
     switch (event) {
-    case JitsiConferenceEvents.CONNECTION_ESTABLISHED:
-    case JitsiConferenceEvents.CONNECTION_INTERRUPTED:
-    case JitsiConferenceEvents.CONNECTION_RESTORED:
-        dispatch(setConnectionState(event));
-        break;
-    default:
-        logger.error(`onConnectionEvent - unsupported event type: ${event}`);
-        break;
+        case JitsiConferenceEvents.CONNECTION_ESTABLISHED:
+        case JitsiConferenceEvents.CONNECTION_INTERRUPTED:
+        case JitsiConferenceEvents.CONNECTION_RESTORED:
+            dispatch(setConnectionState(event));
+            break;
+        default:
+            logger.error(`onConnectionEvent - unsupported event type: ${event}`);
+            break;
     }
 }
-

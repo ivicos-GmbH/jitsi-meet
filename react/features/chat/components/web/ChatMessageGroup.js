@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import ChatMessage from './ChatMessage';
 
 type Props = {
-
     /**
      * Additional CSS classes to apply to the root element.
      */
@@ -14,7 +13,7 @@ type Props = {
     /**
      * The messages to display as a group.
      */
-    messages: Array<Object>,
+    messages: Array<Object>
 };
 
 /**
@@ -43,16 +42,10 @@ class ChatMessageGroup extends Component<Props> {
         }
 
         return (
-            <div className = { `chat-message-group ${className}` }>
-                {
-                    messages.map((message, i) => (
-                        <ChatMessage
-                            key = { i }
-                            message = { message }
-                            showDisplayName = { i === 0 }
-                            showTimestamp = { i === messages.length - 1 } />
-                    ))
-                }
+            <div className={`chat-message-group ${className}`}>
+                {messages.map((message, i) => (
+                    <ChatMessage key={i} message={message} showDisplayName={i === 0} showTimestamp={i === messages.length - 1} />
+                ))}
             </div>
         );
     }

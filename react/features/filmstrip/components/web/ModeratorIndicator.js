@@ -9,7 +9,6 @@ import { BaseIndicator } from '../../../base/react';
  * The type of the React {@code Component} props of {@link ModeratorIndicator}.
  */
 type Props = {
-
     /**
      * From which side of the indicator the tooltip should appear from.
      */
@@ -30,13 +29,14 @@ class ModeratorIndicator extends Component<Props> {
      */
     render() {
         return (
-            <div className = 'moderator-icon right'>
+            <div className="moderator-icon right">
                 <BaseIndicator
-                    className = 'focusindicator toolbar-icon'
-                    icon = { IconModerator }
-                    iconSize = { 13 }
-                    tooltipKey = 'videothumbnail.moderator'
-                    tooltipPosition = { this.props.tooltipPosition } />
+                    className="focusindicator toolbar-icon"
+                    icon={IconModerator}
+                    iconSize={13}
+                    tooltipKey="videothumbnail.moderator"
+                    tooltipPosition={this.props.tooltipPosition}
+                />
             </div>
         );
     }

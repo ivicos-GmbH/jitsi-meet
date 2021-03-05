@@ -1,10 +1,7 @@
 // @flow
 
 import { translate } from '../../../base/i18n';
-import {
-    ExpandedLabel,
-    type Props as AbstractProps
-} from '../../../base/label';
+import { ExpandedLabel, type Props as AbstractProps } from '../../../base/label';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { connect } from '../../../base/redux';
 import { getSessionStatusToShow } from '../../functions';
@@ -12,7 +9,6 @@ import { getSessionStatusToShow } from '../../functions';
 import { LIVE_LABEL_COLOR, REC_LABEL_COLOR } from './styles';
 
 type Props = AbstractProps & {
-
     /**
      * The status of the highermost priority session.
      */
@@ -27,7 +23,7 @@ type Props = AbstractProps & {
      * Function to be used to translate i18n labels.
      */
     t: Function
-}
+};
 
 /**
  * A react {@code Component} that implements an expanded label as tooltip-like
@@ -41,12 +37,12 @@ class RecordingExpandedLabel extends ExpandedLabel<Props> {
      */
     _getColor() {
         switch (this.props.mode) {
-        case JitsiRecordingConstants.mode.STREAM:
-            return LIVE_LABEL_COLOR;
-        case JitsiRecordingConstants.mode.FILE:
-            return REC_LABEL_COLOR;
-        default:
-            return null;
+            case JitsiRecordingConstants.mode.STREAM:
+                return LIVE_LABEL_COLOR;
+            case JitsiRecordingConstants.mode.FILE:
+                return REC_LABEL_COLOR;
+            default:
+                return null;
         }
     }
 
@@ -57,27 +53,28 @@ class RecordingExpandedLabel extends ExpandedLabel<Props> {
      */
     _getLabel() {
         const { _status, mode, t } = this.props;
-        let postfix = 'recording', prefix = 'expandedOn'; // Default values.
+        let postfix = 'recording',
+            prefix = 'expandedOn'; // Default values.
 
         switch (mode) {
-        case JitsiRecordingConstants.mode.STREAM:
-            prefix = 'liveStreaming';
-            break;
-        case JitsiRecordingConstants.mode.FILE:
-            prefix = 'recording';
-            break;
+            case JitsiRecordingConstants.mode.STREAM:
+                prefix = 'liveStreaming';
+                break;
+            case JitsiRecordingConstants.mode.FILE:
+                prefix = 'recording';
+                break;
         }
 
         switch (_status) {
-        case JitsiRecordingConstants.status.OFF:
-            postfix = 'expandedOff';
-            break;
-        case JitsiRecordingConstants.status.PENDING:
-            postfix = 'expandedPending';
-            break;
-        case JitsiRecordingConstants.status.ON:
-            postfix = 'expandedOn';
-            break;
+            case JitsiRecordingConstants.status.OFF:
+                postfix = 'expandedOff';
+                break;
+            case JitsiRecordingConstants.status.PENDING:
+                postfix = 'expandedPending';
+                break;
+            case JitsiRecordingConstants.status.ON:
+                postfix = 'expandedOn';
+                break;
         }
 
         return t(`${prefix}.${postfix}`);

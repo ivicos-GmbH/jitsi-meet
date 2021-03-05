@@ -8,7 +8,6 @@ import AbstractHandler from './AbstractHandler';
  * Analytics handler for Google Analytics.
  */
 class GoogleAnalyticsHandler extends AbstractHandler {
-
     /**
      * Creates new instance of the GA analytics handler.
      *
@@ -42,9 +41,19 @@ class GoogleAnalyticsHandler extends AbstractHandler {
          * TODO: Keep this local, there's no need to add it to window.
          */
         /* eslint-disable */
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            (i[r] =
+                i[r] ||
+                function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }),
+                (i[r].l = 1 * new Date());
+            (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
         /* eslint-enable */
         ga('create', options.googleAnalyticsTrackingId, 'auto');
         ga('send', 'pageview');
@@ -80,8 +89,7 @@ class GoogleAnalyticsHandler extends AbstractHandler {
      */
     _extractLabel(event) {
         const { attributes = {} } = event;
-        const labelsArray
-            = Object.keys(attributes).map(key => `${key}=${attributes[key]}`);
+        const labelsArray = Object.keys(attributes).map((key) => `${key}=${attributes[key]}`);
 
         labelsArray.push(this._userPropertiesString);
 
@@ -102,13 +110,12 @@ class GoogleAnalyticsHandler extends AbstractHandler {
         // The label field is limited to 500B. We will concatenate all
         // attributes of the event, except the user agent because it may be
         // lengthy and is probably included from elsewhere.
-        const filter = [ 'user_agent', 'callstats_name' ];
+        const filter = ['user_agent', 'callstats_name'];
 
-        this._userPropertiesString
-            = Object.keys(userProps)
-                .filter(key => filter.indexOf(key) === -1)
-                .map(key => `permanent_${key}=${userProps[key]}`)
-                .join('&');
+        this._userPropertiesString = Object.keys(userProps)
+            .filter((key) => filter.indexOf(key) === -1)
+            .map((key) => `permanent_${key}=${userProps[key]}`)
+            .join('&');
     }
 
     /**
@@ -126,9 +133,9 @@ class GoogleAnalyticsHandler extends AbstractHandler {
         }
 
         const gaEvent = {
-            'eventCategory': 'jitsi-meet',
-            'eventAction': this._extractName(event),
-            'eventLabel': this._extractLabel(event)
+            eventCategory: 'jitsi-meet',
+            eventAction: this._extractName(event),
+            eventLabel: this._extractLabel(event)
         };
         const value = this._extractValue(event);
 
@@ -138,7 +145,6 @@ class GoogleAnalyticsHandler extends AbstractHandler {
 
         ga('send', 'event', gaEvent);
     }
-
 }
 
 const globalNS = getJitsiMeetGlobalNS();

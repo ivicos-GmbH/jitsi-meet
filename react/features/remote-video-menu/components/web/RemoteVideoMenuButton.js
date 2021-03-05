@@ -9,7 +9,6 @@ import { Icon } from '../../../base/icons';
  * {@link RemoteVideoMenuButton}.
  */
 type Props = {
-
     /**
      * Text to display within the component that describes the onClick action.
      */
@@ -34,7 +33,7 @@ type Props = {
     /**
      * Callback to invoke when the component is clicked.
      */
-    onClick: Function,
+    onClick: Function
 };
 
 /**
@@ -50,28 +49,17 @@ export default class RemoteVideoMenuButton extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            buttonText,
-            displayClass,
-            icon,
-            id,
-            onClick
-        } = this.props;
+        const { buttonText, displayClass, icon, id, onClick } = this.props;
 
         const linkClassName = `popupmenu__link ${displayClass || ''}`;
 
         return (
-            <li className = 'popupmenu__item'>
-                <a
-                    className = { linkClassName }
-                    id = { id }
-                    onClick = { onClick }>
-                    <span className = 'popupmenu__icon'>
-                        <Icon src = { icon } />
+            <li className="popupmenu__item">
+                <a className={linkClassName} id={id} onClick={onClick}>
+                    <span className="popupmenu__icon">
+                        <Icon src={icon} />
                     </span>
-                    <span className = 'popupmenu__text'>
-                        { buttonText }
-                    </span>
+                    <span className="popupmenu__text">{buttonText}</span>
                 </a>
             </li>
         );

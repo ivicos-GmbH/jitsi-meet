@@ -2,18 +2,12 @@
 
 import { openDialog } from '../../base/dialog';
 import { IconCrown } from '../../base/icons';
-import {
-    getLocalParticipant,
-    getParticipantById,
-    isParticipantModerator,
-    PARTICIPANT_ROLE
-} from '../../base/participants';
+import { getLocalParticipant, getParticipantById, isParticipantModerator, PARTICIPANT_ROLE } from '../../base/participants';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 
 import { GrantModeratorDialog } from '.';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */
@@ -34,21 +28,21 @@ export type Props = AbstractButtonProps & {
  * An abstract remote video menu button which kicks the remote participant.
  */
 export default class AbstractGrantModeratorButton extends AbstractButton<Props, *> {
-  accessibilityLabel = 'toolbar.accessibilityLabel.grantModerator';
-  icon = IconCrown;
-  label = 'videothumbnail.grantModerator';
+    accessibilityLabel = 'toolbar.accessibilityLabel.grantModerator';
+    icon = IconCrown;
+    label = 'videothumbnail.grantModerator';
 
-  /**
-   * Handles clicking / pressing the button, and kicks the participant.
-   *
-   * @private
-   * @returns {void}
-   */
-  _handleClick() {
-      const { dispatch, participantID } = this.props;
+    /**
+     * Handles clicking / pressing the button, and kicks the participant.
+     *
+     * @private
+     * @returns {void}
+     */
+    _handleClick() {
+        const { dispatch, participantID } = this.props;
 
-      dispatch(openDialog(GrantModeratorDialog, { participantID }));
-  }
+        dispatch(openDialog(GrantModeratorDialog, { participantID }));
+    }
 }
 
 /**
@@ -68,7 +62,6 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
     const targetParticipant = getParticipantById(state, participantID);
 
     return {
-        visible: Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR)
-          && !isParticipantModerator(targetParticipant)
+        visible: Boolean(localParticipant?.role === PARTICIPANT_ROLE.MODERATOR) && !isParticipantModerator(targetParticipant)
     };
 }

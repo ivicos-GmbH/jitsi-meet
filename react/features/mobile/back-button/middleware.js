@@ -21,15 +21,15 @@ BackButtonRegistry.onHardwareBackPress = BackButtonRegistry.onHardwareBackPress.
  * @returns {Function}
  * @see {@link https://facebook.github.io/react-native/docs/appstate.html}
  */
-MiddlewareRegistry.register(() => next => action => {
+MiddlewareRegistry.register(() => (next) => (action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        BackHandler.addEventListener('hardwareBackPress', BackButtonRegistry.onHardwareBackPress);
-        break;
+        case APP_WILL_MOUNT:
+            BackHandler.addEventListener('hardwareBackPress', BackButtonRegistry.onHardwareBackPress);
+            break;
 
-    case APP_WILL_UNMOUNT:
-        BackHandler.removeEventListener('hardwareBackPress', BackButtonRegistry.onHardwareBackPress);
-        break;
+        case APP_WILL_UNMOUNT:
+            BackHandler.removeEventListener('hardwareBackPress', BackButtonRegistry.onHardwareBackPress);
+            break;
     }
 
     return next(action);

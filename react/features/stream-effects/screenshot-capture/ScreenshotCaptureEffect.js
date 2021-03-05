@@ -4,13 +4,7 @@ import pixelmatch from 'pixelmatch';
 
 import { getCurrentConference } from '../../base/conference';
 
-import {
-    CLEAR_INTERVAL,
-    INTERVAL_TIMEOUT,
-    PIXEL_LOWER_BOUND,
-    POLL_INTERVAL,
-    SET_INTERVAL
-} from './constants';
+import { CLEAR_INTERVAL, INTERVAL_TIMEOUT, PIXEL_LOWER_BOUND, POLL_INTERVAL, SET_INTERVAL } from './constants';
 import { processScreenshot } from './processScreenshot';
 import { timerWorkerScript } from './worker';
 
@@ -64,8 +58,7 @@ export default class ScreenshotCaptureEffect {
                 reject();
             }
             const desktopTrack = stream.getVideoTracks()[0];
-            const { height, width }
-                = desktopTrack.getSettings() ?? desktopTrack.getConstraints();
+            const { height, width } = desktopTrack.getSettings() ?? desktopTrack.getConstraints();
 
             this._streamHeight = height;
             this._streamWidth = width;

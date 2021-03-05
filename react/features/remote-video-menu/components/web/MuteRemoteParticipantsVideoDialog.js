@@ -5,8 +5,7 @@ import React from 'react';
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-import AbstractMuteRemoteParticipantsVideoDialog
-    from '../AbstractMuteRemoteParticipantsVideoDialog';
+import AbstractMuteRemoteParticipantsVideoDialog from '../AbstractMuteRemoteParticipantsVideoDialog';
 
 /**
  * A React Component with the contents for a dialog that asks for confirmation
@@ -23,14 +22,8 @@ class MuteRemoteParticipantsVideoDialog extends AbstractMuteRemoteParticipantsVi
      */
     render() {
         return (
-            <Dialog
-                okKey = 'dialog.muteParticipantsVideoButton'
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.muteParticipantsVideoTitle'
-                width = 'small'>
-                <div>
-                    { this.props.t('dialog.muteParticipantsVideoBody') }
-                </div>
+            <Dialog okKey="dialog.muteParticipantsVideoButton" onSubmit={this._onSubmit} titleKey="dialog.muteParticipantsVideoTitle" width="small">
+                <div>{this.props.t('dialog.muteParticipantsVideoBody')}</div>
             </Dialog>
         );
     }

@@ -14,10 +14,8 @@ import styles from './styles';
  */
 export default function renderConferenceTimer(timerValue: string) {
     return (
-        <Text
-            numberOfLines = { 4 }
-            style = { styles.roomTimer }>
-            { timerValue }
+        <Text numberOfLines={4} style={styles.roomTimer}>
+            {timerValue}
         </Text>
     );
 }

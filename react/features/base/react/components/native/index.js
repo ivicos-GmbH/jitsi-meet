@@ -14,12 +14,9 @@ export { default as Link } from './Link';
 export { default as Linkify } from './Linkify';
 export { default as LoadingIndicator } from './LoadingIndicator';
 export { default as Modal } from './Modal';
-export { default as NavigateSectionListEmptyComponent } from
-    './NavigateSectionListEmptyComponent';
-export { default as NavigateSectionListItem }
-    from './NavigateSectionListItem';
-export { default as NavigateSectionListSectionHeader }
-    from './NavigateSectionListSectionHeader';
+export { default as NavigateSectionListEmptyComponent } from './NavigateSectionListEmptyComponent';
+export { default as NavigateSectionListItem } from './NavigateSectionListItem';
+export { default as NavigateSectionListSectionHeader } from './NavigateSectionListSectionHeader';
 export { default as PagedList } from './PagedList';
 export { default as Pressable } from './Pressable';
 export { default as SectionList } from './SectionList';

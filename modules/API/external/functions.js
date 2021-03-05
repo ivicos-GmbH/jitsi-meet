@@ -12,14 +12,16 @@ const logger = Logger.getLogger(__filename);
  * @returns {Promise}
  */
 export function getAvailableDevices(transport: Object) {
-    return transport.sendRequest({
-        type: 'devices',
-        name: 'getAvailableDevices'
-    }).catch(e => {
-        logger.error(e);
+    return transport
+        .sendRequest({
+            type: 'devices',
+            name: 'getAvailableDevices'
+        })
+        .catch((e) => {
+            logger.error(e);
 
-        return {};
-    });
+            return {};
+        });
 }
 
 /**
@@ -30,14 +32,16 @@ export function getAvailableDevices(transport: Object) {
  * @returns {Promise}
  */
 export function getCurrentDevices(transport: Object) {
-    return transport.sendRequest({
-        type: 'devices',
-        name: 'getCurrentDevices'
-    }).catch(e => {
-        logger.error(e);
+    return transport
+        .sendRequest({
+            type: 'devices',
+            name: 'getCurrentDevices'
+        })
+        .catch((e) => {
+            logger.error(e);
 
-        return {};
-    });
+            return {};
+        });
 }
 
 /**

@@ -11,7 +11,7 @@ import logger from './logger';
  * @returns {void}
  */
 export function openURLInBrowser(url: string) {
-    Linking.openURL(url).catch(error => {
+    Linking.openURL(url).catch((error) => {
         logger.error(`An error occurred while trying to open ${url}`, error);
     });
 }

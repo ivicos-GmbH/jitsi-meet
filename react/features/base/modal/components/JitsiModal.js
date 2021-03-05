@@ -12,7 +12,6 @@ import { setActiveModalId } from '../actions';
 import styles from './styles';
 
 type Props = {
-
     /**
      * The color schemed style of the common header component.
      */
@@ -101,24 +100,11 @@ class JitsiModal extends PureComponent<Props> {
         const { _headerStyles, _show, _styles, children, footerComponent, headerProps, position, style } = this.props;
 
         return (
-            <SlidingView
-                onHide = { this._onRequestClose }
-                position = { position }
-                show = { _show }>
-                <KeyboardAvoidingView
-                    behavior = 'height'
-                    style = { [
-                        _headerStyles.page,
-                        _styles.page,
-                        style
-                    ] }>
-                    <HeaderWithNavigation
-                        { ...headerProps }
-                        onPressBack = { this._onRequestClose } />
-                    <SafeAreaView style = { styles.safeArea }>
-                        { children }
-                    </SafeAreaView>
-                    { footerComponent && footerComponent() }
+            <SlidingView onHide={this._onRequestClose} position={position} show={_show}>
+                <KeyboardAvoidingView behavior="height" style={[_headerStyles.page, _styles.page, style]}>
+                    <HeaderWithNavigation {...headerProps} onPressBack={this._onRequestClose} />
+                    <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
+                    {footerComponent && footerComponent()}
                 </KeyboardAvoidingView>
             </SlidingView>
         );

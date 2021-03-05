@@ -86,16 +86,13 @@ function _getSupportedLocale() {
         const localeResult = localeRegexp.exec(i18nLocale.toLowerCase());
 
         if (localeResult) {
-            const currentLocaleRegexp
-                = new RegExp(
-                    `^${localeResult[1]}(-)*${`(${localeResult[3]})*` || ''}`);
+            const currentLocaleRegexp = new RegExp(`^${localeResult[1]}(-)*${`(${localeResult[3]})*` || ''}`);
 
-            supportedLocale
-
+            supportedLocale =
                 // FIXME The flow-type definition of moment is v2.3 while our
                 // package.json states v2.19 so maybe locales on moment was
                 // introduced in between?
-                = moment.locales().find(lang => currentLocaleRegexp.exec(lang));
+                moment.locales().find((lang) => currentLocaleRegexp.exec(lang));
         }
     }
 

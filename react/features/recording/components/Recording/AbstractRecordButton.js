@@ -1,16 +1,10 @@
 // @flow
 
-import {
-    createToolbarEvent,
-    sendAnalytics
-} from '../../../analytics';
+import { createToolbarEvent, sendAnalytics } from '../../../analytics';
 import { openDialog } from '../../../base/dialog';
 import { IconToggleRecording } from '../../../base/icons';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
-import {
-    getLocalParticipant,
-    isLocalParticipantModerator
-} from '../../../base/participants';
+import { getLocalParticipant, isLocalParticipantModerator } from '../../../base/participants';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { getActiveSession } from '../../functions';
 
@@ -21,7 +15,6 @@ import { StartRecordingDialog, StopRecordingDialog } from './_';
  * {@link AbstractRecordButton}.
  */
 export type Props = AbstractButtonProps & {
-
     /**
      * True if the button needs to be disabled.
      */
@@ -77,16 +70,14 @@ export default class AbstractRecordButton<P: Props> extends AbstractButton<P, *>
     _handleClick() {
         const { _isRecordingRunning, dispatch } = this.props;
 
-        sendAnalytics(createToolbarEvent(
-            'recording.button',
-            {
-                'is_recording': _isRecordingRunning,
+        sendAnalytics(
+            createToolbarEvent('recording.button', {
+                is_recording: _isRecordingRunning,
                 type: JitsiRecordingConstants.mode.FILE
-            }));
+            })
+        );
 
-        dispatch(openDialog(
-            _isRecordingRunning ? StopRecordingDialog : StartRecordingDialog
-        ));
+        dispatch(openDialog(_isRecordingRunning ? StopRecordingDialog : StartRecordingDialog));
     }
 
     /**
@@ -139,10 +130,7 @@ export function _mapStateToProps(state: Object, ownProps: Props): Object {
         // above all, but if not, the button should be autonomus and decide on
         // its own to be visible or not.
         const isModerator = isLocalParticipantModerator(state);
-        const {
-            enableFeaturesBasedOnToken,
-            fileRecordingsEnabled
-        } = state['features/base/config'];
+        const { enableFeaturesBasedOnToken, fileRecordingsEnabled } = state['features/base/config'];
         const { features = {} } = getLocalParticipant(state);
 
         visible = isModerator && fileRecordingsEnabled;

@@ -6,9 +6,7 @@ import { getDefaultURL } from '../app/functions';
 import { openDialog } from '../base/dialog';
 
 import { refreshCalendar } from './actions';
-import {
-    UpdateCalendarEventDialog
-} from './components';
+import { UpdateCalendarEventDialog } from './components';
 import { addLinkToCalendarEntry } from './functions.native';
 
 export * from './actions.any';
@@ -39,8 +37,7 @@ export function updateCalendarEvent(eventId: string) {
         const defaultUrl = getDefaultURL(getState);
         const roomName = generateRoomWithoutSeparator();
 
-        addLinkToCalendarEntry(getState(), eventId, `${defaultUrl}/${roomName}`)
-        .finally(() => {
+        addLinkToCalendarEntry(getState(), eventId, `${defaultUrl}/${roomName}`).finally(() => {
             dispatch(refreshCalendar(false, false));
         });
     };

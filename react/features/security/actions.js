@@ -10,7 +10,7 @@ import { SecurityDialog } from './components/security-dialog';
  * @returns {Function}
  */
 export function toggleSecurityDialog() {
-    return function(dispatch: (Object) => Object) {
+    return function (dispatch: (Object) => Object) {
         dispatch(toggleDialog(SecurityDialog));
     };
 }

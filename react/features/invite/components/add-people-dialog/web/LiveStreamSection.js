@@ -7,7 +7,6 @@ import { Icon, IconCheck, IconCopy } from '../../../../base/icons';
 import { copyText } from '../../../../base/util';
 
 type Props = {
-
     /**
      * The current known URL for a live stream in progress.
      */
@@ -17,7 +16,7 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * Section of the {@code AddPeopleDialog} that renders the
@@ -26,8 +25,8 @@ type Props = {
  * @returns {React$Element<any>}
  */
 function LiveStreamSection({ liveStreamViewURL, t }: Props) {
-    const [ isClicked, setIsClicked ] = useState(false);
-    const [ isHovered, setIsHovered ] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     /**
      * Click handler for the element.
@@ -74,20 +73,16 @@ function LiveStreamSection({ liveStreamViewURL, t }: Props) {
         if (isClicked) {
             return (
                 <>
-                    <div className = 'invite-more-dialog stream-text selected'>
-                        {t('addPeople.linkCopied')}
-                    </div>
-                    <Icon src = { IconCheck } />
+                    <div className="invite-more-dialog stream-text selected">{t('addPeople.linkCopied')}</div>
+                    <Icon src={IconCheck} />
                 </>
             );
         }
 
         return (
             <>
-                <div className = 'invite-more-dialog stream-text'>
-                    {isHovered ? t('addPeople.copyStream') : liveStreamViewURL}
-                </div>
-                <Icon src = { IconCopy } />
+                <div className="invite-more-dialog stream-text">{isHovered ? t('addPeople.copyStream') : liveStreamViewURL}</div>
+                <Icon src={IconCopy} />
             </>
         );
     }
@@ -95,14 +90,10 @@ function LiveStreamSection({ liveStreamViewURL, t }: Props) {
     return (
         <>
             <span>{t('addPeople.shareStream')}</span>
-            <div
-                className = { `invite-more-dialog stream${isClicked ? ' clicked' : ''}` }
-                onClick = { onClick }
-                onMouseOut = { onHoverOut }
-                onMouseOver = { onHoverIn }>
-                { renderLinkContent() }
+            <div className={`invite-more-dialog stream${isClicked ? ' clicked' : ''}`} onClick={onClick} onMouseOut={onHoverOut} onMouseOver={onHoverIn}>
+                {renderLinkContent()}
             </div>
-            <div className = 'invite-more-dialog separator' />
+            <div className="invite-more-dialog separator" />
         </>
     );
 }

@@ -18,7 +18,6 @@ import styles from './styles';
  * Props type of the component.
  */
 type Props = {
-
     /**
      * True if the invite functions (dial out, invite, share...etc) are disabled.
      */
@@ -73,34 +72,14 @@ class LonelyMeetingExperience extends PureComponent<Props> {
         }
 
         return (
-            <View style = { styles.lonelyMeetingContainer }>
-                <Text
-                    style = { [
-                        styles.lonelyMessage,
-                        _styles.lonelyMessage
-                    ] }>
-                    { t('lonelyMeetingExperience.youAreAlone') }
-                </Text>
-                { !_isInviteFunctionsDiabled && (
-                    <TouchableOpacity
-                        onPress = { this._onPress }
-                        style = { [
-                            styles.lonelyButton,
-                            _styles.lonelyButton
-                        ] }>
-                        <Icon
-                            size = { 24 }
-                            src = { IconAddPeople }
-                            style = { styles.lonelyButtonComponents } />
-                        <Text
-                            style = { [
-                                styles.lonelyButtonComponents,
-                                _styles.lonelyMessage
-                            ] }>
-                            { t('lonelyMeetingExperience.button') }
-                        </Text>
+            <View style={styles.lonelyMeetingContainer}>
+                <Text style={[styles.lonelyMessage, _styles.lonelyMessage]}>{t('lonelyMeetingExperience.youAreAlone')}</Text>
+                {!_isInviteFunctionsDiabled && (
+                    <TouchableOpacity onPress={this._onPress} style={[styles.lonelyButton, _styles.lonelyButton]}>
+                        <Icon size={24} src={IconAddPeople} style={styles.lonelyButtonComponents} />
+                        <Text style={[styles.lonelyButtonComponents, _styles.lonelyMessage]}>{t('lonelyMeetingExperience.button')}</Text>
                     </TouchableOpacity>
-                ) }
+                )}
             </View>
         );
     }

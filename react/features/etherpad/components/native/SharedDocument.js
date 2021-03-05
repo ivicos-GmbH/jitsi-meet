@@ -20,7 +20,6 @@ import styles, { INDICATOR_COLOR } from './styles';
  * The type of the React {@code Component} props of {@code ShareDocument}.
  */
 type Props = {
-
     /**
      * URL for the shared document.
      */
@@ -74,21 +73,18 @@ class SharedDocument extends PureComponent<Props> {
 
         return (
             <JitsiModal
-                headerProps = {{
+                headerProps={{
                     headerLabelKey: 'documentSharing.title'
                 }}
-                modalId = { SHARE_DOCUMENT_VIEW_ID }
-                style = { styles.webView }>
-                <WebView
-                    onError = { this._onError }
-                    renderLoading = { this._renderLoading }
-                    source = {{ uri: _documentUrl }}
-                    startInLoadingState = { true } />
+                modalId={SHARE_DOCUMENT_VIEW_ID}
+                style={styles.webView}
+            >
+                <WebView onError={this._onError} renderLoading={this._renderLoading} source={{ uri: _documentUrl }} startInLoadingState={true} />
             </JitsiModal>
         );
     }
 
-    _onClose: () => boolean
+    _onClose: () => boolean;
 
     /**
      * Closes the window.
@@ -131,10 +127,8 @@ class SharedDocument extends PureComponent<Props> {
      */
     _renderLoading() {
         return (
-            <View style = { styles.indicatorWrapper }>
-                <LoadingIndicator
-                    color = { INDICATOR_COLOR }
-                    size = 'large' />
+            <View style={styles.indicatorWrapper}>
+                <LoadingIndicator color={INDICATOR_COLOR} size="large" />
             </View>
         );
     }

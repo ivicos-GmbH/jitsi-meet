@@ -10,10 +10,7 @@ import logger from '../logger';
  * @returns {number}
  */
 function highPrecisionTime(): number {
-    return window.performance
-        && window.performance.now
-        && window.performance.timing
-        && window.performance.timing.navigationStart
+    return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart
         ? window.performance.now() + window.performance.timing.navigationStart
         : Date.now();
 }
@@ -51,7 +48,6 @@ const SessionEventType = Object.freeze({
  * recording.
  */
 type SessionEvent = {
-
     /**
      * The type of the event.
      * Should be one of the values in {@code SessionEventType}.
@@ -68,7 +64,6 @@ type SessionEvent = {
  * Representation of the metadata of a segment.
  */
 type SegmentInfo = {
-
     /**
      * The length of gap before this segment, in milliseconds.
      * mull if unknown.
@@ -98,7 +93,6 @@ type SegmentInfo = {
  * Representation of metadata of a local recording session.
  */
 type SessionInfo = {
-
     /**
      * The session token.
      */
@@ -118,7 +112,7 @@ type SessionInfo = {
      * Array of segments in the session.
      */
     segments: SegmentInfo[]
-}
+};
 
 /**
  * {@code localStorage} key.
@@ -138,12 +132,10 @@ const LOCAL_STORAGE_KEY = 'localRecordingMetadataVersion1';
  * A recording session can consist of one or more segments.
  */
 class SessionManager {
-
     /**
      * The metadata.
      */
-    _sessionsMetadata = {
-    };
+    _sessionsMetadata = {};
 
     /**
      * Constructor.
@@ -181,8 +173,7 @@ class SessionManager {
      * @returns {void}
      */
     _saveMetadata() {
-        jitsiLocalStorage.setItem(LOCAL_STORAGE_KEY,
-            JSON.stringify(this._sessionsMetadata));
+        jitsiLocalStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this._sessionsMetadata));
     }
 
     /**
@@ -273,8 +264,7 @@ class SessionManager {
      */
     beginSegment(sessionToken: string): number {
         if (this._sessionsMetadata[sessionToken] === undefined) {
-            logger.warn('Attempting to add segments to nonexistent'
-                + ` session ${sessionToken}`);
+            logger.warn('Attempting to add segments to nonexistent' + ` session ${sessionToken}`);
 
             return -1;
         }
@@ -322,8 +312,7 @@ class SessionManager {
      */
     endSegment(sessionToken: string) {
         if (this._sessionsMetadata[sessionToken] === undefined) {
-            logger.warn('Attempting to end a segment in nonexistent'
-                + ` session ${sessionToken}`);
+            logger.warn('Attempting to end a segment in nonexistent' + ` session ${sessionToken}`);
         } else {
             this._sessionsMetadata[sessionToken].events.push({
                 type: SessionEventType.SEGMENT_ENDED,
@@ -357,28 +346,22 @@ class SessionManager {
          * @returns {void}
          */
         function commit() {
-            if (currentSegment.gapBefore === undefined
-                || currentSegment.gapBefore === null) {
+            if (currentSegment.gapBefore === undefined || currentSegment.gapBefore === null) {
                 if (output.length > 0 && output[output.length - 1].end) {
                     const lastSegment = output[output.length - 1];
 
                     if (currentSegment.start && lastSegment.end) {
-                        currentSegment.gapBefore = currentSegment.start
-                            - lastSegment.end;
+                        currentSegment.gapBefore = currentSegment.start - lastSegment.end;
                     } else {
                         currentSegment.gapBefore = null;
                     }
                 } else if (sessionStartTime !== null && output.length === 0) {
-                    currentSegment.gapBefore = currentSegment.start
-                        ? currentSegment.start - sessionStartTime
-                        : null;
+                    currentSegment.gapBefore = currentSegment.start ? currentSegment.start - sessionStartTime : null;
                 } else {
                     currentSegment.gapBefore = null;
                 }
             }
-            currentSegment.duration = currentSegment.end && currentSegment.start
-                ? currentSegment.end - currentSegment.start
-                : null;
+            currentSegment.duration = currentSegment.end && currentSegment.start ? currentSegment.end - currentSegment.start : null;
             output.push(currentSegment);
             currentSegment = {};
         }
@@ -387,37 +370,34 @@ class SessionManager {
             const currentEvent = events[i];
 
             switch (currentEvent.type) {
-            case SessionEventType.SESSION_STARTED:
-                if (sessionStartTime === null) {
-                    sessionStartTime = currentEvent.timestamp;
-                } else {
-                    logger.warn('Unexpected SESSION_STARTED event.'
-                        , currentEvent);
-                }
-                break;
-            case SessionEventType.SEGMENT_STARTED:
-                if (currentSegment.start === undefined
-                    || currentSegment.start === null) {
-                    currentSegment.start = currentEvent.timestamp;
-                } else {
-                    commit();
-                    currentSegment.start = currentEvent.timestamp;
-                }
-                break;
+                case SessionEventType.SESSION_STARTED:
+                    if (sessionStartTime === null) {
+                        sessionStartTime = currentEvent.timestamp;
+                    } else {
+                        logger.warn('Unexpected SESSION_STARTED event.', currentEvent);
+                    }
+                    break;
+                case SessionEventType.SEGMENT_STARTED:
+                    if (currentSegment.start === undefined || currentSegment.start === null) {
+                        currentSegment.start = currentEvent.timestamp;
+                    } else {
+                        commit();
+                        currentSegment.start = currentEvent.timestamp;
+                    }
+                    break;
 
-            case SessionEventType.SEGMENT_ENDED:
-                if (currentSegment.start === undefined
-                    || currentSegment.start === null) {
-                    logger.warn('Unexpected SEGMENT_ENDED event', currentEvent);
-                } else {
-                    currentSegment.end = currentEvent.timestamp;
-                    commit();
-                }
-                break;
+                case SessionEventType.SEGMENT_ENDED:
+                    if (currentSegment.start === undefined || currentSegment.start === null) {
+                        logger.warn('Unexpected SEGMENT_ENDED event', currentEvent);
+                    } else {
+                        currentSegment.end = currentEvent.timestamp;
+                        commit();
+                    }
+                    break;
 
-            default:
-                logger.warn('Unexpected error during _constructSegments');
-                break;
+                default:
+                    logger.warn('Unexpected error during _constructSegments');
+                    break;
             }
         }
         if (currentSegment.start) {
@@ -426,7 +406,6 @@ class SessionManager {
 
         return output;
     }
-
 }
 
 /**

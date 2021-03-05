@@ -43,17 +43,19 @@ const STORE_NAME = 'features/prejoin';
 /**
  * Sets up the persistence of the feature {@code prejoin}.
  */
-PersistenceRegistry.register(STORE_NAME, {
-    skipPrejoinOnReload: true
-}, DEFAULT_STATE);
+PersistenceRegistry.register(
+    STORE_NAME,
+    {
+        skipPrejoinOnReload: true
+    },
+    DEFAULT_STATE
+);
 
 /**
  * Listen for actions that mutate the prejoin state
  */
-ReducerRegistry.register(
-    'features/prejoin', (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
-
+ReducerRegistry.register('features/prejoin', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case SET_SKIP_PREJOIN: {
             return {
                 ...state,
@@ -136,9 +138,8 @@ ReducerRegistry.register(
 
         default:
             return state;
-        }
-    },
-);
+    }
+});
 
 /**
  * Returns a suitable error object based on the track errors.

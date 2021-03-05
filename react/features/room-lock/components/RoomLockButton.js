@@ -9,7 +9,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { beginRoomLockRequest, unlockRoom } from '../actions';
 
 type Props = AbstractButtonProps & {
-
     /**
      * Whether the current local participant is a moderator, therefore is
      * allowed to lock or unlock the conference.

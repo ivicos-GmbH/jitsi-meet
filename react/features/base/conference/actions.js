@@ -2,10 +2,7 @@
 
 import type { Dispatch } from 'redux';
 
-import {
-    createStartMutedConfigurationEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createStartMutedConfigurationEvent, sendAnalytics } from '../../analytics';
 import { getName } from '../../app/functions';
 import { endpointMessageReceived } from '../../subtitles';
 import { JITSI_CONNECTION_CONFERENCE_KEY } from '../connection';
@@ -23,11 +20,7 @@ import {
     participantUpdated
 } from '../participants';
 import { getLocalTracks, trackAdded, trackRemoved } from '../tracks';
-import {
-    getBackendSafePath,
-    getBackendSafeRoomName,
-    getJitsiMeetGlobalNS
-} from '../util';
+import { getBackendSafePath, getBackendSafeRoomName, getJitsiMeetGlobalNS } from '../util';
 
 import {
     AUTH_STATUS_CHANGED,
@@ -51,18 +44,8 @@ import {
     SET_PENDING_SUBJECT_CHANGE,
     SET_START_MUTED_POLICY
 } from './actionTypes';
-import {
-    AVATAR_URL_COMMAND,
-    EMAIL_COMMAND,
-    JITSI_CONFERENCE_URL_KEY
-} from './constants';
-import {
-    _addLocalTracksToConference,
-    commonUserJoinedHandling,
-    commonUserLeftHandling,
-    getCurrentConference,
-    sendLocalParticipant
-} from './functions';
+import { AVATAR_URL_COMMAND, EMAIL_COMMAND, JITSI_CONFERENCE_URL_KEY } from './constants';
+import { _addLocalTracksToConference, commonUserJoinedHandling, commonUserLeftHandling, getCurrentConference, sendLocalParticipant } from './functions';
 import logger from './logger';
 
 declare var APP: Object;
@@ -78,139 +61,108 @@ declare var APP: Object;
 function _addConferenceListeners(conference, dispatch) {
     // A simple logger for conference errors received through
     // the listener. These errors are not handled now, but logged.
-    conference.on(JitsiConferenceEvents.CONFERENCE_ERROR,
-        error => logger.error('Conference error.', error));
+    conference.on(JitsiConferenceEvents.CONFERENCE_ERROR, (error) => logger.error('Conference error.', error));
 
     // Dispatches into features/base/conference follow:
 
-    conference.on(
-        JitsiConferenceEvents.CONFERENCE_FAILED,
-        (...args) => dispatch(conferenceFailed(conference, ...args)));
-    conference.on(
-        JitsiConferenceEvents.CONFERENCE_JOINED,
-        (...args) => dispatch(conferenceJoined(conference, ...args)));
-    conference.on(
-        JitsiConferenceEvents.CONFERENCE_LEFT,
-        (...args) => {
-            dispatch(conferenceTimestampChanged(0));
-            dispatch(conferenceLeft(conference, ...args));
-        });
-    conference.on(JitsiConferenceEvents.SUBJECT_CHANGED,
-        (...args) => dispatch(conferenceSubjectChanged(...args)));
+    conference.on(JitsiConferenceEvents.CONFERENCE_FAILED, (...args) => dispatch(conferenceFailed(conference, ...args)));
+    conference.on(JitsiConferenceEvents.CONFERENCE_JOINED, (...args) => dispatch(conferenceJoined(conference, ...args)));
+    conference.on(JitsiConferenceEvents.CONFERENCE_LEFT, (...args) => {
+        dispatch(conferenceTimestampChanged(0));
+        dispatch(conferenceLeft(conference, ...args));
+    });
+    conference.on(JitsiConferenceEvents.SUBJECT_CHANGED, (...args) => dispatch(conferenceSubjectChanged(...args)));
 
-    conference.on(JitsiConferenceEvents.CONFERENCE_CREATED_TIMESTAMP,
-        (...args) => dispatch(conferenceTimestampChanged(...args)));
+    conference.on(JitsiConferenceEvents.CONFERENCE_CREATED_TIMESTAMP, (...args) => dispatch(conferenceTimestampChanged(...args)));
 
-    conference.on(
-        JitsiConferenceEvents.KICKED,
-        (...args) => dispatch(kickedOut(conference, ...args)));
+    conference.on(JitsiConferenceEvents.KICKED, (...args) => dispatch(kickedOut(conference, ...args)));
 
-    conference.on(
-        JitsiConferenceEvents.PARTICIPANT_KICKED,
-        (kicker, kicked) => dispatch(participantKicked(kicker, kicked)));
+    conference.on(JitsiConferenceEvents.PARTICIPANT_KICKED, (kicker, kicked) => dispatch(participantKicked(kicker, kicked)));
 
-    conference.on(
-        JitsiConferenceEvents.LOCK_STATE_CHANGED,
-        (...args) => dispatch(lockStateChanged(conference, ...args)));
+    conference.on(JitsiConferenceEvents.LOCK_STATE_CHANGED, (...args) => dispatch(lockStateChanged(conference, ...args)));
 
     // Dispatches into features/base/media follow:
 
-    conference.on(
-        JitsiConferenceEvents.STARTED_MUTED,
-        () => {
-            const audioMuted = Boolean(conference.startAudioMuted);
-            const videoMuted = Boolean(conference.startVideoMuted);
+    conference.on(JitsiConferenceEvents.STARTED_MUTED, () => {
+        const audioMuted = Boolean(conference.startAudioMuted);
+        const videoMuted = Boolean(conference.startVideoMuted);
 
-            sendAnalytics(createStartMutedConfigurationEvent(
-                'remote', audioMuted, videoMuted));
-            logger.log(`Start muted: ${audioMuted ? 'audio, ' : ''}${
-                videoMuted ? 'video' : ''}`);
+        sendAnalytics(createStartMutedConfigurationEvent('remote', audioMuted, videoMuted));
+        logger.log(`Start muted: ${audioMuted ? 'audio, ' : ''}${videoMuted ? 'video' : ''}`);
 
-            // XXX Jicofo tells lib-jitsi-meet to start with audio and/or video
-            // muted i.e. Jicofo expresses an intent. Lib-jitsi-meet has turned
-            // Jicofo's intent into reality by actually muting the respective
-            // tracks. The reality is expressed in base/tracks already so what
-            // is left is to express Jicofo's intent in base/media.
-            // TODO Maybe the app needs to learn about Jicofo's intent and
-            // transfer that intent to lib-jitsi-meet instead of lib-jitsi-meet
-            // acting on Jicofo's intent without the app's knowledge.
-            dispatch(setAudioMuted(audioMuted));
-            dispatch(setVideoMuted(videoMuted));
-        });
+        // XXX Jicofo tells lib-jitsi-meet to start with audio and/or video
+        // muted i.e. Jicofo expresses an intent. Lib-jitsi-meet has turned
+        // Jicofo's intent into reality by actually muting the respective
+        // tracks. The reality is expressed in base/tracks already so what
+        // is left is to express Jicofo's intent in base/media.
+        // TODO Maybe the app needs to learn about Jicofo's intent and
+        // transfer that intent to lib-jitsi-meet instead of lib-jitsi-meet
+        // acting on Jicofo's intent without the app's knowledge.
+        dispatch(setAudioMuted(audioMuted));
+        dispatch(setVideoMuted(videoMuted));
+    });
 
     // Dispatches into features/base/tracks follow:
 
-    conference.on(
-        JitsiConferenceEvents.TRACK_ADDED,
-        t => t && !t.isLocal() && dispatch(trackAdded(t)));
-    conference.on(
-        JitsiConferenceEvents.TRACK_REMOVED,
-        t => t && !t.isLocal() && dispatch(trackRemoved(t)));
+    conference.on(JitsiConferenceEvents.TRACK_ADDED, (t) => t && !t.isLocal() && dispatch(trackAdded(t)));
+    conference.on(JitsiConferenceEvents.TRACK_REMOVED, (t) => t && !t.isLocal() && dispatch(trackRemoved(t)));
 
-    conference.on(
-        JitsiConferenceEvents.TRACK_MUTE_CHANGED,
-        (track, participantThatMutedUs) => {
-            if (participantThatMutedUs) {
-                dispatch(participantMutedUs(participantThatMutedUs, track));
-            }
-        });
+    conference.on(JitsiConferenceEvents.TRACK_MUTE_CHANGED, (track, participantThatMutedUs) => {
+        if (participantThatMutedUs) {
+            dispatch(participantMutedUs(participantThatMutedUs, track));
+        }
+    });
 
     // Dispatches into features/base/participants follow:
-    conference.on(
-        JitsiConferenceEvents.DISPLAY_NAME_CHANGED,
-        (id, displayName) => dispatch(participantUpdated({
-            conference,
-            id,
-            name: getNormalizedDisplayName(displayName)
-        })));
+    conference.on(JitsiConferenceEvents.DISPLAY_NAME_CHANGED, (id, displayName) =>
+        dispatch(
+            participantUpdated({
+                conference,
+                id,
+                name: getNormalizedDisplayName(displayName)
+            })
+        )
+    );
 
-    conference.on(
-        JitsiConferenceEvents.DOMINANT_SPEAKER_CHANGED,
-        id => dispatch(dominantSpeakerChanged(id, conference)));
+    conference.on(JitsiConferenceEvents.DOMINANT_SPEAKER_CHANGED, (id) => dispatch(dominantSpeakerChanged(id, conference)));
 
-    conference.on(
-        JitsiConferenceEvents.ENDPOINT_MESSAGE_RECEIVED,
-        (...args) => dispatch(endpointMessageReceived(...args)));
+    conference.on(JitsiConferenceEvents.ENDPOINT_MESSAGE_RECEIVED, (...args) => dispatch(endpointMessageReceived(...args)));
 
-    conference.on(
-        JitsiConferenceEvents.PARTICIPANT_CONN_STATUS_CHANGED,
-        (...args) => dispatch(participantConnectionStatusChanged(...args)));
+    conference.on(JitsiConferenceEvents.PARTICIPANT_CONN_STATUS_CHANGED, (...args) => dispatch(participantConnectionStatusChanged(...args)));
 
-    conference.on(
-        JitsiConferenceEvents.USER_JOINED,
-        (id, user) => commonUserJoinedHandling({ dispatch }, conference, user));
-    conference.on(
-        JitsiConferenceEvents.USER_LEFT,
-        (id, user) => commonUserLeftHandling({ dispatch }, conference, user));
-    conference.on(
-        JitsiConferenceEvents.USER_ROLE_CHANGED,
-        (...args) => dispatch(participantRoleChanged(...args)));
-    conference.on(
-        JitsiConferenceEvents.USER_STATUS_CHANGED,
-        (...args) => dispatch(participantPresenceChanged(...args)));
+    conference.on(JitsiConferenceEvents.USER_JOINED, (id, user) => commonUserJoinedHandling({ dispatch }, conference, user));
+    conference.on(JitsiConferenceEvents.USER_LEFT, (id, user) => commonUserLeftHandling({ dispatch }, conference, user));
+    conference.on(JitsiConferenceEvents.USER_ROLE_CHANGED, (...args) => dispatch(participantRoleChanged(...args)));
+    conference.on(JitsiConferenceEvents.USER_STATUS_CHANGED, (...args) => dispatch(participantPresenceChanged(...args)));
 
-    conference.on(
-        JitsiConferenceEvents.BOT_TYPE_CHANGED,
-        (id, botType) => dispatch(participantUpdated({
-            conference,
-            id,
-            botType
-        })));
+    conference.on(JitsiConferenceEvents.BOT_TYPE_CHANGED, (id, botType) =>
+        dispatch(
+            participantUpdated({
+                conference,
+                id,
+                botType
+            })
+        )
+    );
 
-    conference.addCommandListener(
-        AVATAR_URL_COMMAND,
-        (data, id) => dispatch(participantUpdated({
-            conference,
-            id,
-            avatarURL: data.value
-        })));
-    conference.addCommandListener(
-        EMAIL_COMMAND,
-        (data, id) => dispatch(participantUpdated({
-            conference,
-            id,
-            email: data.value
-        })));
+    conference.addCommandListener(AVATAR_URL_COMMAND, (data, id) =>
+        dispatch(
+            participantUpdated({
+                conference,
+                id,
+                avatarURL: data.value
+            })
+        )
+    );
+    conference.addCommandListener(EMAIL_COMMAND, (data, id) =>
+        dispatch(
+            participantUpdated({
+                conference,
+                id,
+                email: data.value
+            })
+        )
+    );
 }
 
 /**
@@ -313,14 +265,14 @@ export function conferenceSubjectChanged(subject: string) {
 }
 
 /**
-* Signals that the conference timestamp has been changed.
-*
-* @param {number} conferenceTimestamp - The UTC timestamp.
-* @returns {{
-*       type: CONFERENCE_TIMESTAMP_CHANGED,
-*       conferenceTimestamp
-* }}
-*/
+ * Signals that the conference timestamp has been changed.
+ *
+ * @param {number} conferenceTimestamp - The UTC timestamp.
+ * @returns {{
+ *       type: CONFERENCE_TIMESTAMP_CHANGED,
+ *       conferenceTimestamp
+ * }}
+ */
 export function conferenceTimestampChanged(conferenceTimestamp: number) {
     return {
         type: CONFERENCE_TIMESTAMP_CHANGED,
@@ -329,14 +281,14 @@ export function conferenceTimestampChanged(conferenceTimestamp: number) {
 }
 
 /**
-* Signals that the unique identifier for conference has been set.
-*
-* @param {JitsiConference} conference - The JitsiConference instance, where the uuid has been set.
-* @returns {{
-*   type: CONFERENCE_UNIQUE_ID_SET,
-*   conference: JitsiConference,
-* }}
-*/
+ * Signals that the unique identifier for conference has been set.
+ *
+ * @param {JitsiConference} conference - The JitsiConference instance, where the uuid has been set.
+ * @returns {{
+ *   type: CONFERENCE_UNIQUE_ID_SET,
+ *   conference: JitsiConference,
+ * }}
+ */
 export function conferenceUniqueIdSet(conference: Object) {
     return {
         type: CONFERENCE_UNIQUE_ID_SET,
@@ -355,9 +307,7 @@ export function conferenceUniqueIdSet(conference: Object) {
  */
 function _conferenceWillJoin(conference: Object) {
     return (dispatch: Dispatch<any>, getState: Function) => {
-        const localTracks
-            = getLocalTracks(getState()['features/base/tracks'])
-                .map(t => t.jitsiTrack);
+        const localTracks = getLocalTracks(getState()['features/base/tracks']).map((t) => t.jitsiTrack);
 
         if (localTracks.length) {
             _addLocalTracksToConference(conference, localTracks);
@@ -429,18 +379,15 @@ export function createConference() {
         const { tenant } = state['features/base/jwt'];
         const { email, name: nick } = getLocalParticipant(state);
 
-        const conference
-            = connection.initJitsiConference(
-
-                getBackendSafeRoomName(room), {
-                    ...config,
-                    applicationName: getName(),
-                    getWiFiStatsMethod: getJitsiMeetGlobalNS().getWiFiStats,
-                    confID: `${locationURL.host}${getBackendSafePath(locationURL.pathname)}`,
-                    siteID: tenant,
-                    statisticsDisplayName: config.enableDisplayNameInStats ? nick : undefined,
-                    statisticsId: config.enableEmailInStats ? email : undefined
-                });
+        const conference = connection.initJitsiConference(getBackendSafeRoomName(room), {
+            ...config,
+            applicationName: getName(),
+            getWiFiStatsMethod: getJitsiMeetGlobalNS().getWiFiStats,
+            confID: `${locationURL.host}${getBackendSafePath(locationURL.pathname)}`,
+            siteID: tenant,
+            statisticsDisplayName: config.enableDisplayNameInStats ? nick : undefined,
+            statisticsId: config.enableEmailInStats ? email : undefined
+        });
 
         connection[JITSI_CONNECTION_CONFERENCE_KEY] = conference;
 
@@ -466,8 +413,7 @@ export function createConference() {
  */
 export function checkIfCanJoin() {
     return (dispatch: Function, getState: Function) => {
-        const { authRequired, password }
-            = getState()['features/base/conference'];
+        const { authRequired, password } = getState()['features/base/conference'];
 
         authRequired && dispatch(_conferenceWillJoin(authRequired));
         authRequired && authRequired.join(password);
@@ -542,8 +488,7 @@ export function lockStateChanged(conference: Object, locked: boolean) {
  *     startVideoMutedPolicy: boolean
  * }}
  */
-export function onStartMutedPolicyChanged(
-        audioMuted: boolean, videoMuted: boolean) {
+export function onStartMutedPolicyChanged(audioMuted: boolean, videoMuted: boolean) {
     return {
         type: SET_START_MUTED_POLICY,
         startAudioMutedPolicy: audioMuted,
@@ -616,57 +561,58 @@ export function setFollowMe(enabled: boolean) {
  * is to be joined or locked.
  * @returns {Function}
  */
-export function setPassword(
-        conference: Object,
-        method: Function,
-        password: string) {
+export function setPassword(conference: Object, method: Function, password: string) {
     return (dispatch: Dispatch<any>, getState: Function): ?Promise<void> => {
         switch (method) {
-        case conference.join: {
-            let state = getState()['features/base/conference'];
+            case conference.join: {
+                let state = getState()['features/base/conference'];
 
-            dispatch({
-                type: SET_PASSWORD,
-                conference,
-                method,
-                password
-            });
+                dispatch({
+                    type: SET_PASSWORD,
+                    conference,
+                    method,
+                    password
+                });
 
-            // Join the conference with the newly-set password.
+                // Join the conference with the newly-set password.
 
-            // Make sure that the action did set the password.
-            state = getState()['features/base/conference'];
-            if (state.password === password
-
+                // Make sure that the action did set the password.
+                state = getState()['features/base/conference'];
+                if (
+                    state.password === password &&
                     // Make sure that the application still wants the
                     // conference joined.
-                    && !state.conference) {
-                method.call(conference, password);
-            }
-            break;
-        }
-
-        case conference.lock: {
-            const state = getState()['features/base/conference'];
-
-            if (state.conference === conference) {
-                return (
-                    method.call(conference, password)
-                        .then(() => dispatch({
-                            type: SET_PASSWORD,
-                            conference,
-                            method,
-                            password
-                        }))
-                        .catch(error => dispatch({
-                            type: SET_PASSWORD_FAILED,
-                            error
-                        }))
-                );
+                    !state.conference
+                ) {
+                    method.call(conference, password);
+                }
+                break;
             }
 
-            return Promise.reject();
-        }
+            case conference.lock: {
+                const state = getState()['features/base/conference'];
+
+                if (state.conference === conference) {
+                    return method
+                        .call(conference, password)
+                        .then(() =>
+                            dispatch({
+                                type: SET_PASSWORD,
+                                conference,
+                                method,
+                                password
+                            })
+                        )
+                        .catch((error) =>
+                            dispatch({
+                                type: SET_PASSWORD_FAILED,
+                                error
+                            })
+                        );
+                }
+
+                return Promise.reject();
+            }
         }
     };
 }
@@ -697,18 +643,17 @@ export function setRoom(room: ?string) {
  * conference as video muted.
  * @returns {Function}
  */
-export function setStartMutedPolicy(
-        startAudioMuted: boolean, startVideoMuted: boolean) {
+export function setStartMutedPolicy(startAudioMuted: boolean, startVideoMuted: boolean) {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const conference = getCurrentConference(getState());
 
-        conference && conference.setStartMutedPolicy({
-            audio: startAudioMuted,
-            video: startVideoMuted
-        });
+        conference &&
+            conference.setStartMutedPolicy({
+                audio: startAudioMuted,
+                video: startVideoMuted
+            });
 
-        return dispatch(
-            onStartMutedPolicyChanged(startAudioMuted, startVideoMuted));
+        return dispatch(onStartMutedPolicyChanged(startAudioMuted, startVideoMuted));
     };
 }
 

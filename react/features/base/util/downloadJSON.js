@@ -14,10 +14,12 @@ export function downloadJSON(json: Object, filename: string) {
 
     elem.download = filename;
     elem.href = `data:application/json;charset=utf-8,\n${data}`;
-    elem.dataset.downloadurl = [ 'text/json', elem.download, elem.href ].join(':');
-    elem.dispatchEvent(new MouseEvent('click', {
-        view: window,
-        bubbles: true,
-        cancelable: false
-    }));
+    elem.dataset.downloadurl = ['text/json', elem.download, elem.href].join(':');
+    elem.dispatchEvent(
+        new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: false
+        })
+    );
 }

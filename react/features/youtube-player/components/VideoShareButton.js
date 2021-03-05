@@ -14,7 +14,6 @@ import { toggleSharedVideo } from '../actions';
  * The type of the React {@code Component} props of {@link TileViewButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether or not the button is disabled.
      */
@@ -104,7 +103,8 @@ function _mapStateToProps(state, ownProps): Object {
         return {
             _isDisabled: isSharingStatus(sharedVideoStatus),
             _sharingVideo: false,
-            visible };
+            visible
+        };
     }
 
     return {
@@ -121,7 +121,7 @@ function _mapStateToProps(state, ownProps): Object {
  * @returns {boolean}
  */
 function isSharingStatus(status) {
-    return [ 'playing', 'pause', 'start' ].includes(status);
+    return ['playing', 'pause', 'start'].includes(status);
 }
 
 export default translate(connect(_mapStateToProps)(VideoShareButton));

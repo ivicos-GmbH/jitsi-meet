@@ -4,15 +4,10 @@ import { getLogger } from 'jitsi-meet-logger';
 
 import { doGetJSON } from '../base/util';
 
-import {
-    SET_DYNAMIC_BRANDING_DATA,
-    SET_DYNAMIC_BRANDING_FAILED,
-    SET_DYNAMIC_BRANDING_READY
-} from './actionTypes';
+import { SET_DYNAMIC_BRANDING_DATA, SET_DYNAMIC_BRANDING_FAILED, SET_DYNAMIC_BRANDING_READY } from './actionTypes';
 import { getDynamicBrandingUrl } from './functions';
 
 const logger = getLogger(__filename);
-
 
 /**
  * Fetches custom branding data.
@@ -22,7 +17,7 @@ const logger = getLogger(__filename);
  * @returns {Function}
  */
 export function fetchCustomBrandingData() {
-    return async function(dispatch: Function, getState: Function) {
+    return async function (dispatch: Function, getState: Function) {
         const state = getState();
         const { customizationReady } = state['features/dynamic-branding'];
 

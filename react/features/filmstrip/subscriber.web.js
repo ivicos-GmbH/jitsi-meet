@@ -8,18 +8,13 @@ import { setOverflowDrawer } from '../toolbox/actions.web';
 import { getCurrentLayout, getTileViewGridDimensions, shouldDisplayTileView, LAYOUTS } from '../video-layout';
 
 import { setHorizontalViewDimensions, setTileViewDimensions } from './actions.web';
-import {
-    ASPECT_RATIO_BREAKPOINT,
-    DISPLAY_DRAWER_THRESHOLD,
-    SINGLE_COLUMN_BREAKPOINT,
-    TWO_COLUMN_BREAKPOINT
-} from './constants';
+import { ASPECT_RATIO_BREAKPOINT, DISPLAY_DRAWER_THRESHOLD, SINGLE_COLUMN_BREAKPOINT, TWO_COLUMN_BREAKPOINT } from './constants';
 
 /**
  * Listens for changes in the number of participants to calculate the dimensions of the tile view grid and the tiles.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/participants'].length,
+    /* selector */ (state) => state['features/base/participants'].length,
     /* listener */ (numberOfParticipants, store) => {
         const state = store.getState();
 
@@ -42,47 +37,49 @@ StateListenerRegistry.register(
                 );
             }
         }
-    });
+    }
+);
 
 /**
  * Listens for changes in the selected layout to calculate the dimensions of the tile view grid and horizontal view.
  */
 StateListenerRegistry.register(
-    /* selector */ state => getCurrentLayout(state),
+    /* selector */ (state) => getCurrentLayout(state),
     /* listener */ (layout, store) => {
         const state = store.getState();
 
         switch (layout) {
-        case LAYOUTS.TILE_VIEW: {
-            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+            case LAYOUTS.TILE_VIEW: {
+                const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
 
-            store.dispatch(
-                setTileViewDimensions(
-                    getTileViewGridDimensions(state),
-                    {
-                        clientHeight,
-                        clientWidth
-                    },
-                    store
-                )
-            );
-            break;
+                store.dispatch(
+                    setTileViewDimensions(
+                        getTileViewGridDimensions(state),
+                        {
+                            clientHeight,
+                            clientWidth
+                        },
+                        store
+                    )
+                );
+                break;
+            }
+            case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
+                store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
+                break;
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+                // Once the thumbnails are reactified this should be moved there too.
+                Filmstrip.resizeThumbnailsForVerticalView();
+                break;
         }
-        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
-            store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
-            break;
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            // Once the thumbnails are reactified this should be moved there too.
-            Filmstrip.resizeThumbnailsForVerticalView();
-            break;
-        }
-    });
+    }
+);
 
 /**
  * Handles on stage participant updates.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/large-video'].participantId,
+    /* selector */ (state) => state['features/large-video'].participantId,
     /* listener */ (participantId, store, oldParticipantId) => {
         const newThumbnail = VideoLayout.getSmallVideo(participantId);
         const oldThumbnail = VideoLayout.getSmallVideo(oldParticipantId);
@@ -101,7 +98,7 @@ StateListenerRegistry.register(
  * Listens for changes in the chat state to calculate the dimensions of the tile view grid and the tiles.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/chat'].isOpen,
+    /* selector */ (state) => state['features/chat'].isOpen,
     /* listener */ (isChatOpen, store) => {
         const state = store.getState();
 
@@ -128,25 +125,28 @@ StateListenerRegistry.register(
                 )
             );
         }
-    });
+    }
+);
 
 /**
  * Listens for changes in the client width to determine whether the overflow menu(s) should be displayed as drawers.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/responsive-ui'].clientWidth < DISPLAY_DRAWER_THRESHOLD,
+    /* selector */ (state) => state['features/base/responsive-ui'].clientWidth < DISPLAY_DRAWER_THRESHOLD,
     /* listener */ (widthBelowThreshold, store) => {
         store.dispatch(setOverflowDrawer(widthBelowThreshold));
-    });
+    }
+);
 
 /**
  * Gracefully hide/show the filmstrip when going past threshold.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/responsive-ui'].clientWidth < ASPECT_RATIO_BREAKPOINT,
+    /* selector */ (state) => state['features/base/responsive-ui'].clientWidth < ASPECT_RATIO_BREAKPOINT,
     /* listener */ (widthBelowThreshold, store) => {
         store.dispatch(setFilmstripVisible(!widthBelowThreshold));
-    });
+    }
+);
 
 /**
  * Symbol mapping used for the tile view responsiveness computation.
@@ -162,7 +162,7 @@ const responsiveColumnMapping = {
  * the dimensions of the tile view grid and the tiles for responsiveness.
  */
 StateListenerRegistry.register(
-    /* selector */ state => {
+    /* selector */ (state) => {
         const { clientWidth } = state['features/base/responsive-ui'];
 
         if (clientWidth < TWO_COLUMN_BREAKPOINT && clientWidth >= ASPECT_RATIO_BREAKPOINT) {
@@ -200,4 +200,5 @@ StateListenerRegistry.register(
                 )
             );
         }
-    });
+    }
+);

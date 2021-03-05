@@ -8,7 +8,6 @@ const WAV_BITS_PER_SAMPLE = 16;
  * Recording adapter for raw WAVE format.
  */
 export class WavAdapter extends AbstractAudioContextAdapter {
-
     /**
      * Length of the WAVE file, in number of samples.
      */
@@ -158,11 +157,10 @@ export class WavAdapter extends AbstractAudioContextAdapter {
         view.setUint32(24, this._sampleRate, true);
 
         // ByteRate
-        view.setUint32(28,
-            Number(this._sampleRate) * 1 * WAV_BITS_PER_SAMPLE / 8, true);
+        view.setUint32(28, (Number(this._sampleRate) * 1 * WAV_BITS_PER_SAMPLE) / 8, true);
 
         // BlockAlign
-        view.setUint16(32, 1 * Number(WAV_BITS_PER_SAMPLE) / 8, true);
+        view.setUint16(32, (1 * Number(WAV_BITS_PER_SAMPLE)) / 8, true);
 
         view.setUint16(34, WAV_BITS_PER_SAMPLE, true);
 
@@ -190,10 +188,9 @@ export class WavAdapter extends AbstractAudioContextAdapter {
             return Promise.resolve();
         }
 
-        return this._initializeAudioContext(micDeviceId, this._onAudioProcess)
-            .then(() => {
-                this._isInitialized = true;
-            });
+        return this._initializeAudioContext(micDeviceId, this._onAudioProcess).then(() => {
+            this._isInitialized = true;
+        });
     }
 
     /**
@@ -241,10 +238,9 @@ export class WavAdapter extends AbstractAudioContextAdapter {
         // write audio data
         floatTo16BitPCM(view, 44, buffers);
 
-        return new Blob([ view ], { type: 'audio/wav' });
+        return new Blob([view], { type: 'audio/wav' });
     }
 }
-
 
 /**
  * Helper function. Writes a UTF string to memory
@@ -273,7 +269,6 @@ function writeUTFBytes(view, offset, string) {
  * @returns {void}
  */
 function floatTo16BitPCM(output, offset, inputBuffers) {
-
     let i, j;
     let input, s, sampleCount;
     const bufferCount = inputBuffers.length;
@@ -284,7 +279,7 @@ function floatTo16BitPCM(output, offset, inputBuffers) {
         sampleCount = input.length;
         for (j = 0; j < sampleCount; ++j, o += 2) {
             s = Math.max(-1, Math.min(1, input[j]));
-            output.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            output.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7fff, true);
         }
     }
 }

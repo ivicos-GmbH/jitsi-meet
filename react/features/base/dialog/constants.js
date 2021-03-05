@@ -1,7 +1,6 @@
 // @flow
 
 export type DialogProps = {
-
     /**
      * Whether cancel button is disabled. Enabled by default.
      */

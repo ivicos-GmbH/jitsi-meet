@@ -7,18 +7,18 @@
  */
 export function validateLastNLimits(lastNLimits) {
     // Checks if only numbers are used
-    if (typeof lastNLimits !== 'object'
-        || !Object.keys(lastNLimits).length
-        || Object.keys(lastNLimits)
-            .find(limit => limit === null || isNaN(Number(limit))
-                || lastNLimits[limit] === null || isNaN(Number(lastNLimits[limit])))) {
+    if (
+        typeof lastNLimits !== 'object' ||
+        !Object.keys(lastNLimits).length ||
+        Object.keys(lastNLimits).find((limit) => limit === null || isNaN(Number(limit)) || lastNLimits[limit] === null || isNaN(Number(lastNLimits[limit])))
+    ) {
         return undefined;
     }
 
     // Converts to numbers and sorts the keys
     const sortedMapping = new Map();
     const orderedLimits = Object.keys(lastNLimits)
-        .map(n => Number(n))
+        .map((n) => Number(n))
         .sort((n1, n2) => n1 - n2);
 
     for (const limit of orderedLimits) {

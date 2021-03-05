@@ -6,9 +6,7 @@ import CopyButton from '../../../../base/buttons/CopyButton';
 import { translate } from '../../../../base/i18n';
 import { getDecodedURI } from '../../../../base/util';
 
-
 type Props = {
-
     /**
      * Invoked to obtain translated strings.
      */
@@ -30,11 +28,12 @@ function CopyMeetingLinkSection({ t, url }: Props) {
         <>
             <span>{t('addPeople.shareLink')}</span>
             <CopyButton
-                className = 'invite-more-dialog-conference-url'
-                displayedText = { getDecodedURI(url) }
-                textOnCopySuccess = { t('addPeople.linkCopied') }
-                textOnHover = { t('addPeople.copyLink') }
-                textToCopy = { url } />
+                className="invite-more-dialog-conference-url"
+                displayedText={getDecodedURI(url)}
+                textOnCopySuccess={t('addPeople.linkCopied')}
+                textOnHover={t('addPeople.copyLink')}
+                textToCopy={url}
+            />
         </>
     );
 }

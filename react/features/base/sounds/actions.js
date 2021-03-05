@@ -2,14 +2,7 @@
 
 import type { AudioElement } from '../media';
 
-import {
-    _ADD_AUDIO_ELEMENT,
-    _REMOVE_AUDIO_ELEMENT,
-    PLAY_SOUND,
-    REGISTER_SOUND,
-    STOP_SOUND,
-    UNREGISTER_SOUND
-} from './actionTypes';
+import { _ADD_AUDIO_ELEMENT, _REMOVE_AUDIO_ELEMENT, PLAY_SOUND, REGISTER_SOUND, STOP_SOUND, UNREGISTER_SOUND } from './actionTypes';
 import { getSoundsPath } from './functions';
 
 /**
@@ -96,8 +89,7 @@ export function playSound(soundId: string): Object {
  *     }
  * }}
  */
-export function registerSound(
-        soundId: string, soundName: string, options: Object = {}): Object {
+export function registerSound(soundId: string, soundName: string, options: Object = {}): Object {
     return {
         type: REGISTER_SOUND,
         soundId,

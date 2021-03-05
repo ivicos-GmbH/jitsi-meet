@@ -29,14 +29,19 @@ export function showRecordingLimitNotification(streamType: string) {
         const { recordingLimit = {} } = getState()['features/base/config'];
         const { limit, appName } = recordingLimit;
 
-        return dispatch(showNotification({
-            descriptionArguments: {
-                limit,
-                app: appName
-            },
-            descriptionKey,
-            titleKey,
-            maxLines: 2
-        }, 10000));
+        return dispatch(
+            showNotification(
+                {
+                    descriptionArguments: {
+                        limit,
+                        app: appName
+                    },
+                    descriptionKey,
+                    titleKey,
+                    maxLines: 2
+                },
+                10000
+            )
+        );
     };
 }

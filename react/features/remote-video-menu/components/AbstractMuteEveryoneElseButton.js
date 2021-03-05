@@ -8,7 +8,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { MuteEveryoneDialog } from '.';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */
@@ -43,6 +42,6 @@ export default class AbstractMuteEveryoneElseButton extends AbstractButton<Props
         const { dispatch, participantID } = this.props;
 
         sendAnalytics(createToolbarEvent('mute.everyoneelse.pressed'));
-        dispatch(openDialog(MuteEveryoneDialog, { exclude: [ participantID ] }));
+        dispatch(openDialog(MuteEveryoneDialog, { exclude: [participantID] }));
     }
 }

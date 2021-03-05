@@ -3,9 +3,8 @@
  * have an active screen share.
  *
  * @returns {{
-    *     type: SCREEN_SHARE_PARTICIPANTS_UPDATED,
-    *     participantIds: Array<string>
-    * }}
-    */
-export const SCREEN_SHARE_PARTICIPANTS_UPDATED
-    = 'SCREEN_SHARE_PARTICIPANTS_UPDATED';
+ *     type: SCREEN_SHARE_PARTICIPANTS_UPDATED,
+ *     participantIds: Array<string>
+ * }}
+ */
+export const SCREEN_SHARE_PARTICIPANTS_UPDATED = 'SCREEN_SHARE_PARTICIPANTS_UPDATED';

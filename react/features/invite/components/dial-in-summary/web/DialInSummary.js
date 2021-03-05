@@ -14,7 +14,6 @@ declare var config: Object;
  * The type of the React {@code Component} props of {@link DialInSummary}.
  */
 type Props = {
-
     /**
      * Additional CSS classnames to append to the root of the component.
      */
@@ -40,7 +39,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link DialInSummary}.
  */
 type State = {
-
     /**
      * The numeric ID of the conference, used as a pin when dialing in.
      */
@@ -65,7 +63,7 @@ type State = {
      * Whether or not dial-in is allowed.
      */
     numbersEnabled: ?boolean
-}
+};
 
 /**
  * Displays a page listing numbers for dialing into a conference and pin to
@@ -93,8 +91,7 @@ class DialInSummary extends Component<Props, State> {
 
         // Bind event handlers so they are only bound once for every instance.
         this._onGetNumbersSuccess = this._onGetNumbersSuccess.bind(this);
-        this._onGetConferenceIDSuccess
-            = this._onGetConferenceIDSuccess.bind(this);
+        this._onGetConferenceIDSuccess = this._onGetConferenceIDSuccess.bind(this);
         this._setErrorMessage = this._setErrorMessage.bind(this);
     }
 
@@ -106,18 +103,13 @@ class DialInSummary extends Component<Props, State> {
      * @returns {void}
      */
     componentDidMount() {
-        const getNumbers = this._getNumbers()
-            .then(this._onGetNumbersSuccess)
-            .catch(this._setErrorMessage);
+        const getNumbers = this._getNumbers().then(this._onGetNumbersSuccess).catch(this._setErrorMessage);
 
-        const getID = this._getConferenceID()
-            .then(this._onGetConferenceIDSuccess)
-            .catch(this._setErrorMessage);
+        const getID = this._getConferenceID().then(this._onGetConferenceIDSuccess).catch(this._setErrorMessage);
 
-        Promise.all([ getNumbers, getID ])
-            .then(() => {
-                this.setState({ loading: false });
-            });
+        Promise.all([getNumbers, getID]).then(() => {
+            this.setState({ loading: false });
+        });
     }
 
     /**
@@ -141,25 +133,12 @@ class DialInSummary extends Component<Props, State> {
         } else {
             className = 'has-numbers';
             contents = [
-                conferenceID
-                    ? <ConferenceID
-                        conferenceID = { conferenceID }
-                        conferenceName = { this.props.room }
-                        key = 'conferenceID' />
-                    : null,
-                <NumbersList
-                    clickableNumbers = { this.props.clickableNumbers }
-                    conferenceID = { conferenceID }
-                    key = 'numbers'
-                    numbers = { this.state.numbers } />
+                conferenceID ? <ConferenceID conferenceID={conferenceID} conferenceName={this.props.room} key="conferenceID" /> : null,
+                <NumbersList clickableNumbers={this.props.clickableNumbers} conferenceID={conferenceID} key="numbers" numbers={this.state.numbers} />
             ];
         }
 
-        return (
-            <div className = { `${this.props.className} ${className}` }>
-                { contents }
-            </div>
-        );
+        return <div className={`${this.props.className} ${className}`}>{contents}</div>;
     }
 
     /**
@@ -177,8 +156,7 @@ class DialInSummary extends Component<Props, State> {
             return Promise.resolve();
         }
 
-        return doGetJSON(`${dialInConfCodeUrl}?conference=${room}@${mucURL}`, true)
-            .catch(() => Promise.reject(this.props.t('info.genericError')));
+        return doGetJSON(`${dialInConfCodeUrl}?conference=${room}@${mucURL}`, true).catch(() => Promise.reject(this.props.t('info.genericError')));
     }
 
     /**
@@ -204,8 +182,7 @@ class DialInSummary extends Component<Props, State> {
             URLSuffix = `?conference=${room}@${mucURL}`;
         }
 
-        return doGetJSON(`${dialInNumbersUrl}${URLSuffix}`, true)
-            .catch(() => Promise.reject(this.props.t('info.genericError')));
+        return doGetJSON(`${dialInNumbersUrl}${URLSuffix}`, true).catch(() => Promise.reject(this.props.t('info.genericError')));
     }
 
     _onGetConferenceIDSuccess: (Object) => void;
@@ -241,13 +218,9 @@ class DialInSummary extends Component<Props, State> {
      * @private
      * @returns {void}
      */
-    _onGetNumbersSuccess(
-            response: Array<Object> | { numbersEnabled?: boolean }) {
-
+    _onGetNumbersSuccess(response: Array<Object> | { numbersEnabled?: boolean }) {
         this.setState({
-            numbersEnabled:
-                Array.isArray(response)
-                    ? response.length > 0 : response.numbersEnabled,
+            numbersEnabled: Array.isArray(response) ? response.length > 0 : response.numbersEnabled,
             numbers: response
         });
     }

@@ -2,19 +2,9 @@
 
 import { JitsiParticipantConnectionStatus } from '../base/lib-jitsi-meet';
 import { MEDIA_TYPE } from '../base/media';
-import {
-    getLocalParticipant,
-    getParticipantById,
-    getParticipantCountWithFake,
-    getPinnedParticipant
-} from '../base/participants';
+import { getLocalParticipant, getParticipantById, getParticipantCountWithFake, getPinnedParticipant } from '../base/participants';
 import { toState } from '../base/redux';
-import {
-    getLocalVideoTrack,
-    getTrackByMediaTypeAndParticipant,
-    isLocalTrackMuted,
-    isRemoteTrackMuted
-} from '../base/tracks/functions';
+import { getLocalVideoTrack, getTrackByMediaTypeAndParticipant, isLocalTrackMuted, isRemoteTrackMuted } from '../base/tracks/functions';
 
 import { ASPECT_RATIO_BREAKPOINT, SQUARE_TILE_ASPECT_RATIO, TILE_ASPECT_RATIO } from './constants';
 
@@ -59,16 +49,12 @@ export function shouldRemoteVideosBeVisible(state: Object) {
     let pinnedParticipant;
 
     return Boolean(
-        participantCount > 2
-
+        participantCount > 2 ||
             // Always show the filmstrip when there is another participant to
             // show and the  local video is pinned, or the toolbar is displayed.
-            || (participantCount > 1
-                && (state['features/toolbox'].visible
-                    || ((pinnedParticipant = getPinnedParticipant(state))
-                        && pinnedParticipant.local)))
-
-            || state['features/base/config'].disable1On1Mode);
+            (participantCount > 1 && (state['features/toolbox'].visible || ((pinnedParticipant = getPinnedParticipant(state)) && pinnedParticipant.local))) ||
+            state['features/base/config'].disable1On1Mode
+    );
 }
 
 /**
@@ -86,8 +72,7 @@ export function isVideoPlayable(stateful: Object | Function, id: String) {
     const participant = id ? getParticipantById(state, id) : getLocalParticipant(state);
     const isLocal = participant?.local ?? true;
     const { connectionStatus } = participant || {};
-    const videoTrack
-        = isLocal ? getLocalVideoTrack(tracks) : getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, id);
+    const videoTrack = isLocal ? getLocalVideoTrack(tracks) : getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, id);
     const isAudioOnly = Boolean(state['features/base/audio-only'].enabled);
     let isPlayable = false;
 
@@ -95,11 +80,11 @@ export function isVideoPlayable(stateful: Object | Function, id: String) {
         const isVideoMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO);
 
         isPlayable = Boolean(videoTrack) && !isVideoMuted && !isAudioOnly;
-    } else if (!participant?.isFakeParticipant) { // remote participants excluding shared video
+    } else if (!participant?.isFakeParticipant) {
+        // remote participants excluding shared video
         const isVideoMuted = isRemoteTrackMuted(tracks, MEDIA_TYPE.VIDEO, id);
 
-        isPlayable = Boolean(videoTrack) && !isVideoMuted && !isAudioOnly
-            && connectionStatus === JitsiParticipantConnectionStatus.ACTIVE;
+        isPlayable = Boolean(videoTrack) && !isVideoMuted && !isAudioOnly && connectionStatus === JitsiParticipantConnectionStatus.ACTIVE;
     }
 
     return isPlayable;
@@ -134,13 +119,7 @@ export function calculateThumbnailSizeForHorizontalView(clientHeight: number = 0
  * @param {Object} dimensions - The desired dimensions of the tile view grid.
  * @returns {{height, width}}
  */
-export function calculateThumbnailSizeForTileView({
-    columns,
-    visibleRows,
-    clientWidth,
-    clientHeight,
-    disableResponsiveTiles
-}: Object) {
+export function calculateThumbnailSizeForTileView({ columns, visibleRows, clientWidth, clientHeight, disableResponsiveTiles }: Object) {
     let aspectRatio = TILE_ASPECT_RATIO;
 
     if (!disableResponsiveTiles && clientWidth < ASPECT_RATIO_BREAKPOINT) {

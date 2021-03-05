@@ -7,9 +7,7 @@ import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { toggleSecurityDialog } from '../../actions';
 
-
 type Props = AbstractButtonProps & {
-
     /**
      * Whether the shared document is being edited or not.
      */
@@ -19,9 +17,7 @@ type Props = AbstractButtonProps & {
      * On click handler that opens the security dialog.
      */
     onClick: Function
-
 };
-
 
 /**
  * Implements an {@link AbstractButton} to open the security dialog.

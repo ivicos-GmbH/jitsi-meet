@@ -2,12 +2,7 @@
 
 import { i18next } from '../../base/i18n';
 import logger from '../logger';
-import {
-    FlacAdapter,
-    OggAdapter,
-    WavAdapter,
-    downloadBlob
-} from '../recording';
+import { FlacAdapter, OggAdapter, WavAdapter, downloadBlob } from '../recording';
 import { sessionManager } from '../session';
 
 /**
@@ -44,7 +39,7 @@ const PROPERTY_STATS = 'localRecStats';
 /**
  * Supported recording formats.
  */
-const RECORDING_FORMATS = new Set([ 'flac', 'wav', 'ogg' ]);
+const RECORDING_FORMATS = new Set(['flac', 'wav', 'ogg']);
 
 /**
  * Default recording format.
@@ -85,7 +80,6 @@ const ControllerState = Object.freeze({
  * Type of the stats reported by each participant (client).
  */
 type RecordingStats = {
-
     /**
      * Current local recording session token used by the participant.
      */
@@ -105,7 +99,7 @@ type RecordingStats = {
      * Total recording duration. (Reserved for future use.)
      */
     recordedLength: number
-}
+};
 
 /**
  * The component responsible for the coordination of local recording, across
@@ -113,7 +107,6 @@ type RecordingStats = {
  * Current implementation requires that there is only one moderator in a room.
  */
 class RecordingController {
-
     /**
      * For each recording session, there is a separate @{code RecordingAdapter}
      * instance so that encoded bits from the previous sessions can still be
@@ -226,12 +219,9 @@ class RecordingController {
         if (!this._registered) {
             this._conference = conference;
             if (this._conference) {
-                this._conference
-                    .addCommandListener(COMMAND_STOP, this._onStopCommand);
-                this._conference
-                    .addCommandListener(COMMAND_START, this._onStartCommand);
-                this._conference
-                    .addCommandListener(COMMAND_PING, this._onPingCommand);
+                this._conference.addCommandListener(COMMAND_STOP, this._onStopCommand);
+                this._conference.addCommandListener(COMMAND_START, this._onStartCommand);
+                this._conference.addCommandListener(COMMAND_PING, this._onPingCommand);
                 this._registered = true;
             }
             if (!this._conference.isModerator()) {
@@ -319,18 +309,17 @@ class RecordingController {
      */
     downloadRecordedData(sessionToken: number) {
         if (this._adapters[sessionToken]) {
-            this._adapters[sessionToken].exportRecordedData()
-                .then(args => {
+            this._adapters[sessionToken]
+                .exportRecordedData()
+                .then((args) => {
                     const { data, format } = args;
 
-                    const filename = `session_${sessionToken}`
-                        + `_${this._conference.myUserId()}.${format}`;
+                    const filename = `session_${sessionToken}` + `_${this._conference.myUserId()}.${format}`;
 
                     downloadBlob(data, filename);
                 })
-                .catch(error => {
-                    logger.error('Failed to download audio for'
-                        + ` session ${sessionToken}. Error: ${error}`);
+                .catch((error) => {
+                    logger.error('Failed to download audio for' + ` session ${sessionToken}. Error: ${error}`);
                 });
         } else {
             logger.error(`Invalid session token for download ${sessionToken}`);
@@ -420,17 +409,14 @@ class RecordingController {
      * @returns {*}
      */
     getParticipantsStats() {
-        const members
-            = this._conference.getParticipants()
-            .map(member => {
-                return {
-                    id: member.getId(),
-                    displayName: member.getDisplayName(),
-                    recordingStats:
-                        JSON.parse(member.getProperty(PROPERTY_STATS) || '{}'),
-                    isSelf: false
-                };
-            });
+        const members = this._conference.getParticipants().map((member) => {
+            return {
+                id: member.getId(),
+                displayName: member.getDisplayName(),
+                recordingStats: JSON.parse(member.getProperty(PROPERTY_STATS) || '{}'),
+                isSelf: false
+            };
+        });
 
         // transform into a dictionary for consistent ordering
         const result = {};
@@ -461,8 +447,7 @@ class RecordingController {
      */
     _changeState(newState: Symbol) {
         if (this._state !== newState) {
-            logger.log(`state change: ${this._state.toString()} -> `
-                + `${newState.toString()}`);
+            logger.log(`state change: ${this._state.toString()} -> ` + `${newState.toString()}`);
             this._state = newState;
         }
     }
@@ -477,8 +462,7 @@ class RecordingController {
      */
     _updateStats() {
         if (this._conference) {
-            this._conference.setLocalParticipantProperty(PROPERTY_STATS,
-                JSON.stringify(this.getLocalStats()));
+            this._conference.setLocalParticipantProperty(PROPERTY_STATS, JSON.stringify(this.getLocalStats()));
         }
     }
 
@@ -498,8 +482,7 @@ class RecordingController {
             this._changeState(ControllerState.STARTING);
             this._switchToNewSession(sessionToken, format);
             this._doStartRecording();
-        } else if (this._state === ControllerState.RECORDING
-            && this._currentSessionToken !== sessionToken) {
+        } else if (this._state === ControllerState.RECORDING && this._currentSessionToken !== sessionToken) {
             // There is local recording going on, but not for the same session.
             // This means the current state might be out-of-sync with the
             // moderator's, so we need to restart the recording.
@@ -522,8 +505,7 @@ class RecordingController {
      * @returns {void}
      */
     _onStopCommand(value) {
-        if (this._state === ControllerState.RECORDING
-            && this._currentSessionToken === value.attributes.sessionToken) {
+        if (this._state === ControllerState.RECORDING && this._currentSessionToken === value.attributes.sessionToken) {
             this._changeState(ControllerState.STOPPING);
             this._doStopRecording();
         }
@@ -566,27 +548,27 @@ class RecordingController {
         if (this._state === ControllerState.STARTING) {
             const delegate = this._adapters[this._currentSessionToken];
 
-            delegate.start(this._micDeviceId)
-            .then(() => {
-                this._changeState(ControllerState.RECORDING);
-                sessionManager.beginSegment(this._currentSessionToken);
-                logger.log('Local recording engaged.');
+            delegate
+                .start(this._micDeviceId)
+                .then(() => {
+                    this._changeState(ControllerState.RECORDING);
+                    sessionManager.beginSegment(this._currentSessionToken);
+                    logger.log('Local recording engaged.');
 
-                if (this._onNotify) {
-                    this._onNotify('localRecording.messages.engaged');
-                }
-                if (this._onStateChanged) {
-                    this._onStateChanged(true);
-                }
+                    if (this._onNotify) {
+                        this._onNotify('localRecording.messages.engaged');
+                    }
+                    if (this._onStateChanged) {
+                        this._onStateChanged(true);
+                    }
 
-                delegate.setMuted(this._isMuted);
-                this._updateStats();
-            })
-            .catch(err => {
-                logger.error('Failed to start local recording.', err);
-            });
+                    delegate.setMuted(this._isMuted);
+                    this._updateStats();
+                })
+                .catch((err) => {
+                    logger.error('Failed to start local recording.', err);
+                });
         }
-
     }
 
     _doStopRecording: () => Promise<void>;
@@ -609,10 +591,7 @@ class RecordingController {
                     logger.log('Local recording unengaged.');
                     this.downloadRecordedData(token);
 
-                    const messageKey
-                        = this._conference.isModerator()
-                            ? 'localRecording.messages.finishedModerator'
-                            : 'localRecording.messages.finished';
+                    const messageKey = this._conference.isModerator() ? 'localRecording.messages.finishedModerator' : 'localRecording.messages.finished';
                     const messageParams = {
                         token
                     };
@@ -625,7 +604,7 @@ class RecordingController {
                     }
                     this._updateStats();
                 })
-                .catch(err => {
+                .catch((err) => {
                     logger.error('Failed to stop local recording.', err);
                 });
         }
@@ -634,7 +613,6 @@ class RecordingController {
         return (Promise.resolve(): Promise<void>);
         // FIXME: better ways to satisfy flow and ESLint at the same time?
         /* eslint-enable */
-
     }
 
     _switchToNewSession: (string, string) => void;
@@ -649,10 +627,8 @@ class RecordingController {
     _switchToNewSession(sessionToken, format) {
         this._format = format;
         this._currentSessionToken = sessionToken;
-        logger.log(`New session: ${this._currentSessionToken}, `
-            + `format: ${this._format}`);
-        this._adapters[sessionToken]
-             = this._createRecordingAdapter();
+        logger.log(`New session: ${this._currentSessionToken}, ` + `format: ${this._format}`);
+        this._adapters[sessionToken] = this._createRecordingAdapter();
         sessionManager.createSession(sessionToken, this._format);
     }
 
@@ -663,18 +639,17 @@ class RecordingController {
      * @returns {RecordingAdapter}
      */
     _createRecordingAdapter() {
-        logger.debug('[RecordingController] creating recording'
-            + ` adapter for ${this._format} format.`);
+        logger.debug('[RecordingController] creating recording' + ` adapter for ${this._format} format.`);
 
         switch (this._format) {
-        case 'ogg':
-            return new OggAdapter();
-        case 'flac':
-            return new FlacAdapter();
-        case 'wav':
-            return new WavAdapter();
-        default:
-            throw new Error(`Unknown format: ${this._format}`);
+            case 'ogg':
+                return new OggAdapter();
+            case 'flac':
+                return new FlacAdapter();
+            case 'wav':
+                return new WavAdapter();
+            default:
+                throw new Error(`Unknown format: ${this._format}`);
         }
     }
 }

@@ -4,10 +4,7 @@ import jwtDecode from 'jwt-decode';
 
 import { SET_CONFIG } from '../config';
 import { SET_LOCATION_URL } from '../connection';
-import {
-    getLocalParticipant,
-    participantUpdated
-} from '../participants';
+import { getLocalParticipant, participantUpdated } from '../participants';
 import { MiddlewareRegistry } from '../redux';
 
 import { SET_JWT } from './actionTypes';
@@ -24,16 +21,16 @@ declare var APP: Object;
  * @private
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case SET_CONFIG:
-    case SET_LOCATION_URL:
-        // XXX The JSON Web Token (JWT) is not the only piece of state that we
-        // have decided to store in the feature jwt
-        return _setConfigOrLocationURL(store, next, action);
+        case SET_CONFIG:
+        case SET_LOCATION_URL:
+            // XXX The JSON Web Token (JWT) is not the only piece of state that we
+            // have decided to store in the feature jwt
+            return _setConfigOrLocationURL(store, next, action);
 
-    case SET_JWT:
-        return _setJWT(store, next, action);
+        case SET_JWT:
+            return _setJWT(store, next, action);
     }
 
     return next(action);
@@ -50,13 +47,10 @@ MiddlewareRegistry.register(store => next => action => {
  * @private
  * @returns {void}
  */
-function _overwriteLocalParticipant(
-        { dispatch, getState },
-        { avatarURL, email, name, features }) {
+function _overwriteLocalParticipant({ dispatch, getState }, { avatarURL, email, name, features }) {
     let localParticipant;
 
-    if ((avatarURL || email || name)
-            && (localParticipant = getLocalParticipant(getState))) {
+    if ((avatarURL || email || name) && (localParticipant = getLocalParticipant(getState))) {
         const newProperties: Object = {
             id: localParticipant.id,
             local: true
@@ -99,8 +93,7 @@ function _setConfigOrLocationURL({ dispatch, getState }, next, action) {
 
     const { locationURL } = getState()['features/base/connection'];
 
-    dispatch(
-        setJWT(locationURL ? parseJWTFromURLParams(locationURL) : undefined));
+    dispatch(setJWT(locationURL ? parseJWTFromURLParams(locationURL) : undefined));
 
     return result;
 }
@@ -147,9 +140,7 @@ function _setJWT(store, next, action) {
                     action.tenant = context.tenant;
                     action.user = user;
 
-                    user && _overwriteLocalParticipant(
-                        store, { ...user,
-                            features: context.features });
+                    user && _overwriteLocalParticipant(store, { ...user, features: context.features });
                 }
             }
         } else if (typeof APP === 'undefined') {
@@ -180,13 +171,10 @@ function _setJWT(store, next, action) {
  * @private
  * @returns {void}
  */
-function _undoOverwriteLocalParticipant(
-        { dispatch, getState },
-        { avatarURL, name, email }) {
+function _undoOverwriteLocalParticipant({ dispatch, getState }, { avatarURL, name, email }) {
     let localParticipant;
 
-    if ((avatarURL || name || email)
-            && (localParticipant = getLocalParticipant(getState))) {
+    if ((avatarURL || name || email) && (localParticipant = getLocalParticipant(getState))) {
         const newProperties: Object = {
             id: localParticipant.id,
             local: true

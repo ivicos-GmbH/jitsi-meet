@@ -1,12 +1,6 @@
-import {
-    ReducerRegistry
-} from '../base/redux';
+import { ReducerRegistry } from '../base/redux';
 
-import {
-    CANCEL_FEEDBACK,
-    SUBMIT_FEEDBACK_ERROR,
-    SUBMIT_FEEDBACK_SUCCESS
-} from './actionTypes';
+import { CANCEL_FEEDBACK, SUBMIT_FEEDBACK_ERROR, SUBMIT_FEEDBACK_SUCCESS } from './actionTypes';
 
 const DEFAULT_STATE = {
     message: '',
@@ -20,10 +14,8 @@ const DEFAULT_STATE = {
 /**
  * Reduces the Redux actions of the feature features/feedback.
  */
-ReducerRegistry.register(
-    'features/feedback',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/feedback', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case CANCEL_FEEDBACK: {
             return {
                 ...state,
@@ -41,7 +33,7 @@ ReducerRegistry.register(
                 submitted: true
             };
         }
-        }
+    }
 
-        return state;
-    });
+    return state;
+});

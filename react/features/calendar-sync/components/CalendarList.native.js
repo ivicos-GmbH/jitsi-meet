@@ -16,7 +16,6 @@ import styles from './styles';
  * The tyoe of the React {@code Component} props of {@link CalendarList}.
  */
 type Props = {
-
     /**
      * The current state of the calendar access permission.
      */
@@ -46,8 +45,7 @@ class CalendarList extends AbstractPage<Props> {
         super(props);
 
         // Bind event handlers so they are only bound once per instance.
-        this._getRenderListEmptyComponent
-            = this._getRenderListEmptyComponent.bind(this);
+        this._getRenderListEmptyComponent = this._getRenderListEmptyComponent.bind(this);
     }
 
     /**
@@ -73,14 +71,7 @@ class CalendarList extends AbstractPage<Props> {
     render() {
         const { disabled } = this.props;
 
-        return (
-            CalendarListContent
-                ? <CalendarListContent
-                    disabled = { disabled }
-                    listEmptyComponent
-                        = { this._getRenderListEmptyComponent() } />
-                : null
-        );
+        return CalendarListContent ? <CalendarListContent disabled={disabled} listEmptyComponent={this._getRenderListEmptyComponent()} /> : null;
     }
 
     _getRenderListEmptyComponent: () => Object;
@@ -103,16 +94,10 @@ class CalendarList extends AbstractPage<Props> {
         }
 
         return (
-            <View style = { styles.noPermissionMessageView }>
-                <Text style = { styles.noPermissionMessageText }>
-                    { t('calendarSync.permissionMessage') }
-                </Text>
-                <TouchableOpacity
-                    onPress = { openSettings }
-                    style = { styles.noPermissionMessageButton } >
-                    <Text style = { styles.noPermissionMessageButtonText }>
-                        { t('calendarSync.permissionButton') }
-                    </Text>
+            <View style={styles.noPermissionMessageView}>
+                <Text style={styles.noPermissionMessageText}>{t('calendarSync.permissionMessage')}</Text>
+                <TouchableOpacity onPress={openSettings} style={styles.noPermissionMessageButton}>
+                    <Text style={styles.noPermissionMessageButtonText}>{t('calendarSync.permissionButton')}</Text>
                 </TouchableOpacity>
             </View>
         );

@@ -12,7 +12,6 @@ export const UNDERLAY_COLOR = 'rgba(255, 255, 255, 0.2)';
  * Style classes of the PagedList-based components.
  */
 const PAGED_LIST_STYLES = {
-
     /**
      * Outermost container of a page in {@code PagedList}.
      */

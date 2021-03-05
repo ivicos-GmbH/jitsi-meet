@@ -18,9 +18,7 @@ export default class NoMobileApp extends Component<*> {
      * @inheritdoc
      */
     componentDidMount() {
-        sendAnalytics(
-            createDeepLinkingPageEvent(
-                'displayed', 'noMobileApp', { isMobileBrowser: true }));
+        sendAnalytics(createDeepLinkingPageEvent('displayed', 'noMobileApp', { isMobileBrowser: true }));
     }
 
     /**
@@ -32,14 +30,9 @@ export default class NoMobileApp extends Component<*> {
         const ns = 'no-mobile-app';
 
         return (
-            <div className = { ns }>
-                <h2 className = { `${ns}__title` }>
-                    Video chat isn't available on mobile.
-                </h2>
-                <p className = { `${ns}__description` }>
-                    Please use { interfaceConfig.NATIVE_APP_NAME } on desktop to
-                    join calls.
-                </p>
+            <div className={ns}>
+                <h2 className={`${ns}__title`}>Video chat isn't available on mobile.</h2>
+                <p className={`${ns}__description`}>Please use {interfaceConfig.NATIVE_APP_NAME} on desktop to join calls.</p>
             </div>
         );
     }

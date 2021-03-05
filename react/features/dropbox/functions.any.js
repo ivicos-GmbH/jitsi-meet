@@ -8,7 +8,6 @@ import logger from './logger';
  * Information related to the user's dropbox account.
  */
 type DropboxUserData = {
-
     /**
      * The available space left in MB into the user's Dropbox account.
      */
@@ -27,23 +26,20 @@ type DropboxUserData = {
  * @param {string} appKey - The Jitsi Recorder dropbox app key.
  * @returns {Promise<DropboxUserData|undefined>}
  */
-export function getDropboxData(
-        token: string,
-        appKey: string
-): Promise<?DropboxUserData> {
-    return Promise.all(
-        [ getDisplayName(token, appKey), getSpaceUsage(token, appKey) ]
-    ).then(([ userName, space ]) => {
-        const { allocated, used } = space;
+export function getDropboxData(token: string, appKey: string): Promise<?DropboxUserData> {
+    return Promise.all([getDisplayName(token, appKey), getSpaceUsage(token, appKey)]).then(
+        ([userName, space]) => {
+            const { allocated, used } = space;
 
-        return {
-            userName,
-            spaceLeft: Math.floor((allocated - used) / 1048576)// 1MiB=1048576B
-        };
+            return {
+                userName,
+                spaceLeft: Math.floor((allocated - used) / 1048576) // 1MiB=1048576B
+            };
+        },
+        (error) => {
+            logger.error(error);
 
-    }, error => {
-        logger.error(error);
-
-        return undefined;
-    });
+            return undefined;
+        }
+    );
 }

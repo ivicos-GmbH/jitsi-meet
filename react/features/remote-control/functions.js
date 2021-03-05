@@ -26,10 +26,7 @@ export function isRemoteControlEnabled(state: Object) {
  * @param {RemoteControlEvent} event - The remote control event.
  * @returns {boolean} - True if the message was sent successfully and false otherwise.
  */
-export function sendRemoteControlEndpointMessage(
-        conference: Object,
-        to: ?string,
-        event: Object) {
+export function sendRemoteControlEndpointMessage(conference: Object, to: ?string, event: Object) {
     if (!to) {
         logger.warn('Remote control: Skip sending remote control event. Params:', to);
 
@@ -51,29 +48,29 @@ export function sendRemoteControlEndpointMessage(
 }
 
 /**
-* Handles remote control events from the external app. Currently only
-* events with type EVENTS.supported and EVENTS.stop are
-* supported.
-*
-* @param {RemoteControlEvent} event - The remote control event.
-* @param {Store} store - The redux store.
-* @returns {void}
-*/
+ * Handles remote control events from the external app. Currently only
+ * events with type EVENTS.supported and EVENTS.stop are
+ * supported.
+ *
+ * @param {RemoteControlEvent} event - The remote control event.
+ * @param {Store} store - The redux store.
+ * @returns {void}
+ */
 export function onRemoteControlAPIEvent(event: Object, { getState, dispatch }: Object) {
     switch (event.type) {
-    case EVENTS.supported:
-        logger.log('Remote Control supported.');
-        if (isRemoteControlEnabled(getState())) {
-            dispatch(enableReceiver());
-        } else {
-            logger.log('Remote Control disabled.');
-        }
-        break;
-    case EVENTS.stop: {
-        dispatch(stopReceiver());
+        case EVENTS.supported:
+            logger.log('Remote Control supported.');
+            if (isRemoteControlEnabled(getState())) {
+                dispatch(enableReceiver());
+            } else {
+                logger.log('Remote Control disabled.');
+            }
+            break;
+        case EVENTS.stop: {
+            dispatch(stopReceiver());
 
-        break;
-    }
+            break;
+        }
     }
 }
 
@@ -85,7 +82,6 @@ export function onRemoteControlAPIEvent(event: Object, { getState, dispatch }: O
 export function getRemoteConrolEventCaptureArea() {
     return VideoLayout.getLargeVideoWrapper();
 }
-
 
 /**
  * Extract the keyboard key from the keyboard event.
@@ -114,7 +110,6 @@ export function getModifiers(event: Object) {
         modifiers.push('control');
     }
 
-
     if (event.altKey) {
         modifiers.push('alt');
     }
@@ -125,4 +120,3 @@ export function getModifiers(event: Object) {
 
     return modifiers;
 }
-

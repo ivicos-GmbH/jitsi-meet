@@ -17,7 +17,7 @@ declare var interfaceConfig: Object;
  * preferred layout state and dispatching additional actions.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/video-layout'].tileViewEnabled,
+    /* selector */ (state) => state['features/video-layout'].tileViewEnabled,
     /* listener */ (tileViewEnabled, store) => {
         const { dispatch } = store;
 
@@ -31,7 +31,7 @@ StateListenerRegistry.register(
  * thrashing that might occur, especially when switching in or out of p2p.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/tracks'],
+    /* selector */ (state) => state['features/base/tracks'],
     /* listener */ debounce((tracks, store) => {
         if (!_getAutoPinSetting() || isFollowMeActive(store)) {
             return;
@@ -53,24 +53,23 @@ StateListenerRegistry.register(
         // Filter out any participants which are no longer screen sharing
         // by looping through the known sharing participants and removing any
         // participant IDs which are no longer sharing.
-        const newScreenSharesOrder = oldScreenSharesOrder.filter(
-            participantId => knownSharingParticipantIds.includes(participantId));
+        const newScreenSharesOrder = oldScreenSharesOrder.filter((participantId) => knownSharingParticipantIds.includes(participantId));
 
         // Make sure all new sharing participant get added to the end of the
         // known screen shares.
-        knownSharingParticipantIds.forEach(participantId => {
+        knownSharingParticipantIds.forEach((participantId) => {
             if (!newScreenSharesOrder.includes(participantId)) {
                 newScreenSharesOrder.push(participantId);
             }
         });
 
         if (!equals(oldScreenSharesOrder, newScreenSharesOrder)) {
-            store.dispatch(
-                setRemoteParticipantsWithScreenShare(newScreenSharesOrder));
+            store.dispatch(setRemoteParticipantsWithScreenShare(newScreenSharesOrder));
 
             _updateAutoPinnedParticipant(store);
         }
-    }, 100));
+    }, 100)
+);
 
 /**
  * A selector for retrieving the current automatic pinning setting.
@@ -82,9 +81,7 @@ StateListenerRegistry.register(
  * pin any screenshares.
  */
 function _getAutoPinSetting() {
-    return typeof interfaceConfig === 'object'
-        ? interfaceConfig.AUTO_PIN_LATEST_SCREEN_SHARE
-        : 'remote-only';
+    return typeof interfaceConfig === 'object' ? interfaceConfig.AUTO_PIN_LATEST_SCREEN_SHARE : 'remote-only';
 }
 
 /**
@@ -102,8 +99,7 @@ function _updateAutoPinnedParticipant({ dispatch, getState }) {
         return;
     }
 
-    const latestScreenshareParticipantId
-        = remoteScreenShares[remoteScreenShares.length - 1];
+    const latestScreenshareParticipantId = remoteScreenShares[remoteScreenShares.length - 1];
 
     const pinned = getPinnedParticipant(getState);
 

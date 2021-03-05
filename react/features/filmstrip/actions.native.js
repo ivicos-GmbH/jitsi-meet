@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    SET_FILMSTRIP_ENABLED,
-    SET_FILMSTRIP_VISIBLE,
-    SET_TILE_VIEW_DIMENSIONS
-} from './actionTypes';
+import { SET_FILMSTRIP_ENABLED, SET_FILMSTRIP_VISIBLE, SET_TILE_VIEW_DIMENSIONS } from './actionTypes';
 
 /**
  * Sets whether the filmstrip is enabled.

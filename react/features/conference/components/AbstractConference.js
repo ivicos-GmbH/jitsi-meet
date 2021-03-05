@@ -10,7 +10,6 @@ import { shouldDisplayNotifications } from '../functions';
  * The type of the React {@code Component} props of {@link AbstractLabels}.
  */
 export type AbstractProps = {
-
     /**
      * Set to {@code true} when the notifications are to be displayed.
      *
@@ -42,9 +41,7 @@ export type AbstractProps = {
  *
  * @extends Component
  */
-export class AbstractConference<P: AbstractProps, S>
-    extends Component<P, S> {
-
+export class AbstractConference<P: AbstractProps, S> extends Component<P, S> {
     /**
      * Renders the {@code LocalRecordingLabel}.
      *
@@ -55,9 +52,7 @@ export class AbstractConference<P: AbstractProps, S>
      */
     renderNotificationsContainer(props: ?Object) {
         if (this.props._notificationsVisible) {
-            return (
-                React.createElement(NotificationsContainer, props)
-            );
+            return React.createElement(NotificationsContainer, props);
         }
 
         return null;

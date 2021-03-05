@@ -7,7 +7,6 @@ import React, { Component } from 'react';
  * {@link DesktopSourcePreview}.
  */
 type Props = {
-
     /**
      * The callback to invoke when the component is clicked. The id of the
      * clicked on DesktopCapturerSource will be passed in.
@@ -68,18 +67,11 @@ class DesktopSourcePreview extends Component<Props> {
         const displayClasses = `desktop-picker-source ${selectedClass}`;
 
         return (
-            <div
-                className = { displayClasses }
-                onClick = { this._onClick }
-                onDoubleClick = { this._onDoubleClick }>
-                <div className = 'desktop-source-preview-image-container'>
-                    <img
-                        className = 'desktop-source-preview-thumbnail'
-                        src = { this.props.source.thumbnail.toDataURL() } />
+            <div className={displayClasses} onClick={this._onClick} onDoubleClick={this._onDoubleClick}>
+                <div className="desktop-source-preview-image-container">
+                    <img className="desktop-source-preview-thumbnail" src={this.props.source.thumbnail.toDataURL()} />
                 </div>
-                <div className = 'desktop-source-preview-label'>
-                    { this.props.source.name }
-                </div>
+                <div className="desktop-source-preview-label">{this.props.source.name}</div>
             </div>
         );
     }

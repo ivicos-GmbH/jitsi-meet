@@ -7,7 +7,6 @@ import { Icon, IconCheck } from '../../../icons';
 const mainClass = 'toggle-button';
 
 type Props = {
-
     /**
      * Text of the button.
      */
@@ -22,7 +21,7 @@ type Props = {
      * OnClick button handler.
      */
     onClick: Function
-}
+};
 
 /**
  * Button used as a toggle.
@@ -33,15 +32,10 @@ function ToggleButton({ children, isToggled, onClick }: Props) {
     const className = isToggled ? `${mainClass} ${mainClass}--toggled` : mainClass;
 
     return (
-        <div
-            className = { className }
-            onClick = { onClick }>
-            <div className = 'toggle-button-container'>
-                <div className = 'toggle-button-icon-container'>
-                    <Icon
-                        className = 'toggle-button-icon'
-                        size = { 10 }
-                        src = { IconCheck } />
+        <div className={className} onClick={onClick}>
+            <div className="toggle-button-container">
+                <div className="toggle-button-icon-container">
+                    <Icon className="toggle-button-icon" size={10} src={IconCheck} />
                 </div>
                 <span>{children}</span>
             </div>

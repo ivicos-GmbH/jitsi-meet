@@ -8,7 +8,6 @@ import { getFixedPlatformStyle } from '../../styles';
  * {@code AbstractContainer} component's property types.
  */
 export type Props = {
-
     /**
      * An optional accessibility label to apply to the container root.
      */
@@ -105,9 +104,13 @@ export default class AbstractContainer<P: Props> extends Component<P> {
         const _style = getFixedPlatformStyle(style);
 
         // $FlowFixMe
-        return React.createElement(type, {
-            style: _style,
-            ...filteredProps
-        }, children);
+        return React.createElement(
+            type,
+            {
+                style: _style,
+                ...filteredProps
+            },
+            children
+        );
     }
 }

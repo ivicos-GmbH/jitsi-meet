@@ -22,26 +22,26 @@ import { handleCallIntegrationChange, handleCrashReportingChange } from './funct
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        _initializeCallIntegration(store);
-        break;
-    case PREJOIN_INITIALIZED: {
-        _maybeUpdateDisplayName(store);
-        break;
-    }
-    case SETTINGS_UPDATED:
-        _maybeHandleCallIntegrationChange(action);
-        _maybeSetAudioOnly(store, action);
-        _updateLocalParticipant(store, action);
-        _maybeCrashReportingChange(action);
-        break;
-    case SET_LOCATION_URL:
-        _updateLocalParticipantFromUrl(store);
-        break;
+        case APP_WILL_MOUNT:
+            _initializeCallIntegration(store);
+            break;
+        case PREJOIN_INITIALIZED: {
+            _maybeUpdateDisplayName(store);
+            break;
+        }
+        case SETTINGS_UPDATED:
+            _maybeHandleCallIntegrationChange(action);
+            _maybeSetAudioOnly(store, action);
+            _updateLocalParticipant(store, action);
+            _maybeCrashReportingChange(action);
+            break;
+        case SET_LOCATION_URL:
+            _updateLocalParticipantFromUrl(store);
+            break;
     }
 
     return result;
@@ -72,8 +72,8 @@ function _initializeCallIntegration({ getState }) {
  */
 function _mapSettingsFieldToParticipant(settingsField) {
     switch (settingsField) {
-    case 'displayName':
-        return 'name';
+        case 'displayName':
+            return 'name';
     }
 
     return settingsField;
@@ -113,9 +113,7 @@ function _maybeCrashReportingChange({ settings: { disableCrashReporting } }) {
  * @private
  * @returns {void}
  */
-function _maybeSetAudioOnly(
-        { dispatch },
-        { settings: { startAudioOnly } }) {
+function _maybeSetAudioOnly({ dispatch }, { settings: { startAudioOnly } }) {
     if (typeof startAudioOnly === 'boolean') {
         dispatch(setAudioOnly(startAudioOnly, true));
     }
@@ -135,9 +133,11 @@ function _maybeUpdateDisplayName({ dispatch, getState }) {
     if (hasJwt) {
         const displayName = getJwtName(state);
 
-        dispatch(updateSettings({
-            displayName
-        }));
+        dispatch(
+            updateSettings({
+                displayName
+            })
+        );
     }
 }
 
@@ -158,14 +158,12 @@ function _updateLocalParticipant({ dispatch, getState }, action) {
 
     for (const key in settings) {
         if (settings.hasOwnProperty(key)) {
-            newLocalParticipant[_mapSettingsFieldToParticipant(key)]
-                = settings[key];
+            newLocalParticipant[_mapSettingsFieldToParticipant(key)] = settings[key];
         }
     }
 
     dispatch(participantUpdated(newLocalParticipant));
 }
-
 
 /**
  * Returns the userInfo set in the URL.
@@ -175,8 +173,7 @@ function _updateLocalParticipant({ dispatch, getState }, action) {
  * @returns {void}
  */
 function _updateLocalParticipantFromUrl({ dispatch, getState }) {
-    const urlParams
-        = parseURLParams(getState()['features/base/connection'].locationURL);
+    const urlParams = parseURLParams(getState()['features/base/connection'].locationURL);
     const urlEmail = urlParams['userInfo.email'];
     const urlDisplayName = urlParams['userInfo.displayName'];
 
@@ -190,15 +187,19 @@ function _updateLocalParticipantFromUrl({ dispatch, getState }) {
         const displayName = _.escape(urlDisplayName);
         const email = _.escape(urlEmail);
 
-        dispatch(participantUpdated({
-            ...localParticipant,
-            email,
-            name: displayName
-        }));
+        dispatch(
+            participantUpdated({
+                ...localParticipant,
+                email,
+                name: displayName
+            })
+        );
 
-        dispatch(updateSettings({
-            displayName,
-            email
-        }));
+        dispatch(
+            updateSettings({
+                displayName,
+                email
+            })
+        );
     }
 }

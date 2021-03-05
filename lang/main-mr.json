@@ -435,7 +435,7 @@
     },
     "lockRoomPassword": "संकेतशब्द",
     "lockRoomPasswordUppercase": "संकेतशब्द",
-       "me": "मी",
+    "me": "मी",
     "notify": {
         "connectedOneMember": "{{name}} बैठकीत सामील झाले",
         "connectedThreePlusMembers": "{{name}} आणि {{count}} इतर बैठकीत सामील झाले",
@@ -475,7 +475,6 @@
     "passwordDigitsOnly": " पर्यंत {{number}} अंक",
     "poweredby": "द्वारा समर्थित",
     "prejoin": {
-       
         "audioAndVideoError": "ऑडिओ आणि व्हिडिओ त्रुटी:",
         "audioOnlyError": "ऑडिओ त्रुटी:",
         "audioTrackError": "ऑडिओ ट्रॅक तयार करू शकलो नाही.",
@@ -592,7 +591,7 @@
         "header": "सेटिंग्ज",
         "profileSection": "प्रोफाइल",
         "serverURL": "सर्व्हर URL",
-        "showAdvanced":"प्रगत सेटिंग्ज दर्शवा",
+        "showAdvanced": "प्रगत सेटिंग्ज दर्शवा",
         "startWithAudioMuted": "ऑडिओ नि: शब्द सह प्रारंभ करा",
         "startWithVideoMuted": "निःशब्द व्हिडिओसह प्रारंभ करा",
         "version": "आवृत्ती"
@@ -620,65 +619,63 @@
         "title": "आपला व्हिडिओ कॉल व्यत्यय आला कारण हा संगणक झोपायला गेला."
     },
     "toolbar": {
-        "accessibilityLabel": {
-       
-        },
+        "accessibilityLabel": {},
         "addPeople": "आपल्या कॉलमध्ये लोकांना जोडा",
-"audioOnlyOff": "कमी बँडविड्थ मोड अक्षम करा",
-"audioOnlyOn": "कमी बँडविड्थ मोड सक्षम करा",
-"audioRoute": "ध्वनी यंत्र निवडा",
-"authenticate": "प्रमाणित करा",
-"callQuality": "व्हिडिओ गुणवत्ता व्यवस्थापित करा",
-"chat": "गप्पा / बंद करा उघडा",
-"closeChat": "गप्पा बंद करा",
-"documentClose": "सामायिक दस्तऐवज बंद करा",
-"documentOpen": "सामायिक दस्तऐवज उघडा",
-"download": "आमचे अ‍ॅप्स डाउनलोड करा",
-"e2ee": "एंड-टू-एंड एनक्रिप्शन",
-"enterFullScreen": "पूर्ण स्क्रीन पहा",
-"enterTileView": "टाइल दृश्य प्रविष्ट करा",
-"exitFullScreen": "पूर्ण स्क्रीनमधून बाहेर पडा",
-"exitTileView": "बाहेर पडा टाइल दृश्य",
-"feedback": "अभिप्राय द्या",
-"hangup": "सोडा",
-"help": "मदत करा",
-"invite": "लोकांना आमंत्रित करा",
-"login": "लॉगिन",
-"logout": "बाहेर पडणे",
-"lowerYourHand": "बाहेर पडणे",
-"moreActions": "अधिक क्रिया",
-"moreOptions": "अधिक पर्याय",
-"mute": "नि: शब्द / सशब्द करा",
-"muteEveryone": "सर्वांना नि: शब्द करा",
-"noAudioSignalTitle": "आपल्या माइकवरून कोणतेही इनपुट येत नाही!",
-"noAudioSignalDesc": "आपण सिस्टम सेटिंग्ज किंवा हार्डवेअरवरून हेतुपुरस्सर नि: शब्द न केल्यास, डिव्हाइस बदलण्याचा विचार करा.",
-"noAudioSignalDescSuggestion": "आपण सिस्टम सेटिंग्ज किंवा हार्डवेअरवरून हेतुपुरस्सर नि: शब्द न केल्यास, सूचित डिव्हाइसवर स्विच करण्याचा विचार करा.",
-"noAudioSignalDialInDesc": "आपण हे वापरून डायल-इन देखील करू शकता:",
-"noAudioSignalDialInLinkDesc": "डायल-इन क्रमांक",
-"noisyAudioInputTitle": "आपला मायक्रोफोन गोंगाट करणारा दिसत आहे!",
-"noisyAudioInputDesc": "आपला मायक्रोफोन आवाज देत असल्यासारखे दिसत आहे, कृपया डिव्हाइस नि: शब्द करणे किंवा बदलणे याचा विचार करा.",
-"openChat": "खुली गप्पा",
-"pip": "पिक्चर-इन-पिक्चर मोड प्रविष्ट करा",
-"privateMessage": "खाजगी संदेश पाठवा",
-"profile": "आपले प्रोफाइल संपादित करा",
-"raiseHand": "हात वर करा / कमी करा",
-"raiseYourHand": "तुझा हात वर कर",
-"Settings": "सेटिंग्ज",
-"sharedvideo": "एक YouTube व्हिडिओ सामायिक करा",
-"shareRoom": "एखाद्यास आमंत्रित करा",
-"shortcuts": "शॉर्टकट पहा",
-"speakerStats": "स्पीकर आकडेवारी",
-"startScreenSharing": "स्क्रीन सामायिकरण प्रारंभ करा",
-"startSubtitles": "उपशीर्षके प्रारंभ करा",
-"stopScreenSharing": "स्क्रीन सामायिकरण थांबवा",
-"stopSubtitles": "उपशीर्षके थांबवा",
-"stopSharedVideo": "YouTube व्हिडिओ थांबवा",
-"talkWhileMutedPopup": "बोलण्याचा प्रयत्न करीत आहात? आपण निःशब्द आहात.",
-"tileViewToggle": "टाइल दृश्य टॉगल करा",
-"toggleCamera": "टॉगल कॅमेरा",
-"videomute": "कॅमेरा प्रारंभ / थांबवा",
-"startvideoblur": "माझी पार्श्वभूमी अस्पष्ट करा",
-"stopvideoblur": "पार्श्वभूमी डाग अक्षम करा"
+        "audioOnlyOff": "कमी बँडविड्थ मोड अक्षम करा",
+        "audioOnlyOn": "कमी बँडविड्थ मोड सक्षम करा",
+        "audioRoute": "ध्वनी यंत्र निवडा",
+        "authenticate": "प्रमाणित करा",
+        "callQuality": "व्हिडिओ गुणवत्ता व्यवस्थापित करा",
+        "chat": "गप्पा / बंद करा उघडा",
+        "closeChat": "गप्पा बंद करा",
+        "documentClose": "सामायिक दस्तऐवज बंद करा",
+        "documentOpen": "सामायिक दस्तऐवज उघडा",
+        "download": "आमचे अ‍ॅप्स डाउनलोड करा",
+        "e2ee": "एंड-टू-एंड एनक्रिप्शन",
+        "enterFullScreen": "पूर्ण स्क्रीन पहा",
+        "enterTileView": "टाइल दृश्य प्रविष्ट करा",
+        "exitFullScreen": "पूर्ण स्क्रीनमधून बाहेर पडा",
+        "exitTileView": "बाहेर पडा टाइल दृश्य",
+        "feedback": "अभिप्राय द्या",
+        "hangup": "सोडा",
+        "help": "मदत करा",
+        "invite": "लोकांना आमंत्रित करा",
+        "login": "लॉगिन",
+        "logout": "बाहेर पडणे",
+        "lowerYourHand": "बाहेर पडणे",
+        "moreActions": "अधिक क्रिया",
+        "moreOptions": "अधिक पर्याय",
+        "mute": "नि: शब्द / सशब्द करा",
+        "muteEveryone": "सर्वांना नि: शब्द करा",
+        "noAudioSignalTitle": "आपल्या माइकवरून कोणतेही इनपुट येत नाही!",
+        "noAudioSignalDesc": "आपण सिस्टम सेटिंग्ज किंवा हार्डवेअरवरून हेतुपुरस्सर नि: शब्द न केल्यास, डिव्हाइस बदलण्याचा विचार करा.",
+        "noAudioSignalDescSuggestion": "आपण सिस्टम सेटिंग्ज किंवा हार्डवेअरवरून हेतुपुरस्सर नि: शब्द न केल्यास, सूचित डिव्हाइसवर स्विच करण्याचा विचार करा.",
+        "noAudioSignalDialInDesc": "आपण हे वापरून डायल-इन देखील करू शकता:",
+        "noAudioSignalDialInLinkDesc": "डायल-इन क्रमांक",
+        "noisyAudioInputTitle": "आपला मायक्रोफोन गोंगाट करणारा दिसत आहे!",
+        "noisyAudioInputDesc": "आपला मायक्रोफोन आवाज देत असल्यासारखे दिसत आहे, कृपया डिव्हाइस नि: शब्द करणे किंवा बदलणे याचा विचार करा.",
+        "openChat": "खुली गप्पा",
+        "pip": "पिक्चर-इन-पिक्चर मोड प्रविष्ट करा",
+        "privateMessage": "खाजगी संदेश पाठवा",
+        "profile": "आपले प्रोफाइल संपादित करा",
+        "raiseHand": "हात वर करा / कमी करा",
+        "raiseYourHand": "तुझा हात वर कर",
+        "Settings": "सेटिंग्ज",
+        "sharedvideo": "एक YouTube व्हिडिओ सामायिक करा",
+        "shareRoom": "एखाद्यास आमंत्रित करा",
+        "shortcuts": "शॉर्टकट पहा",
+        "speakerStats": "स्पीकर आकडेवारी",
+        "startScreenSharing": "स्क्रीन सामायिकरण प्रारंभ करा",
+        "startSubtitles": "उपशीर्षके प्रारंभ करा",
+        "stopScreenSharing": "स्क्रीन सामायिकरण थांबवा",
+        "stopSubtitles": "उपशीर्षके थांबवा",
+        "stopSharedVideo": "YouTube व्हिडिओ थांबवा",
+        "talkWhileMutedPopup": "बोलण्याचा प्रयत्न करीत आहात? आपण निःशब्द आहात.",
+        "tileViewToggle": "टाइल दृश्य टॉगल करा",
+        "toggleCamera": "टॉगल कॅमेरा",
+        "videomute": "कॅमेरा प्रारंभ / थांबवा",
+        "startvideoblur": "माझी पार्श्वभूमी अस्पष्ट करा",
+        "stopvideoblur": "पार्श्वभूमी डाग अक्षम करा"
     },
     "transcribing": {
         "ccButtonTooltip": "उपशीर्षके प्रारंभ / थांबवा",
@@ -786,30 +783,3 @@
         "header": "मदत केंद्र"
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

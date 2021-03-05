@@ -31,17 +31,10 @@ function stackToString(e) {
  * @returns {Object} - The transport object.
  */
 function buildTransport() {
-    return [
-        'trace',
-        'debug',
-        'info',
-        'log',
-        'warn',
-        'error'
-    ].reduce((logger, logName) => {
+    return ['trace', 'debug', 'info', 'log', 'warn', 'error'].reduce((logger, logName) => {
         logger[logName] = (timestamp: string, ...args: Array<string>) => {
             // It ignores the timestamp argument, because LogBridge will add it on the native side anyway
-            const nargs = args.map(arg => {
+            const nargs = args.map((arg) => {
                 if (arg instanceof Error) {
                     const errorBody = {
                         message: arg.message,

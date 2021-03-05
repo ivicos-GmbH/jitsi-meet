@@ -31,12 +31,12 @@ function setupJitsiLocalStorage() {
             const localStorageContent = JSON.parse(urlParams['appData.localStorageContent']);
 
             if (typeof localStorageContent === 'object') {
-                Object.keys(localStorageContent).forEach(key => {
+                Object.keys(localStorageContent).forEach((key) => {
                     jitsiLocalStorage.setItem(key, localStorageContent[key]);
                 });
             }
         } catch (error) {
-            logger.error('Can\'t parse localStorageContent.', error);
+            logger.error("Can't parse localStorageContent.", error);
         }
 
         jitsiLocalStorage.on('changed', onFakeLocalStorageChanged);

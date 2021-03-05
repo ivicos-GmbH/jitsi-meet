@@ -3,8 +3,7 @@
 import React from 'react';
 
 import { MESSAGE_TYPE_REMOTE } from '../../constants';
-import AbstractMessageContainer, { type Props }
-    from '../AbstractMessageContainer';
+import AbstractMessageContainer, { type Props } from '../AbstractMessageContainer';
 
 import ChatMessageGroup from './ChatMessageGroup';
 
@@ -60,21 +59,13 @@ export default class MessageContainer extends AbstractMessageContainer<Props> {
         const messages = groupedMessages.map((group, index) => {
             const messageType = group[0] && group[0].messageType;
 
-            return (
-                <ChatMessageGroup
-                    className = { messageType || MESSAGE_TYPE_REMOTE }
-                    key = { index }
-                    messages = { group } />
-            );
+            return <ChatMessageGroup className={messageType || MESSAGE_TYPE_REMOTE} key={index} messages={group} />;
         });
 
         return (
-            <div
-                id = 'chatconversation'
-                onScroll = { this._onChatScroll }
-                ref = { this._messageListRef }>
-                { messages }
-                <div ref = { this._messagesListEndRef } />
+            <div id="chatconversation" onScroll={this._onChatScroll} ref={this._messageListRef}>
+                {messages}
+                <div ref={this._messagesListEndRef} />
             </div>
         );
     }
@@ -119,7 +110,6 @@ export default class MessageContainer extends AbstractMessageContainer<Props> {
     _onChatScroll() {
         const element = this._messageListRef.current;
 
-        this._isScrolledToBottom
-            = element.scrollHeight - element.scrollTop === element.clientHeight;
+        this._isScrolledToBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
     }
 }

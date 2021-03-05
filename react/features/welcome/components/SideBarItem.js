@@ -9,7 +9,6 @@ import { Icon } from '../../base/icons';
 import styles from './styles';
 
 type Props = {
-
     /**
      * The icon of the item.
      */
@@ -41,7 +40,6 @@ type Props = {
  * A component rendering an item in the system sidebar.
  */
 class SideBarItem extends Component<Props> {
-
     /**
      * Initializes a new {@code SideBarItem} instance.
      *
@@ -62,20 +60,13 @@ class SideBarItem extends Component<Props> {
      */
     render() {
         const { label, onPress, t } = this.props;
-        const onPressCalculated
-            = typeof onPress === 'function' ? onPress : this._onOpenURL;
+        const onPressCalculated = typeof onPress === 'function' ? onPress : this._onOpenURL;
 
         return (
-            <TouchableOpacity
-                onPress = { onPressCalculated }
-                style = { styles.sideBarItem }>
-                <View style = { styles.sideBarItemButtonContainer }>
-                    <Icon
-                        src = { this.props.icon }
-                        style = { styles.sideBarItemIcon } />
-                    <Text style = { styles.sideBarItemText }>
-                        { t(label) }
-                    </Text>
+            <TouchableOpacity onPress={onPressCalculated} style={styles.sideBarItem}>
+                <View style={styles.sideBarItemButtonContainer}>
+                    <Icon src={this.props.icon} style={styles.sideBarItemIcon} />
+                    <Text style={styles.sideBarItemText}>{t(label)}</Text>
                 </View>
             </TouchableOpacity>
         );

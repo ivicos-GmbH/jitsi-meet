@@ -5,7 +5,6 @@ import { ReducerRegistry } from '../base/redux';
 import { SET_DOCUMENT_EDITING_STATUS, SET_DOCUMENT_URL } from './actionTypes';
 
 const DEFAULT_STATE = {
-
     /**
      * URL for the shared document.
      */
@@ -23,10 +22,8 @@ const DEFAULT_STATE = {
 /**
  * Reduces the Redux actions of the feature features/etherpad.
  */
-ReducerRegistry.register(
-    'features/etherpad',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/etherpad', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case SET_DOCUMENT_EDITING_STATUS:
             return {
                 ...state,
@@ -41,5 +38,5 @@ ReducerRegistry.register(
 
         default:
             return state;
-        }
-    });
+    }
+});

@@ -11,7 +11,6 @@ import { _formatConferenceIDPin } from '../../../_utils';
  * The type of the React {@code Component} props of {@link DialInNumber}.
  */
 type Props = {
-
     /**
      * The numberic identifier for the current conference, used after dialing a
      * the number to join the conference.
@@ -37,7 +36,6 @@ type Props = {
  * @extends Component
  */
 class DialInNumber extends Component<Props> {
-
     /**
      * Initializes a new DialInNumber instance.
      *
@@ -78,32 +76,22 @@ class DialInNumber extends Component<Props> {
         const { conferenceID, phoneNumber, t } = this.props;
 
         return (
-            <div className = 'dial-in-number'>
+            <div className="dial-in-number">
                 <div>
-                    <span className = 'phone-number'>
-                        <span className = 'info-label'>
-                            { t('info.dialInNumber') }
-                        </span>
-                        <span className = 'spacer'>&nbsp;</span>
-                        <span className = 'info-value'>
-                            { phoneNumber }
-                        </span>
+                    <span className="phone-number">
+                        <span className="info-label">{t('info.dialInNumber')}</span>
+                        <span className="spacer">&nbsp;</span>
+                        <span className="info-value">{phoneNumber}</span>
                     </span>
-                    <span className = 'spacer'>&nbsp;</span>
-                    <span className = 'conference-id'>
-                        <span className = 'info-label'>
-                            { t('info.dialInConferenceID') }
-                        </span>
-                        <span className = 'spacer'>&nbsp;</span>
-                        <span className = 'info-value'>
-                            { `${_formatConferenceIDPin(conferenceID)}#` }
-                        </span>
+                    <span className="spacer">&nbsp;</span>
+                    <span className="conference-id">
+                        <span className="info-label">{t('info.dialInConferenceID')}</span>
+                        <span className="spacer">&nbsp;</span>
+                        <span className="info-value">{`${_formatConferenceIDPin(conferenceID)}#`}</span>
                     </span>
                 </div>
-                <a
-                    className = 'dial-in-copy'
-                    onClick = { this._onCopyText }>
-                    <Icon src = { IconCopy } />
+                <a className="dial-in-copy" onClick={this._onCopyText}>
+                    <Icon src={IconCopy} />
                 </a>
             </div>
         );

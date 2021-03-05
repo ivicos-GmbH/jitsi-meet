@@ -15,7 +15,6 @@ export const SCREEN_STATES = {
 };
 
 export type Props = {
-
     /**
      * True if knocking is already happening, so we're waiting for a response.
      */
@@ -39,7 +38,7 @@ export type Props = {
     /**
      * The name of the participant about to knock/join.
      */
-    _participantName: string;
+    _participantName: string,
 
     /**
      * True if a recent attempt to join with password failed.
@@ -58,7 +57,6 @@ export type Props = {
 };
 
 type State = {
-
     /**
      * The display name value entered into the field.
      */
@@ -83,7 +81,7 @@ type State = {
      * The state of the screen. One of {@code SCREEN_STATES[*]}
      */
     screenState: number
-}
+};
 
 /**
  * Abstract class to encapsulate the platform common code of the {@code LobbyScreen}.
@@ -141,9 +139,7 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
         const { screenState } = this.state;
         const passwordPrompt = screenState === SCREEN_STATES.PASSWORD;
 
-        return !passwordPrompt && this.props._knocking
-            ? 'lobby.joiningTitle'
-            : passwordPrompt ? 'lobby.enterPasswordTitle' : 'lobby.joinTitle';
+        return !passwordPrompt && this.props._knocking ? 'lobby.joiningTitle' : passwordPrompt ? 'lobby.enterPasswordTitle' : 'lobby.joinTitle';
     }
 
     _onAskToJoin: () => void;
@@ -177,7 +173,7 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
         return true;
     }
 
-    _onChangeDisplayName: Object => void;
+    _onChangeDisplayName: (Object) => void;
 
     /**
      * Callback to be invoked when the user changes its display name.
@@ -188,16 +184,21 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
     _onChangeDisplayName(event) {
         const displayName = getFieldValue(event);
 
-        this.setState({
-            displayName
-        }, () => {
-            this.props.dispatch(updateSettings({
+        this.setState(
+            {
                 displayName
-            }));
-        });
+            },
+            () => {
+                this.props.dispatch(
+                    updateSettings({
+                        displayName
+                    })
+                );
+            }
+        );
     }
 
-    _onChangeEmail: Object => void;
+    _onChangeEmail: (Object) => void;
 
     /**
      * Callback to be invoked when the user changes its email.
@@ -208,16 +209,21 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
     _onChangeEmail(event) {
         const email = getFieldValue(event);
 
-        this.setState({
-            email
-        }, () => {
-            this.props.dispatch(updateSettings({
+        this.setState(
+            {
                 email
-            }));
-        });
+            },
+            () => {
+                this.props.dispatch(
+                    updateSettings({
+                        email
+                    })
+                );
+            }
+        );
     }
 
-    _onChangePassword: Object => void;
+    _onChangePassword: (Object) => void;
 
     /**
      * Callback to be invoked when the user changes the password.
@@ -301,13 +307,12 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
 
         return (
             <>
-                { screenState === SCREEN_STATES.VIEW && this._renderParticipantInfo() }
-                { screenState === SCREEN_STATES.EDIT && this._renderParticipantForm() }
-                { screenState === SCREEN_STATES.PASSWORD && this._renderPasswordForm() }
+                {screenState === SCREEN_STATES.VIEW && this._renderParticipantInfo()}
+                {screenState === SCREEN_STATES.EDIT && this._renderParticipantForm()}
+                {screenState === SCREEN_STATES.PASSWORD && this._renderPasswordForm()}
 
-                { (screenState === SCREEN_STATES.VIEW || screenState === SCREEN_STATES.EDIT)
-                    && this._renderStandardButtons() }
-                { screenState === SCREEN_STATES.PASSWORD && this._renderPasswordJoinButtons() }
+                {(screenState === SCREEN_STATES.VIEW || screenState === SCREEN_STATES.EDIT) && this._renderStandardButtons()}
+                {screenState === SCREEN_STATES.PASSWORD && this._renderPasswordJoinButtons()}
             </>
         );
     }

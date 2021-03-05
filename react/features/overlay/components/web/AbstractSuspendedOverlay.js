@@ -7,7 +7,6 @@ import { Component } from 'react';
  * {@link AbstractSuspendedOverlay}.
  */
 type Props = {
-
     /**
      * The function to translate human-readable text.
      */

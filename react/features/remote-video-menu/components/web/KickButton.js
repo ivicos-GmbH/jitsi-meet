@@ -5,9 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconKick } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import AbstractKickButton, {
-    type Props
-} from '../AbstractKickButton';
+import AbstractKickButton, { type Props } from '../AbstractKickButton';
 
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
 
@@ -44,15 +42,16 @@ class KickButton extends AbstractKickButton {
 
         return (
             <RemoteVideoMenuButton
-                buttonText = { t('videothumbnail.kick') }
-                displayClass = 'kicklink'
-                icon = { IconKick }
-                id = { `ejectlink_${participantID}` }
+                buttonText={t('videothumbnail.kick')}
+                displayClass="kicklink"
+                icon={IconKick}
+                id={`ejectlink_${participantID}`}
                 // eslint-disable-next-line react/jsx-handler-names
-                onClick = { this._handleClick } />
+                onClick={this._handleClick}
+            />
         );
     }
 
-    _handleClick: () => void
+    _handleClick: () => void;
 }
 export default translate(connect()(KickButton));

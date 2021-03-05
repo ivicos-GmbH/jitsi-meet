@@ -1,2 +1,1 @@
-export { default as ChromeExtensionBanner }
-    from './ChromeExtensionBanner';
+export { default as ChromeExtensionBanner } from './ChromeExtensionBanner';

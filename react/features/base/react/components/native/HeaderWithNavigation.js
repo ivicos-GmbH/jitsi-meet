@@ -9,9 +9,7 @@ import ForwardButton from './ForwardButton';
 import Header from './Header';
 import HeaderLabel from './HeaderLabel';
 
-
 type Props = {
-
     /**
      * Boolean to set the forward button disabled.
      */
@@ -35,8 +33,8 @@ type Props = {
     /**
      * Callback to be invoked on pressing the forward button.
      */
-    onPressForward: ?Function,
-}
+    onPressForward: ?Function
+};
 
 /**
  * Implements a header with the standard navigation content.
@@ -52,12 +50,9 @@ class HeaderWithNavigation extends Component<Props> {
 
         return (
             <Header>
-                { onPressBack && <BackButton onPress = { onPressBack } /> }
-                <HeaderLabel labelKey = { this.props.headerLabelKey } />
-                { onPressForward && <ForwardButton
-                    disabled = { this.props.forwardDisabled }
-                    labelKey = { this.props.forwardLabelKey }
-                    onPress = { onPressForward } /> }
+                {onPressBack && <BackButton onPress={onPressBack} />}
+                <HeaderLabel labelKey={this.props.headerLabelKey} />
+                {onPressForward && <ForwardButton disabled={this.props.forwardDisabled} labelKey={this.props.forwardLabelKey} onPress={onPressForward} />}
             </Header>
         );
     }

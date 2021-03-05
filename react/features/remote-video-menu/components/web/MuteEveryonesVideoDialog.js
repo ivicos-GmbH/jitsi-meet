@@ -5,8 +5,7 @@ import React from 'react';
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-import AbstractMuteEveryonesVideoDialog, { abstractMapStateToProps, type Props }
-    from '../AbstractMuteEveryonesVideoDialog';
+import AbstractMuteEveryonesVideoDialog, { abstractMapStateToProps, type Props } from '../AbstractMuteEveryonesVideoDialog';
 
 /**
  * A React Component with the contents for a dialog that asks for confirmation
@@ -23,14 +22,8 @@ class MuteEveryonesVideoDialog extends AbstractMuteEveryonesVideoDialog<Props> {
      */
     render() {
         return (
-            <Dialog
-                okKey = 'dialog.muteParticipantsVideoButton'
-                onSubmit = { this._onSubmit }
-                titleString = { this.props.title }
-                width = 'small'>
-                <div>
-                    { this.props.content }
-                </div>
+            <Dialog okKey="dialog.muteParticipantsVideoButton" onSubmit={this._onSubmit} titleString={this.props.title} width="small">
+                <div>{this.props.content}</div>
             </Dialog>
         );
     }

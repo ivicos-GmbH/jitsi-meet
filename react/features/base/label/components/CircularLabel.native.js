@@ -5,9 +5,7 @@ import { Animated, Text } from 'react-native';
 import Icon from '../../icons/components/Icon';
 import { combineStyles, type StyleType } from '../../styles';
 
-import AbstractCircularLabel, {
-    type Props as AbstractProps
-} from './AbstractCircularLabel';
+import AbstractCircularLabel, { type Props as AbstractProps } from './AbstractCircularLabel';
 import styles from './styles';
 
 /**
@@ -21,13 +19,12 @@ const STATUS_IN_PROGRESS = 'in_progress';
 const STATUS_OFF = 'off';
 
 type Props = AbstractProps & {
-
     /**
      * Status of the label. This prop adds some additional styles based on its
      * value. E.g. if status = off, it will render the label symbolising that
      * the thing it displays (e.g. recording) is off.
      */
-    status: ('in_progress' | 'off' | 'on'),
+    status: 'in_progress' | 'off' | 'on',
 
     /**
      * Style of the label.
@@ -36,13 +33,12 @@ type Props = AbstractProps & {
 };
 
 type State = {
-
     /**
      * An animation object handling the opacity changes of the in progress
      * label.
      */
     pulseAnimation: Object
-}
+};
 
 /**
  * Renders a circular indicator to be used for status icons, such as recording
@@ -96,36 +92,19 @@ export default class CircularLabel extends AbstractCircularLabel<Props, State> {
         let extraStyle = null;
 
         switch (status) {
-        case STATUS_IN_PROGRESS:
-            extraStyle = {
-                opacity: this.state.pulseAnimation
-            };
-            break;
-        case STATUS_OFF:
-            extraStyle = styles.labelOff;
-            break;
+            case STATUS_IN_PROGRESS:
+                extraStyle = {
+                    opacity: this.state.pulseAnimation
+                };
+                break;
+            case STATUS_OFF:
+                extraStyle = styles.labelOff;
+                break;
         }
 
-        const labelComponent = icon
-            ? (
-                <Icon
-                    src = { icon }
-                    style = { styles.indicatorIcon } />
-            ) : (
-                <Text style = { styles.indicatorText }>
-                    { label }
-                </Text>
-            );
+        const labelComponent = icon ? <Icon src={icon} style={styles.indicatorIcon} /> : <Text style={styles.indicatorText}>{label}</Text>;
 
-        return (
-            <Animated.View
-                style = { [
-                    combineStyles(styles.indicatorContainer, style),
-                    extraStyle
-                ] }>
-                { labelComponent }
-            </Animated.View>
-        );
+        return <Animated.View style={[combineStyles(styles.indicatorContainer, style), extraStyle]}>{labelComponent}</Animated.View>;
     }
 
     /**
@@ -141,25 +120,24 @@ export default class CircularLabel extends AbstractCircularLabel<Props, State> {
         const { status: newStatus } = newProps;
         const { pulseAnimation } = this.state;
 
-        if (newStatus === STATUS_IN_PROGRESS
-                && oldStatus !== STATUS_IN_PROGRESS) {
+        if (newStatus === STATUS_IN_PROGRESS && oldStatus !== STATUS_IN_PROGRESS) {
             // Animation must be started
-            this.animationReference = Animated.loop(Animated.sequence([
-                Animated.timing(pulseAnimation, {
-                    delay: 500,
-                    toValue: 1,
-                    useNativeDriver: true
-                }),
-                Animated.timing(pulseAnimation, {
-                    toValue: 0.3,
-                    useNativeDriver: true
-                })
-            ]));
+            this.animationReference = Animated.loop(
+                Animated.sequence([
+                    Animated.timing(pulseAnimation, {
+                        delay: 500,
+                        toValue: 1,
+                        useNativeDriver: true
+                    }),
+                    Animated.timing(pulseAnimation, {
+                        toValue: 0.3,
+                        useNativeDriver: true
+                    })
+                ])
+            );
 
             this.animationReference.start();
-        } else if (this.animationReference
-                && newStatus !== STATUS_IN_PROGRESS
-                && oldStatus === STATUS_IN_PROGRESS) {
+        } else if (this.animationReference && newStatus !== STATUS_IN_PROGRESS && oldStatus === STATUS_IN_PROGRESS) {
             // Animation must be stopped
             this.animationReference.stop();
         }

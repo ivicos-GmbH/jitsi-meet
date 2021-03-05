@@ -45,8 +45,7 @@ const AudioLevels = {
 
         // External circle audio level.
         const ext = {
-            level: parseFloat(
-                ((int.level * scale * level) + int.level).toFixed(0)),
+            level: parseFloat((int.level * scale * level + int.level).toFixed(0)),
             color: interfaceConfig.AUDIO_LEVEL_SECONDARY_COLOR
         };
 
@@ -56,10 +55,7 @@ const AudioLevels = {
         // External blur.
         ext.blur = ext.level ? 6 : 0;
 
-        return [
-            `0 0 ${int.blur}px ${int.level}px ${int.color}`,
-            `0 0 ${ext.blur}px ${ext.level}px ${ext.color}`
-        ].join(', ');
+        return [`0 0 ${int.blur}px ${int.level}px ${int.color}`, `0 0 ${ext.blur}px ${ext.level}px ${ext.color}`].join(', ');
     }
 };
 

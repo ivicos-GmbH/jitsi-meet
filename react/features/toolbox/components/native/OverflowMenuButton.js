@@ -13,7 +13,6 @@ import OverflowMenu from './OverflowMenu';
  * The type of the React {@code Component} props of {@link OverflowMenuButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */

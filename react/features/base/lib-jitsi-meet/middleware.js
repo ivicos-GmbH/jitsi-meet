@@ -22,28 +22,28 @@ declare var APP: Object;
  * @private
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case LIB_WILL_INIT:
-        // Moved from conference.js init method. It appears the error handlers
-        // are not used for mobile.
-        if (typeof APP !== 'undefined') {
-            _setErrorHandlers();
-        }
-        break;
+        case LIB_WILL_INIT:
+            // Moved from conference.js init method. It appears the error handlers
+            // are not used for mobile.
+            if (typeof APP !== 'undefined') {
+                _setErrorHandlers();
+            }
+            break;
 
-    case SET_NETWORK_INFO:
-        JitsiMeetJS.setNetworkInfo({
-            isOnline: action.isOnline
-        });
-        break;
+        case SET_NETWORK_INFO:
+            JitsiMeetJS.setNetworkInfo({
+                isOnline: action.isOnline
+            });
+            break;
 
-    case PARTICIPANT_LEFT:
-        action.participant.local && store.dispatch(disposeLib());
-        break;
+        case PARTICIPANT_LEFT:
+            action.participant.local && store.dispatch(disposeLib());
+            break;
 
-    case SET_CONFIG:
-        return _setConfig(store, next, action);
+        case SET_CONFIG:
+            return _setConfig(store, next, action);
     }
 
     return next(action);
@@ -116,7 +116,7 @@ function _setErrorHandlers() {
 
         const oldOnUnhandledRejection = window.onunhandledrejection;
 
-        window.onunhandledrejection = function(event) {
+        window.onunhandledrejection = function (event) {
             let message = event.reason;
             let stack = 'n/a';
 

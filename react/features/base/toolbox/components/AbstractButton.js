@@ -8,7 +8,6 @@ import type { Styles } from './AbstractToolboxItem';
 import ToolboxItem from './ToolboxItem';
 
 export type Props = {
-
     /**
      * Function to be called after the click handler has been processed.
      */
@@ -160,9 +159,7 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
      * @returns {string}
      */
     _getIcon() {
-        return (
-            this._isToggled() ? this.toggledIcon : this.icon
-        ) || this.icon;
+        return (this._isToggled() ? this.toggledIcon : this.icon) || this.icon;
     }
 
     /**
@@ -174,8 +171,7 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
      * @returns {string}
      */
     _getLabel() {
-        return (this._isToggled() ? this.toggledLabel : this.label)
-            || this.label;
+        return (this._isToggled() ? this.toggledLabel : this.label) || this.label;
     }
 
     /**
@@ -188,19 +184,14 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
      */
     _getStyles(): ?Styles {
         const { disabledStyles, styles, toggledStyles } = this.props;
-        const buttonStyles
-            = (this._isToggled() ? toggledStyles : styles) || styles;
+        const buttonStyles = (this._isToggled() ? toggledStyles : styles) || styles;
 
         if (this._isDisabled() && buttonStyles && disabledStyles) {
             return {
-                iconStyle: combineStyles(
-                    buttonStyles.iconStyle, disabledStyles.iconStyle),
-                labelStyle: combineStyles(
-                    buttonStyles.labelStyle, disabledStyles.labelStyle),
-                style: combineStyles(
-                    buttonStyles.style, disabledStyles.style),
-                underlayColor:
-                    disabledStyles.underlayColor || buttonStyles.underlayColor
+                iconStyle: combineStyles(buttonStyles.iconStyle, disabledStyles.iconStyle),
+                labelStyle: combineStyles(buttonStyles.labelStyle, disabledStyles.labelStyle),
+                style: combineStyles(buttonStyles.style, disabledStyles.style),
+                underlayColor: disabledStyles.underlayColor || buttonStyles.underlayColor
             };
         }
 
@@ -275,11 +266,6 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
             tooltip: this._getTooltip()
         };
 
-        return (
-            <ToolboxItem
-                disabled = { this._isDisabled() }
-                onClick = { this._onClick }
-                { ...props } />
-        );
+        return <ToolboxItem disabled={this._isDisabled()} onClick={this._onClick} {...props} />;
     }
 }

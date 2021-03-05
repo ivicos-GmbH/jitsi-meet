@@ -10,7 +10,6 @@ import { copyText, getDecodedURI } from '../../../util';
 import logger from '../../logger';
 
 type Props = {
-
     /**
      * The meeting url.
      */
@@ -25,11 +24,10 @@ type Props = {
      * Used to determine if invitation link should be automatically copied
      * after creating a meeting.
      */
-    _enableAutomaticUrlCopy: boolean,
+    _enableAutomaticUrlCopy: boolean
 };
 
 type State = {
-
     /**
      * If true it shows the 'copy link' message.
      */
@@ -38,7 +36,7 @@ type State = {
     /**
      * If true it shows the 'link copied' message.
      */
-    showLinkCopied: boolean,
+    showLinkCopied: boolean
 };
 
 const COPY_TIMEOUT = 2000;
@@ -47,7 +45,6 @@ const COPY_TIMEOUT = 2000;
  * Component used to copy meeting url on prejoin page.
  */
 class CopyMeetingUrl extends Component<Props, State> {
-
     /**
      * Initializes a new {@code Prejoin} instance.
      *
@@ -153,12 +150,13 @@ class CopyMeetingUrl extends Component<Props, State> {
      * @returns {void}
      */
     _copyUrlAutomatically() {
-        navigator.clipboard.writeText(this.props.url)
+        navigator.clipboard
+            .writeText(this.props.url)
             .then(() => {
                 this._showLinkCopied();
                 window.setTimeout(this._hideLinkCopied, COPY_TIMEOUT);
             })
-            .catch(e => {
+            .catch((e) => {
                 logger.error(e);
             });
     }
@@ -190,22 +188,14 @@ class CopyMeetingUrl extends Component<Props, State> {
         const src = showLinkCopied ? IconCheck : IconCopy;
 
         return (
-            <div
-                className = 'copy-meeting'
-                onMouseEnter = { _showCopyLink }
-                onMouseLeave = { _hideCopyLink }>
-                <div
-                    className = { `url ${showLinkCopied ? 'done' : ''}` }
-                    onClick = { _copyUrl } >
-                    <div className = 'copy-meeting-text'>
-                        { !showCopyLink && !showLinkCopied && getDecodedURI(url) }
-                        { showCopyLink && t('prejoin.copyAndShare') }
-                        { showLinkCopied && t('prejoin.linkCopied') }
+            <div className="copy-meeting" onMouseEnter={_showCopyLink} onMouseLeave={_hideCopyLink}>
+                <div className={`url ${showLinkCopied ? 'done' : ''}`} onClick={_copyUrl}>
+                    <div className="copy-meeting-text">
+                        {!showCopyLink && !showLinkCopied && getDecodedURI(url)}
+                        {showCopyLink && t('prejoin.copyAndShare')}
+                        {showLinkCopied && t('prejoin.linkCopied')}
                     </div>
-                    <Icon
-                        onClick = { _copyUrl }
-                        size = { 24 }
-                        src = { src } />
+                    <Icon onClick={_copyUrl} size={24} src={src} />
                 </div>
             </div>
         );

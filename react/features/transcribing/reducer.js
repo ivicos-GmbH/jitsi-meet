@@ -1,10 +1,5 @@
 import { ReducerRegistry } from '../base/redux';
-import {
-    _TRANSCRIBER_JOINED,
-    _TRANSCRIBER_LEFT,
-    _POTENTIAL_TRANSCRIBER_JOINED,
-    SET_PENDING_TRANSCRIBING_NOTIFICATION_UID
-} from '../transcribing/actionTypes';
+import { _TRANSCRIBER_JOINED, _TRANSCRIBER_LEFT, _POTENTIAL_TRANSCRIBER_JOINED, SET_PENDING_TRANSCRIBING_NOTIFICATION_UID } from '../transcribing/actionTypes';
 
 /**
  * Returns initial state for transcribing feature part of Redux store.
@@ -60,9 +55,8 @@ function _getInitialState() {
 /**
  * Reduces the Redux actions of the feature features/transcribing.
  */
-ReducerRegistry.register('features/transcribing',
-    (state = _getInitialState(), action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/transcribing', (state = _getInitialState(), action) => {
+    switch (action.type) {
         case _TRANSCRIBER_JOINED:
             return {
                 ...state,
@@ -81,9 +75,7 @@ ReducerRegistry.register('features/transcribing',
         case _POTENTIAL_TRANSCRIBER_JOINED:
             return {
                 ...state,
-                potentialTranscriberJIDs:
-                    [ action.transcriberJID ]
-                        .concat(state.potentialTranscriberJIDs)
+                potentialTranscriberJIDs: [action.transcriberJID].concat(state.potentialTranscriberJIDs)
             };
         case SET_PENDING_TRANSCRIBING_NOTIFICATION_UID:
             return {
@@ -92,5 +84,5 @@ ReducerRegistry.register('features/transcribing',
             };
         default:
             return state;
-        }
-    });
+    }
+});

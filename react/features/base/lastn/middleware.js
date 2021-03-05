@@ -6,15 +6,8 @@ import { APP_STATE_CHANGED } from '../../mobile/background/actionTypes';
 import { SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED, SET_TILE_VIEW } from '../../video-layout/actionTypes';
 import { SET_AUDIO_ONLY } from '../audio-only/actionTypes';
 import { CONFERENCE_JOINED } from '../conference/actionTypes';
-import {
-    PARTICIPANT_JOINED,
-    PARTICIPANT_KICKED,
-    PARTICIPANT_LEFT
-} from '../participants/actionTypes';
-import {
-    getParticipantById,
-    getParticipantCount
-} from '../participants/functions';
+import { PARTICIPANT_JOINED, PARTICIPANT_KICKED, PARTICIPANT_LEFT } from '../participants/actionTypes';
+import { getParticipantById, getParticipantCount } from '../participants/functions';
 import { MiddlewareRegistry } from '../redux';
 import { isLocalVideoTrackDesktop } from '../tracks/functions';
 
@@ -23,23 +16,22 @@ import logger from './logger';
 
 declare var APP: Object;
 
-
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     switch (action.type) {
-    case APP_STATE_CHANGED:
-    case CONFERENCE_JOINED:
-    case PARTICIPANT_JOINED:
-    case PARTICIPANT_KICKED:
-    case PARTICIPANT_LEFT:
-    case SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED:
-    case SELECT_LARGE_VIDEO_PARTICIPANT:
-    case SET_AUDIO_ONLY:
-    case SET_FILMSTRIP_ENABLED:
-    case SET_TILE_VIEW:
-        _updateLastN(store);
-        break;
+        case APP_STATE_CHANGED:
+        case CONFERENCE_JOINED:
+        case PARTICIPANT_JOINED:
+        case PARTICIPANT_KICKED:
+        case PARTICIPANT_LEFT:
+        case SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED:
+        case SELECT_LARGE_VIDEO_PARTICIPANT:
+        case SET_AUDIO_ONLY:
+        case SET_FILMSTRIP_ENABLED:
+        case SET_TILE_VIEW:
+            _updateLastN(store);
+            break;
     }
 
     return result;
@@ -82,8 +74,7 @@ function _updateLastN({ getState }) {
     } else if (audioOnly) {
         const { remoteScreenShares, tileViewEnabled } = state['features/video-layout'];
         const largeVideoParticipantId = state['features/large-video'].participantId;
-        const largeVideoParticipant
-            = largeVideoParticipantId ? getParticipantById(state, largeVideoParticipantId) : undefined;
+        const largeVideoParticipant = largeVideoParticipantId ? getParticipantById(state, largeVideoParticipantId) : undefined;
 
         // Use tileViewEnabled state from redux here instead of determining if client should be in tile
         // view since we make an exception only for screenshare when in audio-only mode. If the user unpins

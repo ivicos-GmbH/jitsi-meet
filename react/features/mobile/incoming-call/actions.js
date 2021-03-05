@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    INCOMING_CALL_ANSWERED,
-    INCOMING_CALL_DECLINED,
-    INCOMING_CALL_RECEIVED
-} from './actionTypes';
+import { INCOMING_CALL_ANSWERED, INCOMING_CALL_DECLINED, INCOMING_CALL_RECEIVED } from './actionTypes';
 
 /**
  * Answers a received incoming call.

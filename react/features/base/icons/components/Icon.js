@@ -6,7 +6,6 @@ import { Container } from '../../react/base';
 import { styleTypeToObject } from '../../styles';
 
 type Props = {
-
     /**
      * Class name for the web platform, if any.
      */
@@ -53,34 +52,15 @@ export const DEFAULT_SIZE = navigator.product === 'ReactNative' ? 36 : 24;
  * @returns {Reactelement}
  */
 export default function Icon(props: Props) {
-    const {
-        className,
-        color,
-        id,
-        onClick,
-        size,
-        src: IconComponent,
-        style
-    } = props;
+    const { className, color, id, onClick, size, src: IconComponent, style } = props;
 
-    const {
-        color: styleColor,
-        fontSize: styleSize,
-        ...restStyle
-    } = styleTypeToObject(style ?? {});
+    const { color: styleColor, fontSize: styleSize, ...restStyle } = styleTypeToObject(style ?? {});
     const calculatedColor = color ?? styleColor ?? DEFAULT_COLOR;
     const calculatedSize = size ?? styleSize ?? DEFAULT_SIZE;
 
     return (
-        <Container
-            className = { `jitsi-icon ${className}` }
-            onClick = { onClick }
-            style = { restStyle }>
-            <IconComponent
-                fill = { calculatedColor }
-                height = { calculatedSize }
-                id = { id }
-                width = { calculatedSize } />
+        <Container className={`jitsi-icon ${className}`} onClick={onClick} style={restStyle}>
+            <IconComponent fill={calculatedColor} height={calculatedSize} id={id} width={calculatedSize} />
         </Container>
     );
 }

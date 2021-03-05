@@ -15,7 +15,6 @@ import AbstractRecentList from './AbstractRecentList';
  * The type of the React {@code Component} props of {@link RecentList}
  */
 type Props = {
-
     /**
      * Renders the list disabled.
      */
@@ -43,7 +42,7 @@ type Props = {
  */
 class RecentList extends AbstractRecentList<Props> {
     _getRenderListEmptyComponent: () => React$Node;
-    _onPress: string => {};
+    _onPress: (string) => {};
 
     /**
      * Initializes a new {@code RecentList} instance.
@@ -53,13 +52,12 @@ class RecentList extends AbstractRecentList<Props> {
     constructor(props: Props) {
         super(props);
 
-        this._getRenderListEmptyComponent
-            = this._getRenderListEmptyComponent.bind(this);
+        this._getRenderListEmptyComponent = this._getRenderListEmptyComponent.bind(this);
         this._onPress = this._onPress.bind(this);
         this._onItemDelete = this._onItemDelete.bind(this);
     }
 
-    _onItemDelete: Object => void;
+    _onItemDelete: (Object) => void;
 
     /**
      * Deletes a recent entry.
@@ -80,20 +78,18 @@ class RecentList extends AbstractRecentList<Props> {
         if (!isRecentListEnabled()) {
             return null;
         }
-        const {
-            disabled,
-            _recentList
-        } = this.props;
+        const { disabled, _recentList } = this.props;
         const recentList = toDisplayableList(_recentList);
 
         return (
             <MeetingsList
-                disabled = { disabled }
-                hideURL = { true }
-                listEmptyComponent = { this._getRenderListEmptyComponent() }
-                meetings = { recentList }
-                onItemDelete = { this._onItemDelete }
-                onPress = { this._onPress } />
+                disabled={disabled}
+                hideURL={true}
+                listEmptyComponent={this._getRenderListEmptyComponent()}
+                meetings={recentList}
+                onItemDelete={this._onItemDelete}
+                onPress={this._onPress}
+            />
         );
     }
 }

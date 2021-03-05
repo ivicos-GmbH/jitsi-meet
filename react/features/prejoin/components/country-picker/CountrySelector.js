@@ -5,7 +5,6 @@ import React from 'react';
 import { Icon, IconArrowDown } from '../../../base/icons';
 
 type Props = {
-
     /**
      * Country object of the entry.
      */
@@ -14,7 +13,7 @@ type Props = {
     /**
      * Click handler for the selector.
      */
-    onClick: Function,
+    onClick: Function
 };
 
 /**
@@ -24,15 +23,10 @@ type Props = {
  */
 function CountrySelector({ country: { code, dialCode }, onClick }: Props) {
     return (
-        <div
-            className = 'cpick-selector'
-            onClick = { onClick }>
-            <div className = { `prejoin-dialog-flag iti-flag ${code}` } />
+        <div className="cpick-selector" onClick={onClick}>
+            <div className={`prejoin-dialog-flag iti-flag ${code}`} />
             <span>{`+${dialCode}`}</span>
-            <Icon
-                className = 'cpick-icon'
-                size = { 16 }
-                src = { IconArrowDown } />
+            <Icon className="cpick-icon" size={16} src={IconArrowDown} />
         </div>
     );
 }

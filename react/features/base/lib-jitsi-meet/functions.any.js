@@ -17,18 +17,15 @@ const JitsiConnectionErrors = JitsiMeetJS.errors.connection;
  * @returns {Promise<JitsiLocalTrack>}
  */
 export function createLocalTrack(type: string, deviceId: string, timeout: ?number) {
-    return (
-        JitsiMeetJS.createLocalTracks({
-            cameraDeviceId: deviceId,
-            devices: [ type ],
+    return JitsiMeetJS.createLocalTracks({
+        cameraDeviceId: deviceId,
+        devices: [type],
 
-            // eslint-disable-next-line camelcase
-            firefox_fake_device:
-                window.config && window.config.firefox_fake_device,
-            micDeviceId: deviceId,
-            timeout
-        })
-            .then(([ jitsiLocalTrack ]) => jitsiLocalTrack));
+        // eslint-disable-next-line camelcase
+        firefox_fake_device: window.config && window.config.firefox_fake_device,
+        micDeviceId: deviceId,
+        timeout
+    }).then(([jitsiLocalTrack]) => jitsiLocalTrack);
 }
 
 /**
@@ -65,11 +62,12 @@ export function isFatalJitsiConferenceError(error: Object | string) {
     }
 
     return (
-        error === JitsiConferenceErrors.FOCUS_DISCONNECTED
-            || error === JitsiConferenceErrors.FOCUS_LEFT
-            || error === JitsiConferenceErrors.ICE_FAILED
-            || error === JitsiConferenceErrors.OFFER_ANSWER_FAILED
-            || error === JitsiConferenceErrors.VIDEOBRIDGE_NOT_AVAILABLE);
+        error === JitsiConferenceErrors.FOCUS_DISCONNECTED ||
+        error === JitsiConferenceErrors.FOCUS_LEFT ||
+        error === JitsiConferenceErrors.ICE_FAILED ||
+        error === JitsiConferenceErrors.OFFER_ANSWER_FAILED ||
+        error === JitsiConferenceErrors.VIDEOBRIDGE_NOT_AVAILABLE
+    );
 }
 
 /**
@@ -91,8 +89,5 @@ export function isFatalJitsiConnectionError(error: Object | string) {
         error = error.name; // eslint-disable-line no-param-reassign
     }
 
-    return (
-        error === JitsiConnectionErrors.CONNECTION_DROPPED_ERROR
-            || error === JitsiConnectionErrors.OTHER_ERROR
-            || error === JitsiConnectionErrors.SERVER_ERROR);
+    return error === JitsiConnectionErrors.CONNECTION_DROPPED_ERROR || error === JitsiConnectionErrors.OTHER_ERROR || error === JitsiConnectionErrors.SERVER_ERROR;
 }

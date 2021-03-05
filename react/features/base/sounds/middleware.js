@@ -11,14 +11,14 @@ import logger from './logger';
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case PLAY_SOUND:
-        _playSound(store, action.soundId);
-        break;
-    case STOP_SOUND:
-        _stopSound(store, action.soundId);
-        break;
+        case PLAY_SOUND:
+            _playSound(store, action.soundId);
+            break;
+        case STOP_SOUND:
+            _stopSound(store, action.soundId);
+            break;
     }
 
     return next(action);

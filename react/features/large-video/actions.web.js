@@ -11,10 +11,10 @@ import { UPDATE_LAST_LARGE_VIDEO_MEDIA_EVENT } from './actionTypes';
 export * from './actions.any';
 
 /**
-* Captures a screenshot of the video displayed on the large video.
-*
-* @returns {Function}
-*/
+ * Captures a screenshot of the video displayed on the large video.
+ *
+ * @returns {Function}
+ */
 export function captureLargeVideoScreenshot() {
     return (dispatch: Dispatch<any>, getState: Function): Promise<string> => {
         const state = getState();
@@ -46,7 +46,7 @@ export function captureLargeVideoScreenshot() {
         }
 
         // Create a HTML canvas and draw video on to the canvas.
-        const [ track ] = videoStream.getVideoTracks();
+        const [track] = videoStream.getVideoTracks();
         const { height, width } = track.getSettings() ?? track.getConstraints();
         const canvasElement = document.createElement('canvas');
         const ctx = canvasElement.getContext('2d');

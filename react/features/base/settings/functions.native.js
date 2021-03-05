@@ -31,6 +31,5 @@ export function handleCallIntegrationChange(disabled: boolean) {
  * @returns {void}
  */
 export function handleCrashReportingChange(disabled: boolean) {
-    DefaultPreference.setName('jitsi-default-preferences').then(
-        DefaultPreference.set('isCrashReportingDisabled', disabled.toString()));
+    DefaultPreference.setName('jitsi-default-preferences').then(DefaultPreference.set('isCrashReportingDisabled', disabled.toString()));
 }

@@ -11,7 +11,6 @@ import { connect } from '../../base/redux';
  * The type of the React {@code Component} props of {@link ConferenceTimer}.
  */
 type Props = {
-
     /**
      * The UTC timestamp representing the time when first participant joined.
      */
@@ -27,7 +26,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link ConferenceTimer}.
  */
 type State = {
-
     /**
      * Value of current conference time.
      */
@@ -41,7 +39,6 @@ type State = {
  * @extends Component
  */
 class ConferenceTimer extends Component<Props, State> {
-
     /**
      * Handle for setInterval timer.
      */
@@ -107,7 +104,6 @@ class ConferenceTimer extends Component<Props, State> {
      * @returns {void}
      */
     _setStateFromUTC(refValueUTC, currentValueUTC) {
-
         if (!refValueUTC || !currentValueUTC) {
             return;
         }
@@ -132,10 +128,10 @@ class ConferenceTimer extends Component<Props, State> {
      */
     _startTimer() {
         if (!this._interval) {
-            this._setStateFromUTC(this.props._startTimestamp, (new Date()).getTime());
+            this._setStateFromUTC(this.props._startTimestamp, new Date().getTime());
 
             this._interval = setInterval(() => {
-                this._setStateFromUTC(this.props._startTimestamp, (new Date()).getTime());
+                this._setStateFromUTC(this.props._startTimestamp, new Date().getTime());
             }, 1000);
         }
     }
@@ -167,7 +163,6 @@ class ConferenceTimer extends Component<Props, State> {
  * }}
  */
 export function _mapStateToProps(state: Object) {
-
     return {
         _startTimestamp: getConferenceTimestamp(state)
     };

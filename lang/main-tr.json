@@ -1,17 +1,17 @@
 {
     "addPeople": {
         "add": "Davet et",
-    	"addContacts": "Kişilerinizi davet edin",
+        "addContacts": "Kişilerinizi davet edin",
         "copyInvite": "Toplantı davetini kopyala",
         "copyLink": "Toplantı bağlantısını kopyala",
-	    "copyStream": "Canlı akış bağlantısını kopyala",
+        "copyStream": "Canlı akış bağlantısını kopyala",
         "countryNotSupported": "Ülke henüz desteklenmiyor",
         "countryReminder": "Dış bir ülkeyi mi arıyorsunuz? Lütfen ülke koduyla başlayın!",
-    	"defaultEmail": "Varsayılan E-postanız",
+        "defaultEmail": "Varsayılan E-postanız",
         "disabled": "Kişi davet edemezsiniz.",
         "failedToAdd": "Kişi eklenemedi",
         "footerText": "Dış arama devre dışı.",
-	    "googleEmail": "Google Email",
+        "googleEmail": "Google Email",
         "inviteMoreHeader": "Toplantıdaki tek kişisiniz",
         "inviteMoreMailSubject": "{{appName}} toplantısına katıl",
         "inviteMorePrompt": "Daha fazla kişi davet et",
@@ -69,10 +69,9 @@
             "popover": "Bir takma ad seçin",
             "title": "Sohbette kullanmak için bir takma ad girin"
         },
-	"privateNotice": "{{recipient}} için özel mesaj",
+        "privateNotice": "{{recipient}} için özel mesaj",
         "title": "Sohbet",
         "you": "sen"
-
     },
     "connectingOverlay": {
         "joiningRoom": "Toplantıya bağlanılıyor..."
@@ -160,7 +159,7 @@
             "liveStreaming": "Canlı akış"
         },
 
-	"add": "Ekle",
+        "add": "Ekle",
         "allow": "İzin ver",
         "alreadySharedVideoMsg": "Başka bir katılımcı zaten bir video paylaşıyor. Bu konferans aynı anda yalnızca bir paylaşılan videoya izin verir.",
         "alreadySharedVideoTitle": "Aynı anda yalnızca bir paylaşılan videoya izin verilir.",
@@ -265,7 +264,7 @@
         "sendPrivateMessageCancel": "Gruba gönder",
         "sendPrivateMessageOk": "Özel olarak gönder",
         "sendPrivateMessageTitle": "Özel olarak gönderilsin mi?",
-	"serviceUnavailable": "Hizmet kullanılamıyor",
+        "serviceUnavailable": "Hizmet kullanılamıyor",
         "sessTerminated": "Arama sonlandırıldı",
         "Share": "Paylaş",
         "shareVideoLinkError": "Lütfen doğru bir Youtube bağlantısı sağlayın.",
@@ -302,7 +301,6 @@
     "documentSharing": {
         "title": "Paylaşılan Döküman"
     },
-
 
     "e2ee": {
         "labelToolTip": "Bu görüşmedeki ses ve video iletişimi uçtan uca şifrelenmiştir."
@@ -384,7 +382,6 @@
         "toggleShortcuts": "Klavye kısayollarını göster veya gizle",
         "videoMute": "Kamerayı aç veya kapat",
         "videoQuality": "Çağrı kalitesini yönetin"
-
     },
     "liveStreaming": {
         "busy": "Akış kaynaklarını serbest bırakmaya çalışıyoruz. Lütfen birkaç dakika içinde tekrar deneyin.",
@@ -417,7 +414,6 @@
         "unavailableTitle": "Canlı Akış kullanılamıyor",
         "youtubeTerms": "YouTube hizmet şartları",
         "googlePrivacyPolicy": "Google Gizlilik Politikası"
-
     },
     "localRecording": {
         "clientState": {
@@ -485,7 +481,6 @@
         "oldElectronClientDescription1": "Güvenlik açıkları bilinen Jitsi Meet istemcisinin eski bir sürümünü kullanıyor görünüyorsunuz. Lütfen güncellediğinizden emin olun.",
         "oldElectronClientDescription2": "son yapı",
         "oldElectronClientDescription3": " şimdi!"
-
     },
     "passwordSetRemotely": "başka katılımcı tarafından ayarlandı",
     "passwordDigitsOnly": "{{number}} rakama kadar",
@@ -702,7 +697,7 @@
         "closeChat": "Mesajlaşmayı kapat",
         "documentClose": "Paylaşılan dokümanı kapat",
         "documentOpen": "Paylaşılan dokümanı aç",
-	    "download": "Uygulamalarımızı indirin",
+        "download": "Uygulamalarımızı indirin",
         "e2ee": "Uçtan uca şifreleme",
         "enterFullScreen": "Tam ekran görüntüle",
         "enterTileView": "Döşeme görünümüne geç",
@@ -710,7 +705,7 @@
         "exitTileView": "Döşeme görünümünden çık",
         "feedback": "Geri bildirim bırakın",
         "hangup": "Ayrıl",
-    	"help": "Yardım",
+        "help": "Yardım",
         "invite": "Kişi davet et",
         "lobbyButtonDisable": "Lobi modunu devre dışı bırak",
         "lobbyButtonEnable": "Lobi modunu devre aktifleştir",
@@ -828,7 +823,7 @@
         "connectCalendarButton": "Takviminizi bağlayın",
         "connectCalendarText": "",
         "enterRoomTitle": "Yeni bir toplantı başlat",
-         "getHelp": "Yardım alın",
+        "getHelp": "Yardım alın",
         "roomNameAllowedChars": "Toplantı adı şu karakterlerden hiçbirini içermemelidir: ?, &, :, ', \", %, #.",
 
         "go": "GİT",
@@ -844,7 +839,6 @@
         "sendFeedback": "Geri bildirim gönder",
         "terms": "Kurallar",
         "title": "Güvenli, tüm özelliklere erişimli ve tamamen ücretsiz görüntülü arama"
-
     },
 
     "lonelyMeetingExperience": {
@@ -890,5 +884,4 @@
         "reject": "Reddet",
         "toggleLabel": "Lobiyi etkinleştir"
     }
-
 }

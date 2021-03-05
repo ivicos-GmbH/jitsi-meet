@@ -10,7 +10,6 @@ import Meter from './Meter';
 const JitsiTrackEvents = JitsiMeetJS.events.track;
 
 type Props = AudioSettingsEntryProps & {
-
     /**
      * The deviceId of the microphone.
      */
@@ -29,16 +28,15 @@ type Props = AudioSettingsEntryProps & {
     /**
      * Click handler for component.
      */
-    onClick: Function,
-}
+    onClick: Function
+};
 
 type State = {
-
     /**
      * The audio level.
      */
-    level: number,
-}
+    level: number
+};
 
 /**
  * React {@code Component} representing an entry for the microphone audio settings.
@@ -96,9 +94,7 @@ export default class MicrophoneEntry extends Component<Props, State> {
     _startListening() {
         const { jitsiTrack } = this.props;
 
-        jitsiTrack && jitsiTrack.on(
-            JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED,
-            this._updateLevel);
+        jitsiTrack && jitsiTrack.on(JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED, this._updateLevel);
     }
 
     /**
@@ -153,19 +149,11 @@ export default class MicrophoneEntry extends Component<Props, State> {
         const { children, hasError, isSelected, jitsiTrack } = this.props;
 
         return (
-            <div
-                className = 'audio-preview-microphone'
-                onClick = { this._onClick }>
-                <AudioSettingsEntry
-                    hasError = { hasError }
-                    isSelected = { isSelected }>
+            <div className="audio-preview-microphone" onClick={this._onClick}>
+                <AudioSettingsEntry hasError={hasError} isSelected={isSelected}>
                     {children}
                 </AudioSettingsEntry>
-                { Boolean(jitsiTrack) && <Meter
-                    className = 'audio-preview-meter-mic'
-                    isDisabled = { hasError }
-                    level = { this.state.level } />
-                }
+                {Boolean(jitsiTrack) && <Meter className="audio-preview-meter-mic" isDisabled={hasError} level={this.state.level} />}
             </div>
         );
     }

@@ -6,15 +6,9 @@ import React, { Component } from 'react';
 // mobile and web, and move them to NavigateSectionList component.
 import type { Section } from '../Types';
 
-import {
-    NavigateSectionListEmptyComponent,
-    NavigateSectionListItem,
-    NavigateSectionListSectionHeader,
-    SectionList
-} from './_';
+import { NavigateSectionListEmptyComponent, NavigateSectionListItem, NavigateSectionListSectionHeader, SectionList } from './_';
 
 type Props = {
-
     /**
      * Indicates if the list is disabled or not.
      */
@@ -98,21 +92,19 @@ class NavigateSectionList extends Component<Props> {
      * @inheritdoc
      */
     render() {
-        const {
-            renderListEmptyComponent = this._renderListEmptyComponent(),
-            sections
-        } = this.props;
+        const { renderListEmptyComponent = this._renderListEmptyComponent(), sections } = this.props;
 
         return (
             <SectionList
-                ListEmptyComponent = { renderListEmptyComponent }
-                keyExtractor = { this._getItemKey }
-                onItemClick = { this.props.onPress }
-                onRefresh = { this._onRefresh }
-                refreshing = { false }
-                renderItem = { this._renderItem }
-                renderSectionHeader = { this._renderSectionHeader }
-                sections = { sections } />
+                ListEmptyComponent={renderListEmptyComponent}
+                keyExtractor={this._getItemKey}
+                onItemClick={this.props.onPress}
+                onRefresh={this._onRefresh}
+                refreshing={false}
+                renderItem={this._renderItem}
+                renderSectionHeader={this._renderSectionHeader}
+                sections={sections}
+            />
         );
     }
 
@@ -130,7 +122,7 @@ class NavigateSectionList extends Component<Props> {
         return `${index}-${item.key}`;
     }
 
-    _onLongPress: string => Function;
+    _onLongPress: (string) => Function;
 
     /**
      * Returns a function that is used in the onLongPress callback of the items.
@@ -149,7 +141,7 @@ class NavigateSectionList extends Component<Props> {
         return null;
     }
 
-    _onPress: string => Function;
+    _onPress: (string) => Function;
 
     /**
      * Returns a function that is used in the onPress callback of the items.
@@ -184,7 +176,7 @@ class NavigateSectionList extends Component<Props> {
         }
     }
 
-    _onSecondaryAction: Object => Function;
+    _onSecondaryAction: (Object) => Function;
 
     /**
      * Returns a function that is used in the secondaryAction callback of the
@@ -201,7 +193,7 @@ class NavigateSectionList extends Component<Props> {
         };
     }
 
-    _renderItem: Object => Object;
+    _renderItem: (Object) => Object;
 
     /**
      * Renders a single item in the list.
@@ -226,12 +218,12 @@ class NavigateSectionList extends Component<Props> {
 
         return (
             <NavigateSectionListItem
-                item = { item }
-                key = { key }
-                onLongPress = { url ? this._onLongPress(item) : undefined }
-                onPress = { url ? this._onPress(url) : undefined }
-                secondaryAction = {
-                    url ? undefined : this._onSecondaryAction(id) } />
+                item={item}
+                key={key}
+                onLongPress={url ? this._onLongPress(item) : undefined}
+                onPress={url ? this._onPress(url) : undefined}
+                secondaryAction={url ? undefined : this._onSecondaryAction(id)}
+            />
         );
     }
 
@@ -248,15 +240,13 @@ class NavigateSectionList extends Component<Props> {
         const { onRefresh } = this.props;
 
         if (typeof onRefresh === 'function') {
-            return (
-                <NavigateSectionListEmptyComponent />
-            );
+            return <NavigateSectionListEmptyComponent />;
         }
 
         return null;
     }
 
-    _renderSectionHeader: Object => Object;
+    _renderSectionHeader: (Object) => Object;
 
     /**
      * Renders a section header.
@@ -266,10 +256,7 @@ class NavigateSectionList extends Component<Props> {
      * @returns {React$Node}
      */
     _renderSectionHeader(section) {
-        return (
-            <NavigateSectionListSectionHeader
-                section = { section } />
-        );
+        return <NavigateSectionListSectionHeader section={section} />;
     }
 }
 

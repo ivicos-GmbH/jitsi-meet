@@ -10,33 +10,28 @@ import {
     setAudioOutputDevice as setAudioOutputDeviceAction
 } from '../../../../base/devices';
 import { connect } from '../../../../base/redux';
-import {
-    getCurrentMicDeviceId,
-    getCurrentOutputDeviceId
-} from '../../../../base/settings';
+import { getCurrentMicDeviceId, getCurrentOutputDeviceId } from '../../../../base/settings';
 import { toggleAudioSettings } from '../../../actions';
 import { getAudioSettingsVisibility } from '../../../functions';
 
 import AudioSettingsContent, { type Props as AudioSettingsContentProps } from './AudioSettingsContent';
 
-
 type Props = AudioSettingsContentProps & {
-
-   /**
-    * Component's children (the audio button).
-    */
+    /**
+     * Component's children (the audio button).
+     */
     children: React$Node,
 
-   /**
-    * Flag controlling the visibility of the popup.
-    */
+    /**
+     * Flag controlling the visibility of the popup.
+     */
     isOpen: boolean,
 
-   /**
-    * Callback executed when the popup closes.
-    */
-    onClose: Function,
-}
+    /**
+     * Callback executed when the popup closes.
+     */
+    onClose: Function
+};
 
 /**
  * Popup with audio settings.
@@ -55,18 +50,22 @@ function AudioSettingsPopup({
     outputDevices
 }: Props) {
     return (
-        <div className = 'audio-preview'>
+        <div className="audio-preview">
             <InlineDialog
-                content = { <AudioSettingsContent
-                    currentMicDeviceId = { currentMicDeviceId }
-                    currentOutputDeviceId = { currentOutputDeviceId }
-                    microphoneDevices = { microphoneDevices }
-                    outputDevices = { outputDevices }
-                    setAudioInputDevice = { setAudioInputDevice }
-                    setAudioOutputDevice = { setAudioOutputDevice } /> }
-                isOpen = { isOpen }
-                onClose = { onClose }
-                placement = 'top-start'>
+                content={
+                    <AudioSettingsContent
+                        currentMicDeviceId={currentMicDeviceId}
+                        currentOutputDeviceId={currentOutputDeviceId}
+                        microphoneDevices={microphoneDevices}
+                        outputDevices={outputDevices}
+                        setAudioInputDevice={setAudioInputDevice}
+                        setAudioOutputDevice={setAudioOutputDevice}
+                    />
+                }
+                isOpen={isOpen}
+                onClose={onClose}
+                placement="top-start"
+            >
                 {children}
             </InlineDialog>
         </div>

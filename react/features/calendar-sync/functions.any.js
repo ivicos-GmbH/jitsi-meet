@@ -21,10 +21,7 @@ function _isDisplayableCalendarEntry(entry) {
     //   - Ends in the future (future or ongoing events)
     //   - Is not an all day event and there is only one attendee (these events
     //     are usually placeholder events that don't need to be shown.)
-    return entry.endDate > Date.now()
-        && !((entry.allDay
-                || entry.endDate - entry.startDate > ALLDAY_EVENT_LENGTH)
-                    && (!entry.attendees || entry.attendees.length < 2));
+    return entry.endDate > Date.now() && !((entry.allDay || entry.endDate - entry.startDate > ALLDAY_EVENT_LENGTH) && (!entry.attendees || entry.attendees.length < 2));
 }
 
 /**
@@ -57,28 +54,29 @@ export function _updateCalendarEntries(events: Array<Object>) {
             // As was stated above, we don't display subsequent occurrences of
             // recurring events, and the repetitions of events coming from
             // multiple calendars.
-            const key = md5.hex(JSON.stringify([
+            const key = md5.hex(
+                JSON.stringify([
+                    // Obviously, we want to display different conference/meetings
+                    // URLs. URLs are the very reason why we implemented the feature
+                    // calendar-sync in the first place.
+                    entry.url,
 
-                // Obviously, we want to display different conference/meetings
-                // URLs. URLs are the very reason why we implemented the feature
-                // calendar-sync in the first place.
-                entry.url,
+                    // We probably want to display one and the same URL to people if
+                    // they have it under different titles in their Calendar.
+                    // Because maybe they remember the title of the meeting, not the
+                    // URL so they expect to see the title without realizing that
+                    // they have the same URL already under a different title.
+                    entry.title,
 
-                // We probably want to display one and the same URL to people if
-                // they have it under different titles in their Calendar.
-                // Because maybe they remember the title of the meeting, not the
-                // URL so they expect to see the title without realizing that
-                // they have the same URL already under a different title.
-                entry.title,
-
-                // XXX Eventually, given that the URL and the title are the
-                // same, what sets one event apart from another is the start
-                // time of the day (note the use of toTimeString() bellow)! The
-                // day itself is not important because we don't want multiple
-                // occurrences of a recurring event or repetitions of an even
-                // from multiple calendars.
-                new Date(entry.startDate).toTimeString()
-            ]));
+                    // XXX Eventually, given that the URL and the title are the
+                    // same, what sets one event apart from another is the start
+                    // time of the day (note the use of toTimeString() bellow)! The
+                    // day itself is not important because we don't want multiple
+                    // occurrences of a recurring event or repetitions of an even
+                    // from multiple calendars.
+                    new Date(entry.startDate).toTimeString()
+                ])
+            );
             const existingEntry = entryMap.get(key);
 
             // We want only the earliest occurrence (which hasn't ended in the
@@ -93,7 +91,9 @@ export function _updateCalendarEntries(events: Array<Object>) {
         setCalendarEvents(
             Array.from(entryMap.values())
                 .sort((a, b) => a.startDate - b.startDate)
-                .slice(0, MAX_LIST_LENGTH)));
+                .slice(0, MAX_LIST_LENGTH)
+        )
+    );
 }
 
 /**
@@ -139,11 +139,7 @@ function _parseCalendarEntry(event, knownDomains) {
         // - has no start or end date
         // - for web, if there is no url and we cannot edit the event (has
         // no calendarId)
-        if (isNaN(startDate)
-            || isNaN(endDate)
-            || (navigator.product !== 'ReactNative'
-                    && !url
-                    && !event.calendarId)) {
+        if (isNaN(startDate) || isNaN(endDate) || (navigator.product !== 'ReactNative' && !url && !event.calendarId)) {
             // Ignore the event.
         } else {
             return {
@@ -172,23 +168,14 @@ function _parseCalendarEntry(event, knownDomains) {
  */
 function _getURLFromEvent(event, knownDomains) {
     const linkTerminatorPattern = '[^\\s<>$]';
-    const urlRegExp
-        = `http(s)?://(${knownDomains.join('|')})/${linkTerminatorPattern}+`;
+    const urlRegExp = `http(s)?://(${knownDomains.join('|')})/${linkTerminatorPattern}+`;
     const schemeRegExp = `${APP_LINK_SCHEME}${linkTerminatorPattern}+`;
     const excludePattern = '/static/';
-    const fieldsToSearch = [
-        event.title,
-        event.url,
-        event.location,
-        event.notes,
-        event.description
-    ];
+    const fieldsToSearch = [event.title, event.url, event.location, event.notes, event.description];
 
     for (const field of fieldsToSearch) {
         if (typeof field === 'string') {
-            const match
-                = _checkPattern(field, urlRegExp, excludePattern)
-                || _checkPattern(field, schemeRegExp, excludePattern);
+            const match = _checkPattern(field, urlRegExp, excludePattern) || _checkPattern(field, schemeRegExp, excludePattern);
 
             if (match) {
                 const url = parseURIString(match);

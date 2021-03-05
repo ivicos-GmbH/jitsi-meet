@@ -57,10 +57,8 @@ export default class AlwaysOnTop extends Component<*, State> {
 
         // Bind event handlers so they are only bound once per instance.
         this._avatarChangedListener = this._avatarChangedListener.bind(this);
-        this._displayNameChangedListener
-            = this._displayNameChangedListener.bind(this);
-        this._largeVideoChangedListener
-            = this._largeVideoChangedListener.bind(this);
+        this._displayNameChangedListener = this._displayNameChangedListener.bind(this);
+        this._largeVideoChangedListener = this._largeVideoChangedListener.bind(this);
         this._mouseMove = this._mouseMove.bind(this);
         this._onMouseOut = this._onMouseOut.bind(this);
         this._onMouseOver = this._onMouseOver.bind(this);
@@ -74,8 +72,7 @@ export default class AlwaysOnTop extends Component<*, State> {
      * @returns {void}
      */
     _avatarChangedListener({ avatarURL, id }) {
-        if (api._getOnStageParticipant() === id
-                && avatarURL !== this.state.avatarURL) {
+        if (api._getOnStageParticipant() === id && avatarURL !== this.state.avatarURL) {
             this.setState({ avatarURL });
         }
     }
@@ -88,9 +85,7 @@ export default class AlwaysOnTop extends Component<*, State> {
      * @returns {void}
      */
     _displayNameChangedListener({ displayname, formattedDisplayName, id }) {
-        if (api._getOnStageParticipant() === id
-                && (formattedDisplayName !== this.state.formattedDisplayName
-                    || displayname !== this.state.displayName)) {
+        if (api._getOnStageParticipant() === id && (formattedDisplayName !== this.state.formattedDisplayName || displayname !== this.state.displayName)) {
             // I think the API has a typo using lowercase n for the displayname
             this.setState({
                 displayName: displayname,
@@ -105,15 +100,13 @@ export default class AlwaysOnTop extends Component<*, State> {
      * @returns {void}
      */
     _hideToolbarAfterTimeout() {
-        setTimeout(
-            () => {
-                if (this._hovered) {
-                    this._hideToolbarAfterTimeout();
-                } else {
-                    this.setState({ visible: false });
-                }
-            },
-            TOOLBAR_TIMEOUT);
+        setTimeout(() => {
+            if (this._hovered) {
+                this._hideToolbarAfterTimeout();
+            } else {
+                this.setState({ visible: false });
+            }
+        }, TOOLBAR_TIMEOUT);
     }
 
     _largeVideoChangedListener: () => void;
@@ -185,18 +178,12 @@ export default class AlwaysOnTop extends Component<*, State> {
         }
 
         return (
-            <div id = 'videoNotAvailableScreen'>
-                <div id = 'avatarContainer'>
-                    <StatelessAvatar
-                        color = { getAvatarColor(userID) }
-                        id = 'avatar'
-                        initials = { getInitials(displayName) }
-                        url = { avatarURL } />)
+            <div id="videoNotAvailableScreen">
+                <div id="avatarContainer">
+                    <StatelessAvatar color={getAvatarColor(userID)} id="avatar" initials={getInitials(displayName)} url={avatarURL} />)
                 </div>
-                <div
-                    className = 'displayname'
-                    id = 'displayname'>
-                    { formattedDisplayName }
+                <div className="displayname" id="displayname">
+                    {formattedDisplayName}
                 </div>
             </div>
         );
@@ -240,12 +227,8 @@ export default class AlwaysOnTop extends Component<*, State> {
      */
     componentWillUnmount() {
         api.removeListener('avatarChanged', this._avatarChangedListener);
-        api.removeListener(
-            'displayNameChange',
-            this._displayNameChangedListener);
-        api.removeListener(
-            'largeVideoChanged',
-            this._largeVideoChangedListener);
+        api.removeListener('displayNameChange', this._displayNameChangedListener);
+        api.removeListener('largeVideoChanged', this._largeVideoChangedListener);
 
         window.removeEventListener('mousemove', this._mouseMove);
     }
@@ -258,12 +241,9 @@ export default class AlwaysOnTop extends Component<*, State> {
      */
     render() {
         return (
-            <div id = 'alwaysOnTop'>
-                <Toolbar
-                    className = { this.state.visible ? 'fadeIn' : 'fadeOut' }
-                    onMouseOut = { this._onMouseOut }
-                    onMouseOver = { this._onMouseOver } />
-                { this._renderVideoNotAvailableScreen() }
+            <div id="alwaysOnTop">
+                <Toolbar className={this.state.visible ? 'fadeIn' : 'fadeOut'} onMouseOut={this._onMouseOut} onMouseOver={this._onMouseOver} />
+                {this._renderVideoNotAvailableScreen()}
             </div>
         );
     }

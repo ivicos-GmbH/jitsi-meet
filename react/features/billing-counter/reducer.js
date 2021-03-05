@@ -1,8 +1,6 @@
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    SET_ENDPOINT_COUNTED
-} from './actionTypes';
+import { SET_ENDPOINT_COUNTED } from './actionTypes';
 
 const DEFAULT_STATE = {
     endpointCounted: false
@@ -11,10 +9,8 @@ const DEFAULT_STATE = {
 /**
  * Listen for actions that mutate the billing-counter state
  */
-ReducerRegistry.register(
-    'features/billing-counter', (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
-
+ReducerRegistry.register('features/billing-counter', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case SET_ENDPOINT_COUNTED: {
             return {
                 ...state,
@@ -24,6 +20,5 @@ ReducerRegistry.register(
 
         default:
             return state;
-        }
-    },
-);
+    }
+});

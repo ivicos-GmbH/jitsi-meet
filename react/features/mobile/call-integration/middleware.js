@@ -7,28 +7,11 @@ import { createTrackMutedEvent, sendAnalytics } from '../../analytics';
 import { appNavigate } from '../../app/actions';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../../base/app';
 import { SET_AUDIO_ONLY } from '../../base/audio-only';
-import {
-    CONFERENCE_FAILED,
-    CONFERENCE_JOINED,
-    CONFERENCE_LEFT,
-    CONFERENCE_WILL_JOIN,
-    CONFERENCE_WILL_LEAVE,
-    getConferenceName,
-    getCurrentConference
-} from '../../base/conference';
+import { CONFERENCE_FAILED, CONFERENCE_JOINED, CONFERENCE_LEFT, CONFERENCE_WILL_JOIN, CONFERENCE_WILL_LEAVE, getConferenceName, getCurrentConference } from '../../base/conference';
 import { getInviteURL } from '../../base/connection';
-import {
-    MEDIA_TYPE,
-    isVideoMutedByAudioOnly,
-    setAudioMuted
-} from '../../base/media';
+import { MEDIA_TYPE, isVideoMutedByAudioOnly, setAudioMuted } from '../../base/media';
 import { MiddlewareRegistry } from '../../base/redux';
-import {
-    TRACK_ADDED,
-    TRACK_REMOVED,
-    TRACK_UPDATED,
-    isLocalTrackMuted
-} from '../../base/tracks';
+import { TRACK_ADDED, TRACK_REMOVED, TRACK_UPDATED, isLocalTrackMuted } from '../../base/tracks';
 
 import CallKit from './CallKit';
 import ConnectionService from './ConnectionService';
@@ -44,51 +27,52 @@ const CallIntegration = CallKit || ConnectionService;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-CallIntegration && MiddlewareRegistry.register(store => next => action => {
-    switch (action.type) {
-    case _SET_CALL_INTEGRATION_SUBSCRIPTIONS:
-        return _setCallKitSubscriptions(store, next, action);
+CallIntegration &&
+    MiddlewareRegistry.register((store) => (next) => (action) => {
+        switch (action.type) {
+            case _SET_CALL_INTEGRATION_SUBSCRIPTIONS:
+                return _setCallKitSubscriptions(store, next, action);
 
-    case APP_WILL_MOUNT:
-        return _appWillMount(store, next, action);
+            case APP_WILL_MOUNT:
+                return _appWillMount(store, next, action);
 
-    case APP_WILL_UNMOUNT:
-        store.dispatch({
-            type: _SET_CALL_INTEGRATION_SUBSCRIPTIONS,
-            subscriptions: undefined
-        });
-        break;
+            case APP_WILL_UNMOUNT:
+                store.dispatch({
+                    type: _SET_CALL_INTEGRATION_SUBSCRIPTIONS,
+                    subscriptions: undefined
+                });
+                break;
 
-    case CONFERENCE_FAILED:
-        return _conferenceFailed(store, next, action);
+            case CONFERENCE_FAILED:
+                return _conferenceFailed(store, next, action);
 
-    case CONFERENCE_JOINED:
-        return _conferenceJoined(store, next, action);
+            case CONFERENCE_JOINED:
+                return _conferenceJoined(store, next, action);
 
-    // If a conference is being left in a graceful manner then
-    // the CONFERENCE_WILL_LEAVE fires as soon as the conference starts
-    // disconnecting. We need to destroy the call on the native side as soon
-    // as possible, because the disconnection process is asynchronous and
-    // Android not always supports two simultaneous calls at the same time
-    // (even though it should according to the spec).
-    case CONFERENCE_LEFT:
-    case CONFERENCE_WILL_LEAVE:
-        return _conferenceLeft(store, next, action);
+            // If a conference is being left in a graceful manner then
+            // the CONFERENCE_WILL_LEAVE fires as soon as the conference starts
+            // disconnecting. We need to destroy the call on the native side as soon
+            // as possible, because the disconnection process is asynchronous and
+            // Android not always supports two simultaneous calls at the same time
+            // (even though it should according to the spec).
+            case CONFERENCE_LEFT:
+            case CONFERENCE_WILL_LEAVE:
+                return _conferenceLeft(store, next, action);
 
-    case CONFERENCE_WILL_JOIN:
-        return _conferenceWillJoin(store, next, action);
+            case CONFERENCE_WILL_JOIN:
+                return _conferenceWillJoin(store, next, action);
 
-    case SET_AUDIO_ONLY:
-        return _setAudioOnly(store, next, action);
+            case SET_AUDIO_ONLY:
+                return _setAudioOnly(store, next, action);
 
-    case TRACK_ADDED:
-    case TRACK_REMOVED:
-    case TRACK_UPDATED:
-        return _syncTrackState(store, next, action);
-    }
+            case TRACK_ADDED:
+            case TRACK_REMOVED:
+            case TRACK_UPDATED:
+                return _syncTrackState(store, next, action);
+        }
 
-    return next(action);
-});
+        return next(action);
+    });
 
 /**
  * Notifies the feature callkit that the action {@link APP_WILL_MOUNT} is being
@@ -116,13 +100,13 @@ function _appWillMount({ dispatch, getState }, next, action) {
         _onPerformEndCallAction
     };
 
-    const subscriptions
-        = CallIntegration.registerSubscriptions(context, delegate);
+    const subscriptions = CallIntegration.registerSubscriptions(context, delegate);
 
-    subscriptions && dispatch({
-        type: _SET_CALL_INTEGRATION_SUBSCRIPTIONS,
-        subscriptions
-    });
+    subscriptions &&
+        dispatch({
+            type: _SET_CALL_INTEGRATION_SUBSCRIPTIONS,
+            subscriptions
+        });
 
     return result;
 }
@@ -277,12 +261,10 @@ function _conferenceWillJoin({ dispatch, getState }, next, action) {
         .then(() => {
             const displayName = getConferenceName(state);
 
-            CallIntegration.updateCall(
-                conference.callUUID,
-                {
-                    displayName,
-                    hasVideo
-                });
+            CallIntegration.updateCall(conference.callUUID, {
+                displayName,
+                hasVideo
+            });
 
             // iOS 13 doesn't like the mute state to be false before the call is started
             // so delay it until the conference was joined.
@@ -290,7 +272,7 @@ function _conferenceWillJoin({ dispatch, getState }, next, action) {
                 _updateCallIntegrationMuted(conference, state);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             // Currently this error codes are emitted only by Android.
             //
             if (error.code === 'CREATE_OUTGOING_CALL_FAILED') {
@@ -298,14 +280,7 @@ function _conferenceWillJoin({ dispatch, getState }, next, action) {
                 // the native side.
                 delete conference.callUUID;
                 dispatch(appNavigate(undefined));
-                Alert.alert(
-                    'Call aborted',
-                    'There\'s already another call in progress.'
-                        + ' Please end it first and try again.',
-                    [
-                        { text: 'OK' }
-                    ],
-                    { cancelable: false });
+                Alert.alert('Call aborted', "There's already another call in progress." + ' Please end it first and try again.', [{ text: 'OK' }], { cancelable: false });
             } else {
                 // Some devices fail because the CALL_PHONE permission is not granted, which is
                 // nonsense, because it's not needed for self-managed connections.
@@ -380,8 +355,7 @@ function _onPerformSetMutedCallAction({ callUUID, muted }) {
 
     if (conference && conference.callUUID === callUUID) {
         muted = Boolean(muted); // eslint-disable-line no-param-reassign
-        sendAnalytics(
-            createTrackMutedEvent('audio', 'call-integration', muted));
+        sendAnalytics(createTrackMutedEvent('audio', 'call-integration', muted));
         dispatch(setAudioMuted(muted, /* ensureTrack */ true));
     }
 }
@@ -417,9 +391,7 @@ function _setAudioOnly({ getState }, next, action) {
     const conference = getCurrentConference(state);
 
     if (conference && conference.callUUID) {
-        CallIntegration.updateCall(
-            conference.callUUID,
-            { hasVideo: !action.audioOnly });
+        CallIntegration.updateCall(conference.callUUID, { hasVideo: !action.audioOnly });
     }
 
     return result;
@@ -477,17 +449,14 @@ function _syncTrackState({ getState }, next, action) {
 
     if (jitsiTrack.isLocal() && conference && conference.callUUID) {
         switch (jitsiTrack.getType()) {
-        case 'audio': {
-            _updateCallIntegrationMuted(conference, state);
-            break;
-        }
-        case 'video': {
-            CallIntegration.updateCall(
-                conference.callUUID,
-                { hasVideo: !isVideoMutedByAudioOnly(state) });
-            break;
-        }
-
+            case 'audio': {
+                _updateCallIntegrationMuted(conference, state);
+                break;
+            }
+            case 'video': {
+                CallIntegration.updateCall(conference.callUUID, { hasVideo: !isVideoMutedByAudioOnly(state) });
+                break;
+            }
         }
     }
 

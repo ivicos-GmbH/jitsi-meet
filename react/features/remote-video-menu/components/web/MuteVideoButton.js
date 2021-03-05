@@ -5,10 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconCameraDisabled } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import AbstractMuteVideoButton, {
-    _mapStateToProps,
-    type Props
-} from '../AbstractMuteVideoButton';
+import AbstractMuteVideoButton, { _mapStateToProps, type Props } from '../AbstractMuteVideoButton';
 
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
 
@@ -42,26 +39,29 @@ class MuteVideoButton extends AbstractMuteVideoButton {
      */
     render() {
         const { _videoTrackMuted, participantID, t } = this.props;
-        const muteConfig = _videoTrackMuted ? {
-            translationKey: 'videothumbnail.videoMuted',
-            muteClassName: 'mutelink disabled'
-        } : {
-            translationKey: 'videothumbnail.domuteVideo',
-            muteClassName: 'mutelink'
-        };
+        const muteConfig = _videoTrackMuted
+            ? {
+                  translationKey: 'videothumbnail.videoMuted',
+                  muteClassName: 'mutelink disabled'
+              }
+            : {
+                  translationKey: 'videothumbnail.domuteVideo',
+                  muteClassName: 'mutelink'
+              };
 
         return (
             <RemoteVideoMenuButton
-                buttonText = { t(muteConfig.translationKey) }
-                displayClass = { muteConfig.muteClassName }
-                icon = { IconCameraDisabled }
-                id = { `mutelink_${participantID}` }
+                buttonText={t(muteConfig.translationKey)}
+                displayClass={muteConfig.muteClassName}
+                icon={IconCameraDisabled}
+                id={`mutelink_${participantID}`}
                 // eslint-disable-next-line react/jsx-handler-names
-                onClick = { this._handleClick } />
+                onClick={this._handleClick}
+            />
         );
     }
 
-    _handleClick: () => void
+    _handleClick: () => void;
 }
 
 export default translate(connect(_mapStateToProps)(MuteVideoButton));

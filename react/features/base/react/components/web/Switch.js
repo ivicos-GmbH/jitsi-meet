@@ -4,7 +4,6 @@ import Toggle from '@atlaskit/toggle';
 import React, { Component } from 'react';
 
 type Props = {
-
     /**
      * ID of the toggle
      */
@@ -42,27 +41,15 @@ export default class Switch extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            className,
-            disabled,
-            onValueChange,
-            value,
-            id,
-            ...props
-        } = this.props;
+        const { className, disabled, onValueChange, value, id, ...props } = this.props;
 
         // TODO: onChange will be called with parameter Event. It will be good
         // if we translate it to calling the onValueChange with the value as a
         // parameter to match the native implementation.
 
         return (
-            <div className = { className }>
-                <Toggle
-                    id = { id }
-                    isChecked = { value }
-                    isDisabled = { disabled }
-                    onChange = { onValueChange }
-                    { ...props } />
+            <div className={className}>
+                <Toggle id={id} isChecked={value} isDisabled={disabled} onChange={onValueChange} {...props} />
             </div>
         );
     }

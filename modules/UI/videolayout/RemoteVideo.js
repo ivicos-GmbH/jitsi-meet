@@ -9,9 +9,7 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 import { i18next } from '../../../react/features/base/i18n';
-import {
-    JitsiParticipantConnectionStatus
-} from '../../../react/features/base/lib-jitsi-meet';
+import { JitsiParticipantConnectionStatus } from '../../../react/features/base/lib-jitsi-meet';
 import { getParticipantById } from '../../../react/features/base/participants';
 import { isTestModeEnabled } from '../../../react/features/base/testing';
 import { updateLastTrackVideoMediaEvent } from '../../../react/features/base/tracks';
@@ -31,8 +29,22 @@ const logger = Logger.getLogger(__filename);
  * container for every event in the list. The latest event will be stored in redux.
  */
 const containerEvents = [
-    'abort', 'canplay', 'canplaythrough', 'emptied', 'ended', 'error', 'loadeddata', 'loadedmetadata', 'loadstart',
-    'pause', 'play', 'playing', 'ratechange', 'stalled', 'suspend', 'waiting'
+    'abort',
+    'canplay',
+    'canplaythrough',
+    'emptied',
+    'ended',
+    'error',
+    'loadeddata',
+    'loadedmetadata',
+    'loadstart',
+    'pause',
+    'play',
+    'playing',
+    'ratechange',
+    'stalled',
+    'suspend',
+    'waiting'
 ];
 
 /**
@@ -45,10 +57,8 @@ function createContainer(spanId) {
     container.id = spanId;
     container.className = 'videocontainer';
 
-    const remoteVideosContainer
-        = document.getElementById('filmstripRemoteVideosContainer');
-    const localVideoContainer
-        = document.getElementById('localVideoTileViewContainer');
+    const remoteVideosContainer = document.getElementById('filmstripRemoteVideosContainer');
+    const localVideoContainer = document.getElementById('localVideoTileViewContainer');
 
     remoteVideosContainer.insertBefore(container, localVideoContainer);
 
@@ -107,11 +117,13 @@ export default class RemoteVideo extends SmallVideo {
      */
     renderThumbnail(isHovered = false) {
         ReactDOM.render(
-            <Provider store = { APP.store }>
-                <I18nextProvider i18n = { i18next }>
-                    <Thumbnail participantID = { this.id } isHovered = { isHovered } />
+            <Provider store={APP.store}>
+                <I18nextProvider i18n={i18next}>
+                    <Thumbnail participantID={this.id} isHovered={isHovered} />
                 </I18nextProvider>
-            </Provider>, this.container);
+            </Provider>,
+            this.container
+        );
     }
 
     /**
@@ -229,10 +241,9 @@ export default class RemoteVideo extends SmallVideo {
         stream.attach(streamElement);
 
         if (isVideo && isTestModeEnabled(APP.store.getState())) {
+            const cb = (name) => APP.store.dispatch(updateLastTrackVideoMediaEvent(stream, name));
 
-            const cb = name => APP.store.dispatch(updateLastTrackVideoMediaEvent(stream, name));
-
-            containerEvents.forEach(event => {
+            containerEvents.forEach((event) => {
                 streamElement.addEventListener(event, cb.bind(this, event));
             });
         }

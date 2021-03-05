@@ -1,2 +1,1 @@
-export { default as RemoteControlAuthorizationDialog }
-    from './RemoteControlAuthorizationDialog';
+export { default as RemoteControlAuthorizationDialog } from './RemoteControlAuthorizationDialog';

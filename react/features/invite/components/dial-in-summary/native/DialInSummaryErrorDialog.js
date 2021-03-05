@@ -17,10 +17,7 @@ class DialInSummaryErrorDialog extends Component<{}> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <AlertDialog
-                contentKey = 'info.dialInSummaryError' />
-        );
+        return <AlertDialog contentKey="info.dialInSummaryError" />;
     }
 
     _onSubmit: () => boolean;

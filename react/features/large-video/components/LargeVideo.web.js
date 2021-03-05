@@ -11,16 +11,15 @@ import { Captions } from '../../subtitles/';
 declare var interfaceConfig: Object;
 
 type Props = {
-
     /**
      * The user selected background color.
      */
-     _customBackgroundColor: string,
+    _customBackgroundColor: string,
 
     /**
      * The user selected background image url.
      */
-     _customBackgroundImageUrl: string,
+    _customBackgroundImageUrl: string,
 
     /**
      * Fetches the branding data.
@@ -37,7 +36,7 @@ type Props = {
      * video element.
      */
     _noAutoPlayVideo: boolean
-}
+};
 
 /**
  * Implements a React {@link Component} which represents the large video (a.k.a.
@@ -66,46 +65,38 @@ class LargeVideo extends Component<Props> {
         const className = `videocontainer${this.props._isChatOpen ? ' shift-right' : ''}`;
 
         return (
-            <div
-                className = { className }
-                id = 'largeVideoContainer'
-                style = { style }>
+            <div className={className} id="largeVideoContainer" style={style}>
                 <Subject />
                 <InviteMore />
-                <div id = 'sharedVideo'>
-                    <div id = 'sharedVideoIFrame' />
+                <div id="sharedVideo">
+                    <div id="sharedVideoIFrame" />
                 </div>
-                <div id = 'etherpad' />
+                <div id="etherpad" />
 
                 <Watermarks />
 
-                <div id = 'dominantSpeaker'>
-                    <div className = 'dynamic-shadow' />
-                    <div id = 'dominantSpeakerAvatarContainer' />
+                <div id="dominantSpeaker">
+                    <div className="dynamic-shadow" />
+                    <div id="dominantSpeakerAvatarContainer" />
                 </div>
-                <div id = 'remotePresenceMessage' />
-                <span id = 'remoteConnectionMessage' />
-                <div id = 'largeVideoElementsContainer'>
-                    <div id = 'largeVideoBackgroundContainer' />
+                <div id="remotePresenceMessage" />
+                <span id="remoteConnectionMessage" />
+                <div id="largeVideoElementsContainer">
+                    <div id="largeVideoBackgroundContainer" />
 
                     {/*
-                      * FIXME: the architecture of elements related to the large
-                      * video and the naming. The background is not part of
-                      * largeVideoWrapper because we are controlling the size of
-                      * the video through largeVideoWrapper. That's why we need
-                      * another container for the background and the
-                      * largeVideoWrapper in order to hide/show them.
-                      */}
-                    <div id = 'largeVideoWrapper'>
-                        <video
-                            autoPlay = { !this.props._noAutoPlayVideo }
-                            id = 'largeVideo'
-                            muted = { true }
-                            playsInline = { true } /* for Safari on iOS to work */ />
+                     * FIXME: the architecture of elements related to the large
+                     * video and the naming. The background is not part of
+                     * largeVideoWrapper because we are controlling the size of
+                     * the video through largeVideoWrapper. That's why we need
+                     * another container for the background and the
+                     * largeVideoWrapper in order to hide/show them.
+                     */}
+                    <div id="largeVideoWrapper">
+                        <video autoPlay={!this.props._noAutoPlayVideo} id="largeVideo" muted={true} playsInline={true} /* for Safari on iOS to work */ />
                     </div>
                 </div>
-                { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
-                    || <Captions /> }
+                {interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES || <Captions />}
             </div>
         );
     }
@@ -130,7 +121,6 @@ class LargeVideo extends Component<Props> {
         return styles;
     }
 }
-
 
 /**
  * Maps (parts of) the Redux state to the associated LargeVideo props.

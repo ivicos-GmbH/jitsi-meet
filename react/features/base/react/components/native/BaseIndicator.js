@@ -10,7 +10,6 @@ import styles from './indicatorstyles';
 import { BASE_INDICATOR } from './styles';
 
 type Props = {
-
     /**
      * True if a highlighted background has to be applied.
      */
@@ -41,15 +40,8 @@ export default class BaseIndicator extends Component<Props> {
         const { highlight, icon, iconStyle } = this.props;
 
         return (
-            <View
-                style = { [ BASE_INDICATOR,
-                    highlight ? styles.highlightedIndicator : null ] }>
-                <Icon
-                    src = { icon }
-                    style = { [
-                        styles.indicator,
-                        iconStyle
-                    ] } />
+            <View style={[BASE_INDICATOR, highlight ? styles.highlightedIndicator : null]}>
+                <Icon src={icon} style={[styles.indicator, iconStyle]} />
             </View>
         );
     }

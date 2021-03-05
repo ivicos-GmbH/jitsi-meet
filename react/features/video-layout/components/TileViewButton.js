@@ -2,10 +2,7 @@
 
 import type { Dispatch } from 'redux';
 
-import {
-    createToolbarEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createToolbarEvent, sendAnalytics } from '../../analytics';
 import { TILE_VIEW_ENABLED, getFeatureFlag } from '../../base/flags';
 import { translate } from '../../base/i18n';
 import { IconTileView } from '../../base/icons';
@@ -20,7 +17,6 @@ import logger from '../logger';
  * The type of the React {@code Component} props of {@link TileViewButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether or not tile view layout has been enabled as the user preference.
      */
@@ -54,11 +50,11 @@ class TileViewButton<P: Props> extends AbstractButton<P, *> {
     _handleClick() {
         const { _tileViewEnabled, dispatch } = this.props;
 
-        sendAnalytics(createToolbarEvent(
-            'tileview.button',
-            {
-                'is_enabled': _tileViewEnabled
-            }));
+        sendAnalytics(
+            createToolbarEvent('tileview.button', {
+                is_enabled: _tileViewEnabled
+            })
+        );
         const value = !_tileViewEnabled;
 
         logger.debug(`Tile view ${value ? 'enable' : 'disable'}`);

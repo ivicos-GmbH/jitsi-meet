@@ -3,7 +3,6 @@
 import React, { PureComponent } from 'react';
 
 type Props = {
-
     /**
      * Country of the entry.
      */
@@ -12,7 +11,7 @@ type Props = {
     /**
      * Entry click handler.
      */
-    onEntryClick: Function,
+    onEntryClick: Function
 };
 
 /**
@@ -42,13 +41,9 @@ class CountryRow extends PureComponent<Props> {
         } = this.props;
 
         return (
-            <div
-                className = 'cpick-dropdown-entry'
-                onClick = { this._onClick }>
-                <div className = { `prejoin-dialog-flag iti-flag ${code}` } />
-                <div className = 'cpick-dropdown-entry-text'>
-                    {`${name} (+${dialCode})`}
-                </div>
+            <div className="cpick-dropdown-entry" onClick={this._onClick}>
+                <div className={`prejoin-dialog-flag iti-flag ${code}`} />
+                <div className="cpick-dropdown-entry-text">{`${name} (+${dialCode})`}</div>
             </div>
         );
     }

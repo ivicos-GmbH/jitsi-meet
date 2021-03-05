@@ -16,7 +16,6 @@ import styles from './styles';
  * Filmstrip component's property types.
  */
 type Props = {
-
     /**
      * Application's aspect ratio.
      */
@@ -96,41 +95,16 @@ class Filmstrip extends Component<Props> {
         const filmstripStyle = isNarrowAspectRatio ? styles.filmstripNarrow : styles.filmstripWide;
 
         return (
-            <Container
-                style = { filmstripStyle }
-                visible = { _visible }>
-                {
-                    this._separateLocalThumbnail
-                        && !isNarrowAspectRatio
-                        && <LocalThumbnail />
-                }
-                <ScrollView
-                    horizontal = { isNarrowAspectRatio }
-                    showsHorizontalScrollIndicator = { false }
-                    showsVerticalScrollIndicator = { false }
-                    style = { styles.scrollView } >
-                    {
-                        !this._separateLocalThumbnail && !isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                    {
-
-                        this._sort(_participants, isNarrowAspectRatio)
-                            .map(p => (
-                                <Thumbnail
-                                    key = { p.id }
-                                    participant = { p } />))
-
-                    }
-                    {
-                        !this._separateLocalThumbnail && isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
+            <Container style={filmstripStyle} visible={_visible}>
+                {this._separateLocalThumbnail && !isNarrowAspectRatio && <LocalThumbnail />}
+                <ScrollView horizontal={isNarrowAspectRatio} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} style={styles.scrollView}>
+                    {!this._separateLocalThumbnail && !isNarrowAspectRatio && <LocalThumbnail />}
+                    {this._sort(_participants, isNarrowAspectRatio).map((p) => (
+                        <Thumbnail key={p.id} participant={p} />
+                    ))}
+                    {!this._separateLocalThumbnail && isNarrowAspectRatio && <LocalThumbnail />}
                 </ScrollView>
-                {
-                    this._separateLocalThumbnail && isNarrowAspectRatio
-                        && <LocalThumbnail />
-                }
+                {this._separateLocalThumbnail && isNarrowAspectRatio && <LocalThumbnail />}
             </Container>
         );
     }
@@ -150,9 +124,7 @@ class Filmstrip extends Component<Props> {
         // XXX Array.prototype.sort() is not appropriate because (1) it operates
         // in place and (2) it is not necessarily stable.
 
-        const sortedParticipants = [
-            ...participants
-        ];
+        const sortedParticipants = [...participants];
 
         if (isNarrowAspectRatio) {
             // When the narrow aspect ratio is used, we want to have the remote
@@ -179,7 +151,7 @@ function _mapStateToProps(state) {
     return {
         _aspectRatio: state['features/base/responsive-ui'].aspectRatio,
         _enabled: enabled,
-        _participants: participants.filter(p => !p.local),
+        _participants: participants.filter((p) => !p.local),
         _visible: isFilmstripVisible(state)
     };
 }

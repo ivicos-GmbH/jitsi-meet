@@ -6,9 +6,7 @@ import { translate } from '../../../base/i18n';
 import { ActionButton, InputField, PreMeetingScreen } from '../../../base/premeeting';
 import { LoadingIndicator } from '../../../base/react';
 import { connect } from '../../../base/redux';
-import AbstractLobbyScreen, {
-    _mapStateToProps
-} from '../AbstractLobbyScreen';
+import AbstractLobbyScreen, { _mapStateToProps } from '../AbstractLobbyScreen';
 
 /**
  * Implements a waiting screen that represents the participant being in the lobby.
@@ -20,11 +18,7 @@ class LobbyScreen extends AbstractLobbyScreen {
      * @inheritdoc
      */
     render() {
-        return (
-            <PreMeetingScreen title = { this.props.t(this._getScreenTitleKey()) }>
-                { this._renderContent() }
-            </PreMeetingScreen>
-        );
+        return <PreMeetingScreen title={this.props.t(this._getScreenTitleKey())}>{this._renderContent()}</PreMeetingScreen>;
     }
 
     _getScreenTitleKey: () => string;
@@ -33,11 +27,11 @@ class LobbyScreen extends AbstractLobbyScreen {
 
     _onCancel: () => boolean;
 
-    _onChangeDisplayName: Object => void;
+    _onChangeDisplayName: (Object) => void;
 
-    _onChangeEmail: Object => void;
+    _onChangeEmail: (Object) => void;
 
-    _onChangePassword: Object => void;
+    _onChangePassword: (Object) => void;
 
     _onEnableEdit: () => void;
 
@@ -58,14 +52,12 @@ class LobbyScreen extends AbstractLobbyScreen {
      */
     _renderJoining() {
         return (
-            <div className = 'container'>
-                <div className = 'spinner'>
-                    <LoadingIndicator size = 'large' />
+            <div className="container">
+                <div className="spinner">
+                    <LoadingIndicator size="large" />
                 </div>
-                <span className = 'joining-message'>
-                    { this.props.t('lobby.joiningMessage') }
-                </span>
-                { this._renderStandardButtons() }
+                <span className="joining-message">{this.props.t('lobby.joiningMessage')}</span>
+                {this._renderStandardButtons()}
             </div>
         );
     }
@@ -91,13 +83,7 @@ class LobbyScreen extends AbstractLobbyScreen {
         const { displayName } = this.state;
         const { t } = this.props;
 
-        return (
-            <InputField
-                onChange = { this._onChangeDisplayName }
-                placeHolder = { t('lobby.nameField') }
-                testId = 'lobby.nameField'
-                value = { displayName } />
-        );
+        return <InputField onChange={this._onChangeDisplayName} placeHolder={t('lobby.nameField')} testId="lobby.nameField" value={displayName} />;
     }
 
     /**
@@ -110,12 +96,13 @@ class LobbyScreen extends AbstractLobbyScreen {
 
         return (
             <InputField
-                className = { _passwordJoinFailed ? 'error' : '' }
-                onChange = { this._onChangePassword }
-                placeHolder = { _passwordJoinFailed ? t('lobby.invalidPassword') : t('lobby.passwordField') }
-                testId = 'lobby.password'
-                type = 'password'
-                value = { this.state.password } />
+                className={_passwordJoinFailed ? 'error' : ''}
+                onChange={this._onChangePassword}
+                placeHolder={_passwordJoinFailed ? t('lobby.invalidPassword') : t('lobby.passwordField')}
+                testId="lobby.password"
+                type="password"
+                value={this.state.password}
+            />
         );
     }
 
@@ -129,18 +116,11 @@ class LobbyScreen extends AbstractLobbyScreen {
 
         return (
             <>
-                <ActionButton
-                    disabled = { !this.state.password }
-                    onClick = { this._onJoinWithPassword }
-                    testId = 'lobby.passwordJoinButton'
-                    type = 'primary'>
-                    { t('lobby.passwordJoinButton') }
+                <ActionButton disabled={!this.state.password} onClick={this._onJoinWithPassword} testId="lobby.passwordJoinButton" type="primary">
+                    {t('lobby.passwordJoinButton')}
                 </ActionButton>
-                <ActionButton
-                    onClick = { this._onSwitchToKnockMode }
-                    testId = 'lobby.backToKnockModeButton'
-                    type = 'secondary'>
-                    { t('lobby.backToKnockModeButton') }
+                <ActionButton onClick={this._onSwitchToKnockMode} testId="lobby.backToKnockModeButton" type="secondary">
+                    {t('lobby.backToKnockModeButton')}
                 </ActionButton>
             </>
         );
@@ -156,18 +136,13 @@ class LobbyScreen extends AbstractLobbyScreen {
 
         return (
             <>
-                { _knocking || <ActionButton
-                    disabled = { !this.state.displayName }
-                    onClick = { this._onAskToJoin }
-                    testId = 'lobby.knockButton'
-                    type = 'primary'>
-                    { t('lobby.knockButton') }
-                </ActionButton> }
-                <ActionButton
-                    onClick = { this._onSwitchToPasswordMode }
-                    testId = 'lobby.enterPasswordButton'
-                    type = 'secondary'>
-                    { t('lobby.enterPasswordButton') }
+                {_knocking || (
+                    <ActionButton disabled={!this.state.displayName} onClick={this._onAskToJoin} testId="lobby.knockButton" type="primary">
+                        {t('lobby.knockButton')}
+                    </ActionButton>
+                )}
+                <ActionButton onClick={this._onSwitchToPasswordMode} testId="lobby.enterPasswordButton" type="secondary">
+                    {t('lobby.enterPasswordButton')}
                 </ActionButton>
             </>
         );

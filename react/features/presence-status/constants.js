@@ -52,7 +52,7 @@ export const REJECTED = 'rejected';
 export const IGNORED = 'ignored';
 
 /**
-  * The status for a participant when the invitation is expired.
+ * The status for a participant when the invitation is expired.
  *
  * @type {string}
  */
@@ -87,14 +87,12 @@ export const CONNECTING = 'Connecting';
  */
 export const CONNECTING2 = 'Connecting*';
 
-
 /**
  * A status for a phone number participant that indicates the call is connected.
  *
  * @type {string}
  */
 export const CONNECTED_PHONE_NUMBER = 'Connected';
-
 
 /**
  * A status for a participant that indicates the call is disconnected.

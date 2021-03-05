@@ -13,7 +13,6 @@ import { TestHint } from './index';
  * Defines the TestConnectionInfo's properties.
  */
 type Props = {
-
     /**
      * The JitsiConference's connection state. It's the lib-jitsi-meet's event
      * name converted to a string directly. At the time of this writing these
@@ -46,23 +45,20 @@ type Props = {
      * TestConnectionInfo component will not render.
      */
     _testMode: boolean
-}
+};
 
 /**
  * Describes the TestConnectionInfo's state.
  */
 type State = {
-
     /**
      * The RTP stats section.
      */
     stats: {
-
         /**
          * The local bitrate.
          */
         bitrate: {
-
             /**
              * The local download RTP bitrate.
              */
@@ -74,7 +70,7 @@ type State = {
             upload: number
         }
     }
-}
+};
 
 /**
  * The component will expose some of the app state to the jitsi-meet-torture
@@ -84,7 +80,7 @@ type State = {
  * a good thing).
  */
 class TestConnectionInfo extends Component<Props, State> {
-    _onStatsUpdated: Object => void;
+    _onStatsUpdated: (Object) => void;
 
     /**
      * Initializes new <tt>TestConnectionInfo</tt> instance.
@@ -134,8 +130,7 @@ class TestConnectionInfo extends Component<Props, State> {
      * returns {void}
      */
     componentDidMount() {
-        statsEmitter.subscribeToClientStats(
-            this.props._localUserId, this._onStatsUpdated);
+        statsEmitter.subscribeToClientStats(this.props._localUserId, this._onStatsUpdated);
     }
 
     /**
@@ -147,10 +142,8 @@ class TestConnectionInfo extends Component<Props, State> {
      */
     componentDidUpdate(prevProps: Props) {
         if (prevProps._localUserId !== this.props._localUserId) {
-            statsEmitter.unsubscribeToClientStats(
-                prevProps._localUserId, this._onStatsUpdated);
-            statsEmitter.subscribeToClientStats(
-                this.props._localUserId, this._onStatsUpdated);
+            statsEmitter.unsubscribeToClientStats(prevProps._localUserId, this._onStatsUpdated);
+            statsEmitter.subscribeToClientStats(this.props._localUserId, this._onStatsUpdated);
         }
     }
 
@@ -161,8 +154,7 @@ class TestConnectionInfo extends Component<Props, State> {
      * @returns {void}
      */
     componentWillUnmount() {
-        statsEmitter.unsubscribeToClientStats(
-            this.props._localUserId, this._onStatsUpdated);
+        statsEmitter.unsubscribeToClientStats(this.props._localUserId, this._onStatsUpdated);
     }
 
     /**
@@ -177,27 +169,16 @@ class TestConnectionInfo extends Component<Props, State> {
         }
 
         return (
-            <Fragment accessible = { false } >
-                <TestHint
-                    id = 'org.jitsi.meet.conference.connectionState'
-                    value = { this.props._conferenceConnectionState } />
-                <TestHint
-                    id = 'org.jitsi.meet.conference.joinedState'
-                    value = { this.props._conferenceJoinedState } />
-                <TestHint
-                    id = 'org.jitsi.meet.conference.grantModeratorAvailable'
-                    value = { true } />
-                <TestHint
-                    id = 'org.jitsi.meet.conference.localParticipantRole'
-                    value = { this.props._localUserRole } />
-                <TestHint
-                    id = 'org.jitsi.meet.stats.rtp'
-                    value = { JSON.stringify(this.state.stats) } />
+            <Fragment accessible={false}>
+                <TestHint id="org.jitsi.meet.conference.connectionState" value={this.props._conferenceConnectionState} />
+                <TestHint id="org.jitsi.meet.conference.joinedState" value={this.props._conferenceJoinedState} />
+                <TestHint id="org.jitsi.meet.conference.grantModeratorAvailable" value={true} />
+                <TestHint id="org.jitsi.meet.conference.localParticipantRole" value={this.props._localUserRole} />
+                <TestHint id="org.jitsi.meet.stats.rtp" value={JSON.stringify(this.state.stats)} />
             </Fragment>
         );
     }
 }
-
 
 /**
  * Maps (parts of) the Redux state to the associated TestConnectionInfo's props.
@@ -207,8 +188,7 @@ class TestConnectionInfo extends Component<Props, State> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
-    const conferenceJoined
-        = Boolean(state['features/base/conference'].conference);
+    const conferenceJoined = Boolean(state['features/base/conference'].conference);
     const localParticipant = getLocalParticipant(state);
 
     return {

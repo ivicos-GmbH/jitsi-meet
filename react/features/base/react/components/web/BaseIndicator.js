@@ -10,7 +10,6 @@ import { Tooltip } from '../../../tooltip';
  * The type of the React {@code Component} props of {@link BaseIndicator}.
  */
 type Props = {
-
     /**
      * Additional CSS class names to set on the icon container.
      */
@@ -23,7 +22,7 @@ type Props = {
 
     /**
      * The CSS classnames to set on the icon element of the component.
-    */
+     */
     iconClassName: string,
 
     /**
@@ -83,17 +82,7 @@ class BaseIndicator extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            className,
-            icon,
-            iconClassName,
-            iconId,
-            iconSize,
-            id,
-            t,
-            tooltipKey,
-            tooltipPosition
-        } = this.props;
+        const { className, icon, iconClassName, iconId, iconSize, id, t, tooltipKey, tooltipPosition } = this.props;
         const iconContainerClassName = `indicator-icon-container ${className}`;
         const style = {};
 
@@ -102,18 +91,10 @@ class BaseIndicator extends Component<Props> {
         }
 
         return (
-            <div className = 'indicator-container'>
-                <Tooltip
-                    content = { t(tooltipKey) }
-                    position = { tooltipPosition }>
-                    <span
-                        className = { iconContainerClassName }
-                        id = { id }>
-                        <Icon
-                            className = { iconClassName }
-                            id = { iconId }
-                            src = { icon }
-                            style = { style } />
+            <div className="indicator-container">
+                <Tooltip content={t(tooltipKey)} position={tooltipPosition}>
+                    <span className={iconContainerClassName} id={id}>
+                        <Icon className={iconClassName} id={iconId} src={icon} style={style} />
                     </span>
                 </Tooltip>
             </div>

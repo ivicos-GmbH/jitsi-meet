@@ -8,7 +8,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/
 import { shouldDisplayTileView } from '../../../video-layout/functions';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * True if tile view is currently enabled.
      */

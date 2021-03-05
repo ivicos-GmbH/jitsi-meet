@@ -22,15 +22,11 @@ export * from './functions.any';
  * @param {string} link - The link to add info with.
  * @returns {Promise<*>}
  */
-export function addLinkToCalendarEntry(
-        state: Object, id: string, link: string): Promise<any> {
+export function addLinkToCalendarEntry(state: Object, id: string, link: string): Promise<any> {
     return new Promise((resolve, reject) => {
-        getShareInfoText(state, link, true).then(shareInfoText => {
-            RNCalendarEvents.findEventById(id).then(event => {
-                const updateText
-                    = event.description
-                        ? `${event.description}\n\n${shareInfoText}`
-                        : shareInfoText;
+        getShareInfoText(state, link, true).then((shareInfoText) => {
+            RNCalendarEvents.findEventById(id).then((event) => {
+                const updateText = event.description ? `${event.description}\n\n${shareInfoText}` : shareInfoText;
                 const updateObject = {
                     id: event.id,
                     ...Platform.select({
@@ -43,8 +39,7 @@ export function addLinkToCalendarEntry(
                     })
                 };
 
-                RNCalendarEvents.saveEvent(event.title, updateObject)
-                .then(resolve, reject);
+                RNCalendarEvents.saveEvent(event.title, updateObject).then(resolve, reject);
             }, reject);
         }, reject);
     });
@@ -84,18 +79,12 @@ export function isCalendarEnabled(stateful: Function | Object) {
  * @private
  * @returns {void}
  */
-export function _fetchCalendarEntries(
-        store: Store<*, *>,
-        maybePromptForPermission: boolean,
-        forcePermission: ?boolean) {
+export function _fetchCalendarEntries(store: Store<*, *>, maybePromptForPermission: boolean, forcePermission: ?boolean) {
     const { dispatch, getState } = store;
-    const promptForPermission
-        = (maybePromptForPermission
-        && !getState()['features/calendar-sync'].authorization)
-        || forcePermission;
+    const promptForPermission = (maybePromptForPermission && !getState()['features/calendar-sync'].authorization) || forcePermission;
 
     _ensureCalendarAccess(promptForPermission, dispatch)
-        .then(accessGranted => {
+        .then((accessGranted) => {
             if (accessGranted) {
                 const startDate = new Date();
                 const endDate = new Date();
@@ -103,18 +92,14 @@ export function _fetchCalendarEntries(
                 startDate.setDate(startDate.getDate() + FETCH_START_DAYS);
                 endDate.setDate(endDate.getDate() + FETCH_END_DAYS);
 
-                RNCalendarEvents.fetchAllEvents(
-                    startDate.getTime(),
-                    endDate.getTime(),
-                    [])
+                RNCalendarEvents.fetchAllEvents(startDate.getTime(), endDate.getTime(), [])
                     .then(_updateCalendarEntries.bind(store))
-                    .catch(error =>
-                        logger.error('Error fetching calendar.', error));
+                    .catch((error) => logger.error('Error fetching calendar.', error));
             } else {
                 logger.warn('Calendar access not granted.');
             }
         })
-        .catch(reason => logger.error('Error accessing calendar.', reason));
+        .catch((reason) => logger.error('Error accessing calendar.', reason));
 }
 
 /**
@@ -129,12 +114,12 @@ export function _fetchCalendarEntries(
 function _ensureCalendarAccess(promptForPermission, dispatch) {
     return new Promise((resolve, reject) => {
         RNCalendarEvents.authorizationStatus()
-            .then(status => {
+            .then((status) => {
                 if (status === 'authorized') {
                     resolve(true);
                 } else if (promptForPermission) {
                     RNCalendarEvents.authorizeEventStore()
-                        .then(result => {
+                        .then((result) => {
                             dispatch(setCalendarAuthorization(result));
                             resolve(result === 'authorized');
                         })

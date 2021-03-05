@@ -7,7 +7,6 @@ import { translate } from '../../../../base/i18n';
 import InviteContactsForm from './InviteContactsForm';
 
 type Props = {
-
     /**
      * Invoked to obtain translated strings.
      */
@@ -24,7 +23,7 @@ function InviteContactsSection({ t }: Props) {
         <>
             <span>{t('addPeople.addContacts')}</span>
             <InviteContactsForm />
-            <div className = 'invite-more-dialog separator' />
+            <div className="invite-more-dialog separator" />
         </>
     );
 }

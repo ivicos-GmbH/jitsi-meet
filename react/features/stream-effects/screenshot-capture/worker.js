@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    CLEAR_INTERVAL,
-    INTERVAL_TIMEOUT,
-    SET_INTERVAL
-} from './constants';
+import { CLEAR_INTERVAL, INTERVAL_TIMEOUT, SET_INTERVAL } from './constants';
 
 const code = `
     var timer;
@@ -27,4 +23,4 @@ const code = `
     };
 `;
 
-export const timerWorkerScript = URL.createObjectURL(new Blob([ code ], { type: 'application/javascript' }));
+export const timerWorkerScript = URL.createObjectURL(new Blob([code], { type: 'application/javascript' }));

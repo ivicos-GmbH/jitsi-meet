@@ -2,14 +2,10 @@
 
 import { Component } from 'react';
 
-import {
-    createRemoteVideoMenuButtonEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createRemoteVideoMenuButtonEvent, sendAnalytics } from '../../analytics';
 import { kickParticipant } from '../../base/participants';
 
 type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -29,8 +25,7 @@ type Props = {
 /**
  * Abstract dialog to confirm a remote participant kick action.
  */
-export default class AbstractKickRemoteParticipantDialog
-    extends Component<Props> {
+export default class AbstractKickRemoteParticipantDialog extends Component<Props> {
     /**
      * Initializes a new {@code AbstractKickRemoteParticipantDialog} instance.
      *
@@ -53,11 +48,11 @@ export default class AbstractKickRemoteParticipantDialog
     _onSubmit() {
         const { dispatch, participantID } = this.props;
 
-        sendAnalytics(createRemoteVideoMenuButtonEvent(
-            'kick.button',
-            {
-                'participant_id': participantID
-            }));
+        sendAnalytics(
+            createRemoteVideoMenuButtonEvent('kick.button', {
+                participant_id: participantID
+            })
+        );
 
         dispatch(kickParticipant(participantID));
 

@@ -15,15 +15,15 @@ declare var APP: Object;
  * @returns {Function}
  */
 // eslint-disable-next-line no-unused-vars
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     if (typeof APP === 'undefined') {
         return next(action);
     }
 
     switch (action.type) {
-    case TOGGLE_SHARED_VIDEO:
-        APP.UI.emitEvent(UIEvents.SHARED_VIDEO_CLICKED);
-        break;
+        case TOGGLE_SHARED_VIDEO:
+            APP.UI.emitEvent(UIEvents.SHARED_VIDEO_CLICKED);
+            break;
     }
 
     return next(action);

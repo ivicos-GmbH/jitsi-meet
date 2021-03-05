@@ -24,7 +24,7 @@ export default class AmplitudeHandler extends AbstractHandler {
         this._enabled = true;
         this._host = host; // Only used on React Native.
 
-        const onError = e => {
+        const onError = (e) => {
             logger.error('Error initializing Amplitude', e);
             this._enabled = false;
         };

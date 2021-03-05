@@ -40,10 +40,10 @@ export function getCurrentOutputDeviceId(state: Object) {
  * @returns {string}
  */
 function getDeviceIdByType(state: Object, isType: string) {
-    const [ deviceId ] = state['features/base/tracks']
-          .map(t => t.jitsiTrack)
-          .filter(t => t && t.isLocal() && t[isType]())
-          .map(t => t.getDeviceId());
+    const [deviceId] = state['features/base/tracks']
+        .map((t) => t.jitsiTrack)
+        .filter((t) => t && t.isLocal() && t[isType]())
+        .map((t) => t.getDeviceId());
 
     return deviceId || '';
 }
@@ -58,7 +58,6 @@ export function getDisplayName(state: Object): string {
     return state['features/base/settings'].displayName || '';
 }
 
-
 /**
  * Handles changes to the `disableCallIntegration` setting.
  * Noop on web.
@@ -66,7 +65,8 @@ export function getDisplayName(state: Object): string {
  * @param {boolean} disabled - Whether call integration is disabled or not.
  * @returns {void}
  */
-export function handleCallIntegrationChange(disabled: boolean) { // eslint-disable-line no-unused-vars
+export function handleCallIntegrationChange(disabled: boolean) {
+    // eslint-disable-line no-unused-vars
 }
 
 /**
@@ -76,5 +76,6 @@ export function handleCallIntegrationChange(disabled: boolean) { // eslint-disab
  * @param {boolean} disabled - Whether crash reporting is disabled or not.
  * @returns {void}
  */
-export function handleCrashReportingChange(disabled: boolean) { // eslint-disable-line no-unused-vars
+export function handleCrashReportingChange(disabled: boolean) {
+    // eslint-disable-line no-unused-vars
 }

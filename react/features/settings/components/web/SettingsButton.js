@@ -12,7 +12,6 @@ import { SETTINGS_TABS } from '../../constants';
  * The type of the React {@code Component} props of {@link SettingsButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * The default tab at which the settings dialog will be opened.
      */
@@ -40,9 +39,7 @@ class SettingsButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        const {
-            defaultTab = SETTINGS_TABS.DEVICES,
-            dispatch } = this.props;
+        const { defaultTab = SETTINGS_TABS.DEVICES, dispatch } = this.props;
 
         sendAnalytics(createToolbarEvent('settings'));
         dispatch(openSettingsDialog(defaultTab));

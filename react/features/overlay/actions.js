@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED,
-    SET_FATAL_ERROR,
-    TOGGLE_SLOW_GUM_OVERLAY
-} from './actionTypes';
+import { MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED, SET_FATAL_ERROR, TOGGLE_SLOW_GUM_OVERLAY } from './actionTypes';
 
 /**
  * Signals that the prompt for media permission is visible or not.
@@ -34,10 +30,10 @@ export function mediaPermissionPromptVisibilityChanged(isVisible: boolean, brows
  * permission is visible otherwise the value is false/undefined.
  * @public
  * @returns {{
-*     type: SLOW_GET_USER_MEDIA_OVERLAY,
-*     isVisible: {boolean}
-* }}
-*/
+ *     type: SLOW_GET_USER_MEDIA_OVERLAY,
+ *     isVisible: {boolean}
+ * }}
+ */
 export function toggleSlowGUMOverlay(isVisible: boolean) {
     return {
         type: TOGGLE_SLOW_GUM_OVERLAY,

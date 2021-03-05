@@ -5,7 +5,6 @@ import { BoxModel } from '../../base/styles';
  * The styles of the authentication feature.
  */
 ColorSchemeRegistry.register('LoginDialog', {
-
     /**
      * The style of {@code Text} rendered by the {@code Dialog}s of the
      * feature authentication.

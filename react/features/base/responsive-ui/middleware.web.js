@@ -16,18 +16,17 @@ let handler;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     switch (action.type) {
-    case APP_WILL_UNMOUNT: {
-        _appWillUnmount();
-        break;
-    }
-    case APP_WILL_MOUNT:
-        _appWillMount(store);
-        break;
-
+        case APP_WILL_UNMOUNT: {
+            _appWillUnmount();
+            break;
+        }
+        case APP_WILL_MOUNT:
+            _appWillMount(store);
+            break;
     }
 
     return result;
@@ -44,10 +43,7 @@ MiddlewareRegistry.register(store => next => action => {
  */
 function _appWillMount(store) {
     handler = () => {
-        const {
-            innerHeight,
-            innerWidth
-        } = window;
+        const { innerHeight, innerWidth } = window;
 
         store.dispatch(clientResized(innerWidth, innerHeight));
     };

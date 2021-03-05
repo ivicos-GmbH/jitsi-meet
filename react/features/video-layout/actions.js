@@ -2,10 +2,7 @@
 
 import type { Dispatch } from 'redux';
 
-import {
-    SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW
-} from './actionTypes';
+import { SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED, SET_TILE_VIEW } from './actionTypes';
 import { shouldDisplayTileView } from './functions';
 
 /**

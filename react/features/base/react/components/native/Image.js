@@ -7,7 +7,6 @@ import { Image } from 'react-native';
  * The type of the React {@code Component} props of {@link Image}.
  */
 type Props = {
-
     /**
      * The ImageSource to be rendered as image.
      */
@@ -32,10 +31,6 @@ export default class ImageImpl extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <Image
-                source = { this.props.src }
-                style = { this.props.style } />
-        );
+        return <Image source={this.props.src} style={this.props.style} />;
     }
 }

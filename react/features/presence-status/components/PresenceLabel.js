@@ -13,7 +13,6 @@ import { presenceStatusDisabled } from '../functions';
  * The type of the React {@code Component} props of {@link PresenceLabel}.
  */
 type Props = {
-
     /**
      * The current present status associated with the passed in participantID
      * prop.
@@ -79,11 +78,10 @@ class PresenceLabel extends Component<Props> {
         const { style, className } = this.props;
 
         return (
-            <Text
-                className = { className }
-                { ...style }>
-                { text }
-            </Text>);
+            <Text className={className} {...style}>
+                {text}
+            </Text>
+        );
     }
 
     /**
@@ -100,7 +98,8 @@ class PresenceLabel extends Component<Props> {
 
         const i18nKey = STATUS_TO_I18N_KEY[_presence];
 
-        if (!i18nKey) { // fallback to status value
+        if (!i18nKey) {
+            // fallback to status value
             return _presence;
         }
 
@@ -124,9 +123,7 @@ function _mapStateToProps(state, ownProps) {
     const participant = getParticipantById(state, ownProps.participantID);
 
     return {
-        _presence: presenceStatusDisabled() ? ''
-            : participant?.presence || ownProps.defaultPresence
-
+        _presence: presenceStatusDisabled() ? '' : participant?.presence || ownProps.defaultPresence
     };
 }
 

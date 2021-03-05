@@ -5,9 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconMuteEveryoneElse } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import AbstractMuteEveryoneElseButton, {
-    type Props
-} from '../AbstractMuteEveryoneElseButton';
+import AbstractMuteEveryoneElseButton, { type Props } from '../AbstractMuteEveryoneElseButton';
 
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
 
@@ -39,12 +37,13 @@ class MuteEveryoneElseButton extends AbstractMuteEveryoneElseButton {
 
         return (
             <RemoteVideoMenuButton
-                buttonText = { t('videothumbnail.domuteOthers') }
-                displayClass = { 'mutelink' }
-                icon = { IconMuteEveryoneElse }
-                id = { `mutelink_${participantID}` }
+                buttonText={t('videothumbnail.domuteOthers')}
+                displayClass={'mutelink'}
+                icon={IconMuteEveryoneElse}
+                id={`mutelink_${participantID}`}
                 // eslint-disable-next-line react/jsx-handler-names
-                onClick = { this._handleClick } />
+                onClick={this._handleClick}
+            />
         );
     }
 

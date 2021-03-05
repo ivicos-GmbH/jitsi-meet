@@ -19,7 +19,6 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of {@link StatusIndicators}.
  */
 type Props = {
-
     /**
      * The current layout of the filmstrip.
      */
@@ -64,32 +63,26 @@ class StatusIndicators extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _currentLayout,
-            _showAudioMutedIndicator,
-            _showModeratorIndicator,
-            _showScreenShareIndicator,
-            _showVideoMutedIndicator
-        } = this.props;
+        const { _currentLayout, _showAudioMutedIndicator, _showModeratorIndicator, _showScreenShareIndicator, _showVideoMutedIndicator } = this.props;
         let tooltipPosition;
 
         switch (_currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-            tooltipPosition = 'right';
-            break;
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            tooltipPosition = 'left';
-            break;
-        default:
-            tooltipPosition = 'top';
+            case LAYOUTS.TILE_VIEW:
+                tooltipPosition = 'right';
+                break;
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+                tooltipPosition = 'left';
+                break;
+            default:
+                tooltipPosition = 'top';
         }
 
         return (
             <div>
-                { _showAudioMutedIndicator ? <AudioMutedIndicator tooltipPosition = { tooltipPosition } /> : null }
-                { _showScreenShareIndicator ? <ScreenShareIndicator tooltipPosition = { tooltipPosition } /> : null }
-                { _showVideoMutedIndicator ? <VideoMutedIndicator tooltipPosition = { tooltipPosition } /> : null }
-                { _showModeratorIndicator ? <ModeratorIndicator tooltipPosition = { tooltipPosition } /> : null }
+                {_showAudioMutedIndicator ? <AudioMutedIndicator tooltipPosition={tooltipPosition} /> : null}
+                {_showScreenShareIndicator ? <ScreenShareIndicator tooltipPosition={tooltipPosition} /> : null}
+                {_showVideoMutedIndicator ? <VideoMutedIndicator tooltipPosition={tooltipPosition} /> : null}
+                {_showModeratorIndicator ? <ModeratorIndicator tooltipPosition={tooltipPosition} /> : null}
             </div>
         );
     }
@@ -106,7 +99,7 @@ class StatusIndicators extends Component<Props> {
  *     _showModeratorIndicator: boolean,
  *     _showVideoMutedIndicator: boolean
  * }}
-*/
+ */
 function _mapStateToProps(state, ownProps) {
     const { participantID } = ownProps;
 
@@ -121,7 +114,8 @@ function _mapStateToProps(state, ownProps) {
     if (participant?.local) {
         isVideoMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO);
         isAudioMuted = isLocalTrackMuted(tracks, MEDIA_TYPE.AUDIO);
-    } else if (!participant?.isFakeParticipant) { // remote participants excluding shared video
+    } else if (!participant?.isFakeParticipant) {
+        // remote participants excluding shared video
         const track = getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, participantID);
 
         isScreenSharing = track?.videoType === 'desktop';
@@ -132,8 +126,7 @@ function _mapStateToProps(state, ownProps) {
     return {
         _currentLayout: getCurrentLayout(state),
         _showAudioMutedIndicator: isAudioMuted,
-        _showModeratorIndicator:
-            !interfaceConfig.DISABLE_FOCUS_INDICATOR && participant && participant.role === PARTICIPANT_ROLE.MODERATOR,
+        _showModeratorIndicator: !interfaceConfig.DISABLE_FOCUS_INDICATOR && participant && participant.role === PARTICIPANT_ROLE.MODERATOR,
         _showScreenShareIndicator: isScreenSharing,
         _showVideoMutedIndicator: isVideoMuted
     };

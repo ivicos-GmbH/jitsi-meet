@@ -36,16 +36,13 @@ const SOCK_STREAM = 1; /* stream socket */
  * @class
  */
 export default function _RTCPeerConnection(...args: any[]) {
-
     /* eslint-disable indent, no-invalid-this */
 
     RTCPeerConnection.apply(this, args);
 
-    this.onaddstream = (...args) => // eslint-disable-line no-shadow
-        (this._onaddstreamQueue
-                ? this._queueOnaddstream
-                : this._invokeOnaddstream)
-            .apply(this, args);
+    this.onaddstream = (
+        ...args // eslint-disable-line no-shadow
+    ) => (this._onaddstreamQueue ? this._queueOnaddstream : this._invokeOnaddstream).apply(this, args);
 
     // Shadow RTCPeerConnection's onaddstream but after _RTCPeerConnection has
     // assigned to the property in question. Defining the property on
@@ -71,40 +68,38 @@ export default function _RTCPeerConnection(...args: any[]) {
 _RTCPeerConnection.prototype = Object.create(RTCPeerConnection.prototype);
 _RTCPeerConnection.prototype.constructor = _RTCPeerConnection;
 
-_RTCPeerConnection.prototype._invokeOnaddstream = function(...args) {
+_RTCPeerConnection.prototype._invokeOnaddstream = function (...args) {
     const onaddstream = this._onaddstream;
 
     return onaddstream && onaddstream.apply(this, args);
 };
 
-_RTCPeerConnection.prototype._invokeQueuedOnaddstream = function(q) {
-    q && q.forEach(args => {
-        try {
-            this._invokeOnaddstream(...args);
-        } catch (e) {
-            // TODO Determine whether the combination of the standard
-            // setRemoteDescription and onaddstream results in a similar
-            // swallowing of errors.
-            console.error(e);
-        }
-    });
+_RTCPeerConnection.prototype._invokeQueuedOnaddstream = function (q) {
+    q &&
+        q.forEach((args) => {
+            try {
+                this._invokeOnaddstream(...args);
+            } catch (e) {
+                // TODO Determine whether the combination of the standard
+                // setRemoteDescription and onaddstream results in a similar
+                // swallowing of errors.
+                console.error(e);
+            }
+        });
 };
 
-_RTCPeerConnection.prototype._queueOnaddstream = function(...args) {
+_RTCPeerConnection.prototype._queueOnaddstream = function (...args) {
     this._onaddstreamQueue.push(Array.from(args));
 };
 
-_RTCPeerConnection.prototype.setRemoteDescription = function(description) {
+_RTCPeerConnection.prototype.setRemoteDescription = function (description) {
+    return _synthesizeIPv6Addresses(description)
+        .catch((reason) => {
+            reason && console.error(reason);
 
-    return (
-        _synthesizeIPv6Addresses(description)
-            .catch(reason => {
-                reason && console.error(reason);
-
-                return description;
-            })
-            .then(value => _setRemoteDescription.bind(this)(value)));
-
+            return description;
+        })
+        .then((value) => _setRemoteDescription.bind(this)(value));
 };
 
 /**
@@ -120,15 +115,14 @@ _RTCPeerConnection.prototype.setRemoteDescription = function(description) {
  */
 function _setRemoteDescription(description) {
     return new Promise((resolve, reject) => {
-
         /* eslint-disable no-invalid-this */
 
         // Ensure I'm not remembering onaddstream invocations from previous
         // setRemoteDescription calls. I shouldn't be but... anyway.
         this._onaddstreamQueue = [];
 
-        RTCPeerConnection.prototype.setRemoteDescription.call(this, description)
-            .then((...args) => {
+        RTCPeerConnection.prototype.setRemoteDescription.call(this, description).then(
+            (...args) => {
                 let q;
 
                 try {
@@ -139,11 +133,13 @@ function _setRemoteDescription(description) {
                 }
 
                 this._invokeQueuedOnaddstream(q);
-            }, (...args) => {
+            },
+            (...args) => {
                 this._onaddstreamQueue = undefined;
 
                 reject(...args);
-            });
+            }
+        );
 
         /* eslint-enable no-invalid-this */
     });
@@ -163,7 +159,7 @@ function _setRemoteDescription(description) {
  * be treated as inability to synthesize an IPv6 address from the specified
  * {@code ipv4}.
  */
-const _synthesizeIPv6FromIPv4Address: string => Promise<?string> = (function() {
+const _synthesizeIPv6FromIPv4Address: (string) => Promise<?string> = (function () {
     // POSIX.getaddrinfo
     const { POSIX } = NativeModules;
 
@@ -171,9 +167,7 @@ const _synthesizeIPv6FromIPv4Address: string => Promise<?string> = (function() {
         const { getaddrinfo } = POSIX;
 
         if (typeof getaddrinfo === 'function') {
-            return ipv4 =>
-                getaddrinfo(/* hostname */ ipv4, /* servname */ undefined)
-                    .then(([ { ai_addr: ipv6 } ]) => ipv6);
+            return (ipv4) => getaddrinfo(/* hostname */ ipv4, /* servname */ undefined).then(([{ ai_addr: ipv6 }]) => ipv6);
         }
     }
 
@@ -189,10 +183,7 @@ const _synthesizeIPv6FromIPv4Address: string => Promise<?string> = (function() {
     }
 
     // There's no POSIX.getaddrinfo or NAT64AddrInfo.getIPv6Address.
-    return () =>
-        Promise.reject(
-            'The impossible just happened! No POSIX.getaddrinfo or'
-                + ' NAT64AddrInfo.getIPv6Address!');
+    return () => Promise.reject('The impossible just happened! No POSIX.getaddrinfo or' + ' NAT64AddrInfo.getIPv6Address!');
 })();
 
 /**
@@ -204,12 +195,9 @@ const _synthesizeIPv6FromIPv4Address: string => Promise<?string> = (function() {
  * @returns {Promise}
  */
 function _synthesizeIPv6Addresses(sdp) {
-    return (
-        new Promise(resolve => resolve(_synthesizeIPv6Addresses0(sdp)))
-            .then(({ ips, lines }) =>
-                Promise.all(Array.from(ips.values()))
-                    .then(() => _synthesizeIPv6Addresses1(sdp, ips, lines))
-            ));
+    return new Promise((resolve) => resolve(_synthesizeIPv6Addresses0(sdp))).then(({ ips, lines }) =>
+        Promise.all(Array.from(ips.values())).then(() => _synthesizeIPv6Addresses1(sdp, ips, lines))
+    );
 }
 
 /* eslint-disable max-depth */
@@ -249,7 +237,7 @@ function _synthesizeIPv6Addresses0(sessionDescription) {
             const candidate = line.split(' ');
 
             if (candidate.length >= 10 && candidate[6] === 'typ') {
-                const ip4s = [ candidate[4] ];
+                const ip4s = [candidate[4]];
                 let abort = false;
 
                 for (let i = 8; i < candidate.length; ++i) {
@@ -261,27 +249,26 @@ function _synthesizeIPv6Addresses0(sessionDescription) {
 
                 for (const ip of ip4s) {
                     if (ip.indexOf(':') === -1) {
-                        ips.has(ip)
-                            || ips.set(ip, new Promise((resolve, reject) => {
-                                const v = ips.get(ip);
+                        ips.has(ip) ||
+                            ips.set(
+                                ip,
+                                new Promise((resolve, reject) => {
+                                    const v = ips.get(ip);
 
-                                if (v && typeof v === 'string') {
-                                    resolve(v);
-                                } else {
-                                    _synthesizeIPv6FromIPv4Address(ip).then(
-                                        value => {
-                                            if (!value
-                                                    || value.indexOf(':') === -1
-                                                    || value === ips.get(ip)) {
+                                    if (v && typeof v === 'string') {
+                                        resolve(v);
+                                    } else {
+                                        _synthesizeIPv6FromIPv4Address(ip).then((value) => {
+                                            if (!value || value.indexOf(':') === -1 || value === ips.get(ip)) {
                                                 ips.delete(ip);
                                             } else {
                                                 ips.set(ip, value);
                                             }
                                             resolve(value);
-                                        },
-                                        reject);
-                                }
-                            }));
+                                        }, reject);
+                                    }
+                                })
+                            );
                     } else {
                         abort = true;
                         break;

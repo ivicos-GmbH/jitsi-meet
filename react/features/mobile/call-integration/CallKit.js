@@ -42,22 +42,13 @@ if (CallKit) {
             });
 
             return [
-                CallKit.addListener(
-                    'performEndCallAction',
-                    delegate._onPerformEndCallAction,
-                    context),
-                CallKit.addListener(
-                    'performSetMutedCallAction',
-                    delegate._onPerformSetMutedCallAction,
-                    context),
+                CallKit.addListener('performEndCallAction', delegate._onPerformEndCallAction, context),
+                CallKit.addListener('performSetMutedCallAction', delegate._onPerformSetMutedCallAction, context),
 
                 // According to CallKit's documentation, when the system resets
                 // we should terminate all calls. Hence, providerDidReset is
                 // the same to us as performEndCallAction.
-                CallKit.addListener(
-                    'providerDidReset',
-                    delegate._onPerformEndCallAction,
-                    context)
+                CallKit.addListener('providerDidReset', delegate._onPerformEndCallAction, context)
             ];
         }
     };

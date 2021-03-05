@@ -3,9 +3,7 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-
 type Props = {
-
     /**
      * The "onLayout" handler.
      */
@@ -45,7 +43,11 @@ export default class DimensionsDetector extends PureComponent<Props> {
      * @private
      * @returns {void}
      */
-    _onLayout({ nativeEvent: { layout: { height, width } } }) {
+    _onLayout({
+        nativeEvent: {
+            layout: { height, width }
+        }
+    }) {
         const { onDimensionsChanged } = this.props;
 
         onDimensionsChanged && onDimensionsChanged(width, height);
@@ -58,10 +60,8 @@ export default class DimensionsDetector extends PureComponent<Props> {
      */
     render() {
         return (
-            <View
-                onLayout = { this._onLayout }
-                style = { StyleSheet.absoluteFillObject } >
-                { this.props.children }
+            <View onLayout={this._onLayout} style={StyleSheet.absoluteFillObject}>
+                {this.props.children}
             </View>
         );
     }

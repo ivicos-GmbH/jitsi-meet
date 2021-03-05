@@ -16,24 +16,9 @@ import {
 } from '../media';
 import { MiddlewareRegistry } from '../redux';
 
-import {
-    TRACK_ADDED,
-    TOGGLE_SCREENSHARING,
-    TRACK_NO_DATA_FROM_SOURCE,
-    TRACK_REMOVED,
-    TRACK_UPDATED
-} from './actionTypes';
-import {
-    createLocalTracksA,
-    showNoDataFromSourceVideoError,
-    trackNoDataFromSourceNotificationInfoChanged
-} from './actions';
-import {
-    getLocalTrack,
-    getTrackByJitsiTrack,
-    isUserInteractionRequiredForUnmute,
-    setTrackMuted
-} from './functions';
+import { TRACK_ADDED, TOGGLE_SCREENSHARING, TRACK_NO_DATA_FROM_SOURCE, TRACK_REMOVED, TRACK_UPDATED } from './actionTypes';
+import { createLocalTracksA, showNoDataFromSourceVideoError, trackNoDataFromSourceNotificationInfoChanged } from './actions';
+import { getLocalTrack, getTrackByJitsiTrack, isUserInteractionRequiredForUnmute, setTrackMuted } from './functions';
 
 import './subscriber';
 
@@ -47,132 +32,125 @@ declare var APP: Object;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case TRACK_ADDED: {
-        // The devices list needs to be refreshed when no initial video permissions
-        // were granted and a local video track is added by umuting the video.
-        if (action.track.local) {
-            store.dispatch(getAvailableDevices());
+        case TRACK_ADDED: {
+            // The devices list needs to be refreshed when no initial video permissions
+            // were granted and a local video track is added by umuting the video.
+            if (action.track.local) {
+                store.dispatch(getAvailableDevices());
+            }
+
+            break;
         }
-
-        break;
-    }
-    case TRACK_NO_DATA_FROM_SOURCE: {
-        const result = next(action);
-
-        _handleNoDataFromSourceErrors(store, action);
-
-        return result;
-    }
-    case TRACK_REMOVED: {
-        _removeNoDataFromSourceNotification(store, action.track);
-        break;
-    }
-    case SET_AUDIO_MUTED:
-        if (!action.muted
-                && isUserInteractionRequiredForUnmute(store.getState())) {
-            return;
-        }
-
-        _setMuted(store, action, MEDIA_TYPE.AUDIO);
-        break;
-
-    case SET_CAMERA_FACING_MODE: {
-        // XXX The camera facing mode of a MediaStreamTrack can be specified
-        // only at initialization time and then it can only be toggled. So in
-        // order to set the camera facing mode, one may destroy the track and
-        // then initialize a new instance with the new camera facing mode. But
-        // that is inefficient on mobile at least so the following relies on the
-        // fact that there are 2 camera facing modes and merely toggles between
-        // them to (hopefully) get the camera in the specified state.
-        const localTrack = _getLocalTrack(store, MEDIA_TYPE.VIDEO);
-        let jitsiTrack;
-
-        if (localTrack
-                && (jitsiTrack = localTrack.jitsiTrack)
-                && jitsiTrack.getCameraFacingMode()
-                    !== action.cameraFacingMode) {
-            store.dispatch(toggleCameraFacingMode());
-        }
-        break;
-    }
-
-    case SET_VIDEO_MUTED:
-        if (!action.muted
-                && isUserInteractionRequiredForUnmute(store.getState())) {
-            return;
-        }
-
-        _setMuted(store, action, action.mediaType);
-        break;
-
-    case TOGGLE_CAMERA_FACING_MODE: {
-        const localTrack = _getLocalTrack(store, MEDIA_TYPE.VIDEO);
-        let jitsiTrack;
-
-        if (localTrack && (jitsiTrack = localTrack.jitsiTrack)) {
-            // XXX MediaStreamTrack._switchCamera is a custom function
-            // implemented in react-native-webrtc for video which switches
-            // between the cameras via a native WebRTC library implementation
-            // without making any changes to the track.
-            jitsiTrack._switchCamera();
-
-            // Don't mirror the video of the back/environment-facing camera.
-            const mirror
-                = jitsiTrack.getCameraFacingMode() === CAMERA_FACING_MODE.USER;
-
-            store.dispatch({
-                type: TRACK_UPDATED,
-                track: {
-                    jitsiTrack,
-                    mirror
-                }
-            });
-        }
-        break;
-    }
-
-    case TOGGLE_SCREENSHARING:
-        if (typeof APP === 'object') {
-            APP.UI.emitEvent(UIEvents.TOGGLE_SCREENSHARING);
-        }
-        break;
-
-    case TRACK_UPDATED:
-        // TODO Remove the following calls to APP.UI once components interested
-        // in track mute changes are moved into React and/or redux.
-        if (typeof APP !== 'undefined') {
+        case TRACK_NO_DATA_FROM_SOURCE: {
             const result = next(action);
 
-            if (isPrejoinPageVisible(store.getState())) {
-                return result;
-            }
-
-            const { jitsiTrack } = action.track;
-            const muted = jitsiTrack.isMuted();
-            const participantID = jitsiTrack.getParticipantId();
-            const isVideoTrack = jitsiTrack.type !== MEDIA_TYPE.AUDIO;
-
-            if (isVideoTrack) {
-                // Do not change the video mute state for local presenter tracks.
-                if (jitsiTrack.type === MEDIA_TYPE.PRESENTER) {
-                    APP.conference.mutePresenter(muted);
-                } else if (jitsiTrack.isLocal()) {
-                    APP.conference.setVideoMuteStatus(muted);
-                } else {
-                    APP.UI.setVideoMuted(participantID);
-                }
-                APP.UI.onPeerVideoTypeChanged(participantID, jitsiTrack.videoType);
-            } else if (jitsiTrack.isLocal()) {
-                APP.conference.setAudioMuteStatus(muted);
-            } else {
-                APP.UI.setAudioMuted(participantID, muted);
-            }
+            _handleNoDataFromSourceErrors(store, action);
 
             return result;
         }
+        case TRACK_REMOVED: {
+            _removeNoDataFromSourceNotification(store, action.track);
+            break;
+        }
+        case SET_AUDIO_MUTED:
+            if (!action.muted && isUserInteractionRequiredForUnmute(store.getState())) {
+                return;
+            }
 
+            _setMuted(store, action, MEDIA_TYPE.AUDIO);
+            break;
+
+        case SET_CAMERA_FACING_MODE: {
+            // XXX The camera facing mode of a MediaStreamTrack can be specified
+            // only at initialization time and then it can only be toggled. So in
+            // order to set the camera facing mode, one may destroy the track and
+            // then initialize a new instance with the new camera facing mode. But
+            // that is inefficient on mobile at least so the following relies on the
+            // fact that there are 2 camera facing modes and merely toggles between
+            // them to (hopefully) get the camera in the specified state.
+            const localTrack = _getLocalTrack(store, MEDIA_TYPE.VIDEO);
+            let jitsiTrack;
+
+            if (localTrack && (jitsiTrack = localTrack.jitsiTrack) && jitsiTrack.getCameraFacingMode() !== action.cameraFacingMode) {
+                store.dispatch(toggleCameraFacingMode());
+            }
+            break;
+        }
+
+        case SET_VIDEO_MUTED:
+            if (!action.muted && isUserInteractionRequiredForUnmute(store.getState())) {
+                return;
+            }
+
+            _setMuted(store, action, action.mediaType);
+            break;
+
+        case TOGGLE_CAMERA_FACING_MODE: {
+            const localTrack = _getLocalTrack(store, MEDIA_TYPE.VIDEO);
+            let jitsiTrack;
+
+            if (localTrack && (jitsiTrack = localTrack.jitsiTrack)) {
+                // XXX MediaStreamTrack._switchCamera is a custom function
+                // implemented in react-native-webrtc for video which switches
+                // between the cameras via a native WebRTC library implementation
+                // without making any changes to the track.
+                jitsiTrack._switchCamera();
+
+                // Don't mirror the video of the back/environment-facing camera.
+                const mirror = jitsiTrack.getCameraFacingMode() === CAMERA_FACING_MODE.USER;
+
+                store.dispatch({
+                    type: TRACK_UPDATED,
+                    track: {
+                        jitsiTrack,
+                        mirror
+                    }
+                });
+            }
+            break;
+        }
+
+        case TOGGLE_SCREENSHARING:
+            if (typeof APP === 'object') {
+                APP.UI.emitEvent(UIEvents.TOGGLE_SCREENSHARING);
+            }
+            break;
+
+        case TRACK_UPDATED:
+            // TODO Remove the following calls to APP.UI once components interested
+            // in track mute changes are moved into React and/or redux.
+            if (typeof APP !== 'undefined') {
+                const result = next(action);
+
+                if (isPrejoinPageVisible(store.getState())) {
+                    return result;
+                }
+
+                const { jitsiTrack } = action.track;
+                const muted = jitsiTrack.isMuted();
+                const participantID = jitsiTrack.getParticipantId();
+                const isVideoTrack = jitsiTrack.type !== MEDIA_TYPE.AUDIO;
+
+                if (isVideoTrack) {
+                    // Do not change the video mute state for local presenter tracks.
+                    if (jitsiTrack.type === MEDIA_TYPE.PRESENTER) {
+                        APP.conference.mutePresenter(muted);
+                    } else if (jitsiTrack.isLocal()) {
+                        APP.conference.setVideoMuteStatus(muted);
+                    } else {
+                        APP.UI.setVideoMuted(participantID);
+                    }
+                    APP.UI.onPeerVideoTypeChanged(participantID, jitsiTrack.videoType);
+                } else if (jitsiTrack.isLocal()) {
+                    APP.conference.setAudioMuteStatus(muted);
+                } else {
+                    APP.UI.setAudioMuted(participantID, muted);
+                }
+
+                return result;
+            }
     }
 
     return next(action);
@@ -242,15 +220,8 @@ function _handleNoDataFromSourceErrors(store, action) {
  * @returns {Track} The local {@code Track} associated with the specified
  * {@code mediaType} in the specified {@code store}.
  */
-function _getLocalTrack(
-        { getState }: { getState: Function },
-        mediaType: MEDIA_TYPE,
-        includePending: boolean = false) {
-    return (
-        getLocalTrack(
-            getState()['features/base/tracks'],
-            mediaType,
-            includePending));
+function _getLocalTrack({ getState }: { getState: Function }, mediaType: MEDIA_TYPE, includePending: boolean = false) {
+    return getLocalTrack(getState()['features/base/tracks'], mediaType, includePending);
 }
 
 /**
@@ -282,8 +253,7 @@ function _removeNoDataFromSourceNotification({ getState, dispatch }, track) {
  * @returns {void}
  */
 function _setMuted(store, { ensureTrack, authority, muted }, mediaType: MEDIA_TYPE) {
-    const localTrack
-        = _getLocalTrack(store, mediaType, /* includePending */ true);
+    const localTrack = _getLocalTrack(store, mediaType, /* includePending */ true);
 
     if (localTrack) {
         // The `jitsiTrack` property will have a value only for a localTrack for
@@ -295,11 +265,10 @@ function _setMuted(store, { ensureTrack, authority, muted }, mediaType: MEDIA_TY
 
         // screenshare cannot be muted or unmuted using the video mute button
         // anymore, unless it is muted by audioOnly.
-        jitsiTrack && (jitsiTrack.videoType !== 'desktop' || isAudioOnly)
-            && setTrackMuted(jitsiTrack, muted);
+        jitsiTrack && (jitsiTrack.videoType !== 'desktop' || isAudioOnly) && setTrackMuted(jitsiTrack, muted);
     } else if (!muted && ensureTrack && (typeof APP === 'undefined' || isPrejoinPageVisible(store.getState()))) {
         // FIXME: This only runs on mobile now because web has its own way of
         // creating local tracks. Adjust the check once they are unified.
-        store.dispatch(createLocalTracksA({ devices: [ mediaType ] }));
+        store.dispatch(createLocalTracksA({ devices: [mediaType] }));
     }
 }

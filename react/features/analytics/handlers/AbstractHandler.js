@@ -17,8 +17,14 @@ export default class AbstractHandler {
         // by removing them completely from the code.
         this._blackListedEvents = [
             ...(options.blackListedEvents || []), // eslint-disable-line no-extra-parens
-            'e2e_rtt', 'rtp.stats', 'rtt.by.region', 'available.device', 'stream.switch.delay', 'ice.state.changed',
-            'ice.duration', 'peer.conn.status.duration'
+            'e2e_rtt',
+            'rtp.stats',
+            'rtt.by.region',
+            'available.device',
+            'stream.switch.delay',
+            'ice.state.changed',
+            'ice.duration',
+            'peer.conn.status.duration'
         ];
     }
 
@@ -34,11 +40,7 @@ export default class AbstractHandler {
             return event.name;
         }
 
-        const {
-            action,
-            actionSubject,
-            source
-        } = event;
+        const { action, actionSubject, source } = event;
 
         // All events have action, actionSubject, and source fields. All
         // three fields are required, and often jitsi-meet and

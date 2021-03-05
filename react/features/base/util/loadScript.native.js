@@ -19,8 +19,7 @@ const DEFAULT_TIMEOUT = 5000;
  * @param {boolean} skipEval - Wether we want to skip evaluating the loaded content or not.
  * @returns {void}
  */
-export async function loadScript(
-        url: string, timeout: number = DEFAULT_TIMEOUT, skipEval: boolean = false): Promise<any> {
+export async function loadScript(url: string, timeout: number = DEFAULT_TIMEOUT, skipEval: boolean = false): Promise<any> {
     // XXX The implementation of fetch on Android will throw an Exception on
     // the Java side which will break the app if the URL is invalid (which
     // the implementation of fetch on Android calls 'unexpected url'). In
@@ -49,16 +48,16 @@ export async function loadScript(
     clearTimeout(timer);
 
     switch (response.status) {
-    case 200: {
-        const txt = await response.text();
+        case 200: {
+            const txt = await response.text();
 
-        if (skipEval) {
-            return txt;
+            if (skipEval) {
+                return txt;
+            }
+
+            return eval.call(window, txt); // eslint-disable-line no-eval
         }
-
-        return eval.call(window, txt); // eslint-disable-line no-eval
-    }
-    default:
-        throw new Error(`loadScript error: ${response.statusText}`);
+        default:
+            throw new Error(`loadScript error: ${response.statusText}`);
     }
 }

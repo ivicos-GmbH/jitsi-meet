@@ -11,7 +11,6 @@ import { type Props as AbstractProps } from './BaseDialog';
 import BaseSubmitDialog from './BaseSubmitDialog';
 
 type Props = AbstractProps & {
-
     /**
      * Untranslated i18n key of the content to be displayed.
      *
@@ -19,7 +18,7 @@ type Props = AbstractProps & {
      * translated using the provided params. See i18n function
      * {@code translate(string, Object)} for more details.
      */
-    contentKey: string | { key: string, params: Object},
+    contentKey: string | { key: string, params: Object }
 };
 
 /**
@@ -33,19 +32,12 @@ class AlertDialog extends BaseSubmitDialog<Props, *> {
      */
     _renderSubmittable() {
         const { _dialogStyles, contentKey, t } = this.props;
-        const content
-            = typeof contentKey === 'string'
-                ? t(contentKey)
-                : this._renderHTML(t(contentKey.key, contentKey.params));
+        const content = typeof contentKey === 'string' ? t(contentKey) : this._renderHTML(t(contentKey.key, contentKey.params));
 
-        return (
-            <Text style = { _dialogStyles.text }>
-                { content }
-            </Text>
-        );
+        return <Text style={_dialogStyles.text}>{content}</Text>;
     }
 
-    _renderHTML: string => Object | string
+    _renderHTML: (string) => Object | string;
 }
 
 export default translate(connect(_abstractMapStateToProps)(AlertDialog));

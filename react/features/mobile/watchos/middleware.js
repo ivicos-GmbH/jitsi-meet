@@ -8,11 +8,7 @@ import { APP_WILL_MOUNT } from '../../base/app';
 import { CONFERENCE_JOINED } from '../../base/conference';
 import { getCurrentConferenceUrl } from '../../base/connection';
 import { setAudioMuted } from '../../base/media';
-import {
-    MiddlewareRegistry,
-    StateListenerRegistry,
-    toState
-} from '../../base/redux';
+import { MiddlewareRegistry, StateListenerRegistry, toState } from '../../base/redux';
 
 import { setConferenceTimestamp, setSessionId, setWatchReachable } from './actions';
 import { CMD_HANG_UP, CMD_JOIN_CONFERENCE, CMD_SET_MUTED, MAX_RECENT_URLS } from './constants';
@@ -21,26 +17,32 @@ import logger from './logger';
 const watchOSEnabled = Platform.OS === 'ios';
 
 // Handles the recent URLs state sent to the watch
-watchOSEnabled && StateListenerRegistry.register(
-    /* selector */ state => state['features/recent-list'],
-    /* listener */ (recentListState, { getState }) => {
-        _updateApplicationContext(getState);
-    });
+watchOSEnabled &&
+    StateListenerRegistry.register(
+        /* selector */ (state) => state['features/recent-list'],
+        /* listener */ (recentListState, { getState }) => {
+            _updateApplicationContext(getState);
+        }
+    );
 
 // Handles the mic muted state sent to the watch
-watchOSEnabled && StateListenerRegistry.register(
-    /* selector */ state => _isAudioMuted(state),
-    /* listener */ (isAudioMuted, { getState }) => {
-        _updateApplicationContext(getState);
-    });
+watchOSEnabled &&
+    StateListenerRegistry.register(
+        /* selector */ (state) => _isAudioMuted(state),
+        /* listener */ (isAudioMuted, { getState }) => {
+            _updateApplicationContext(getState);
+        }
+    );
 
 // Handles the conference URL state sent to the watch
-watchOSEnabled && StateListenerRegistry.register(
-    /* selector */ state => getCurrentConferenceUrl(state),
-    /* listener */ (currentUrl, { dispatch, getState }) => {
-        dispatch(setSessionId());
-        _updateApplicationContext(getState);
-    });
+watchOSEnabled &&
+    StateListenerRegistry.register(
+        /* selector */ (state) => getCurrentConferenceUrl(state),
+        /* listener */ (currentUrl, { dispatch, getState }) => {
+            dispatch(setSessionId());
+            _updateApplicationContext(getState);
+        }
+    );
 
 /**
  * Middleware that captures conference actions.
@@ -48,19 +50,20 @@ watchOSEnabled && StateListenerRegistry.register(
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-watchOSEnabled && MiddlewareRegistry.register(store => next => action => {
-    switch (action.type) {
-    case APP_WILL_MOUNT:
-        _appWillMount(store);
-        break;
-    case CONFERENCE_JOINED:
-        store.dispatch(setConferenceTimestamp(new Date().getTime()));
-        _updateApplicationContext(store.getState());
-        break;
-    }
+watchOSEnabled &&
+    MiddlewareRegistry.register((store) => (next) => (action) => {
+        switch (action.type) {
+            case APP_WILL_MOUNT:
+                _appWillMount(store);
+                break;
+            case CONFERENCE_JOINED:
+                store.dispatch(setConferenceTimestamp(new Date().getTime()));
+                _updateApplicationContext(store.getState());
+                break;
+        }
 
-    return next(action);
-});
+        return next(action);
+    });
 
 /**
  * Registers listeners to the react-native-watch-connectivity lib.
@@ -82,41 +85,33 @@ function _appWillMount({ dispatch, getState }) {
             return;
         }
 
-        const {
-            command,
-            sessionID
-        } = message;
+        const { command, sessionID } = message;
         const currentSessionID = _getSessionId(getState());
 
         if (!sessionID || sessionID !== currentSessionID) {
-            logger.warn(
-                `Ignoring outdated watch command: ${message.command}`
-                    + ` sessionID: ${sessionID} current session ID: ${currentSessionID}`);
+            logger.warn(`Ignoring outdated watch command: ${message.command}` + ` sessionID: ${sessionID} current session ID: ${currentSessionID}`);
 
             return;
         }
 
         switch (command) {
-        case CMD_HANG_UP:
-            if (typeof getCurrentConferenceUrl(getState()) !== undefined) {
-                dispatch(appNavigate(undefined));
-            }
-            break;
-        case CMD_JOIN_CONFERENCE: {
-            const newConferenceURL = message.data;
-            const oldConferenceURL = getCurrentConferenceUrl(getState());
+            case CMD_HANG_UP:
+                if (typeof getCurrentConferenceUrl(getState()) !== undefined) {
+                    dispatch(appNavigate(undefined));
+                }
+                break;
+            case CMD_JOIN_CONFERENCE: {
+                const newConferenceURL = message.data;
+                const oldConferenceURL = getCurrentConferenceUrl(getState());
 
-            if (oldConferenceURL !== newConferenceURL) {
-                dispatch(appNavigate(newConferenceURL));
+                if (oldConferenceURL !== newConferenceURL) {
+                    dispatch(appNavigate(newConferenceURL));
+                }
+                break;
             }
-            break;
-        }
-        case CMD_SET_MUTED:
-            dispatch(
-                setAudioMuted(
-                    message.muted === 'true',
-                    /* ensureTrack */ true));
-            break;
+            case CMD_SET_MUTED:
+                dispatch(setAudioMuted(message.muted === 'true', /* ensureTrack */ true));
+                break;
         }
     });
 }

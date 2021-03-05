@@ -14,7 +14,6 @@ import type { AbstractButtonProps } from '../../base/toolbox/components';
  * The type of the React {@code Component} props of {@link HangupButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */

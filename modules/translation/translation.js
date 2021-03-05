@@ -39,8 +39,7 @@ class Translation {
      *
      */
     generateTranslationHTML(key: string, options: Object) {
-        const optAttr
-            = options ? ` data-i18n-options='${JSON.stringify(options)}'` : '';
+        const optAttr = options ? ` data-i18n-options='${JSON.stringify(options)}'` : '';
 
         // XXX i18next expects undefined if options are missing.
         const text = i18next.t(key, options ? options : undefined);

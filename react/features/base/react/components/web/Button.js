@@ -4,7 +4,6 @@ import Button from '@atlaskit/button/standard-button';
 import React, { Component } from 'react';
 
 type Props = {
-
     /**
      * React Elements to display within the component.
      */
@@ -30,11 +29,8 @@ export default class ButtonImpl extends Component<Props> {
         const { onValueChange } = this.props;
 
         return (
-            <Button
-                appearance = 'primary'
-                onClick = { onValueChange }
-                type = 'button'>
-                { this.props.children }
+            <Button appearance="primary" onClick={onValueChange} type="button">
+                {this.props.children}
             </Button>
         );
     }

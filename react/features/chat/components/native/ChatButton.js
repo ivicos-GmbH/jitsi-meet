@@ -3,15 +3,11 @@
 import { CHAT_ENABLED, getFeatureFlag } from '../../../base/flags';
 import { IconChat, IconChatUnread } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import {
-    AbstractButton,
-    type AbstractButtonProps
-} from '../../../base/toolbox/components';
+import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { openChat } from '../../actions.native';
 import { getUnreadCount } from '../../functions';
 
 type Props = AbstractButtonProps & {
-
     /**
      * The unread message count.
      */

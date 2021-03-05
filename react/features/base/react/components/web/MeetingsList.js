@@ -2,17 +2,13 @@
 
 import React, { Component } from 'react';
 
-import {
-    getLocalizedDateFormatter,
-    getLocalizedDurationFormatter
-} from '../../../i18n';
+import { getLocalizedDateFormatter, getLocalizedDurationFormatter } from '../../../i18n';
 import { Icon, IconTrash } from '../../../icons';
 
 import Container from './Container';
 import Text from './Text';
 
 type Props = {
-
     /**
      * Indicates if the list is disabled or not.
      */
@@ -55,7 +51,6 @@ function _toDateString(date) {
     return getLocalizedDateFormatter(date).format('MMM Do, YYYY');
 }
 
-
 /**
  * Generates a time (interval) string for a given times.
  *
@@ -65,10 +60,7 @@ function _toDateString(date) {
  */
 function _toTimeString(times) {
     if (times && times.length > 0) {
-        return (
-            times
-                .map(time => getLocalizedDateFormatter(time).format('LT'))
-                .join(' - '));
+        return times.map((time) => getLocalizedDateFormatter(time).format('LT')).join(' - ');
     }
 
     return undefined;
@@ -105,22 +97,13 @@ export default class MeetingsList extends Component<Props> {
          * If there are no recent meetings we don't want to display anything
          */
         if (meetings) {
-            return (
-                <Container
-                    className = 'meetings-list'>
-                    {
-                        meetings.length === 0
-                            ? listEmptyComponent
-                            : meetings.map(this._renderItem)
-                    }
-                </Container>
-            );
+            return <Container className="meetings-list">{meetings.length === 0 ? listEmptyComponent : meetings.map(this._renderItem)}</Container>;
         }
 
         return null;
     }
 
-    _onPress: string => Function;
+    _onPress: (string) => Function;
 
     /**
      * Returns a function that is used in the onPress callback of the items.
@@ -139,7 +122,7 @@ export default class MeetingsList extends Component<Props> {
         return null;
     }
 
-    _onDelete: Object => Function;
+    _onDelete: (Object) => Function;
 
     /**
      * Returns a function that is used on the onDelete callback.
@@ -151,7 +134,7 @@ export default class MeetingsList extends Component<Props> {
     _onDelete(item) {
         const { onItemDelete } = this.props;
 
-        return evt => {
+        return (evt) => {
             evt.stopPropagation();
 
             onItemDelete && onItemDelete(item);
@@ -168,57 +151,26 @@ export default class MeetingsList extends Component<Props> {
      * @returns {Node}
      */
     _renderItem(meeting, index) {
-        const {
-            date,
-            duration,
-            elementAfter,
-            time,
-            title,
-            url
-        } = meeting;
+        const { date, duration, elementAfter, time, title, url } = meeting;
         const { hideURL = false, onItemDelete } = this.props;
         const onPress = this._onPress(url);
-        const rootClassName
-            = `item ${
-                onPress ? 'with-click-handler' : 'without-click-handler'}`;
+        const rootClassName = `item ${onPress ? 'with-click-handler' : 'without-click-handler'}`;
 
         return (
-            <Container
-                className = { rootClassName }
-                key = { index }
-                onClick = { onPress }>
-                <Container className = 'left-column'>
-                    <Text className = 'title'>
-                        { _toDateString(date) }
-                    </Text>
-                    <Text className = 'subtitle'>
-                        { _toTimeString(time) }
-                    </Text>
+            <Container className={rootClassName} key={index} onClick={onPress}>
+                <Container className="left-column">
+                    <Text className="title">{_toDateString(date)}</Text>
+                    <Text className="subtitle">{_toTimeString(time)}</Text>
                 </Container>
-                <Container className = 'right-column'>
-                    <Text className = 'title'>
-                        { title }
-                    </Text>
-                    {
-                        hideURL || !url ? null : (
-                            <Text>
-                                { url }
-                            </Text>)
-                    }
-                    {
-                        typeof duration === 'number' ? (
-                            <Text className = 'subtitle'>
-                                { getLocalizedDurationFormatter(duration) }
-                            </Text>) : null
-                    }
+                <Container className="right-column">
+                    <Text className="title">{title}</Text>
+                    {hideURL || !url ? null : <Text>{url}</Text>}
+                    {typeof duration === 'number' ? <Text className="subtitle">{getLocalizedDurationFormatter(duration)}</Text> : null}
                 </Container>
-                <Container className = 'actions'>
-                    { elementAfter || null }
+                <Container className="actions">
+                    {elementAfter || null}
 
-                    { onItemDelete && <Icon
-                        className = 'delete-meeting'
-                        onClick = { this._onDelete(meeting) }
-                        src = { IconTrash } />}
+                    {onItemDelete && <Icon className="delete-meeting" onClick={this._onDelete(meeting)} src={IconTrash} />}
                 </Container>
             </Container>
         );

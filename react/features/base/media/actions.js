@@ -11,11 +11,7 @@ import {
     STORE_VIDEO_TRANSFORM,
     TOGGLE_CAMERA_FACING_MODE
 } from './actionTypes';
-import {
-    CAMERA_FACING_MODE,
-    MEDIA_TYPE,
-    VIDEO_MUTISM_AUTHORITY
-} from './constants';
+import { CAMERA_FACING_MODE, MEDIA_TYPE, VIDEO_MUTISM_AUTHORITY } from './constants';
 
 /**
  * Action to adjust the availability of the local audio.
@@ -100,11 +96,7 @@ export function setVideoAvailable(available: boolean) {
  * created if missing.
  * @returns {Function}
  */
-export function setVideoMuted(
-        muted: boolean,
-        mediaType: MEDIA_TYPE = MEDIA_TYPE.VIDEO,
-        authority: number = VIDEO_MUTISM_AUTHORITY.USER,
-        ensureTrack: boolean = false) {
+export function setVideoMuted(muted: boolean, mediaType: MEDIA_TYPE = MEDIA_TYPE.VIDEO, authority: number = VIDEO_MUTISM_AUTHORITY.USER, ensureTrack: boolean = false) {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const oldValue = getState()['features/base/media'].video.muted;
 

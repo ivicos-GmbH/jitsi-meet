@@ -11,7 +11,6 @@ import styles, { ANDROID_UNDERLINE_COLOR, PLACEHOLDER_COLOR } from './styles';
  * The type of the React {@code Component} props of {@link FormRow}
  */
 type Props = {
-
     /**
      *
      */
@@ -36,7 +35,7 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * Implements a React {@code Component} which renders a standardized row on a
@@ -69,27 +68,14 @@ class FormRow extends Component<Props> {
 
         // Some field types need additional props to look good and standardized
         // on a form.
-        const newChild
-            = React.cloneElement(
-                this.props.children,
-                this._getDefaultFieldProps(this.props.children));
+        const newChild = React.cloneElement(this.props.children, this._getDefaultFieldProps(this.props.children));
 
         return (
-            <View
-                style = { this._getRowStyle() } >
-                <View style = { styles.fieldLabelContainer } >
-                    <Text
-                        style = { [
-                            styles.text,
-                            styles.fieldLabelText,
-                            layout === 'column' ? styles.fieldLabelTextColumn : undefined
-                        ] } >
-                        { t(this.props.label) }
-                    </Text>
+            <View style={this._getRowStyle()}>
+                <View style={styles.fieldLabelContainer}>
+                    <Text style={[styles.text, styles.fieldLabelText, layout === 'column' ? styles.fieldLabelTextColumn : undefined]}>{t(this.props.label)}</Text>
                 </View>
-                <View style = { styles.fieldValueContainer } >
-                    { newChild }
-                </View>
+                <View style={styles.fieldValueContainer}>{newChild}</View>
             </View>
         );
     }
@@ -111,15 +97,12 @@ class FormRow extends Component<Props> {
     _getDefaultFieldProps(field: Object) {
         if (field && field.type) {
             switch (field.type.displayName) {
-            case 'TextInput':
-                return {
-                    placeholderTextColor: PLACEHOLDER_COLOR,
-                    style: [
-                        styles.textInputField,
-                        this.props.layout === 'column' ? styles.textInputFieldColumn : undefined
-                    ],
-                    underlineColorAndroid: ANDROID_UNDERLINE_COLOR
-                };
+                case 'TextInput':
+                    return {
+                        placeholderTextColor: PLACEHOLDER_COLOR,
+                        style: [styles.textInputField, this.props.layout === 'column' ? styles.textInputFieldColumn : undefined],
+                        underlineColorAndroid: ANDROID_UNDERLINE_COLOR
+                    };
             }
         }
 
@@ -136,18 +119,14 @@ class FormRow extends Component<Props> {
      */
     _getRowStyle() {
         const { fieldSeparator, layout } = this.props;
-        const rowStyle = [
-            styles.fieldContainer
-        ];
+        const rowStyle = [styles.fieldContainer];
 
         if (fieldSeparator) {
             rowStyle.push(styles.fieldSeparator);
         }
 
         if (layout === 'column') {
-            rowStyle.push(
-                styles.fieldContainerColumn
-            );
+            rowStyle.push(styles.fieldContainerColumn);
         }
 
         return rowStyle;

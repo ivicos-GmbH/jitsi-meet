@@ -15,7 +15,6 @@ import { _mapStateToProps, type Props } from './AbstractTranscribingLabel';
  * @extends Component
  */
 class TranscribingLabel extends Component<Props> {
-
     /**
      * Renders the platform-specific label component.
      *
@@ -26,10 +25,7 @@ class TranscribingLabel extends Component<Props> {
             return null;
         }
 
-        return (
-            <CircularLabel
-                label = { this.props.t('transcribing.tr') } />
-        );
+        return <CircularLabel label={this.props.t('transcribing.tr')} />;
     }
 }
 

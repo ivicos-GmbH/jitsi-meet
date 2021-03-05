@@ -8,10 +8,7 @@ if (NativeModules.RNGoogleSignin) {
     GoogleSignin = require('@react-native-community/google-signin').GoogleSignin;
 }
 
-import {
-    API_URL_BROADCAST_STREAMS,
-    API_URL_LIVE_BROADCASTS
-} from './constants';
+import { API_URL_BROADCAST_STREAMS, API_URL_LIVE_BROADCASTS } from './constants';
 
 /**
  * Class to encapsulate Google API functionalities and provide a similar
@@ -53,16 +50,12 @@ class GoogleApi {
      */
     getYouTubeLiveStreams(accessToken: string): Promise<*> {
         return new Promise((resolve, reject) => {
-
             // Fetching the list of available broadcasts first.
-            this._fetchGoogleEndpoint(accessToken,
-                API_URL_LIVE_BROADCASTS)
-            .then(broadcasts => {
+            this._fetchGoogleEndpoint(accessToken, API_URL_LIVE_BROADCASTS).then((broadcasts) => {
                 // Then fetching all the available live streams that the
                 // user has access to with the broadcasts we retreived
                 // earlier.
-                this._getLiveStreamsForBroadcasts(
-                    accessToken, broadcasts).then(resolve, reject);
+                this._getLiveStreamsForBroadcasts(accessToken, broadcasts).then(resolve, reject);
             }, reject);
         });
     }
@@ -124,14 +117,15 @@ class GoogleApi {
 
             fetch(endpoint, {
                 headers
-            }).then(response => response.json())
-            .then(responseJSON => {
-                if (responseJSON.error) {
-                    reject(responseJSON.error.message);
-                } else {
-                    resolve(responseJSON.items || []);
-                }
-            }, reject);
+            })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    if (responseJSON.error) {
+                        reject(responseJSON.error.message);
+                    } else {
+                        resolve(responseJSON.items || []);
+                    }
+                }, reject);
         });
     }
 
@@ -150,42 +144,35 @@ class GoogleApi {
             const ids = [];
 
             for (const broadcast of broadcasts) {
-                broadcast.contentDetails
-                    && broadcast.contentDetails.boundStreamId
-                    && ids.push(broadcast.contentDetails.boundStreamId);
+                broadcast.contentDetails && broadcast.contentDetails.boundStreamId && ids.push(broadcast.contentDetails.boundStreamId);
             }
 
-            this._fetchGoogleEndpoint(
-                accessToken,
-                `${API_URL_BROADCAST_STREAMS}${ids.join(',')}`)
-                .then(streams => {
-                    const keys = [];
+            this._fetchGoogleEndpoint(accessToken, `${API_URL_BROADCAST_STREAMS}${ids.join(',')}`).then((streams) => {
+                const keys = [];
 
-                    // We construct an array of keys bind with the broadcast
-                    // name for a nice display.
-                    for (const stream of streams) {
-                        const key = stream.cdn.ingestionInfo.streamName;
-                        let title;
+                // We construct an array of keys bind with the broadcast
+                // name for a nice display.
+                for (const stream of streams) {
+                    const key = stream.cdn.ingestionInfo.streamName;
+                    let title;
 
-                        // Finding title from the broadcast with the same
-                        // boundStreamId. If not found (unknown scenario), we
-                        // use the key as title again.
-                        for (const broadcast of broadcasts) {
-                            if (broadcast.contentDetails
-                                    && broadcast.contentDetails.boundStreamId
-                                        === stream.id) {
-                                title = broadcast.snippet.title;
-                            }
+                    // Finding title from the broadcast with the same
+                    // boundStreamId. If not found (unknown scenario), we
+                    // use the key as title again.
+                    for (const broadcast of broadcasts) {
+                        if (broadcast.contentDetails && broadcast.contentDetails.boundStreamId === stream.id) {
+                            title = broadcast.snippet.title;
                         }
-
-                        keys.push({
-                            key,
-                            title: title || key
-                        });
                     }
 
-                    resolve(keys);
-                }, reject);
+                    keys.push({
+                        key,
+                        title: title || key
+                    });
+                }
+
+                resolve(keys);
+            }, reject);
         });
     }
 }

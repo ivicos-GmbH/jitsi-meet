@@ -10,7 +10,6 @@ import { CONFIG_WILL_LOAD, LOAD_CONFIG_ERROR, SET_CONFIG, UPDATE_CONFIG } from '
 import { _CONFIG_STORE_PREFIX } from './constants';
 import { setConfigFromURLParams } from './functions';
 
-
 /**
  * Updates the config with new options.
  *
@@ -91,15 +90,15 @@ export function setConfig(config: Object = {}) {
         // Only the config will be overridden on React Native, as the other
         // globals will be undefined here. It's intentional - we do not care to
         // override those configs yet.
-        locationURL
-            && setConfigFromURLParams(
-
+        locationURL &&
+            setConfigFromURLParams(
                 // On Web the config also comes from the window.config global,
                 // but it is resolved in the loadConfig procedure.
                 config,
                 window.interfaceConfig,
                 window.loggingConfig,
-                locationURL);
+                locationURL
+            );
 
         dispatch({
             type: SET_CONFIG,

@@ -9,7 +9,6 @@ import Label from '../Label';
 import CountryPicker from '../country-picker/CountryPicker';
 
 type Props = {
-
     /**
      * Closes a dialog.
      */
@@ -28,7 +27,7 @@ type Props = {
     /**
      * Used for translation.
      */
-    t: Function,
+    t: Function
 };
 
 /**
@@ -42,40 +41,26 @@ function DialOutDialog(props: Props) {
     const { onClose, onTextButtonClick, onSubmit, t } = props;
 
     return (
-        <div className = 'prejoin-dialog-callout'>
-            <div className = 'prejoin-dialog-callout-header'>
-                <div className = 'prejoin-dialog-title'>
-                    {t('prejoin.startWithPhone')}
-                </div>
-                <Icon
-                    className = 'prejoin-dialog-icon'
-                    onClick = { onClose }
-                    size = { 24 }
-                    src = { IconClose } />
+        <div className="prejoin-dialog-callout">
+            <div className="prejoin-dialog-callout-header">
+                <div className="prejoin-dialog-title">{t('prejoin.startWithPhone')}</div>
+                <Icon className="prejoin-dialog-icon" onClick={onClose} size={24} src={IconClose} />
             </div>
             <Label>{t('prejoin.callMeAtNumber')}</Label>
-            <div className = 'prejoin-dialog-callout-picker'>
-                <CountryPicker onSubmit = { onSubmit } />
+            <div className="prejoin-dialog-callout-picker">
+                <CountryPicker onSubmit={onSubmit} />
             </div>
-            <ActionButton
-                className = 'prejoin-dialog-btn'
-                onClick = { onSubmit }
-                type = 'primary'>
+            <ActionButton className="prejoin-dialog-btn" onClick={onSubmit} type="primary">
                 {t('prejoin.callMe')}
             </ActionButton>
-            <div className = 'prejoin-dialog-delimiter-container'>
-                <div className = 'prejoin-dialog-delimiter' />
-                <div className = 'prejoin-dialog-delimiter-txt-container'>
-                    <span className = 'prejoin-dialog-delimiter-txt'>
-                        {t('prejoin.or')}
-                    </span>
+            <div className="prejoin-dialog-delimiter-container">
+                <div className="prejoin-dialog-delimiter" />
+                <div className="prejoin-dialog-delimiter-txt-container">
+                    <span className="prejoin-dialog-delimiter-txt">{t('prejoin.or')}</span>
                 </div>
             </div>
-            <div className = 'prejoin-dialog-dialin-container'>
-                <ActionButton
-                    className = 'prejoin-dialog-btn'
-                    onClick = { onTextButtonClick }
-                    type = 'text'>
+            <div className="prejoin-dialog-dialin-container">
+                <ActionButton className="prejoin-dialog-btn" onClick={onTextButtonClick} type="text">
                     {t('prejoin.iWantToDialIn')}
                 </ActionButton>
             </div>

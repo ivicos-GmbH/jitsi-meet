@@ -2,10 +2,7 @@
 
 import _ from 'lodash';
 
-import {
-    JitsiConnectionQualityEvents,
-    JitsiE2ePingEvents
-} from '../base/lib-jitsi-meet';
+import { JitsiConnectionQualityEvents, JitsiE2ePingEvents } from '../base/lib-jitsi-meet';
 
 /**
  * Contains all the callbacks to be notified when stats are updated.
@@ -29,22 +26,18 @@ const statsEmitter = {
      * @returns {void}
      */
     startListeningForStats(conference: Object) {
-        conference.on(JitsiConnectionQualityEvents.LOCAL_STATS_UPDATED,
-            stats => this._onStatsUpdated(conference.myUserId(), stats));
+        conference.on(JitsiConnectionQualityEvents.LOCAL_STATS_UPDATED, (stats) => this._onStatsUpdated(conference.myUserId(), stats));
 
-        conference.on(JitsiConnectionQualityEvents.REMOTE_STATS_UPDATED,
-            (id, stats) => this._emitStatsUpdate(id, stats));
+        conference.on(JitsiConnectionQualityEvents.REMOTE_STATS_UPDATED, (id, stats) => this._emitStatsUpdate(id, stats));
 
-        conference.on(
-            JitsiE2ePingEvents.E2E_RTT_CHANGED,
-            (participant, e2eRtt) => {
-                const stats = {
-                    e2eRtt,
-                    region: participant.getProperty('region')
-                };
+        conference.on(JitsiE2ePingEvents.E2E_RTT_CHANGED, (participant, e2eRtt) => {
+            const stats = {
+                e2eRtt,
+                region: participant.getProperty('region')
+            };
 
-                this._emitStatsUpdate(participant.getId(), stats);
-            });
+            this._emitStatsUpdate(participant.getId(), stats);
+        });
     },
 
     /**
@@ -83,8 +76,7 @@ const statsEmitter = {
             return;
         }
 
-        const filteredSubscribers = subscribers[id].filter(
-            subscriber => subscriber !== callback);
+        const filteredSubscribers = subscribers[id].filter((subscriber) => subscriber !== callback);
 
         if (filteredSubscribers.length) {
             subscribers[id] = filteredSubscribers;
@@ -104,7 +96,7 @@ const statsEmitter = {
     _emitStatsUpdate(id: string, stats: Object = {}) {
         const callbacks = subscribers[id] || [];
 
-        callbacks.forEach(callback => {
+        callbacks.forEach((callback) => {
             callback(stats);
         });
     },
@@ -143,8 +135,8 @@ const statsEmitter = {
         const codecUserIds = Object.keys(allUserCodecs);
 
         _.union(framerateUserIds, resolutionUserIds, codecUserIds)
-            .filter(id => id !== localUserId)
-            .forEach(id => {
+            .filter((id) => id !== localUserId)
+            .forEach((id) => {
                 const remoteUserStats = {};
 
                 const framerate = allUserFramerates[id];

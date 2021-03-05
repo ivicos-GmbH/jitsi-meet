@@ -23,7 +23,6 @@ const webviewUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleW
  * The type of the React {@link Component} props of {@link YoutubeLargeVideo}.
  */
 type Props = {
-
     /**
      * Display the youtube controls on the player.
      *
@@ -87,7 +86,7 @@ type Props = {
      */
     _seek: number,
 
-     /**
+    /**
      * The status of the player.
      *
      * @private
@@ -152,11 +151,12 @@ class YoutubeLargeVideo extends Component<Props, *> {
         const { _isWideScreen, _seek } = this.props;
 
         if (_seek !== prevProps._seek) {
-            playerRef && playerRef.getCurrentTime().then(time => {
-                if (shouldSeekToPosition(_seek, time)) {
-                    playerRef && playerRef.seekTo(_seek);
-                }
-            });
+            playerRef &&
+                playerRef.getCurrentTime().then((time) => {
+                    if (shouldSeekToPosition(_seek, time)) {
+                        playerRef && playerRef.seekTo(_seek);
+                    }
+                });
         }
 
         if (_isWideScreen !== prevProps._isWideScreen) {
@@ -194,42 +194,36 @@ class YoutubeLargeVideo extends Component<Props, *> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _enableControls,
-            _isPlaying,
-            _playerHeight,
-            _playerWidth,
-            youtubeId
-        } = this.props;
+        const { _enableControls, _isPlaying, _playerHeight, _playerWidth, youtubeId } = this.props;
 
         return (
-            <View
-                pointerEvents = { _enableControls ? 'auto' : 'none' }
-                style = { styles.youtubeVideoContainer } >
+            <View pointerEvents={_enableControls ? 'auto' : 'none'} style={styles.youtubeVideoContainer}>
                 <YoutubePlayer
-                    height = { _playerHeight }
-                    initialPlayerParams = {{
+                    height={_playerHeight}
+                    initialPlayerParams={{
                         controls: _enableControls,
                         modestbranding: true,
                         preventFullScreen: true
                     }}
                     /* eslint-disable react/jsx-no-bind */
-                    onChangeState = { this._onChangeState }
+                    onChangeState={this._onChangeState}
                     /* eslint-disable react/jsx-no-bind */
-                    onReady = { this._onReady }
-                    play = { _isPlaying }
-                    playbackRate = { 1 }
-                    ref = { this.playerRef }
-                    videoId = { youtubeId }
-                    volume = { 50 }
-                    webViewProps = {{
+                    onReady={this._onReady}
+                    play={_isPlaying}
+                    playbackRate={1}
+                    ref={this.playerRef}
+                    videoId={youtubeId}
+                    volume={50}
+                    webViewProps={{
                         bounces: false,
                         mediaPlaybackRequiresUserAction: false,
                         scrollEnabled: false,
                         userAgent: webviewUserAgent
                     }}
-                    width = { _playerWidth } />
-            </View>);
+                    width={_playerWidth}
+                />
+            </View>
+        );
     }
 
     _onReady: () => void;
@@ -242,10 +236,7 @@ class YoutubeLargeVideo extends Component<Props, *> {
      */
     _onReady() {
         if (this.props?._isOwner) {
-            this.onVideoReady(
-                this.props.youtubeId,
-                this.playerRef.current && this.playerRef.current.getCurrentTime(),
-                this.props._ownerId);
+            this.onVideoReady(this.props.youtubeId, this.playerRef.current && this.playerRef.current.getCurrentTime(), this.props._ownerId);
         }
     }
 
@@ -259,20 +250,14 @@ class YoutubeLargeVideo extends Component<Props, *> {
      * @returns {void}
      */
     _onChangeState(status) {
-        this.playerRef?.current && this.playerRef.current.getCurrentTime().then(time => {
-            const {
-                _isOwner,
-                _isPlaying,
-                _isStopped,
-                _ownerId,
-                _seek,
-                youtubeId
-            } = this.props;
+        this.playerRef?.current &&
+            this.playerRef.current.getCurrentTime().then((time) => {
+                const { _isOwner, _isPlaying, _isStopped, _ownerId, _seek, youtubeId } = this.props;
 
-            if (shouldSetNewStatus(_isStopped, _isOwner, status, _isPlaying, time, _seek)) {
-                this.onVideoChangeEvent(youtubeId, status, time, _ownerId);
-            }
-        });
+                if (shouldSetNewStatus(_isStopped, _isOwner, status, _isPlaying, time, _seek)) {
+                    this.onVideoChangeEvent(youtubeId, status, time, _ownerId);
+                }
+            });
     }
 
     /**
@@ -280,13 +265,14 @@ class YoutubeLargeVideo extends Component<Props, *> {
      *
      * @private
      * @returns {void}
-    */
+     */
     saveRefTime() {
         const { youtubeId, _status, _ownerId } = this.props;
 
-        this.playerRef.current && this.playerRef.current.getCurrentTime().then(time => {
-            this.onVideoChangeEvent(youtubeId, _status, time, _ownerId);
-        });
+        this.playerRef.current &&
+            this.playerRef.current.getCurrentTime().then((time) => {
+                this.onVideoChangeEvent(youtubeId, _status, time, _ownerId);
+            });
     }
 
     /**
@@ -298,9 +284,9 @@ class YoutubeLargeVideo extends Component<Props, *> {
      * @param {string} ownerId - The id of the participant sharing the video.
      * @private
      * @returns {void}
-    */
+     */
     onVideoChangeEvent(videoId, status, time, ownerId) {
-        if (![ 'playing', 'paused' ].includes(status)) {
+        if (!['playing', 'paused'].includes(status)) {
             return;
         }
 
@@ -315,9 +301,9 @@ class YoutubeLargeVideo extends Component<Props, *> {
      * @param {string} ownerId - The id of the participant sharing the video.
      * @private
      * @returns {void}
-    */
+     */
     onVideoReady(videoId, time, ownerId) {
-        time.then(t => this.props.dispatch(setSharedVideoStatus(videoId, 'playing', t, ownerId)));
+        time.then((t) => this.props.dispatch(setSharedVideoStatus(videoId, 'playing', t, ownerId)));
     }
 
     /**
@@ -326,7 +312,7 @@ class YoutubeLargeVideo extends Component<Props, *> {
      * @param {isWideScreen} isWideScreen - Whether the screen is wide.
      * @private
      * @returns {void}
-    */
+     */
     setWideScreenMode(isWideScreen) {
         this.props.dispatch(setToolboxVisible(!isWideScreen));
     }
@@ -346,7 +332,7 @@ class YoutubeLargeVideo extends Component<Props, *> {
  * @param {number} previousTime - The old seek time.
  * @private
  * @returns {boolean}
-*/
+ */
 function shouldSetNewStatus(isStopped, isOwner, status, isPlaying, newTime, previousTime) {
     if (isStopped) {
         return false;
@@ -370,7 +356,7 @@ function shouldSetNewStatus(isStopped, isOwner, status, isPlaying, newTime, prev
  * @param {number} previousTime - The previous time.
  * @private
  * @returns {boolean}
-*/
+ */
 function shouldSeekToPosition(newTime, previousTime) {
     return Math.abs(newTime - previousTime) > 5;
 }
@@ -393,10 +379,10 @@ function _mapStateToProps(state) {
 
     if (isWideScreen) {
         playerHeight = screenHeight;
-        playerWidth = playerHeight * 16 / 9;
+        playerWidth = (playerHeight * 16) / 9;
     } else {
         playerWidth = screenWidth;
-        playerHeight = playerWidth * 9 / 16;
+        playerHeight = (playerWidth * 9) / 16;
     }
 
     return {

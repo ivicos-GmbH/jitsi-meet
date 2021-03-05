@@ -8,13 +8,7 @@ import { connectionFailed } from '../base/connection';
 import { openDialog } from '../base/dialog';
 import { set } from '../base/redux';
 
-import {
-    CANCEL_LOGIN,
-    STOP_WAIT_FOR_OWNER,
-    UPGRADE_ROLE_FINISHED,
-    UPGRADE_ROLE_STARTED,
-    WAIT_FOR_OWNER
-} from './actionTypes';
+import { CANCEL_LOGIN, STOP_WAIT_FOR_OWNER, UPGRADE_ROLE_FINISHED, UPGRADE_ROLE_STARTED, WAIT_FOR_OWNER } from './actionTypes';
 import { LoginDialog, WaitForOwnerDialog } from './components';
 import logger from './logger';
 
@@ -30,37 +24,33 @@ import logger from './logger';
  * participant's role will be upgraded.
  * @returns {Function}
  */
-export function authenticateAndUpgradeRole(
-        id: string,
-        password: string,
-        conference: Object) {
+export function authenticateAndUpgradeRole(id: string, password: string, conference: Object) {
     return (dispatch: Dispatch<any>, getState: Function) => {
-        const { password: roomPassword }
-            = getState()['features/base/conference'];
-        const process
-            = conference.authenticateAndUpgradeRole({
-                id,
-                password,
-                roomPassword,
+        const { password: roomPassword } = getState()['features/base/conference'];
+        const process = conference.authenticateAndUpgradeRole({
+            id,
+            password,
+            roomPassword,
 
-                onLoginSuccessful() {
-                    // When the login succeeds, the process has completed half
-                    // of its job (i.e. 0.5).
-                    return dispatch(_upgradeRoleFinished(process, 0.5));
-                }
-            });
+            onLoginSuccessful() {
+                // When the login succeeds, the process has completed half
+                // of its job (i.e. 0.5).
+                return dispatch(_upgradeRoleFinished(process, 0.5));
+            }
+        });
 
         dispatch(_upgradeRoleStarted(process));
         process.then(
             /* onFulfilled */ () => dispatch(_upgradeRoleFinished(process, 1)),
-            /* onRejected */ error => {
+            /* onRejected */ (error) => {
                 // The lack of an error signals a cancellation.
                 if (error.authenticationError || error.connectionError) {
                     logger.error('authenticateAndUpgradeRole failed', error);
                 }
 
                 dispatch(_upgradeRoleFinished(process, error));
-            });
+            }
+        );
 
         return process;
     };
@@ -84,14 +74,9 @@ export function cancelLogin() {
         // a reaction to CONNECTION_FAILED). Since the
         // app/user is going to navigate to WelcomePage, the SDK
         // clients/consumers need an event.
-        const { error, passwordRequired }
-            = getState()['features/base/connection'];
+        const { error, passwordRequired } = getState()['features/base/connection'];
 
-        passwordRequired
-            && dispatch(
-                connectionFailed(
-                    passwordRequired,
-                    set(error, 'recoverable', false)));
+        passwordRequired && dispatch(connectionFailed(passwordRequired, set(error, 'recoverable', false)));
     };
 }
 
@@ -170,9 +155,7 @@ export function stopWaitForOwner() {
  *     progress: number
  * }}
  */
-function _upgradeRoleFinished(
-        thenableWithCancel,
-        progressOrError: number | Object) {
+function _upgradeRoleFinished(thenableWithCancel, progressOrError: number | Object) {
     let error;
     let progress;
 
@@ -181,11 +164,7 @@ function _upgradeRoleFinished(
     } else {
         // Make the specified error object resemble an Error instance (to the
         // extent that jitsi-meet needs it).
-        const {
-            authenticationError,
-            connectionError,
-            ...other
-        } = progressOrError;
+        const { authenticationError, connectionError, ...other } = progressOrError;
 
         error = {
             name: authenticationError || connectionError,

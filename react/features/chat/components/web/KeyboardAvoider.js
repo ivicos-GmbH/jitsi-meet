@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { isIosMobileBrowser } from '../../../base/environment/utils';
 
 const Avoider = styled.div`
-    height: ${props => props.elementHeight}px;
+    height: ${(props) => props.elementHeight}px;
 `;
 
 /**
@@ -20,8 +20,8 @@ function KeyboardAvoider() {
         return null;
     }
 
-    const [ elementHeight, setElementHeight ] = useState(0);
-    const [ storedHeight, setStoredHeight ] = useState(window.innerHeight);
+    const [elementHeight, setElementHeight] = useState(0);
+    const [storedHeight, setStoredHeight] = useState(window.innerHeight);
 
     /**
      * Handles the resizing of the visual viewport in order to compute
@@ -30,7 +30,10 @@ function KeyboardAvoider() {
      * @returns {void}
      */
     function handleViewportResize() {
-        const { innerWidth, visualViewport: { width, height } } = window;
+        const {
+            innerWidth,
+            visualViewport: { width, height }
+        } = window;
 
         // Compare the widths to make sure the {@code visualViewport} didn't resize due to zooming.
         if (width === innerWidth) {
@@ -54,7 +57,7 @@ function KeyboardAvoider() {
         };
     }, []);
 
-    return <Avoider elementHeight = { elementHeight } />;
+    return <Avoider elementHeight={elementHeight} />;
 }
 
 export default KeyboardAvoider;

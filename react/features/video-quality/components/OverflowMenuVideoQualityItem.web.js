@@ -3,13 +3,7 @@
 import React, { Component } from 'react';
 
 import { translate } from '../../base/i18n';
-import {
-    Icon,
-    IconVideoQualityAudioOnly,
-    IconVideoQualityHD,
-    IconVideoQualityLD,
-    IconVideoQualitySD
-} from '../../base/icons';
+import { Icon, IconVideoQualityAudioOnly, IconVideoQualityHD, IconVideoQualityLD, IconVideoQualitySD } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { VIDEO_QUALITY_LEVELS } from '../constants';
 import { findNearestQualityLevel } from '../functions';
@@ -32,7 +26,6 @@ const VIDEO_QUALITY_TO_ICON = {
  * {@link OverflowMenuVideoQualityItem}.
  */
 type Props = {
-
     /**
      * Whether or not audio only mode is currently enabled.
      */
@@ -72,22 +65,14 @@ class OverflowMenuVideoQualityItem extends Component<Props> {
     render() {
         const { _audioOnly, _videoQuality } = this.props;
         const videoQualityLevel = findNearestQualityLevel(_videoQuality);
-        const icon = _audioOnly || !videoQualityLevel
-            ? IconVideoQualityAudioOnly
-            : VIDEO_QUALITY_TO_ICON[videoQualityLevel];
+        const icon = _audioOnly || !videoQualityLevel ? IconVideoQualityAudioOnly : VIDEO_QUALITY_TO_ICON[videoQualityLevel];
 
         return (
-            <li
-                aria-label =
-                    { this.props.t('toolbar.accessibilityLabel.callQuality') }
-                className = 'overflow-menu-item'
-                onClick = { this.props.onClick }>
-                <span className = 'overflow-menu-item-icon'>
-                    <Icon src = { icon } />
+            <li aria-label={this.props.t('toolbar.accessibilityLabel.callQuality')} className="overflow-menu-item" onClick={this.props.onClick}>
+                <span className="overflow-menu-item-icon">
+                    <Icon src={icon} />
                 </span>
-                <span className = 'profile-text'>
-                    { this.props.t('toolbar.callQuality') }
-                </span>
+                <span className="profile-text">{this.props.t('toolbar.callQuality')}</span>
             </li>
         );
     }
@@ -111,5 +96,4 @@ function _mapStateToProps(state) {
     };
 }
 
-export default translate(
-    connect(_mapStateToProps)(OverflowMenuVideoQualityItem));
+export default translate(connect(_mapStateToProps)(OverflowMenuVideoQualityItem));

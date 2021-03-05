@@ -20,7 +20,6 @@ const STATUSBAR_LIGHT = 'light-content';
  * The type of the React {@code Component} props of {@link Header}
  */
 type Props = {
-
     /**
      * Children component(s).
      */
@@ -35,7 +34,7 @@ type Props = {
      * The color schemed style of the component.
      */
     _styles: Object
-}
+};
 
 /**
  * A generic screen header component.
@@ -50,21 +49,10 @@ class Header extends PureComponent<Props> {
         const { _styles } = this.props;
 
         return (
-            <View style = { _styles.headerOverlay }>
-                <StatusBar
-                    backgroundColor = { _styles.statusBar }
-                    barStyle = { this._getStatusBarContentColor() }
-                    translucent = { false } />
+            <View style={_styles.headerOverlay}>
+                <StatusBar backgroundColor={_styles.statusBar} barStyle={this._getStatusBarContentColor()} translucent={false} />
                 <SafeAreaView>
-                    <View
-                        style = { [
-                            _styles.screenHeader,
-                            this.props.style
-                        ] }>
-                        {
-                            this.props.children
-                        }
-                    </View>
+                    <View style={[_styles.screenHeader, this.props.style]}>{this.props.children}</View>
                 </SafeAreaView>
             </View>
         );

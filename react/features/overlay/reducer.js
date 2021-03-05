@@ -3,34 +3,30 @@
 import { CONFIG_WILL_LOAD, LOAD_CONFIG_ERROR, SET_CONFIG } from '../base/config';
 import { assign, ReducerRegistry, set } from '../base/redux';
 
-import {
-    MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED,
-    SET_FATAL_ERROR,
-    TOGGLE_SLOW_GUM_OVERLAY
-} from './actionTypes';
+import { MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED, SET_FATAL_ERROR, TOGGLE_SLOW_GUM_OVERLAY } from './actionTypes';
 
 /**
  * Reduces the redux actions of the feature overlay.
  *
  * FIXME: these pieces of state should probably be in a different place.
  */
-ReducerRegistry.register('features/overlay', (state = { }, action) => {
+ReducerRegistry.register('features/overlay', (state = {}, action) => {
     switch (action.type) {
-    case CONFIG_WILL_LOAD:
-        return _setShowLoadConfigOverlay(state, Boolean(action.room));
+        case CONFIG_WILL_LOAD:
+            return _setShowLoadConfigOverlay(state, Boolean(action.room));
 
-    case LOAD_CONFIG_ERROR:
-    case SET_CONFIG:
-        return _setShowLoadConfigOverlay(false);
+        case LOAD_CONFIG_ERROR:
+        case SET_CONFIG:
+            return _setShowLoadConfigOverlay(false);
 
-    case MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED:
-        return _mediaPermissionPromptVisibilityChanged(state, action);
+        case MEDIA_PERMISSION_PROMPT_VISIBILITY_CHANGED:
+            return _mediaPermissionPromptVisibilityChanged(state, action);
 
-    case SET_FATAL_ERROR:
-        return _setFatalError(state, action);
+        case SET_FATAL_ERROR:
+            return _setFatalError(state, action);
 
-    case TOGGLE_SLOW_GUM_OVERLAY:
-        return _toggleSlowGUMOverlay(state, action);
+        case TOGGLE_SLOW_GUM_OVERLAY:
+            return _toggleSlowGUMOverlay(state, action);
     }
 
     return state;
@@ -46,9 +42,7 @@ ReducerRegistry.register('features/overlay', (state = { }, action) => {
  * @returns {Object} The new state of the feature overlay after the reduction of
  * the specified action.
  */
-function _mediaPermissionPromptVisibilityChanged(
-        state,
-        { browser, isVisible }) {
+function _mediaPermissionPromptVisibilityChanged(state, { browser, isVisible }) {
     return assign(state, {
         browser,
         isMediaPermissionPromptVisible: isVisible
@@ -65,9 +59,7 @@ function _mediaPermissionPromptVisibilityChanged(
  * @returns {Object} The new state of the feature overlay after the reduction of
  * the specified action.
  */
-function _toggleSlowGUMOverlay(
-        state,
-        { isVisible }) {
+function _toggleSlowGUMOverlay(state, { isVisible }) {
     return assign(state, {
         isSlowGUMOverlayVisible: isVisible
     });

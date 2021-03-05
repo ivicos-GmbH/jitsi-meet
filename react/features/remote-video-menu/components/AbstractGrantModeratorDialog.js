@@ -2,14 +2,10 @@
 
 import { Component } from 'react';
 
-import {
-    createRemoteVideoMenuButtonEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createRemoteVideoMenuButtonEvent, sendAnalytics } from '../../analytics';
 import { grantModerator } from '../../base/participants';
 
 type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -29,8 +25,7 @@ type Props = {
 /**
  * Abstract dialog to confirm granting moderator to a participant.
  */
-export default class AbstractGrantModeratorDialog
-    extends Component<Props> {
+export default class AbstractGrantModeratorDialog extends Component<Props> {
     /**
      * Initializes a new {@code AbstractGrantModeratorDialog} instance.
      *
@@ -53,11 +48,11 @@ export default class AbstractGrantModeratorDialog
     _onSubmit() {
         const { dispatch, participantID } = this.props;
 
-        sendAnalytics(createRemoteVideoMenuButtonEvent(
-            'grant.moderator.button',
-            {
-                'participant_id': participantID
-            }));
+        sendAnalytics(
+            createRemoteVideoMenuButtonEvent('grant.moderator.button', {
+                participant_id: participantID
+            })
+        );
 
         dispatch(grantModerator(participantID));
 

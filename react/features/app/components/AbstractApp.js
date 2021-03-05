@@ -12,7 +12,6 @@ import { getDefaultURL } from '../functions';
  * The type of React {@code Component} props of {@link AbstractApp}.
  */
 export type Props = {
-
     /**
      * XXX Refer to the implementation of loadURLObject: in
      * ios/sdk/src/JitsiMeetView.m for further information.
@@ -62,11 +61,12 @@ export class AbstractApp extends BaseApp<Props, *> {
         this._init.then(() => {
             // Deal with URL changes.
 
-            if (previousUrl !== currentUrl
-
-                    // XXX Refer to the implementation of loadURLObject: in
-                    // ios/sdk/src/JitsiMeetView.m for further information.
-                    || previousTimestamp !== currentTimestamp) {
+            if (
+                previousUrl !== currentUrl ||
+                // XXX Refer to the implementation of loadURLObject: in
+                // ios/sdk/src/JitsiMeetView.m for further information.
+                previousTimestamp !== currentTimestamp
+            ) {
                 this._openURL(currentUrl || this._getDefaultURL());
             }
         });

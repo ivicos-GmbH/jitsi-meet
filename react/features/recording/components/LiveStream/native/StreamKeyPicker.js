@@ -1,13 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import {
-    Linking,
-    Text,
-    TouchableHighlight,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { Linking, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 import { _abstractMapStateToProps } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
@@ -18,7 +12,6 @@ import { YOUTUBE_LIVE_DASHBOARD_URL } from '../constants';
 import styles, { ACTIVE_OPACITY, TOUCHABLE_UNDERLAY } from './styles';
 
 type Props = {
-
     /**
      * Style of the dialogs feature.
      */
@@ -39,15 +32,14 @@ type Props = {
      * Function to be used to translate i18n labels.
      */
     t: Function
-}
+};
 
 type State = {
-
-     /**
-      * The key of the currently selected stream.
-      */
-     streamKey: ?string
-}
+    /**
+     * The key of the currently selected stream.
+     */
+    streamKey: ?string
+};
 
 /**
  * Class to implement a stream key picker (dropdown) component to allow the user
@@ -58,7 +50,6 @@ type State = {
  * out of the scope for now of the mobile live streaming functionality.
  */
 class StreamKeyPicker extends Component<Props, State> {
-
     /**
      * Instantiates a new instance of StreamKeyPicker.
      *
@@ -89,54 +80,31 @@ class StreamKeyPicker extends Component<Props, State> {
 
         if (!broadcasts.length) {
             return (
-                <View style = { styles.formWrapper }>
-                    <TouchableOpacity
-                        onPress = { this._onOpenYoutubeDashboard }>
-                        <Text
-                            style = { [
-                                _dialogStyles.text,
-                                styles.warningText
-                            ] }>
-                            { this.props.t(
-                                'liveStreaming.getStreamKeyManually') }
-                        </Text>
+                <View style={styles.formWrapper}>
+                    <TouchableOpacity onPress={this._onOpenYoutubeDashboard}>
+                        <Text style={[_dialogStyles.text, styles.warningText]}>{this.props.t('liveStreaming.getStreamKeyManually')}</Text>
                     </TouchableOpacity>
                 </View>
             );
         }
 
         return (
-            <View style = { styles.formWrapper }>
-                <View style = { styles.streamKeyPickerCta }>
-                    <Text
-                        style = { [
-                            _dialogStyles.text,
-                            styles.text
-                        ] }>
-                        { this.props.t('liveStreaming.choose') }
-                    </Text>
+            <View style={styles.formWrapper}>
+                <View style={styles.streamKeyPickerCta}>
+                    <Text style={[_dialogStyles.text, styles.text]}>{this.props.t('liveStreaming.choose')}</Text>
                 </View>
-                <View style = { styles.streamKeyPickerWrapper } >
-                    { broadcasts.map((broadcast, index) =>
-                        (<TouchableHighlight
-                            activeOpacity = { ACTIVE_OPACITY }
-                            key = { index }
-                            onPress = { this._onStreamPick(broadcast.key) }
-                            style = { [
-                                styles.streamKeyPickerItem,
-                                this.state.streamKey === broadcast.key
-                                    ? styles.streamKeyPickerItemHighlight : null
-                            ] }
-                            underlayColor = { TOUCHABLE_UNDERLAY }>
-                            <Text
-                                style = { [
-                                    _dialogStyles.text,
-                                    styles.text
-                                ] }>
-                                { broadcast.title }
-                            </Text>
-                        </TouchableHighlight>))
-                    }
+                <View style={styles.streamKeyPickerWrapper}>
+                    {broadcasts.map((broadcast, index) => (
+                        <TouchableHighlight
+                            activeOpacity={ACTIVE_OPACITY}
+                            key={index}
+                            onPress={this._onStreamPick(broadcast.key)}
+                            style={[styles.streamKeyPickerItem, this.state.streamKey === broadcast.key ? styles.streamKeyPickerItemHighlight : null]}
+                            underlayColor={TOUCHABLE_UNDERLAY}
+                        >
+                            <Text style={[_dialogStyles.text, styles.text]}>{broadcast.title}</Text>
+                        </TouchableHighlight>
+                    ))}
                 </View>
             </View>
         );
@@ -155,7 +123,7 @@ class StreamKeyPicker extends Component<Props, State> {
         Linking.openURL(YOUTUBE_LIVE_DASHBOARD_URL);
     }
 
-    _onStreamPick: string => Function
+    _onStreamPick: (string) => Function;
 
     /**
      * Callback to be invoked when the user picks a stream from the list.
@@ -174,5 +142,4 @@ class StreamKeyPicker extends Component<Props, State> {
     }
 }
 
-export default translate(
-    connect(_abstractMapStateToProps)(StreamKeyPicker));
+export default translate(connect(_abstractMapStateToProps)(StreamKeyPicker));

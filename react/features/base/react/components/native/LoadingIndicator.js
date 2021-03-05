@@ -6,7 +6,6 @@ import { ActivityIndicator } from 'react-native';
 import { ColorPalette } from '../../../styles';
 
 type Props = {
-
     /**
      * The color of the spinner.
      */
@@ -46,11 +45,6 @@ export default class LoadingIndicator extends Component<Props> {
             size
         };
 
-        return (
-            <ActivityIndicator
-                animating = { true }
-                { ...props }
-                size = { size } />
-        );
+        return <ActivityIndicator animating={true} {...props} size={size} />;
     }
 }

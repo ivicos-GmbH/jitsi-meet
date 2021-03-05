@@ -9,7 +9,6 @@ import { LOCKED_LOCALLY } from '../../../room-lock';
  * The type of the React {@code Component} props of {@link PasswordForm}.
  */
 type Props = {
-
     /**
      * Whether or not to show the password editing field.
      */
@@ -47,7 +46,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link PasswordForm}.
  */
 type State = {
-
     /**
      * The value of the password being entered by the local participant.
      */
@@ -85,8 +83,7 @@ class PasswordForm extends Component<Props, State> {
         super(props);
 
         // Bind event handlers so they are only bound once per instance.
-        this._onEnteredPasswordChange
-            = this._onEnteredPasswordChange.bind(this);
+        this._onEnteredPasswordChange = this._onEnteredPasswordChange.bind(this);
         this._onPasswordSubmit = this._onPasswordSubmit.bind(this);
         this._onKeyDown = this._onKeyDown.bind(this);
     }
@@ -101,14 +98,10 @@ class PasswordForm extends Component<Props, State> {
         const { t } = this.props;
 
         return (
-            <div className = 'info-password'>
-                <span className = 'info-label'>
-                    { t('info.password') }
-                </span>
-                <span className = 'spacer'>&nbsp;</span>
-                <span className = 'info-password-field info-value'>
-                    { this._renderPasswordField() }
-                </span>
+            <div className="info-password">
+                <span className="info-label">{t('info.password')}</span>
+                <span className="spacer">&nbsp;</span>
+                <span className="info-password-field info-value">{this._renderPasswordField()}</span>
             </div>
         );
     }
@@ -126,46 +119,33 @@ class PasswordForm extends Component<Props, State> {
 
             if (this.props.passwordNumberOfDigits) {
                 placeHolderText = this.props.t('passwordDigitsOnly', {
-                    number: this.props.passwordNumberOfDigits });
+                    number: this.props.passwordNumberOfDigits
+                });
                 digitPattern = '\\d*';
             }
 
             return (
-                <form
-                    className = 'info-password-form'
-                    onKeyDown = { this._onKeyDown }
-                    onSubmit = { this._onPasswordSubmit }>
+                <form className="info-password-form" onKeyDown={this._onKeyDown} onSubmit={this._onPasswordSubmit}>
                     <input
-                        autoFocus = { true }
-                        className = 'info-password-input'
-                        maxLength = { this.props.passwordNumberOfDigits }
-                        onChange = { this._onEnteredPasswordChange }
-                        pattern = { digitPattern }
-                        placeholder = { placeHolderText }
-                        spellCheck = { 'false' }
-                        type = 'text'
-                        value = { this.state.enteredPassword } />
+                        autoFocus={true}
+                        className="info-password-input"
+                        maxLength={this.props.passwordNumberOfDigits}
+                        onChange={this._onEnteredPasswordChange}
+                        pattern={digitPattern}
+                        placeholder={placeHolderText}
+                        spellCheck={'false'}
+                        type="text"
+                        value={this.state.enteredPassword}
+                    />
                 </form>
             );
         } else if (this.props.locked === LOCKED_LOCALLY) {
-            return (
-                <div className = 'info-password-local'>
-                    { this.props.password }
-                </div>
-            );
+            return <div className="info-password-local">{this.props.password}</div>;
         } else if (this.props.locked) {
-            return (
-                <div className = 'info-password-remote'>
-                    { this.props.t('passwordSetRemotely') }
-                </div>
-            );
+            return <div className="info-password-remote">{this.props.t('passwordSetRemotely')}</div>;
         }
 
-        return (
-            <div className = 'info-password-none'>
-                { this.props.t('info.noPassword') }
-            </div>
-        );
+        return <div className="info-password-none">{this.props.t('info.noPassword')}</div>;
     }
 
     _onEnteredPasswordChange: (Object) => void;

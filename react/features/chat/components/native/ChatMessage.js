@@ -17,7 +17,6 @@ import PrivateMessageButton from '../PrivateMessageButton';
 import styles from './styles';
 
 type Props = AbstractProps & {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -40,12 +39,8 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         // Style arrays that need to be updated in various scenarios, such as
         // error messages or others.
-        const detailsWrapperStyle = [
-            styles.detailsWrapper
-        ];
-        const messageBubbleStyle = [
-            styles.messageBubble
-        ];
+        const detailsWrapperStyle = [styles.detailsWrapper];
+        const messageBubbleStyle = [styles.messageBubble];
 
         if (localMessage) {
             // This is a message sent by the local participant.
@@ -72,20 +67,18 @@ class ChatMessage extends AbstractChatMessage<Props> {
         }
 
         return (
-            <View style = { styles.messageWrapper } >
-                { this._renderAvatar() }
-                <View style = { detailsWrapperStyle }>
-                    <View style = { messageBubbleStyle }>
-                        <View style = { styles.textWrapper } >
-                            { this._renderDisplayName() }
-                            <Linkify linkStyle = { styles.chatLink }>
-                                { replaceNonUnicodeEmojis(this._getMessageText()) }
-                            </Linkify>
-                            { this._renderPrivateNotice() }
+            <View style={styles.messageWrapper}>
+                {this._renderAvatar()}
+                <View style={detailsWrapperStyle}>
+                    <View style={messageBubbleStyle}>
+                        <View style={styles.textWrapper}>
+                            {this._renderDisplayName()}
+                            <Linkify linkStyle={styles.chatLink}>{replaceNonUnicodeEmojis(this._getMessageText())}</Linkify>
+                            {this._renderPrivateNotice()}
                         </View>
-                        { this._renderPrivateReplyButton() }
+                        {this._renderPrivateReplyButton()}
                     </View>
-                    { this._renderTimestamp() }
+                    {this._renderTimestamp()}
                 </View>
             </View>
         );
@@ -106,12 +99,8 @@ class ChatMessage extends AbstractChatMessage<Props> {
         const { message } = this.props;
 
         return (
-            <View style = { styles.avatarWrapper }>
-                { this.props.showAvatar && <Avatar
-                    displayName = { message.displayName }
-                    participantId = { message.id }
-                    size = { styles.avatarWrapper.width } />
-                }
+            <View style={styles.avatarWrapper}>
+                {this.props.showAvatar && <Avatar displayName={message.displayName} participantId={message.id} size={styles.avatarWrapper.width} />}
             </View>
         );
     }
@@ -128,11 +117,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
             return null;
         }
 
-        return (
-            <Text style = { _styles.displayName }>
-                { message.displayName }
-            </Text>
-        );
+        return <Text style={_styles.displayName}>{message.displayName}</Text>;
     }
 
     /**
@@ -147,11 +132,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
             return null;
         }
 
-        return (
-            <Text style = { _styles.privateNotice }>
-                { this._getPrivateNoticeMessage() }
-            </Text>
-        );
+        return <Text style={_styles.privateNotice}>{this._getPrivateNoticeMessage()}</Text>;
     }
 
     /**
@@ -168,12 +149,8 @@ class ChatMessage extends AbstractChatMessage<Props> {
         }
 
         return (
-            <View style = { _styles.replyContainer }>
-                <PrivateMessageButton
-                    participantID = { message.id }
-                    reply = { true }
-                    showLabel = { false }
-                    toggledStyles = { _styles.replyStyles } />
+            <View style={_styles.replyContainer}>
+                <PrivateMessageButton participantID={message.id} reply={true} showLabel={false} toggledStyles={_styles.replyStyles} />
             </View>
         );
     }
@@ -188,11 +165,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
             return null;
         }
 
-        return (
-            <Text style = { styles.timeText }>
-                { this._getFormattedTimestamp() }
-            </Text>
-        );
+        return <Text style={styles.timeText}>{this._getFormattedTimestamp()}</Text>;
     }
 }
 

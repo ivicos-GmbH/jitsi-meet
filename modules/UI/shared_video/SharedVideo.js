@@ -3,15 +3,8 @@ onPlayerError */
 
 import Logger from 'jitsi-meet-logger';
 
-import {
-    createSharedVideoEvent as createEvent,
-    sendAnalytics
-} from '../../../react/features/analytics';
-import {
-    participantJoined,
-    participantLeft,
-    pinParticipant
-} from '../../../react/features/base/participants';
+import { createSharedVideoEvent as createEvent, sendAnalytics } from '../../../react/features/analytics';
+import { participantJoined, participantLeft, pinParticipant } from '../../../react/features/base/participants';
 import { dockToolbox, showToolbox } from '../../../react/features/toolbox/actions.web';
 import { getToolboxHeight } from '../../../react/features/toolbox/functions.web';
 import { YOUTUBE_PARTICIPANT_NAME } from '../../../react/features/youtube-player/constants';
@@ -61,10 +54,7 @@ export default class SharedVideoManager {
      * currently on.
      */
     isSharedVideoVolumeOn() {
-        return this.player
-                && this.player.getPlayerState() === YT.PlayerState.PLAYING
-                && !this.player.isMuted()
-                && this.player.getVolume() > 0;
+        return this.player && this.player.getPlayerState() === YT.PlayerState.PLAYING && !this.player.isMuted() && this.player.getVolume() > 0;
     }
 
     /**
@@ -86,15 +76,14 @@ export default class SharedVideoManager {
 
         if (!this.isSharedVideoShown) {
             requestVideoLink().then(
-                    url => {
-                        this.emitter.emit(
-                            UIEvents.UPDATE_SHARED_VIDEO, url, 'start');
-                        sendAnalytics(createEvent('started'));
-                    },
-                    err => {
-                        logger.log('SHARED VIDEO CANCELED', err);
-                        sendAnalytics(createEvent('canceled'));
-                    }
+                (url) => {
+                    this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO, url, 'start');
+                    sendAnalytics(createEvent('started'));
+                },
+                (err) => {
+                    logger.log('SHARED VIDEO CANCELED', err);
+                    sendAnalytics(createEvent('canceled'));
+                }
             );
 
             return;
@@ -111,11 +100,11 @@ export default class SharedVideoManager {
                         clearInterval(this.intervalId);
                         this.intervalId = null;
                     }
-                    this.emitter.emit(
-                        UIEvents.UPDATE_SHARED_VIDEO, this.url, 'stop');
+                    this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO, this.url, 'stop');
                     sendAnalytics(createEvent('stopped'));
                 },
-                () => {}); // eslint-disable-line no-empty-function
+                () => {}
+            ); // eslint-disable-line no-empty-function
         } else {
             APP.UI.messageHandler.showWarning({
                 descriptionKey: 'dialog.alreadySharedVideoMsg',
@@ -172,38 +161,35 @@ export default class SharedVideoManager {
         if (self.isPlayerAPILoaded) {
             window.onYouTubeIframeAPIReady();
         } else {
-            window.onYouTubeIframeAPIReady = function() {
+            window.onYouTubeIframeAPIReady = function () {
                 self.isPlayerAPILoaded = true;
-                const showControls
-                    = APP.conference.isLocalId(self.from) ? 1 : 0;
+                const showControls = APP.conference.isLocalId(self.from) ? 1 : 0;
                 const p = new YT.Player('sharedVideoIFrame', {
                     height: '100%',
                     width: '100%',
                     videoId: self.url,
                     playerVars: {
-                        'origin': location.origin,
-                        'fs': '0',
-                        'autoplay': 0,
-                        'controls': showControls,
-                        'rel': 0
+                        origin: location.origin,
+                        fs: '0',
+                        autoplay: 0,
+                        controls: showControls,
+                        rel: 0
                     },
                     events: {
-                        'onReady': onPlayerReady,
-                        'onStateChange': onPlayerStateChange,
-                        'onError': onPlayerError
+                        onReady: onPlayerReady,
+                        onStateChange: onPlayerStateChange,
+                        onError: onPlayerError
                     }
                 });
 
                 // add listener for volume changes
-                p.addEventListener(
-                    'onVolumeChange', 'onVolumeChange');
+                p.addEventListener('onVolumeChange', 'onVolumeChange');
 
                 if (APP.conference.isLocalId(self.from)) {
-                // adds progress listener that will be firing events
-                // while we are paused and we change the progress of the
-                // video (seeking forward or backward on the video)
-                    p.addEventListener(
-                        'onVideoProgress', 'onVideoProgress');
+                    // adds progress listener that will be firing events
+                    // while we are paused and we change the progress of the
+                    // video (seeking forward or backward on the video)
+                    p.addEventListener('onVideoProgress', 'onVideoProgress');
                 }
             };
         }
@@ -212,7 +198,7 @@ export default class SharedVideoManager {
          * Indicates that a change in state has occurred for the shared video.
          * @param event the event notifying us of the change
          */
-        window.onPlayerStateChange = function(event) {
+        window.onPlayerStateChange = function (event) {
             // eslint-disable-next-line eqeqeq
             if (event.data == YT.PlayerState.PLAYING) {
                 self.player = event.target;
@@ -220,9 +206,7 @@ export default class SharedVideoManager {
                 if (self.initialAttributes) {
                     // If a network update has occurred already now is the
                     // time to process it.
-                    self.processVideoUpdate(
-                        self.player,
-                        self.initialAttributes);
+                    self.processVideoUpdate(self.player, self.initialAttributes);
 
                     self.initialAttributes = null;
                 }
@@ -240,7 +224,7 @@ export default class SharedVideoManager {
          * Track player progress while paused.
          * @param event
          */
-        window.onVideoProgress = function(event) {
+        window.onVideoProgress = function (event) {
             const state = event.target.getPlayerState();
 
             // eslint-disable-next-line eqeqeq
@@ -253,7 +237,7 @@ export default class SharedVideoManager {
          * Gets notified for volume state changed.
          * @param event
          */
-        window.onVolumeChange = function(event) {
+        window.onVolumeChange = function (event) {
             self.fireSharedVideoEvent();
 
             // let's check, if player is not muted lets mute locally
@@ -262,15 +246,15 @@ export default class SharedVideoManager {
             } else if (event.data.volume <= 0 || event.data.muted) {
                 self.smartAudioUnmute();
             }
-            sendAnalytics(createEvent(
-                'volume.changed',
-                {
+            sendAnalytics(
+                createEvent('volume.changed', {
                     volume: event.data.volume,
                     muted: event.data.muted
-                }));
+                })
+            );
         };
 
-        window.onPlayerReady = function(event) {
+        window.onPlayerReady = function (event) {
             const player = event.target;
 
             // do not relay on autoplay as it is not sending all of the events
@@ -281,10 +265,7 @@ export default class SharedVideoManager {
             const iframe = player.getIframe();
 
             // eslint-disable-next-line no-use-before-define
-            self.sharedVideo = new SharedVideoContainer(
-                { url,
-                    iframe,
-                    player });
+            self.sharedVideo = new SharedVideoContainer({ url, iframe, player });
 
             // prevents pausing participants not sharing the video
             // to pause the video
@@ -292,32 +273,30 @@ export default class SharedVideoManager {
                 $('#sharedVideo').css('pointer-events', 'none');
             }
 
-            VideoLayout.addLargeVideoContainer(
-                SHARED_VIDEO_CONTAINER_TYPE, self.sharedVideo);
+            VideoLayout.addLargeVideoContainer(SHARED_VIDEO_CONTAINER_TYPE, self.sharedVideo);
 
-            APP.store.dispatch(participantJoined({
-
-                // FIXME The cat is out of the bag already or rather _room is
-                // not private because it is used in multiple other places
-                // already such as AbstractPageReloadOverlay.
-                conference: APP.conference._room,
-                id: self.url,
-                isFakeParticipant: true,
-                name: YOUTUBE_PARTICIPANT_NAME
-            }));
+            APP.store.dispatch(
+                participantJoined({
+                    // FIXME The cat is out of the bag already or rather _room is
+                    // not private because it is used in multiple other places
+                    // already such as AbstractPageReloadOverlay.
+                    conference: APP.conference._room,
+                    id: self.url,
+                    isFakeParticipant: true,
+                    name: YOUTUBE_PARTICIPANT_NAME
+                })
+            );
 
             APP.store.dispatch(pinParticipant(self.url));
 
             // If we are sending the command and we are starting the player
             // we need to continuously send the player current time position
             if (APP.conference.isLocalId(self.from)) {
-                self.intervalId = setInterval(
-                    self.fireSharedVideoEvent.bind(self),
-                    updateInterval);
+                self.intervalId = setInterval(self.fireSharedVideoEvent.bind(self), updateInterval);
             }
         };
 
-        window.onPlayerError = function(event) {
+        window.onPlayerError = function (event) {
             logger.error('Error in the player:', event.data);
 
             // store the error player, so we can remove it
@@ -337,9 +316,7 @@ export default class SharedVideoManager {
 
         // eslint-disable-next-line eqeqeq
         if (attributes.state == 'playing') {
-
-            const isPlayerPaused
-                = this.player.getPlayerState() === YT.PlayerState.PAUSED;
+            const isPlayerPaused = this.player.getPlayerState() === YT.PlayerState.PAUSED;
 
             // If our player is currently paused force the seek.
             this.processTime(player, attributes, isPlayerPaused);
@@ -352,11 +329,12 @@ export default class SharedVideoManager {
             }
 
             // Process volume
-            if (!isAttrMuted
-                && attributes.volume !== undefined
+            if (
+                !isAttrMuted &&
+                attributes.volume !== undefined &&
                 // eslint-disable-next-line eqeqeq
-                && player.getVolume() != attributes.volume) {
-
+                player.getVolume() != attributes.volume
+            ) {
                 player.setVolume(attributes.volume);
                 logger.info(`Player change of volume:${attributes.volume}`);
             }
@@ -394,8 +372,7 @@ export default class SharedVideoManager {
         // if we drift more than the interval for checking
         // sync, the interval is in milliseconds
         if (diff > updateInterval / 1000) {
-            logger.info('Player seekTo:', attributes.time,
-                ' current time is:', currentPosition, ' diff:', diff);
+            logger.info('Player seekTo:', attributes.time, ' current time is:', currentPosition, ' diff:', diff);
             player.seekTo(attributes.time);
         }
     }
@@ -407,8 +384,7 @@ export default class SharedVideoManager {
         // ignore update checks if we are not the owner of the video
         // or there is still no player defined or we are stopped
         // (in a process of stopping)
-        if (!APP.conference.isLocalId(this.from) || !this.player
-            || !this.isSharedVideoShown) {
+        if (!APP.conference.isLocalId(this.from) || !this.player || !this.isSharedVideoShown) {
             return;
         }
 
@@ -417,16 +393,11 @@ export default class SharedVideoManager {
         // if its paused and haven't been pause - send paused
 
         if (state === YT.PlayerState.PAUSED && sendPauseEvent) {
-            this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO,
-                this.url, 'pause', this.player.getCurrentTime());
+            this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO, this.url, 'pause', this.player.getCurrentTime());
         } else if (state === YT.PlayerState.PLAYING) {
             // if its playing and it was paused - send update with time
             // if its playing and was playing just send update with time
-            this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO,
-                this.url, 'playing',
-                this.player.getCurrentTime(),
-                this.player.isMuted(),
-                this.player.getVolume());
+            this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO, this.url, 'playing', this.player.getCurrentTime(), this.player.isMuted(), this.player.getVolume());
         }
     }
 
@@ -482,34 +453,30 @@ export default class SharedVideoManager {
             }
         }
 
-        this.emitter.removeListener(UIEvents.AUDIO_MUTED,
-            this.localAudioMutedListener);
+        this.emitter.removeListener(UIEvents.AUDIO_MUTED, this.localAudioMutedListener);
         this.localAudioMutedListener = null;
 
         APP.store.dispatch(participantLeft(this.url, APP.conference._room));
 
-        VideoLayout.showLargeVideoContainer(SHARED_VIDEO_CONTAINER_TYPE, false)
-            .then(() => {
-                VideoLayout.removeLargeVideoContainer(
-                    SHARED_VIDEO_CONTAINER_TYPE);
+        VideoLayout.showLargeVideoContainer(SHARED_VIDEO_CONTAINER_TYPE, false).then(() => {
+            VideoLayout.removeLargeVideoContainer(SHARED_VIDEO_CONTAINER_TYPE);
 
-                if (this.player) {
-                    this.player.destroy();
-                    this.player = null;
-                } else if (this.errorInPlayer) {
-                    // if there is an error in player, remove that instance
-                    this.errorInPlayer.destroy();
-                    this.errorInPlayer = null;
-                }
-                this.smartAudioUnmute();
+            if (this.player) {
+                this.player.destroy();
+                this.player = null;
+            } else if (this.errorInPlayer) {
+                // if there is an error in player, remove that instance
+                this.errorInPlayer.destroy();
+                this.errorInPlayer = null;
+            }
+            this.smartAudioUnmute();
 
-                // revert to original behavior (prevents pausing
-                // for participants not sharing the video to pause it)
-                $('#sharedVideo').css('pointer-events', 'auto');
+            // revert to original behavior (prevents pausing
+            // for participants not sharing the video to pause it)
+            $('#sharedVideo').css('pointer-events', 'auto');
 
-                this.emitter.emit(
-                    UIEvents.UPDATE_SHARED_VIDEO, null, 'removed');
-            });
+            this.emitter.emit(UIEvents.UPDATE_SHARED_VIDEO, null, 'removed');
+        });
 
         this.url = null;
         this.isSharedVideoShown = false;
@@ -564,9 +531,7 @@ export default class SharedVideoManager {
      * we're unmuting the mike automatically.
      */
     smartAudioUnmute() {
-        if (APP.conference.isLocalAudioMuted()
-            && !this.mutedWithUserInteraction
-            && !this.isSharedVideoVolumeOn()) {
+        if (APP.conference.isLocalAudioMuted() && !this.mutedWithUserInteraction && !this.isSharedVideoVolumeOn()) {
             sendAnalytics(createEvent('audio.unmuted'));
             logger.log('Shared video: audio unmuted');
             this.emitter.emit(UIEvents.AUDIO_MUTED, false, false);
@@ -578,8 +543,7 @@ export default class SharedVideoManager {
      * volume is on we mute the mike.
      */
     smartAudioMute() {
-        if (!APP.conference.isLocalAudioMuted()
-            && this.isSharedVideoVolumeOn()) {
+        if (!APP.conference.isLocalAudioMuted() && this.isSharedVideoVolumeOn()) {
             sendAnalytics(createEvent('audio.muted'));
             logger.log('Shared video: audio muted');
             this.emitter.emit(UIEvents.AUDIO_MUTED, true, false);
@@ -608,8 +572,7 @@ class SharedVideoContainer extends LargeContainer {
     show() {
         const self = this;
 
-
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this.$iframe.fadeIn(300, () => {
                 self.bodyBackground = document.body.style.background;
                 document.body.style.background = 'black';
@@ -628,7 +591,7 @@ class SharedVideoContainer extends LargeContainer {
 
         APP.store.dispatch(dockToolbox(false));
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this.$iframe.fadeOut(300, () => {
                 document.body.style.background = self.bodyBackground;
                 this.$iframe.css({ opacity: 0 });
@@ -682,8 +645,7 @@ class SharedVideoContainer extends LargeContainer {
  * @returns {boolean}
  */
 function getYoutubeLink(url) {
-    const p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;// eslint-disable-line max-len
-
+    const p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/; // eslint-disable-line max-len
 
     return url.match(p) ? RegExp.$1 : false;
 }
@@ -693,7 +655,7 @@ function getYoutubeLink(url) {
  */
 function showStopVideoPropmpt() {
     return new Promise((resolve, reject) => {
-        const submitFunction = function(e, v) {
+        const submitFunction = function (e, v) {
             if (v) {
                 resolve();
             } else {
@@ -701,7 +663,7 @@ function showStopVideoPropmpt() {
             }
         };
 
-        const closeFunction = function() {
+        const closeFunction = function () {
             dialog = null;
         };
 
@@ -724,85 +686,84 @@ function requestVideoLink() {
     const cancelButton = i18n.generateTranslationHTML('dialog.Cancel');
     const shareButton = i18n.generateTranslationHTML('dialog.Share');
     const backButton = i18n.generateTranslationHTML('dialog.Back');
-    const linkError
-        = i18n.generateTranslationHTML('dialog.shareVideoLinkError');
+    const linkError = i18n.generateTranslationHTML('dialog.shareVideoLinkError');
 
     return new Promise((resolve, reject) => {
-        dialog = APP.UI.messageHandler.openDialogWithStates({
-            state0: {
-                titleKey: 'dialog.shareVideoTitle',
-                html: `
+        dialog = APP.UI.messageHandler.openDialogWithStates(
+            {
+                state0: {
+                    titleKey: 'dialog.shareVideoTitle',
+                    html: `
                     <input name='sharedVideoUrl' type='text'
                            class='input-control'
                            data-i18n='[placeholder]defaultLink'
                            autofocus>`,
-                persistent: false,
-                buttons: [
-                    { title: cancelButton,
-                        value: false },
-                    { title: shareButton,
-                        value: true }
-                ],
-                focus: ':input:first',
-                defaultButton: 1,
-                submit(e, v, m, f) { // eslint-disable-line max-params
-                    e.preventDefault();
-                    if (!v) {
-                        reject('cancelled');
+                    persistent: false,
+                    buttons: [
+                        { title: cancelButton, value: false },
+                        { title: shareButton, value: true }
+                    ],
+                    focus: ':input:first',
+                    defaultButton: 1,
+                    submit(e, v, m, f) {
+                        // eslint-disable-line max-params
+                        e.preventDefault();
+                        if (!v) {
+                            reject('cancelled');
+                            dialog.close();
+
+                            return;
+                        }
+
+                        const sharedVideoUrl = f.sharedVideoUrl;
+
+                        if (!sharedVideoUrl) {
+                            return;
+                        }
+
+                        const urlValue = encodeURI(UIUtil.escapeHtml(sharedVideoUrl));
+                        const yVideoId = getYoutubeLink(urlValue);
+
+                        if (!yVideoId) {
+                            dialog.goToState('state1');
+
+                            return false;
+                        }
+
+                        resolve(yVideoId);
                         dialog.close();
-
-                        return;
                     }
+                },
 
-                    const sharedVideoUrl = f.sharedVideoUrl;
-
-                    if (!sharedVideoUrl) {
-                        return;
+                state1: {
+                    titleKey: 'dialog.shareVideoTitle',
+                    html: linkError,
+                    persistent: false,
+                    buttons: [
+                        { title: cancelButton, value: false },
+                        { title: backButton, value: true }
+                    ],
+                    focus: ':input:first',
+                    defaultButton: 1,
+                    submit(e, v) {
+                        e.preventDefault();
+                        if (v === 0) {
+                            reject();
+                            dialog.close();
+                        } else {
+                            dialog.goToState('state0');
+                        }
                     }
-
-                    const urlValue
-                        = encodeURI(UIUtil.escapeHtml(sharedVideoUrl));
-                    const yVideoId = getYoutubeLink(urlValue);
-
-                    if (!yVideoId) {
-                        dialog.goToState('state1');
-
-                        return false;
-                    }
-
-                    resolve(yVideoId);
-                    dialog.close();
                 }
             },
-
-            state1: {
-                titleKey: 'dialog.shareVideoTitle',
-                html: linkError,
-                persistent: false,
-                buttons: [
-                    { title: cancelButton,
-                        value: false },
-                    { title: backButton,
-                        value: true }
-                ],
-                focus: ':input:first',
-                defaultButton: 1,
-                submit(e, v) {
-                    e.preventDefault();
-                    if (v === 0) {
-                        reject();
-                        dialog.close();
-                    } else {
-                        dialog.goToState('state0');
-                    }
+            {
+                close() {
+                    dialog = null;
                 }
+            },
+            {
+                url: defaultSharedVideoLink
             }
-        }, {
-            close() {
-                dialog = null;
-            }
-        }, {
-            url: defaultSharedVideoLink
-        });
+        );
     });
 }

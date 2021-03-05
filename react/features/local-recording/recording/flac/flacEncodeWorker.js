@@ -1,11 +1,4 @@
-
-import {
-    MAIN_THREAD_FINISH,
-    MAIN_THREAD_INIT,
-    MAIN_THREAD_NEW_DATA_ARRIVED,
-    WORKER_BLOB_READY,
-    WORKER_LIBFLAC_READY
-} from './messageTypes';
+import { MAIN_THREAD_FINISH, MAIN_THREAD_INIT, MAIN_THREAD_NEW_DATA_ARRIVED, WORKER_BLOB_READY, WORKER_LIBFLAC_READY } from './messageTypes';
 
 /**
  * WebWorker that does FLAC encoding using libflac.js
@@ -112,7 +105,6 @@ function mergeUint8Arrays(arrays, totalLength) {
  * Wrapper class around libflac API.
  */
 class Encoder {
-
     /**
      * Flac encoder instance ID. (As per libflac.js API).
      * @private
@@ -157,7 +149,6 @@ class Encoder {
      */
     _data = null;
 
-
     /**
      * Constructor.
      * Note: Only create instance when Flac.isReady() returns true.
@@ -200,11 +191,7 @@ class Encoder {
         }
 
         // initialize the encoder
-        const initResult = Flac.init_encoder_stream(
-            this._encoderId,
-            this._onEncodedData.bind(this),
-            this._onMetadataAvailable.bind(this)
-        );
+        const initResult = Flac.init_encoder_stream(this._encoderId, this._onEncodedData.bind(this), this._onMetadataAvailable.bind(this));
 
         if (initResult !== 0) {
             throw new Error('Failed to initalise libflac encoder.');
@@ -245,22 +232,17 @@ class Encoder {
         let index = 0;
 
         for (let i = 0; i < bufferLength; i++) {
-            view.setInt32(index, audioData[i] * (0x7FFF * volume), true);
+            view.setInt32(index, audioData[i] * (0x7fff * volume), true);
             index += 4; // 4 bytes (32-bit)
         }
 
         // pass it to libflac
-        const status = Flac.FLAC__stream_encoder_process_interleaved(
-            this._encoderId,
-            bufferI32,
-            bufferI32.length
-        );
+        const status = Flac.FLAC__stream_encoder_process_interleaved(this._encoderId, bufferI32, bufferI32.length);
 
         if (status !== 1) {
             // gets error number
 
-            const errorNo
-                = Flac.FLAC__stream_encoder_get_state(this._encoderId);
+            const errorNo = Flac.FLAC__stream_encoder_get_state(this._encoderId);
 
             console.error('Error during encoding', FLAC_ERRORS[errorNo]);
         }
@@ -308,7 +290,7 @@ class Encoder {
     _exportFlacBlob() {
         const samples = mergeUint8Arrays(this._flacBuffers, this._flacLength);
 
-        const blob = new Blob([ samples ], { type: 'audio/flac' });
+        const blob = new Blob([samples], { type: 'audio/flac' });
 
         return blob;
     }
@@ -337,59 +319,54 @@ class Encoder {
      */
     _onMetadataAvailable = () => {
         // reserved for future use
-    }
+    };
 }
-
 
 let encoder = null;
 
-self.onmessage = function(e) {
-
+self.onmessage = function (e) {
     switch (e.data.command) {
-    case MAIN_THREAD_INIT:
-    {
-        const bps = e.data.config.bps;
-        const sampleRate = e.data.config.sampleRate;
+        case MAIN_THREAD_INIT: {
+            const bps = e.data.config.bps;
+            const sampleRate = e.data.config.sampleRate;
 
-        if (Flac.isReady()) {
-            encoder = new Encoder(sampleRate, bps);
-            self.postMessage({
-                command: WORKER_LIBFLAC_READY
-            });
-        } else {
-            Flac.onready = function() {
-                setTimeout(() => {
-                    encoder = new Encoder(sampleRate, bps);
-                    self.postMessage({
-                        command: WORKER_LIBFLAC_READY
-                    });
-                }, 0);
-            };
+            if (Flac.isReady()) {
+                encoder = new Encoder(sampleRate, bps);
+                self.postMessage({
+                    command: WORKER_LIBFLAC_READY
+                });
+            } else {
+                Flac.onready = function () {
+                    setTimeout(() => {
+                        encoder = new Encoder(sampleRate, bps);
+                        self.postMessage({
+                            command: WORKER_LIBFLAC_READY
+                        });
+                    }, 0);
+                };
+            }
+            break;
         }
-        break;
-    }
 
-    case MAIN_THREAD_NEW_DATA_ARRIVED:
-        if (encoder === null) {
-            console.error('flacEncoderWorker received data when the encoder is not ready.');
-        } else {
-            encoder.encode(e.data.buf);
-        }
-        break;
+        case MAIN_THREAD_NEW_DATA_ARRIVED:
+            if (encoder === null) {
+                console.error('flacEncoderWorker received data when the encoder is not ready.');
+            } else {
+                encoder.encode(e.data.buf);
+            }
+            break;
 
-    case MAIN_THREAD_FINISH:
-        if (encoder !== null) {
-            encoder.finish();
-            const data = encoder.getBlob();
+        case MAIN_THREAD_FINISH:
+            if (encoder !== null) {
+                encoder.finish();
+                const data = encoder.getBlob();
 
-            self.postMessage(
-                {
+                self.postMessage({
                     command: WORKER_BLOB_READY,
                     buf: data
-                }
-            );
-            encoder = null;
-        }
-        break;
+                });
+                encoder = null;
+            }
+            break;
     }
 };

@@ -3,10 +3,7 @@
 import React, { Component } from 'react';
 import type { Dispatch } from 'redux';
 
-import {
-    createCalendarClickedEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createCalendarClickedEvent, sendAnalytics } from '../../analytics';
 import { translate } from '../../base/i18n';
 import { Icon, IconAdd } from '../../base/icons';
 import { connect } from '../../base/redux';
@@ -17,7 +14,6 @@ import { updateCalendarEvent } from '../actions';
  * The type of the React {@code Component} props of {@link AddMeetingUrlButton}.
  */
 type Props = {
-
     /**
      * The calendar ID associated with the calendar event.
      */
@@ -64,11 +60,9 @@ class AddMeetingUrlButton extends Component<Props> {
      */
     render() {
         return (
-            <Tooltip content = { this.props.t('calendarSync.addMeetingURL') }>
-                <div
-                    className = 'button add-button'
-                    onClick = { this._onClick }>
-                    <Icon src = { IconAdd } />
+            <Tooltip content={this.props.t('calendarSync.addMeetingURL')}>
+                <div className="button add-button" onClick={this._onClick}>
+                    <Icon src={IconAdd} />
                 </div>
             </Tooltip>
         );

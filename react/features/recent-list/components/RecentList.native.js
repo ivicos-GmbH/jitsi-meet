@@ -17,7 +17,6 @@ import RecentListItemMenu from './RecentListItemMenu.native';
  * The type of the React {@code Component} props of {@link RecentList}
  */
 type Props = {
-
     /**
      * Renders the list disabled.
      */
@@ -50,7 +49,7 @@ type Props = {
  */
 class RecentList extends AbstractRecentList<Props> {
     _getRenderListEmptyComponent: () => React$Node;
-    _onPress: string => {};
+    _onPress: (string) => {};
 
     /**
      * Initializes a new {@code RecentList} instance.
@@ -73,22 +72,17 @@ class RecentList extends AbstractRecentList<Props> {
         if (!isRecentListEnabled()) {
             return null;
         }
-        const {
-            disabled,
-            t,
-            _defaultServerURL,
-            _recentList
-        } = this.props;
+        const { disabled, t, _defaultServerURL, _recentList } = this.props;
         const recentList = toDisplayableList(_recentList, t, _defaultServerURL);
 
         return (
             <NavigateSectionList
-                disabled = { disabled }
-                onLongPress = { this._onLongPress }
-                onPress = { this._onPress }
-                renderListEmptyComponent
-                    = { this._getRenderListEmptyComponent() }
-                sections = { recentList } />
+                disabled={disabled}
+                onLongPress={this._onLongPress}
+                onPress={this._onPress}
+                renderListEmptyComponent={this._getRenderListEmptyComponent()}
+                sections={recentList}
+            />
         );
     }
 

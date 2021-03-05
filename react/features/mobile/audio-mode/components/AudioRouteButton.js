@@ -8,9 +8,7 @@ import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/
 
 import AudioRoutePickerDialog from './AudioRoutePickerDialog';
 
-
 type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function used to open/show the
      * {@code AudioRoutePickerDialog}.

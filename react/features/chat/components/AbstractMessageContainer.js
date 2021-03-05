@@ -3,12 +3,11 @@
 import { PureComponent } from 'react';
 
 export type Props = {
-
     /**
      * The messages array to render.
      */
     messages: Array<Object>
-}
+};
 
 /**
  * Abstract component to display a list of chat messages, grouped by sender.
@@ -41,7 +40,7 @@ export default class AbstractMessageContainer<P: Props> extends PureComponent<P>
             } else {
                 currentGrouping.length && groups.push(currentGrouping);
 
-                currentGrouping = [ message ];
+                currentGrouping = [message];
                 currentGroupParticipantId = message.id;
             }
         }

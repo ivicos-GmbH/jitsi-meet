@@ -16,7 +16,6 @@ import styles from './styles';
  * The type of React {@code Component} props of {@link BlankPage}.
  */
 type Props = {
-
     /**
      * The color schemed style of the component.
      */
@@ -52,14 +51,8 @@ class BlankPage extends Component<Props> {
         const { _styles } = this.props;
 
         return (
-            <View
-                style = { [
-                    styles.blankPageWrapper,
-                    _styles.loadingOverlayWrapper
-                ] }>
-                <LoadingIndicator
-                    color = { _styles.indicatorColor }
-                    size = 'large' />
+            <View style={[styles.blankPageWrapper, _styles.loadingOverlayWrapper]}>
+                <LoadingIndicator color={_styles.indicatorColor} size="large" />
             </View>
         );
     }

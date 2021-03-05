@@ -5,11 +5,7 @@ import { PostMessageTransportBackend, Transport } from '@jitsi/js-utils/transpor
 import { getJitsiMeetGlobalNS } from '../../react/features/base/util';
 import { API_ID } from '../API/constants';
 
-
-export {
-    PostMessageTransportBackend,
-    Transport
-};
+export { PostMessageTransportBackend, Transport };
 
 /**
  * Option for the default low level transport.
@@ -48,5 +44,4 @@ export function getJitsiMeetTransport() {
  * @param {Object} externalTransportBackend - The new transport.
  * @returns {void}
  */
-getJitsiMeetGlobalNS().setExternalTransportBackend = externalTransportBackend =>
-    transport.setBackend(externalTransportBackend);
+getJitsiMeetGlobalNS().setExternalTransportBackend = (externalTransportBackend) => transport.setBackend(externalTransportBackend);

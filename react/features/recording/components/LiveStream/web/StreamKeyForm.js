@@ -4,9 +4,7 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import React from 'react';
 
 import { translate } from '../../../../base/i18n';
-import AbstractStreamKeyForm, {
-    type Props
-} from '../AbstractStreamKeyForm';
+import AbstractStreamKeyForm, { type Props } from '../AbstractStreamKeyForm';
 import { GOOGLE_PRIVACY_POLICY, YOUTUBE_TERMS_URL } from '../constants';
 
 /**
@@ -15,7 +13,6 @@ import { GOOGLE_PRIVACY_POLICY, YOUTUBE_TERMS_URL } from '../constants';
  * @extends Component
  */
 class StreamKeyForm extends AbstractStreamKeyForm<Props> {
-
     /**
      * Initializes a new {@code StreamKeyForm} instance.
      *
@@ -39,59 +36,43 @@ class StreamKeyForm extends AbstractStreamKeyForm<Props> {
         const { t, value } = this.props;
 
         return (
-            <div className = 'stream-key-form'>
+            <div className="stream-key-form">
                 <FieldTextStateless
-                    autoFocus = { true }
-                    compact = { true }
-                    isSpellCheckEnabled = { false }
-                    label = { t('dialog.streamKey') }
-                    name = 'streamId'
-                    okDisabled = { !value }
-                    onChange = { this._onInputChange }
-                    placeholder = { t('liveStreaming.enterStreamKey') }
-                    shouldFitContainer = { true }
-                    type = 'text'
-                    value = { this.props.value } />
-                <div className = 'form-footer'>
-                    <div className = 'help-container'>
-                        {
-                            this.state.showValidationError
-                                ? <span className = 'warning-text'>
-                                    { t('liveStreaming.invalidStreamKey') }
-                                </span>
-                                : null
-                        }
-                        { this.helpURL
-                            ? <a
-                                className = 'helper-link'
-                                onClick = { this._onOpenHelp }>
-                                { t('liveStreaming.streamIdHelp') }
+                    autoFocus={true}
+                    compact={true}
+                    isSpellCheckEnabled={false}
+                    label={t('dialog.streamKey')}
+                    name="streamId"
+                    okDisabled={!value}
+                    onChange={this._onInputChange}
+                    placeholder={t('liveStreaming.enterStreamKey')}
+                    shouldFitContainer={true}
+                    type="text"
+                    value={this.props.value}
+                />
+                <div className="form-footer">
+                    <div className="help-container">
+                        {this.state.showValidationError ? <span className="warning-text">{t('liveStreaming.invalidStreamKey')}</span> : null}
+                        {this.helpURL ? (
+                            <a className="helper-link" onClick={this._onOpenHelp}>
+                                {t('liveStreaming.streamIdHelp')}
                             </a>
-                            : null
-                        }
+                        ) : null}
                     </div>
-                    <a
-                        className = 'helper-link'
-                        href = { YOUTUBE_TERMS_URL }
-                        rel = 'noopener noreferrer'
-                        target = '_blank'>
-                        { t('liveStreaming.youtubeTerms') }
+                    <a className="helper-link" href={YOUTUBE_TERMS_URL} rel="noopener noreferrer" target="_blank">
+                        {t('liveStreaming.youtubeTerms')}
                     </a>
-                    <a
-                        className = 'helper-link'
-                        href = { GOOGLE_PRIVACY_POLICY }
-                        rel = 'noopener noreferrer'
-                        target = '_blank'>
-                        { t('liveStreaming.googlePrivacyPolicy') }
+                    <a className="helper-link" href={GOOGLE_PRIVACY_POLICY} rel="noopener noreferrer" target="_blank">
+                        {t('liveStreaming.googlePrivacyPolicy')}
                     </a>
                 </div>
             </div>
         );
     }
 
-    _onInputChange: Object => void
+    _onInputChange: (Object) => void;
 
-    _onOpenHelp: () => void
+    _onOpenHelp: () => void;
 
     /**
      * Opens a new tab with information on how to manually locate a YouTube

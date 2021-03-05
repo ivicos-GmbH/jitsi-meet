@@ -8,7 +8,6 @@ import { connect } from '../../../base/redux';
 import { toggleLobbyMode } from '../../actions';
 
 export type Props = {
-
     /**
      * The Redux Dispatch function.
      */
@@ -36,11 +35,7 @@ class DisableLobbyModeDialog extends PureComponent<Props> {
      * @inheritdoc
      */
     render() {
-        return (
-            <ConfirmDialog
-                contentKey = 'lobby.disableDialogContent'
-                onSubmit = { this._onDisableLobbyMode } />
-        );
+        return <ConfirmDialog contentKey="lobby.disableDialogContent" onSubmit={this._onDisableLobbyMode} />;
     }
 
     _onDisableLobbyMode: () => void;

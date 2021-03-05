@@ -5,10 +5,7 @@ import React from 'react';
 import { IconRaisedHand } from '../../../base/icons';
 import { BaseIndicator } from '../../../base/react';
 import { connect } from '../../../base/redux';
-import AbstractRaisedHandIndicator, {
-    type Props,
-    _mapStateToProps
-} from '../AbstractRaisedHandIndicator';
+import AbstractRaisedHandIndicator, { type Props, _mapStateToProps } from '../AbstractRaisedHandIndicator';
 
 /**
  * Thumbnail badge showing that the participant would like to speak.
@@ -22,11 +19,7 @@ class RaisedHandIndicator extends AbstractRaisedHandIndicator<Props> {
      * @returns {React$Element<*>}
      */
     _renderIndicator() {
-        return (
-            <BaseIndicator
-                highlight = { true }
-                icon = { IconRaisedHand } />
-        );
+        return <BaseIndicator highlight={true} icon={IconRaisedHand} />;
     }
 }
 

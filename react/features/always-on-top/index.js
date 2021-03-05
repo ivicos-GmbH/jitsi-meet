@@ -9,6 +9,4 @@ import AlwaysOnTop from './AlwaysOnTop';
 // $FlowExpectedError
 ReactDOM.render(<AlwaysOnTop />, document.getElementById('react'));
 
-window.addEventListener(
-    'beforeunload',
-    () => ReactDOM.unmountComponentAtNode(document.getElementById('react')));
+window.addEventListener('beforeunload', () => ReactDOM.unmountComponentAtNode(document.getElementById('react')));

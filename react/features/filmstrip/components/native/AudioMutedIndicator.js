@@ -15,10 +15,6 @@ export default class AudioMutedIndicator extends Component<{}> {
      * @inheritdoc
      */
     render() {
-        return (
-            <BaseIndicator
-                highlight = { false }
-                icon = { IconMicDisabled } />
-        );
+        return <BaseIndicator highlight={false} icon={IconMicDisabled} />;
     }
 }

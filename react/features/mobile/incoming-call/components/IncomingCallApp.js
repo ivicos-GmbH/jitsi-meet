@@ -9,7 +9,6 @@ import IncomingCallPage from './IncomingCallPage';
  * The type of the React {@code Component} props of {@link IncomingCallApp}.
  */
 type Props = {
-
     /**
      * URL of the avatar for the caller.
      */
@@ -48,17 +47,15 @@ export default class IncomingCallApp extends BaseApp<Props> {
 
         this._init.then(() => {
             const { dispatch } = this.state.store;
-            const {
-                callerAvatarURL: avatarUrl,
-                callerName: name,
-                hasVideo
-            } = this.props;
+            const { callerAvatarURL: avatarUrl, callerName: name, hasVideo } = this.props;
 
-            dispatch(incomingCallReceived({
-                avatarUrl,
-                hasVideo,
-                name
-            }));
+            dispatch(
+                incomingCallReceived({
+                    avatarUrl,
+                    hasVideo,
+                    name
+                })
+            );
 
             super._navigate({ component: IncomingCallPage });
         });

@@ -28,8 +28,7 @@ export const BEGIN_ADD_PEOPLE = 'BEGIN_ADD_PEOPLE';
  *     type: REMOVE_PENDING_INVITE_REQUESTS
  * }
  */
-export const REMOVE_PENDING_INVITE_REQUESTS
-    = 'REMOVE_PENDING_INVITE_REQUESTS';
+export const REMOVE_PENDING_INVITE_REQUESTS = 'REMOVE_PENDING_INVITE_REQUESTS';
 
 /**
  * The type of redux action which sets the visibility of {@code CalleeInfo}.
@@ -55,8 +54,7 @@ export const HIDE_ADD_PEOPLE_DIALOG = 'HIDE_ADD_PEOPLE_DIALOG';
  *     error: Object
  * }
  */
-export const UPDATE_DIAL_IN_NUMBERS_FAILED
-    = 'UPDATE_DIAL_IN_NUMBERS_FAILED';
+export const UPDATE_DIAL_IN_NUMBERS_FAILED = 'UPDATE_DIAL_IN_NUMBERS_FAILED';
 
 /**
  * The type of the action which signals a request for dial-in numbers has
@@ -68,5 +66,4 @@ export const UPDATE_DIAL_IN_NUMBERS_FAILED
  *     dialInNumbers: Object
  * }
  */
-export const UPDATE_DIAL_IN_NUMBERS_SUCCESS
-    = 'UPDATE_DIAL_IN_NUMBERS_SUCCESS';
+export const UPDATE_DIAL_IN_NUMBERS_SUCCESS = 'UPDATE_DIAL_IN_NUMBERS_SUCCESS';

@@ -7,10 +7,7 @@ import { JitsiModal } from '../../../base/modal';
 import { connect } from '../../../base/redux';
 import { closeChat } from '../../actions.any';
 import { CHAT_VIEW_MODAL_ID } from '../../constants';
-import AbstractChat, {
-    _mapStateToProps,
-    type Props
-} from '../AbstractChat';
+import AbstractChat, { _mapStateToProps, type Props } from '../AbstractChat';
 
 import ChatInputBar from './ChatInputBar';
 import MessageContainer from './MessageContainer';
@@ -40,22 +37,22 @@ class Chat extends AbstractChat<Props> {
     render() {
         return (
             <JitsiModal
-                headerProps = {{
+                headerProps={{
                     headerLabelKey: 'chat.title'
                 }}
-                modalId = { CHAT_VIEW_MODAL_ID }
-                onClose = { this._onClose }>
-
-                <MessageContainer messages = { this.props._messages } />
+                modalId={CHAT_VIEW_MODAL_ID}
+                onClose={this._onClose}
+            >
+                <MessageContainer messages={this.props._messages} />
                 <MessageRecipient />
-                <ChatInputBar onSend = { this._onSendMessage } />
+                <ChatInputBar onSend={this._onSendMessage} />
             </JitsiModal>
         );
     }
 
     _onSendMessage: (string) => void;
 
-    _onClose: () => boolean
+    _onClose: () => boolean;
 
     /**
      * Closes the modal.

@@ -8,9 +8,7 @@ import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { openURLInBrowser } from '../../base/util';
 
-
 type Props = AbstractButtonProps & {
-
     /**
      * The URL to the user documenation.
      */
@@ -36,7 +34,6 @@ class HelpButton extends AbstractButton<Props, *> {
         openURLInBrowser(this.props._userDocumentationURL);
     }
 }
-
 
 /**
  * Maps part of the redux state to the component's props.

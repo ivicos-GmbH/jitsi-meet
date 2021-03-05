@@ -12,7 +12,6 @@ import type { Sound } from '../reducer';
  * {@link SoundCollection}'s properties.
  */
 type Props = {
-
     /**
      * Dispatches {@link _ADD_AUDIO_ELEMENT} Redux action which will store the
      * {@link AudioElement} for a sound in the Redux store.
@@ -30,7 +29,7 @@ type Props = {
      * render audio elements for every registered sound.
      */
     _sounds: Map<string, Sound>
-}
+};
 
 /**
  * Collections of all global sounds used by the app for playing audio
@@ -52,17 +51,17 @@ class SoundCollection extends Component<Props> {
         let key = 0;
         const sounds = [];
 
-        for (const [ soundId, sound ] of this.props._sounds.entries()) {
+        for (const [soundId, sound] of this.props._sounds.entries()) {
             const { options, src } = sound;
 
             sounds.push(
-                React.createElement(
-                    Audio, {
-                        key,
-                        setRef: this._setRef.bind(this, soundId),
-                        src,
-                        loop: options.loop
-                    }));
+                React.createElement(Audio, {
+                    key,
+                    setRef: this._setRef.bind(this, soundId),
+                    src,
+                    loop: options.loop
+                })
+            );
             key += 1;
         }
 

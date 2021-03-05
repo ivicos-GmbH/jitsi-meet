@@ -5,8 +5,7 @@ import React from 'react';
 import { translate, translateToHTML } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 
-import AbstractUserMediaPermissionsOverlay, { abstractMapStateToProps }
-    from './AbstractUserMediaPermissionsOverlay';
+import AbstractUserMediaPermissionsOverlay, { abstractMapStateToProps } from './AbstractUserMediaPermissionsOverlay';
 import OverlayFrame from './OverlayFrame';
 
 declare var interfaceConfig: Object;
@@ -27,28 +26,15 @@ class UserMediaPermissionsOverlay extends AbstractUserMediaPermissionsOverlay {
 
         return (
             <OverlayFrame>
-                <div className = 'inlay'>
-                    <span className = 'inlay__icon icon-microphone' />
-                    <span className = 'inlay__icon icon-camera' />
-                    <h3 className = 'inlay__title'>
-                        {
-                            t('startupoverlay.genericTitle')
-                        }
-                    </h3>
-                    <span className = 'inlay__text'>
-                        {
-                            translateToHTML(t,
-                                `userMedia.${browser}GrantPermissions`)
-                        }
-                    </span>
+                <div className="inlay">
+                    <span className="inlay__icon icon-microphone" />
+                    <span className="inlay__icon icon-camera" />
+                    <h3 className="inlay__title">{t('startupoverlay.genericTitle')}</h3>
+                    <span className="inlay__text">{translateToHTML(t, `userMedia.${browser}GrantPermissions`)}</span>
                 </div>
-                <div className = 'policy overlay__policy'>
-                    <p className = 'policy__text'>
-                        { translateToHTML(t, 'startupoverlay.policyText') }
-                    </p>
-                    {
-                        this._renderPolicyLogo()
-                    }
+                <div className="policy overlay__policy">
+                    <p className="policy__text">{translateToHTML(t, 'startupoverlay.policyText')}</p>
+                    {this._renderPolicyLogo()}
                 </div>
             </OverlayFrame>
         );
@@ -65,8 +51,8 @@ class UserMediaPermissionsOverlay extends AbstractUserMediaPermissionsOverlay {
 
         if (policyLogoSrc) {
             return (
-                <div className = 'policy__logo'>
-                    <img src = { policyLogoSrc } />
+                <div className="policy__logo">
+                    <img src={policyLogoSrc} />
                 </div>
             );
         }
@@ -75,5 +61,4 @@ class UserMediaPermissionsOverlay extends AbstractUserMediaPermissionsOverlay {
     }
 }
 
-export default translate(
-    connect(abstractMapStateToProps)(UserMediaPermissionsOverlay));
+export default translate(connect(abstractMapStateToProps)(UserMediaPermissionsOverlay));

@@ -9,30 +9,22 @@ import { NOTIFICATION_TYPE, showNotification } from '../notifications';
 import { shouldAutoKnock } from '../prejoin/functions';
 
 import { KNOCKING_PARTICIPANT_ARRIVED_OR_UPDATED } from './actionTypes';
-import {
-    hideLobbyScreen,
-    knockingParticipantLeft,
-    openLobbyScreen,
-    participantIsKnockingOrUpdated,
-    setLobbyModeEnabled,
-    startKnocking,
-    setPasswordJoinFailed
-} from './actions';
+import { hideLobbyScreen, knockingParticipantLeft, openLobbyScreen, participantIsKnockingOrUpdated, setLobbyModeEnabled, startKnocking, setPasswordJoinFailed } from './actions';
 
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case CONFERENCE_FAILED:
-        return _conferenceFailed(store, next, action);
-    case CONFERENCE_JOINED:
-        return _conferenceJoined(store, next, action);
-    case KNOCKING_PARTICIPANT_ARRIVED_OR_UPDATED: {
-        // We need the full update result to be in the store already
-        const result = next(action);
+        case CONFERENCE_FAILED:
+            return _conferenceFailed(store, next, action);
+        case CONFERENCE_JOINED:
+            return _conferenceJoined(store, next, action);
+        case KNOCKING_PARTICIPANT_ARRIVED_OR_UPDATED: {
+            // We need the full update result to be in the store already
+            const result = next(action);
 
-        _findLoadableAvatarForKnockingParticipant(store, action.participant);
+            _findLoadableAvatarForKnockingParticipant(store, action.participant);
 
-        return result;
-    }
+            return result;
+        }
     }
 
     return next(action);
@@ -43,28 +35,32 @@ MiddlewareRegistry.register(store => next => action => {
  * set the event listeners needed for the lobby feature to operate.
  */
 StateListenerRegistry.register(
-    state => state['features/base/conference'].conference,
+    (state) => state['features/base/conference'].conference,
     (conference, { dispatch, getState }, previousConference) => {
         if (conference && !previousConference) {
-            conference.on(JitsiConferenceEvents.MEMBERS_ONLY_CHANGED, enabled => {
+            conference.on(JitsiConferenceEvents.MEMBERS_ONLY_CHANGED, (enabled) => {
                 dispatch(setLobbyModeEnabled(enabled));
             });
 
             conference.on(JitsiConferenceEvents.LOBBY_USER_JOINED, (id, name) => {
-                dispatch(participantIsKnockingOrUpdated({
-                    id,
-                    name
-                }));
+                dispatch(
+                    participantIsKnockingOrUpdated({
+                        id,
+                        name
+                    })
+                );
             });
 
             conference.on(JitsiConferenceEvents.LOBBY_USER_UPDATED, (id, participant) => {
-                dispatch(participantIsKnockingOrUpdated({
-                    ...participant,
-                    id
-                }));
+                dispatch(
+                    participantIsKnockingOrUpdated({
+                        ...participant,
+                        id
+                    })
+                );
             });
 
-            conference.on(JitsiConferenceEvents.LOBBY_USER_LEFT, id => {
+            conference.on(JitsiConferenceEvents.LOBBY_USER_LEFT, (id) => {
                 dispatch(knockingParticipantLeft(id));
             });
 
@@ -75,7 +71,8 @@ StateListenerRegistry.register(
                 })
             );
         }
-    });
+    }
+);
 
 /**
  * Function to handle the conference failed event and navigate the user to the lobby screen
@@ -112,11 +109,13 @@ function _conferenceFailed({ dispatch, getState }, next, action) {
     dispatch(hideLobbyScreen());
 
     if (error.name === JitsiConferenceErrors.CONFERENCE_ACCESS_DENIED) {
-        dispatch(showNotification({
-            appearance: NOTIFICATION_TYPE.ERROR,
-            hideErrorSupportLink: true,
-            titleKey: 'lobby.joinRejectedMessage'
-        }));
+        dispatch(
+            showNotification({
+                appearance: NOTIFICATION_TYPE.ERROR,
+                hideErrorSupportLink: true,
+                titleKey: 'lobby.joinRejectedMessage'
+            })
+        );
     }
 
     return next(action);
@@ -145,16 +144,18 @@ function _conferenceJoined({ dispatch }, next, action) {
  */
 function _findLoadableAvatarForKnockingParticipant(store, { id }) {
     const { dispatch, getState } = store;
-    const updatedParticipant = getState()['features/lobby'].knockingParticipants.find(p => p.id === id);
+    const updatedParticipant = getState()['features/lobby'].knockingParticipants.find((p) => p.id === id);
     const { disableThirdPartyRequests } = getState()['features/base/config'];
 
     if (!disableThirdPartyRequests && updatedParticipant && !updatedParticipant.loadableAvatarUrl) {
-        getFirstLoadableAvatarUrl(updatedParticipant, store).then(loadableAvatarUrl => {
+        getFirstLoadableAvatarUrl(updatedParticipant, store).then((loadableAvatarUrl) => {
             if (loadableAvatarUrl) {
-                dispatch(participantIsKnockingOrUpdated({
-                    loadableAvatarUrl,
-                    id
-                }));
+                dispatch(
+                    participantIsKnockingOrUpdated({
+                        loadableAvatarUrl,
+                        id
+                    })
+                );
             }
         });
     }
@@ -183,15 +184,15 @@ function _maybeSendLobbyNotification(origin, message, { dispatch, getState }) {
     };
 
     switch (message.event) {
-    case 'LOBBY-ENABLED':
-        notificationProps.descriptionKey = `lobby.notificationLobby${message.value ? 'En' : 'Dis'}abled`;
-        break;
-    case 'LOBBY-ACCESS-GRANTED':
-        notificationProps.descriptionKey = 'lobby.notificationLobbyAccessGranted';
-        break;
-    case 'LOBBY-ACCESS-DENIED':
-        notificationProps.descriptionKey = 'lobby.notificationLobbyAccessDenied';
-        break;
+        case 'LOBBY-ENABLED':
+            notificationProps.descriptionKey = `lobby.notificationLobby${message.value ? 'En' : 'Dis'}abled`;
+            break;
+        case 'LOBBY-ACCESS-GRANTED':
+            notificationProps.descriptionKey = 'lobby.notificationLobbyAccessGranted';
+            break;
+        case 'LOBBY-ACCESS-DENIED':
+            notificationProps.descriptionKey = 'lobby.notificationLobbyAccessDenied';
+            break;
     }
 
     dispatch(showNotification(notificationProps, isTestModeEnabled(getState()) ? undefined : 5000));

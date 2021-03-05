@@ -3,22 +3,11 @@
 import { type Dispatch } from 'redux';
 
 import { appNavigate, maybeRedirectToWelcomePage } from '../app/actions';
-import {
-    conferenceWillJoin,
-    getCurrentConference,
-    sendLocalParticipant,
-    setPassword
-} from '../base/conference';
+import { conferenceWillJoin, getCurrentConference, sendLocalParticipant, setPassword } from '../base/conference';
 import { hideDialog, openDialog } from '../base/dialog';
 import { getLocalParticipant } from '../base/participants';
 
-import {
-    KNOCKING_PARTICIPANT_ARRIVED_OR_UPDATED,
-    KNOCKING_PARTICIPANT_LEFT,
-    SET_KNOCKING_STATE,
-    SET_LOBBY_MODE_ENABLED,
-    SET_PASSWORD_JOIN_FAILED
-} from './actionTypes';
+import { KNOCKING_PARTICIPANT_ARRIVED_OR_UPDATED, KNOCKING_PARTICIPANT_LEFT, SET_KNOCKING_STATE, SET_LOBBY_MODE_ENABLED, SET_PASSWORD_JOIN_FAILED } from './actionTypes';
 import { LobbyScreen } from './components';
 
 declare var APP: Object;

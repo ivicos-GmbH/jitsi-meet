@@ -1,21 +1,12 @@
 import logger from '../../logger';
 import { AbstractAudioContextAdapter } from '../AbstractAudioContextAdapter';
 
-import {
-    DEBUG,
-    MAIN_THREAD_FINISH,
-    MAIN_THREAD_INIT,
-    MAIN_THREAD_NEW_DATA_ARRIVED,
-    WORKER_BLOB_READY,
-    WORKER_LIBFLAC_READY
-} from './messageTypes';
-
+import { DEBUG, MAIN_THREAD_FINISH, MAIN_THREAD_INIT, MAIN_THREAD_NEW_DATA_ARRIVED, WORKER_BLOB_READY, WORKER_LIBFLAC_READY } from './messageTypes';
 
 /**
  * Recording adapter that uses libflac.js in the background.
  */
 export class FlacAdapter extends AbstractAudioContextAdapter {
-
     /**
      * Instance of WebWorker (flacEncodeWorker).
      */
@@ -73,7 +64,7 @@ export class FlacAdapter extends AbstractAudioContextAdapter {
             return Promise.reject();
         }
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this._initPromise = null;
             this._disconnectAudioGraph();
             this._stopPromiseResolver = resolve;
@@ -174,12 +165,7 @@ export class FlacAdapter extends AbstractAudioContextAdapter {
 
         // Arrow function is used here because we want AudioContext to be
         // initialized only **after** promiseInitWorker is resolved.
-        return promiseInitWorker
-            .then(() =>
-                this._initializeAudioContext(
-                    micDeviceId,
-                    this._onAudioProcess
-                ));
+        return promiseInitWorker.then(() => this._initializeAudioContext(micDeviceId, this._onAudioProcess));
     }
 
     /**
@@ -210,28 +196,29 @@ export class FlacAdapter extends AbstractAudioContextAdapter {
      */
     _onWorkerMessage(e) {
         switch (e.data.command) {
-        case WORKER_BLOB_READY:
-            // Received a Blob representing an encoded FLAC file.
-            this._data = e.data.buf;
-            if (this._stopPromiseResolver !== null) {
-                this._stopPromiseResolver();
-                this._stopPromiseResolver = null;
-                this._encoder.terminate();
-                this._encoder = null;
-            }
-            break;
-        case DEBUG:
-            logger.log(e.data);
-            break;
-        case WORKER_LIBFLAC_READY:
-            logger.log('libflac is ready.');
-            this._initWorkerPromiseResolver();
-            break;
-        default:
-            logger.error(
-                `Unknown event
-                from encoder (WebWorker): "${e.data.command}"!`);
-            break;
+            case WORKER_BLOB_READY:
+                // Received a Blob representing an encoded FLAC file.
+                this._data = e.data.buf;
+                if (this._stopPromiseResolver !== null) {
+                    this._stopPromiseResolver();
+                    this._stopPromiseResolver = null;
+                    this._encoder.terminate();
+                    this._encoder = null;
+                }
+                break;
+            case DEBUG:
+                logger.log(e.data);
+                break;
+            case WORKER_LIBFLAC_READY:
+                logger.log('libflac is ready.');
+                this._initWorkerPromiseResolver();
+                break;
+            default:
+                logger.error(
+                    `Unknown event
+                from encoder (WebWorker): "${e.data.command}"!`
+                );
+                break;
         }
     }
 

@@ -2,10 +2,7 @@
 
 import { Transport } from '../../../modules/transport';
 
-import {
-    SET_TRANSPORT,
-    SUSPEND_DETECTED
-} from './actionTypes';
+import { SET_TRANSPORT, SUSPEND_DETECTED } from './actionTypes';
 
 /**
  * Signals that suspend was detected.

@@ -11,7 +11,6 @@ import { isTestModeEnabled } from '../functions';
  * the UI.
  */
 export type TestHintProps = {
-
     /**
      * The indicator which determines whether the test mode is enabled.
      * {@link TestHint} components are rendered only if this flag is set to
@@ -35,7 +34,7 @@ export type TestHintProps = {
      * The test hint's (text) value which is to be consumed by the tests.
      */
     value: string
-}
+};
 
 /**
  * Maps (parts of) the redux state to {@link TestHint}'s React {@code Component}
@@ -49,7 +48,6 @@ export type TestHintProps = {
  */
 export function _mapStateToProps(state: Object) {
     return {
-
         /**
          * The indicator which determines whether the test mode is enabled.
          *

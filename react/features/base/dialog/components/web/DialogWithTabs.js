@@ -12,7 +12,6 @@ import StatelessDialog from './StatelessDialog';
  * The type of the React {@code Component} props of {@link DialogWithTabs}.
  */
 export type Props = {
-
     /**
      * Function that closes the dialog.
      */
@@ -40,7 +39,6 @@ export type Props = {
      */
     onSubmit: Function,
 
-
     /**
      * Invoked to obtain translated strings.
      */
@@ -55,14 +53,12 @@ export type Props = {
      * Key to use for showing a title.
      */
     titleKey: string
-
 };
 
 /**
  * The type of the React {@code Component} state of {@link DialogWithTabs}.
  */
 type State = {
-
     /**
      * The index of the tab that should be displayed.
      */
@@ -90,7 +86,7 @@ class DialogWithTabs extends Component<Props, State> {
         super(props);
         this.state = {
             selectedTab: this.props.defaultTab || 0,
-            tabStates: this.props.tabs.map(tab => tab.props)
+            tabStates: this.props.tabs.map((tab) => tab.props)
         };
         this._onSubmit = this._onSubmit.bind(this);
         this._onTabSelected = this._onTabSelected.bind(this);
@@ -107,15 +103,8 @@ class DialogWithTabs extends Component<Props, State> {
         const onCancel = this.props.closeDialog;
 
         return (
-            <StatelessDialog
-                disableBlanketClickDismiss
-                    = { this.props.disableBlanketClickDismiss }
-                onCancel = { onCancel }
-                onSubmit = { this._onSubmit }
-                titleKey = { this.props.titleKey } >
-                <div className = { this.props.cssClassName } >
-                    { this._renderTabs() }
-                </div>
+            <StatelessDialog disableBlanketClickDismiss={this.props.disableBlanketClickDismiss} onCancel={onCancel} onSubmit={this._onSubmit} titleKey={this.props.titleKey}>
+                <div className={this.props.cssClassName}>{this._renderTabs()}</div>
             </StatelessDialog>
         );
     }
@@ -134,9 +123,7 @@ class DialogWithTabs extends Component<Props, State> {
         const currentTabState = tabStates[tabId];
 
         if (tabConfiguration.propsUpdateFunction) {
-            return tabConfiguration.propsUpdateFunction(
-                currentTabState,
-                tabConfiguration.props);
+            return tabConfiguration.propsUpdateFunction(currentTabState, tabConfiguration.props);
         }
 
         return { ...currentTabState };
@@ -154,7 +141,8 @@ class DialogWithTabs extends Component<Props, State> {
      * @private
      * @returns {void}
      */
-    _onTabSelected(tab, tabIndex) { // eslint-disable-line no-unused-vars
+    _onTabSelected(tab, tabIndex) {
+        // eslint-disable-line no-unused-vars
         this.setState({ selectedTab: tabIndex });
     }
 
@@ -176,20 +164,20 @@ class DialogWithTabs extends Component<Props, State> {
         if (tabs.length > 1) {
             return (
                 <Tabs
-                    onSelect = { this._onTabSelected }
-                    selected = { this.state.selectedTab }
-                    tabs = {
-                        tabs.map(({ component, label, styles }, idx) => {
-                            return {
-                                content: this._renderTab({
-                                    component,
-                                    styles,
-                                    tabId: idx
-                                }),
-                                label: t(label)
-                            };
-                        })
-                    } />);
+                    onSelect={this._onTabSelected}
+                    selected={this.state.selectedTab}
+                    tabs={tabs.map(({ component, label, styles }, idx) => {
+                        return {
+                            content: this._renderTab({
+                                component,
+                                styles,
+                                tabId: idx
+                            }),
+                            label: t(label)
+                        };
+                    })}
+                />
+            );
         }
 
         logger.warn('No settings tabs configured to display.');
@@ -208,15 +196,16 @@ class DialogWithTabs extends Component<Props, State> {
         const TabComponent = component;
 
         return (
-            <div className = { styles }>
+            <div className={styles}>
                 <TabComponent
-                    closeDialog = { closeDialog }
-                    mountCallback = { this.props.tabs[tabId].onMount }
-                    onTabStateChange
-                        = { this._onTabStateChange }
-                    tabId = { tabId }
-                    { ...this._getTabProps(tabId) } />
-            </div>);
+                    closeDialog={closeDialog}
+                    mountCallback={this.props.tabs[tabId].onMount}
+                    onTabStateChange={this._onTabStateChange}
+                    tabId={tabId}
+                    {...this._getTabProps(tabId)}
+                />
+            </div>
+        );
     }
 
     _onTabStateChange: (number, Object) => void;
@@ -229,7 +218,7 @@ class DialogWithTabs extends Component<Props, State> {
      * @returns {void}
      */
     _onTabStateChange(tabId, state) {
-        const tabStates = [ ...this.state.tabStates ];
+        const tabStates = [...this.state.tabStates];
 
         tabStates[tabId] = state;
         this.setState({ tabStates });

@@ -11,7 +11,6 @@ import { ToolbarButton } from '../../toolbox/components/web';
  * {@link LocalRecordingButton}.
  */
 type Props = {
-
     /**
      * Whether or not {@link LocalRecordingInfoDialog} should be displayed.
      */
@@ -26,7 +25,7 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * A React {@code Component} for opening or closing the
@@ -35,7 +34,6 @@ type Props = {
  * @extends Component
  */
 class LocalRecordingButton extends Component<Props> {
-
     /**
      * Initializes a new {@code LocalRecordingButton} instance.
      *
@@ -60,12 +58,12 @@ class LocalRecordingButton extends Component<Props> {
 
         return (
             <ToolbarButton
-                accessibilityLabel
-                    = { t('toolbar.accessibilityLabel.localRecording') }
-                icon = { IconRec }
-                onClick = { this._onClick }
-                toggled = { isDialogShown }
-                tooltip = { t('localRecording.dialogTitle') } />
+                accessibilityLabel={t('toolbar.accessibilityLabel.localRecording')}
+                icon={IconRec}
+                onClick={this._onClick}
+                toggled={isDialogShown}
+                tooltip={t('localRecording.dialogTitle')}
+            />
         );
     }
 

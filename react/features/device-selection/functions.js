@@ -15,11 +15,7 @@ import {
 } from '../base/devices';
 import JitsiMeetJS from '../base/lib-jitsi-meet';
 import { toState } from '../base/redux';
-import {
-    getUserSelectedCameraDeviceId,
-    getUserSelectedMicDeviceId,
-    getUserSelectedOutputDeviceId
-} from '../base/settings';
+import { getUserSelectedCameraDeviceId, getUserSelectedMicDeviceId, getUserSelectedOutputDeviceId } from '../base/settings';
 
 /**
  * Returns the properties for the device selection dialog from Redux state.
@@ -54,14 +50,11 @@ export function getDeviceSelectionDialogProps(stateful: Object | Function) {
     return {
         availableDevices: state['features/base/devices'].availableDevices,
         disableAudioInputChange,
-        disableDeviceChange:
-            !JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(),
+        disableDeviceChange: !JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(),
         hasAudioPermission: permissions.audio,
         hasVideoPermission: permissions.video,
-        hideAudioInputPreview:
-            !JitsiMeetJS.isCollectingLocalStats(),
-        hideAudioOutputSelect: !JitsiMeetJS.mediaDevices
-                            .isDeviceChangeAvailable('output'),
+        hideAudioInputPreview: !JitsiMeetJS.isCollectingLocalStats(),
+        hideAudioOutputSelect: !JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output'),
         selectedAudioInputId,
         selectedAudioOutputId,
         selectedVideoInputId
@@ -79,11 +72,7 @@ export function getDeviceSelectionDialogProps(stateful: Object | Function) {
  * response.
  * @returns {boolean} - True if the request has been processed and false otherwise.
  */
-export function processExternalDeviceRequest( // eslint-disable-line max-params
-        dispatch: Dispatch<any>,
-        getState: Function,
-        request: Object,
-        responseCallback: Function) {
+export function processExternalDeviceRequest(dispatch: Dispatch<any>, getState: Function, request: Object, responseCallback: Function) { // eslint-disable-line max-params
     if (request.type !== 'devices') {
         return false;
     }
@@ -92,123 +81,120 @@ export function processExternalDeviceRequest( // eslint-disable-line max-params
     let result = true;
 
     switch (request.name) {
-    case 'isDeviceListAvailable':
-        responseCallback(JitsiMeetJS.mediaDevices.isDeviceListAvailable());
-        break;
-    case 'isDeviceChangeAvailable':
-        responseCallback(
-            JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(
-                request.deviceType));
-        break;
-    case 'isMultipleAudioInputSupported':
-        responseCallback(JitsiMeetJS.isMultipleAudioInputSupported());
-        break;
-    case 'getCurrentDevices':
-        dispatch(getAvailableDevices()).then(devices => {
-            if (areDeviceLabelsInitialized(state)) {
-                const deviceDescriptions = {
-                    audioInput: undefined,
-                    audioOutput: undefined,
-                    videoInput: undefined
-                };
-                const currentlyUsedDeviceIds = new Set([
-                    getAudioOutputDeviceId(),
-                    settings.micDeviceId,
-                    settings.cameraDeviceId
-                ]);
+        case 'isDeviceListAvailable':
+            responseCallback(JitsiMeetJS.mediaDevices.isDeviceListAvailable());
+            break;
+        case 'isDeviceChangeAvailable':
+            responseCallback(JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(request.deviceType));
+            break;
+        case 'isMultipleAudioInputSupported':
+            responseCallback(JitsiMeetJS.isMultipleAudioInputSupported());
+            break;
+        case 'getCurrentDevices':
+            dispatch(getAvailableDevices()).then((devices) => {
+                if (areDeviceLabelsInitialized(state)) {
+                    const deviceDescriptions = {
+                        audioInput: undefined,
+                        audioOutput: undefined,
+                        videoInput: undefined
+                    };
+                    const currentlyUsedDeviceIds = new Set([getAudioOutputDeviceId(), settings.micDeviceId, settings.cameraDeviceId]);
 
-                devices.forEach(device => {
-                    const { deviceId, kind } = device;
+                    devices.forEach((device) => {
+                        const { deviceId, kind } = device;
 
-                    if (currentlyUsedDeviceIds.has(deviceId)) {
-                        switch (kind) {
-                        case 'audioinput':
-                            deviceDescriptions.audioInput = device;
-                            break;
-                        case 'audiooutput':
-                            deviceDescriptions.audioOutput = device;
-                            break;
-                        case 'videoinput':
-                            deviceDescriptions.videoInput = device;
-                            break;
+                        if (currentlyUsedDeviceIds.has(deviceId)) {
+                            switch (kind) {
+                                case 'audioinput':
+                                    deviceDescriptions.audioInput = device;
+                                    break;
+                                case 'audiooutput':
+                                    deviceDescriptions.audioOutput = device;
+                                    break;
+                                case 'videoinput':
+                                    deviceDescriptions.videoInput = device;
+                                    break;
+                            }
                         }
+                    });
+
+                    responseCallback(deviceDescriptions);
+                } else {
+                    // The labels are not available if the A/V permissions are
+                    // not yet granted.
+                    dispatch(
+                        addPendingDeviceRequest({
+                            type: 'devices',
+                            name: 'getCurrentDevices',
+                            responseCallback
+                        })
+                    );
+                }
+            });
+
+            break;
+        case 'getAvailableDevices':
+            dispatch(getAvailableDevices()).then((devices) => {
+                if (areDeviceLabelsInitialized(state)) {
+                    responseCallback(groupDevicesByKind(devices));
+                } else {
+                    // The labels are not available if the A/V permissions are
+                    // not yet granted.
+                    dispatch(
+                        addPendingDeviceRequest({
+                            type: 'devices',
+                            name: 'getAvailableDevices',
+                            responseCallback
+                        })
+                    );
+                }
+            });
+
+            break;
+        case 'setDevice': {
+            const { device } = request;
+
+            if (!areDeviceLabelsInitialized(state)) {
+                dispatch(
+                    addPendingDeviceRequest({
+                        type: 'devices',
+                        name: 'setDevice',
+                        device,
+                        responseCallback
+                    })
+                );
+
+                return true;
+            }
+
+            const { label, id } = device;
+            const deviceId = label ? getDeviceIdByLabel(state, device.label, device.kind) : id;
+
+            if (deviceId) {
+                switch (device.kind) {
+                    case 'audioinput': {
+                        dispatch(setAudioInputDevice(deviceId));
+                        break;
                     }
-                });
-
-                responseCallback(deviceDescriptions);
+                    case 'audiooutput':
+                        setAudioOutputDeviceId(deviceId, dispatch);
+                        break;
+                    case 'videoinput':
+                        dispatch(setVideoInputDevice(deviceId));
+                        break;
+                    default:
+                        result = false;
+                }
             } else {
-                // The labels are not available if the A/V permissions are
-                // not yet granted.
-                dispatch(addPendingDeviceRequest({
-                    type: 'devices',
-                    name: 'getCurrentDevices',
-                    responseCallback
-                }));
-            }
-        });
-
-        break;
-    case 'getAvailableDevices':
-        dispatch(getAvailableDevices()).then(devices => {
-            if (areDeviceLabelsInitialized(state)) {
-                responseCallback(groupDevicesByKind(devices));
-            } else {
-                // The labels are not available if the A/V permissions are
-                // not yet granted.
-                dispatch(addPendingDeviceRequest({
-                    type: 'devices',
-                    name: 'getAvailableDevices',
-                    responseCallback
-                }));
-            }
-        });
-
-        break;
-    case 'setDevice': {
-        const { device } = request;
-
-        if (!areDeviceLabelsInitialized(state)) {
-            dispatch(addPendingDeviceRequest({
-                type: 'devices',
-                name: 'setDevice',
-                device,
-                responseCallback
-            }));
-
-            return true;
-        }
-
-        const { label, id } = device;
-        const deviceId = label
-            ? getDeviceIdByLabel(state, device.label, device.kind)
-            : id;
-
-        if (deviceId) {
-            switch (device.kind) {
-            case 'audioinput': {
-                dispatch(setAudioInputDevice(deviceId));
-                break;
-            }
-            case 'audiooutput':
-                setAudioOutputDeviceId(deviceId, dispatch);
-                break;
-            case 'videoinput':
-                dispatch(setVideoInputDevice(deviceId));
-                break;
-            default:
                 result = false;
             }
-        } else {
-            result = false;
-        }
 
-        responseCallback(result);
-        break;
-    }
-    default:
-        return false;
+            responseCallback(result);
+            break;
+        }
+        default:
+            return false;
     }
 
     return true;
 }
-

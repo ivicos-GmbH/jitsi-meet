@@ -2,11 +2,7 @@
 
 import { ReducerRegistry } from '../redux';
 
-import {
-    LIB_DID_DISPOSE,
-    LIB_DID_INIT,
-    LIB_INIT_ERROR
-} from './actionTypes';
+import { LIB_DID_DISPOSE, LIB_DID_INIT, LIB_INIT_ERROR } from './actionTypes';
 
 /**
  * The default/initial redux state of the feature base/lib-jitsi-meet.
@@ -15,10 +11,8 @@ import {
  */
 const DEFAULT_STATE = {};
 
-ReducerRegistry.register(
-    'features/base/lib-jitsi-meet',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/lib-jitsi-meet', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case LIB_DID_DISPOSE:
             return DEFAULT_STATE;
 
@@ -38,5 +32,5 @@ ReducerRegistry.register(
 
         default:
             return state;
-        }
-    });
+    }
+});

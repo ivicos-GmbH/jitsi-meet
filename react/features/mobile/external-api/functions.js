@@ -21,6 +21,5 @@ export function sendEvent(store: Object, name: string, data: Object) {
     // the native view which hosts it.
     const externalAPIScope = getAppProp(store, 'externalAPIScope');
 
-    externalAPIScope
-        && NativeModules.ExternalAPI.sendEvent(name, data, externalAPIScope);
+    externalAPIScope && NativeModules.ExternalAPI.sendEvent(name, data, externalAPIScope);
 }

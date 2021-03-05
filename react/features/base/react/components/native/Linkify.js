@@ -10,7 +10,6 @@ import { type StyleType } from '../../../styles';
 import Link from './Link';
 
 type Props = {
-
     /**
      * The children of the component.
      */
@@ -44,11 +43,8 @@ export default class Linkify extends Component<Props> {
      */
     render() {
         return (
-            <ReactLinkify
-                componentDecorator = { this._componentDecorator }>
-                <Text selectable = { true }>
-                    { this.props.children }
-                </Text>
+            <ReactLinkify componentDecorator={this._componentDecorator}>
+                <Text selectable={true}>{this.props.children}</Text>
             </ReactLinkify>
         );
     }
@@ -65,11 +61,8 @@ export default class Linkify extends Component<Props> {
      */
     _componentDecorator(decoratedHref: string, decoratedText: string, key: number) {
         return (
-            <Link
-                key = { key }
-                style = { this.props.linkStyle }
-                url = { decoratedHref }>
-                { punycode.toASCII(decoratedText) }
+            <Link key={key} style={this.props.linkStyle} url={decoratedHref}>
+                {punycode.toASCII(decoratedText)}
             </Link>
         );
     }

@@ -2,12 +2,7 @@
 
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    SET_FILMSTRIP_ENABLED,
-    SET_FILMSTRIP_VISIBLE,
-    SET_HORIZONTAL_VIEW_DIMENSIONS,
-    SET_TILE_VIEW_DIMENSIONS
-} from './actionTypes';
+import { SET_FILMSTRIP_ENABLED, SET_FILMSTRIP_VISIBLE, SET_HORIZONTAL_VIEW_DIMENSIONS, SET_TILE_VIEW_DIMENSIONS } from './actionTypes';
 
 const DEFAULT_STATE = {
     /**
@@ -43,10 +38,8 @@ const DEFAULT_STATE = {
     visible: true
 };
 
-ReducerRegistry.register(
-    'features/filmstrip',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/filmstrip', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case SET_FILMSTRIP_ENABLED:
             return {
                 ...state,
@@ -69,7 +62,7 @@ ReducerRegistry.register(
                 ...state,
                 tileViewDimensions: action.dimensions
             };
-        }
+    }
 
-        return state;
-    });
+    return state;
+});

@@ -15,13 +15,14 @@ declare var interfaceConfig: Object;
  * preferred layout state and dispatching additional actions.
  */
 StateListenerRegistry.register(
-    /* selector */ state => shouldDisplayTileView(state),
-    /* listener */ displayTileView => {
+    /* selector */ (state) => shouldDisplayTileView(state),
+    /* listener */ (displayTileView) => {
         APP.API.notifyTileViewChanged(displayTileView);
-    });
+    }
+);
 
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/settings'].displayName,
+    /* selector */ (state) => state['features/base/settings'].displayName,
     /* listener */ (displayName, store) => {
         const localParticipant = getLocalParticipant(store.getState());
 
@@ -33,21 +34,19 @@ StateListenerRegistry.register(
 
             APP.API.notifyDisplayNameChanged(id, {
                 displayName,
-                formattedDisplayName: appendSuffix(
-                    displayName,
-                    interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME)
+                formattedDisplayName: appendSuffix(displayName, interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME)
             });
         }
-    });
+    }
+);
 
 /**
  * Updates the on stage participant value.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/large-video'].participantId,
+    /* selector */ (state) => state['features/large-video'].participantId,
     /* listener */ (participantId, store) => {
-        const videoTrack = getTrackByMediaTypeAndParticipant(
-            store.getState()['features/base/tracks'], MEDIA_TYPE.VIDEO, participantId);
+        const videoTrack = getTrackByMediaTypeAndParticipant(store.getState()['features/base/tracks'], MEDIA_TYPE.VIDEO, participantId);
 
         if (videoTrack && videoTrack.videoType === VIDEO_TYPE.CAMERA) {
             APP.API.notifyOnStageParticipantChanged(participantId);

@@ -3,17 +3,9 @@
 import React from 'react';
 import type { Dispatch } from 'redux';
 
-import {
-    createRecentClickedEvent,
-    createRecentSelectedEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createRecentClickedEvent, createRecentSelectedEvent, sendAnalytics } from '../../analytics';
 import { appNavigate } from '../../app/actions';
-import {
-    AbstractPage,
-    Container,
-    Text
-} from '../../base/react';
+import { AbstractPage, Container, Text } from '../../base/react';
 
 import styles from './styles';
 
@@ -21,7 +13,6 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@link AbstractRecentList}
  */
 type Props = {
-
     /**
      * The redux store's {@code dispatch} function.
      */
@@ -73,19 +64,15 @@ export default class AbstractRecentList<P: Props> extends AbstractPage<P> {
         const { t } = this.props;
 
         return (
-            <Container
-                className = 'meetings-list-empty'
-                style = { styles.emptyListContainer }>
-                <Text
-                    className = 'description'
-                    style = { styles.emptyListText }>
-                    { t('welcomepage.recentListEmpty') }
+            <Container className="meetings-list-empty" style={styles.emptyListContainer}>
+                <Text className="description" style={styles.emptyListText}>
+                    {t('welcomepage.recentListEmpty')}
                 </Text>
             </Container>
         );
     }
 
-    _onPress: string => void;
+    _onPress: (string) => void;
 
     /**
      * Handles the list's navigate action.

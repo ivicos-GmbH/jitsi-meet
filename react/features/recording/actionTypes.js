@@ -34,8 +34,7 @@ export const RECORDING_SESSION_UPDATED = 'RECORDING_SESSION_UPDATED';
  * }
  * @public
  */
-export const SET_PENDING_RECORDING_NOTIFICATION_UID
-    = 'SET_PENDING_RECORDING_NOTIFICATION_UID';
+export const SET_PENDING_RECORDING_NOTIFICATION_UID = 'SET_PENDING_RECORDING_NOTIFICATION_UID';
 
 /**
  * Sets the stream key last used by the user for later reuse.

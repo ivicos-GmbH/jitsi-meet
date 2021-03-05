@@ -13,9 +13,9 @@ import { Drawer, DrawerPortal } from '../../../toolbox/components/web';
  * @type {object}
  */
 const DIALOG_TO_PADDING_POSITION = {
-    'left': 'popover-mousemove-padding-right',
-    'right': 'popover-mousemove-padding-left',
-    'top': 'popover-mousemove-padding-bottom'
+    left: 'popover-mousemove-padding-right',
+    right: 'popover-mousemove-padding-left',
+    top: 'popover-mousemove-padding-bottom'
 };
 
 /**
@@ -35,7 +35,6 @@ function _mapPositionToPaddingClass(position = 'left') {
  * The type of the React {@code Component} props of {@link Popover}.
  */
 type Props = {
-
     /**
      * A child React Element to use as the trigger for showing the dialog.
      */
@@ -84,7 +83,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link Popover}.
  */
 type State = {
-
     /**
      * Whether or not the {@code InlineDialog} should be displayed.
      */
@@ -187,16 +185,11 @@ class Popover extends Component<Props, State> {
 
         if (overflowDrawer) {
             return (
-                <div
-                    className = { className }
-                    id = { id }
-                    ref = { this._drawerContainerRef }>
-                    { children }
+                <div className={className} id={id} ref={this._drawerContainerRef}>
+                    {children}
                     <DrawerPortal>
-                        <Drawer
-                            isOpen = { this.state.showDialog }
-                            onClose = { this._onHideDialog }>
-                            { content }
+                        <Drawer isOpen={this.state.showDialog} onClose={this._onHideDialog}>
+                            {content}
                         </Drawer>
                     </DrawerPortal>
                 </div>
@@ -204,16 +197,9 @@ class Popover extends Component<Props, State> {
         }
 
         return (
-            <div
-                className = { className }
-                id = { id }
-                onMouseEnter = { this._onShowDialog }
-                onMouseLeave = { this._onHideDialog }>
-                <InlineDialog
-                    content = { this._renderContent() }
-                    isOpen = { this.state.showDialog }
-                    placement = { position }>
-                    { children }
+            <div className={className} id={id} onMouseEnter={this._onShowDialog} onMouseLeave={this._onHideDialog}>
+                <InlineDialog content={this._renderContent()} isOpen={this.state.showDialog} placement={position}>
+                    {children}
                 </InlineDialog>
             </div>
         );
@@ -264,10 +250,10 @@ class Popover extends Component<Props, State> {
         const { content, position } = this.props;
 
         return (
-            <div className = 'popover'>
-                { content }
-                <div className = 'popover-mouse-padding-top' />
-                <div className = { _mapPositionToPaddingClass(position) } />
+            <div className="popover">
+                {content}
+                <div className="popover-mouse-padding-top" />
+                <div className={_mapPositionToPaddingClass(position)} />
             </div>
         );
     }

@@ -43,10 +43,8 @@ export default class SharedVideoThumb extends SmallVideo {
         container.id = spanId;
         container.className = 'videocontainer';
 
-        const remoteVideosContainer
-            = document.getElementById('filmstripRemoteVideosContainer');
-        const localVideoContainer
-            = document.getElementById('localVideoTileViewContainer');
+        const remoteVideosContainer = document.getElementById('filmstripRemoteVideosContainer');
+        const localVideoContainer = document.getElementById('localVideoTileViewContainer');
 
         remoteVideosContainer.insertBefore(container, localVideoContainer);
 
@@ -58,10 +56,12 @@ export default class SharedVideoThumb extends SmallVideo {
      */
     renderThumbnail(isHovered = false) {
         ReactDOM.render(
-            <Provider store = { APP.store }>
-                <I18nextProvider i18n = { i18next }>
-                    <Thumbnail participantID = { this.id } isHovered = { isHovered } />
+            <Provider store={APP.store}>
+                <I18nextProvider i18n={i18next}>
+                    <Thumbnail participantID={this.id} isHovered={isHovered} />
                 </I18nextProvider>
-            </Provider>, this.container);
+            </Provider>,
+            this.container
+        );
     }
 }

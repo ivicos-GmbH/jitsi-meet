@@ -12,7 +12,6 @@ import { Video } from './_';
  * The type of the React {@code Component} props of {@link AbstractVideoTrack}.
  */
 export type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -87,8 +86,7 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
                 // Most probably, another render has already passed through the
                 // else clause bellow already.
                 render = true;
-            } else if (shouldRenderVideoTrack(videoTrack, false)
-                    && !videoTrack.videoStarted) {
+            } else if (shouldRenderVideoTrack(videoTrack, false) && !videoTrack.videoStarted) {
                 // XXX Unfortunately, onPlaying has not come for videoTrack yet.
                 // We have to render in order to give onPlaying a chance to
                 // come.
@@ -100,25 +98,21 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
             render = shouldRenderVideoTrack(videoTrack, false);
         }
 
-        const stream = render && videoTrack
-            ? videoTrack.jitsiTrack.getOriginalStream() : null;
+        const stream = render && videoTrack ? videoTrack.jitsiTrack.getOriginalStream() : null;
 
         // Actual zoom is currently only enabled if the stream is a desktop
         // stream.
-        const zoomEnabled
-            = this.props.zoomEnabled
-                && stream
-                && videoTrack
-                && videoTrack.videoType === 'desktop';
+        const zoomEnabled = this.props.zoomEnabled && stream && videoTrack && videoTrack.videoType === 'desktop';
 
         return (
             <Video
-                mirror = { videoTrack && videoTrack.mirror }
-                onPlaying = { this._onVideoPlaying }
-                onPress = { this.props.onPress }
-                stream = { stream }
-                zOrder = { this.props.zOrder }
-                zoomEnabled = { zoomEnabled } />
+                mirror={videoTrack && videoTrack.mirror}
+                onPlaying={this._onVideoPlaying}
+                onPress={this.props.onPress}
+                stream={stream}
+                zOrder={this.props.zOrder}
+                zoomEnabled={zoomEnabled}
+            />
         );
     }
 

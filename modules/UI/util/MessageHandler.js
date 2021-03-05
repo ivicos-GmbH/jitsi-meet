@@ -3,12 +3,7 @@
 import { jitsiLocalStorage } from '@jitsi/js-utils';
 import Logger from 'jitsi-meet-logger';
 
-import {
-    NOTIFICATION_TIMEOUT,
-    showErrorNotification,
-    showNotification,
-    showWarningNotification
-} from '../../../react/features/notifications';
+import { NOTIFICATION_TIMEOUT, showErrorNotification, showNotification, showWarningNotification } from '../../../react/features/notifications';
 
 const logger = Logger.getLogger(__filename);
 
@@ -39,9 +34,7 @@ function generateDontShowCheckbox(options) {
         return '';
     }
 
-    const checked
-        = options.checked === true ? 'checked' : '';
-
+    const checked = options.checked === true ? 'checked' : '';
 
     return `<br />
         <label>
@@ -61,8 +54,7 @@ function generateDontShowCheckbox(options) {
  */
 function dontShowTheDialog(options) {
     if (isDontShowAgainEnabled(options)) {
-        if (jitsiLocalStorage.getItem(options.localStorageKey || options.id)
-            === 'true') {
+        if (jitsiLocalStorage.getItem(options.localStorageKey || options.id) === 'true') {
             return true;
         }
     }
@@ -88,14 +80,11 @@ function dontShowAgainSubmitFunctionWrapper(options, submitFunction) {
             logger.debug(args, options.buttonValues);
 
             // args[1] is the value associated with the pressed button
-            if (!options.buttonValues || options.buttonValues.length === 0
-                || options.buttonValues.indexOf(args[1]) !== -1) {
+            if (!options.buttonValues || options.buttonValues.length === 0 || options.buttonValues.indexOf(args[1]) !== -1) {
                 const checkbox = $(`#${options.id}`);
 
                 if (checkbox.length) {
-                    jitsiLocalStorage.setItem(
-                        options.localStorageKey || options.id,
-                        checkbox.prop('checked'));
+                    jitsiLocalStorage.setItem(options.localStorageKey || options.id, checkbox.prop('checked'));
                 }
             }
             submitFunction(...args);
@@ -103,7 +92,6 @@ function dontShowAgainSubmitFunctionWrapper(options, submitFunction) {
     }
 
     return submitFunction;
-
 }
 
 /**
@@ -150,20 +138,7 @@ const messageHandler = {
      * @return the prompt that was created, or null
      */
     openTwoButtonDialog(options) {
-        const {
-            titleKey,
-            msgKey,
-            msgString,
-            leftButtonKey,
-            submitFunction,
-            loadedFunction,
-            closeFunction,
-            focus,
-            size,
-            defaultButton,
-            wrapperClass,
-            dontShowAgain
-        } = options;
+        const { titleKey, msgKey, msgString, leftButtonKey, submitFunction, loadedFunction, closeFunction, focus, size, defaultButton, wrapperClass, dontShowAgain } = options;
 
         let { classes } = options;
 
@@ -181,18 +156,13 @@ const messageHandler = {
 
         const buttons = [];
 
-        const leftButton = leftButtonKey
-            ? APP.translation.generateTranslationHTML(leftButtonKey)
-            : APP.translation.generateTranslationHTML('dialog.Submit');
+        const leftButton = leftButtonKey ? APP.translation.generateTranslationHTML(leftButtonKey) : APP.translation.generateTranslationHTML('dialog.Submit');
 
-        buttons.push({ title: leftButton,
-            value: true });
+        buttons.push({ title: leftButton, value: true });
 
-        const cancelButton
-            = APP.translation.generateTranslationHTML('dialog.Cancel');
+        const cancelButton = APP.translation.generateTranslationHTML('dialog.Cancel');
 
-        buttons.push({ title: cancelButton,
-            value: false });
+        buttons.push({ title: cancelButton, value: false });
 
         let message = msgString;
 
@@ -214,14 +184,15 @@ const messageHandler = {
             loaded: loadedFunction,
             promptspeed: 0,
             classes,
-            submit: dontShowAgainSubmitFunctionWrapper(dontShowAgain,
-                (e, v, m, f) => { // eslint-disable-line max-params
-                    twoButtonDialog = null;
-                    if (v && submitFunction) {
-                        submitFunction(e, v, m, f);
-                    }
-                }),
-            close(e, v, m, f) { // eslint-disable-line max-params
+            submit: dontShowAgainSubmitFunctionWrapper(dontShowAgain, (e, v, m, f) => {
+                // eslint-disable-line max-params
+                twoButtonDialog = null;
+                if (v && submitFunction) {
+                    submitFunction(e, v, m, f);
+                }
+            }),
+            close(e, v, m, f) {
+                // eslint-disable-line max-params
                 twoButtonDialog = null;
                 if (closeFunction) {
                     closeFunction(e, v, m, f);
@@ -259,15 +230,7 @@ const messageHandler = {
      * @param {string} dontShowAgain.localStorageKey the key for the local
      * storage. if not provided dontShowAgain.id will be used.
      */
-    openDialog(// eslint-disable-line max-params
-            titleKey,
-            msgString,
-            persistent,
-            buttons,
-            submitFunction,
-            loadedFunction,
-            closeFunction,
-            dontShowAgain) {
+    openDialog(titleKey, msgString, persistent, buttons, submitFunction, loadedFunction, closeFunction, dontShowAgain) { // eslint-disable-line max-params
         if (!popupEnabled) {
             return;
         }
@@ -297,8 +260,7 @@ const messageHandler = {
                     $('.jqiclose', this).hide();
                 }
             },
-            submit: dontShowAgainSubmitFunctionWrapper(
-                dontShowAgain, submitFunction),
+            submit: dontShowAgainSubmitFunctionWrapper(dontShowAgain, submitFunction),
             close: closeFunction,
             classes: this._getDialogClasses()
         };
@@ -307,8 +269,7 @@ const messageHandler = {
             args.closeText = '';
         }
 
-        const dialog = $.prompt(
-            msgString + generateDontShowCheckbox(dontShowAgain), args);
+        const dialog = $.prompt(msgString + generateDontShowCheckbox(dontShowAgain), args);
 
         APP.translation.translateElement(dialog);
 
@@ -326,8 +287,7 @@ const messageHandler = {
         $titleString.addClass('aui-dialog2-header-main');
         $titleString.attr('data-i18n', titleKey);
 
-        return $('<div>').append($titleString)
-            .html();
+        return $('<div>').append($titleString).html();
     },
 
     /**
@@ -367,12 +327,12 @@ const messageHandler = {
         options.classes = Object.assign({}, defaultClasses, classes);
         options.promptspeed = options.promptspeed || 0;
 
-        for (const state in statesObject) { // eslint-disable-line guard-for-in
+        for (const state in statesObject) {
+            // eslint-disable-line guard-for-in
             const currentState = statesObject[state];
 
             if (currentState.titleKey) {
-                currentState.title
-                    = this._getFormattedTitleString(currentState.titleKey);
+                currentState.title = this._getFormattedTitleString(currentState.titleKey);
             }
         }
         const dialog = $.prompt(statesObject, options);
@@ -401,11 +361,9 @@ const messageHandler = {
             return;
         }
 
-        const l = window.screenX + (window.innerWidth / 2) - (w / 2);
-        const t = window.screenY + (window.innerHeight / 2) - (h / 2);
-        const popup = window.open(
-            url, '_blank',
-            String(`top=${t}, left=${l}, width=${w}, height=${h}`));
+        const l = window.screenX + window.innerWidth / 2 - w / 2;
+        const t = window.screenY + window.innerHeight / 2 - h / 2;
+        const popup = window.open(url, '_blank', String(`top=${t}, left=${l}, width=${w}, height=${h}`));
 
         if (popup && onPopupClosed) {
             const pollTimer = window.setInterval(() => {
@@ -451,20 +409,18 @@ const messageHandler = {
      * @param messageArguments object with the arguments for the message.
      * @param optional configurations for the notification (e.g. timeout)
      */
-    participantNotification( // eslint-disable-line max-params
-            displayName,
-            displayNameKey,
-            cls,
-            messageKey,
-            messageArguments,
-            timeout = NOTIFICATION_TIMEOUT) {
-        APP.store.dispatch(showNotification({
-            descriptionArguments: messageArguments,
-            descriptionKey: messageKey,
-            titleKey: displayNameKey,
-            title: displayName
-        },
-        timeout));
+    participantNotification(displayName, displayNameKey, cls, messageKey, messageArguments, timeout = NOTIFICATION_TIMEOUT) { // eslint-disable-line max-params
+        APP.store.dispatch(
+            showNotification(
+                {
+                    descriptionArguments: messageArguments,
+                    descriptionKey: messageKey,
+                    titleKey: displayNameKey,
+                    title: displayName
+                },
+                timeout
+            )
+        );
     },
 
     /**
@@ -479,8 +435,7 @@ const messageHandler = {
      * @returns {void}
      */
     notify(titleKey, messageKey, messageArguments) {
-        this.participantNotification(
-            null, titleKey, null, messageKey, messageArguments);
+        this.participantNotification(null, titleKey, null, messageKey, messageArguments);
     },
 
     enablePopups(enable) {

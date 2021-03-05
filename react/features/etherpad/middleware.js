@@ -21,24 +21,24 @@ const ETHERPAD_COMMAND = 'etherpad';
  * @returns {Function}
  */
 // eslint-disable-next-line no-unused-vars
-MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
+MiddlewareRegistry.register(({ dispatch, getState }) => (next) => (action) => {
     switch (action.type) {
-    case TOGGLE_DOCUMENT_EDITING: {
-        if (typeof APP === 'undefined') {
-            const editing = !getState()['features/etherpad'].editing;
+        case TOGGLE_DOCUMENT_EDITING: {
+            if (typeof APP === 'undefined') {
+                const editing = !getState()['features/etherpad'].editing;
 
-            dispatch(setDocumentEditingState(editing));
+                dispatch(setDocumentEditingState(editing));
 
-            if (editing) {
-                dispatch(setActiveModalId(SHARE_DOCUMENT_VIEW_ID));
-            } else if (getState()['features/base/modal'].activeModalId === SHARE_DOCUMENT_VIEW_ID) {
-                dispatch(setActiveModalId(undefined));
+                if (editing) {
+                    dispatch(setActiveModalId(SHARE_DOCUMENT_VIEW_ID));
+                } else if (getState()['features/base/modal'].activeModalId === SHARE_DOCUMENT_VIEW_ID) {
+                    dispatch(setActiveModalId(undefined));
+                }
+            } else {
+                APP.UI.emitEvent(UIEvents.ETHERPAD_CLICKED);
             }
-        } else {
-            APP.UI.emitEvent(UIEvents.ETHERPAD_CLICKED);
+            break;
         }
-        break;
-    }
     }
 
     return next(action);
@@ -50,26 +50,25 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
  * open.
  */
 StateListenerRegistry.register(
-    state => getCurrentConference(state),
+    (state) => getCurrentConference(state),
     (conference, { dispatch, getState }, previousConference) => {
         if (conference) {
-            conference.addCommandListener(ETHERPAD_COMMAND,
-                ({ value }) => {
-                    let url;
-                    const { etherpad_base: etherpadBase } = getState()['features/base/config'];
+            conference.addCommandListener(ETHERPAD_COMMAND, ({ value }) => {
+                let url;
+                const { etherpad_base: etherpadBase } = getState()['features/base/config'];
 
-                    if (etherpadBase) {
-                        const u = new URL(value, etherpadBase);
+                if (etherpadBase) {
+                    const u = new URL(value, etherpadBase);
 
-                        url = u.toString();
-                    }
-
-                    dispatch(setDocumentUrl(url));
+                    url = u.toString();
                 }
-            );
+
+                dispatch(setDocumentUrl(url));
+            });
         }
 
         if (previousConference) {
             dispatch(setDocumentUrl(undefined));
         }
-    });
+    }
+);

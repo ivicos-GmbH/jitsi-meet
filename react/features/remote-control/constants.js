@@ -39,8 +39,8 @@ export const DISCO_REMOTE_CONTROL_FEATURE = 'http://jitsi.org/meet/remotecontrol
 
 /**
  * Types of remote-control events.
-  * @readonly
-  * @enum {string}
+ * @readonly
+ * @enum {string}
  */
 export const EVENTS = {
     mousemove: 'mousemove',
@@ -58,8 +58,8 @@ export const EVENTS = {
 
 /**
  * Types of remote-control requests.
-  * @readonly
-  * @enum {string}
+ * @readonly
+ * @enum {string}
  */
 export const REQUESTS = {
     start: 'start'
@@ -76,4 +76,3 @@ export const PERMISSIONS_ACTIONS = {
     deny: 'deny',
     error: 'error'
 };
-

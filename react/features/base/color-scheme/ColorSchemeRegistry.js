@@ -45,11 +45,7 @@ class ColorSchemeRegistry {
         let schemedStyle = this._schemedStyles.get(componentName);
 
         if (!schemedStyle) {
-            schemedStyle
-                = this._applyColorScheme(
-                    stateful,
-                    componentName,
-                    this._styleTemplates.get(componentName));
+            schemedStyle = this._applyColorScheme(stateful, componentName, this._styleTemplates.get(componentName));
             this._schemedStyles.set(componentName, schemedStyle);
         }
 
@@ -87,10 +83,7 @@ class ColorSchemeRegistry {
      * to.
      * @returns {StyleType}
      */
-    _applyColorScheme(
-            stateful: Object | Function,
-            componentName: string,
-            style: StyleType): StyleType {
+    _applyColorScheme(stateful: Object | Function, componentName: string, style: StyleType): StyleType {
         let schemedStyle;
 
         if (Array.isArray(style)) {
@@ -99,8 +92,7 @@ class ColorSchemeRegistry {
             schemedStyle = [];
 
             for (const entry of style) {
-                schemedStyle.push(this._applyColorScheme(
-                    stateful, componentName, entry));
+                schemedStyle.push(this._applyColorScheme(stateful, componentName, entry));
             }
         } else {
             // The style is an object, we create a copy of it to avoid in-place
@@ -109,26 +101,19 @@ class ColorSchemeRegistry {
                 ...style
             };
 
-            for (const [
-                styleName,
-                styleValue
-            ] of Object.entries(schemedStyle)) {
+            for (const [styleName, styleValue] of Object.entries(schemedStyle)) {
                 if (typeof styleValue === 'object') {
                     // The value is another style object, we apply the same
                     // transformation recusively.
-                    schemedStyle[styleName]
-                        = this._applyColorScheme(
-                            stateful, componentName, styleValue);
+                    schemedStyle[styleName] = this._applyColorScheme(stateful, componentName, styleValue);
                 } else if (typeof styleValue === 'function') {
                     // The value is a function, which indicates that it's a
                     // dynamic, schemed color we need to resolve.
                     // $FlowExpectedError
                     const value = styleValue();
 
-                    schemedStyle[styleName]
-                        = this._getColor(stateful, componentName, value);
+                    schemedStyle[styleName] = this._getColor(stateful, componentName, value);
                 }
-
             }
         }
 
@@ -146,10 +131,7 @@ class ColorSchemeRegistry {
      * e.g. {@code appBackground}.
      * @returns {string}
      */
-    _getColor(
-            stateful: Object | Function,
-            componentName: string,
-            colorDefinition: string): string {
+    _getColor(stateful: Object | Function, componentName: string, colorDefinition: string): string {
         const colorScheme = toState(stateful)['features/base/color-scheme'];
 
         return {
@@ -159,7 +141,6 @@ class ColorSchemeRegistry {
             ...colorScheme[componentName]
         }[colorDefinition];
     }
-
 }
 
 export default new ColorSchemeRegistry();

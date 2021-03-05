@@ -1,4 +1,3 @@
-
 import { getCurrentConference } from '../conference';
 
 /**
@@ -6,7 +5,6 @@ import { getCurrentConference } from '../conference';
  * logs are sent to CallStats.
  */
 export default class JitsiMeetLogStorage {
-
     /**
      * Creates new <tt>JitsiMeetLogStorage</tt>.
      *
@@ -82,9 +80,7 @@ export default class JitsiMeetLogStorage {
             conference.sendApplicationLog(logMessage);
         } catch (error) {
             // NOTE console is intentional here
-            console.error(
-                `Failed to store the logs, msg length: ${logMessage.length}`
-                    + `error: ${JSON.stringify(error)}`);
+            console.error(`Failed to store the logs, msg length: ${logMessage.length}` + `error: ${JSON.stringify(error)}`);
         }
     }
 }

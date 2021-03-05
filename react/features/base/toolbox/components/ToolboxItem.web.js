@@ -57,14 +57,7 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
      * @returns {ReactElement}
      */
     _renderItem() {
-        const {
-            disabled,
-            elementAfter,
-            onClick,
-            showLabel,
-            tooltipPosition,
-            toggled
-        } = this.props;
+        const { disabled, elementAfter, onClick, showLabel, tooltipPosition, toggled } = this.props;
         const className = showLabel ? 'overflow-menu-item' : 'toolbox-button';
         const props = {
             'aria-pressed': toggled,
@@ -81,20 +74,16 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
         const useTooltip = this.tooltip && this.tooltip.length > 0;
         let children = (
             <Fragment>
-                { this._renderIcon() }
-                { showLabel && <span>
-                    { this.label }
-                </span> }
-                { elementAfter }
+                {this._renderIcon()}
+                {showLabel && <span>{this.label}</span>}
+                {elementAfter}
             </Fragment>
         );
 
         if (useTooltip) {
             children = (
-                <Tooltip
-                    content = { this.tooltip }
-                    position = { tooltipPosition }>
-                    { children }
+                <Tooltip content={this.tooltip} position={tooltipPosition}>
+                    {children}
                 </Tooltip>
             );
         }
@@ -110,10 +99,9 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
      */
     _renderIcon() {
         const { customClass, disabled, icon, showLabel, toggled } = this.props;
-        const iconComponent = <Icon src = { icon } />;
+        const iconComponent = <Icon src={icon} />;
         const elementType = showLabel ? 'span' : 'div';
-        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${
-            toggled ? 'toggled' : ''} ${disabled ? 'disabled' : ''} ${customClass ?? ''}`;
+        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${toggled ? 'toggled' : ''} ${disabled ? 'disabled' : ''} ${customClass ?? ''}`;
 
         return React.createElement(elementType, { className }, iconComponent);
     }

@@ -1,12 +1,6 @@
 // @flow
 
-import {
-    ADD_MESSAGE,
-    CLEAR_MESSAGES,
-    CLOSE_CHAT,
-    SEND_MESSAGE,
-    SET_PRIVATE_MESSAGE_RECIPIENT
-} from './actionTypes';
+import { ADD_MESSAGE, CLEAR_MESSAGES, CLOSE_CHAT, SEND_MESSAGE, SET_PRIVATE_MESSAGE_RECIPIENT } from './actionTypes';
 
 /**
  * Adds a chat message to the collection of messages.

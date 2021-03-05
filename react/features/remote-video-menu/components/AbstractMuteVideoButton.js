@@ -1,9 +1,6 @@
 // @flow
 
-import {
-    createRemoteVideoMenuButtonEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createRemoteVideoMenuButtonEvent, sendAnalytics } from '../../analytics';
 import { openDialog } from '../../base/dialog';
 import { IconCameraDisabled } from '../../base/icons';
 import { MEDIA_TYPE } from '../../base/media';
@@ -13,7 +10,6 @@ import { isRemoteTrackMuted } from '../../base/tracks';
 import { MuteRemoteParticipantsVideoDialog } from '.';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * Boolean to indicate if the video track of the participant is muted or
      * not.
@@ -55,11 +51,11 @@ export default class AbstractMuteVideoButton extends AbstractButton<Props, *> {
     _handleClick() {
         const { dispatch, participantID } = this.props;
 
-        sendAnalytics(createRemoteVideoMenuButtonEvent(
-            'mute.button',
-            {
-                'participant_id': participantID
-            }));
+        sendAnalytics(
+            createRemoteVideoMenuButtonEvent('mute.button', {
+                participant_id: participantID
+            })
+        );
 
         dispatch(openDialog(MuteRemoteParticipantsVideoDialog, { participantID }));
     }
@@ -97,7 +93,6 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
     const tracks = state['features/base/tracks'];
 
     return {
-        _videoTrackMuted: isRemoteTrackMuted(
-            tracks, MEDIA_TYPE.VIDEO, ownProps.participantID)
+        _videoTrackMuted: isRemoteTrackMuted(tracks, MEDIA_TYPE.VIDEO, ownProps.participantID)
     };
 }

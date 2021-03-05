@@ -1,11 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import {
-    ScrollView,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import type { Dispatch } from 'redux';
 
 import { connect } from '../../../base/redux';
@@ -19,7 +15,6 @@ import styles from './styles';
  * The type of the React {@link Component} props of {@link TileView}.
  */
 type Props = {
-
     /**
      * Application's aspect ratio.
      */
@@ -105,19 +100,21 @@ class TileView extends Component<Props> {
 
         return (
             <ScrollView
-                style = {{
+                style={{
                     ...styles.tileView,
                     height: _height,
                     width: _width
-                }}>
-                <TouchableWithoutFeedback onPress = { onClick }>
+                }}
+            >
+                <TouchableWithoutFeedback onPress={onClick}>
                     <View
-                        style = {{
+                        style={{
                             ...styles.tileViewRows,
                             minHeight: _height,
                             minWidth: _width
-                        }}>
-                        { rowElements }
+                        }}
+                    >
+                        {rowElements}
                     </View>
                 </TouchableWithoutFeedback>
             </ScrollView>
@@ -181,8 +178,8 @@ class TileView extends Component<Props> {
         const { _height, _participants, _width } = this.props;
         const columns = this._getColumnCount();
         const participantCount = _participants.length;
-        const heightToUse = _height - (MARGIN * 2);
-        const widthToUse = _width - (MARGIN * 2);
+        const heightToUse = _height - MARGIN * 2;
+        const widthToUse = _width - MARGIN * 2;
         let tileWidth;
 
         // If there is going to be at least two rows, ensure that at least two
@@ -217,10 +214,8 @@ class TileView extends Component<Props> {
                 const thumbnailsInRow = thumbnails.slice(i, i + rowLength);
 
                 rowElements.push(
-                    <View
-                        key = { rowElements.length }
-                        style = { styles.tileViewRow }>
-                        { thumbnailsInRow }
+                    <View key={rowElements.length} style={styles.tileViewRow}>
+                        {thumbnailsInRow}
                     </View>
                 );
             }
@@ -244,15 +239,9 @@ class TileView extends Component<Props> {
             width: null
         };
 
-        return this._getSortedParticipants()
-            .map(participant => (
-                <Thumbnail
-                    disableTint = { true }
-                    key = { participant.id }
-                    participant = { participant }
-                    renderDisplayName = { true }
-                    styleOverrides = { styleOverrides }
-                    tileView = { true } />));
+        return this._getSortedParticipants().map((participant) => (
+            <Thumbnail disableTint={true} key={participant.id} participant={participant} renderDisplayName={true} styleOverrides={styleOverrides} tileView={true} />
+        ));
     }
 
     /**
@@ -265,12 +254,14 @@ class TileView extends Component<Props> {
     _updateReceiverQuality() {
         const { height, width } = this._getTileDimensions();
 
-        this.props.dispatch(setTileViewDimensions({
-            thumbnailSize: {
-                height,
-                width
-            }
-        }));
+        this.props.dispatch(
+            setTileViewDimensions({
+                thumbnailSize: {
+                    height,
+                    width
+                }
+            })
+        );
     }
 }
 

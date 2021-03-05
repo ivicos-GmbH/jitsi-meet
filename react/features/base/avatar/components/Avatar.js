@@ -9,7 +9,6 @@ import { getAvatarColor, getInitials } from '../functions';
 import { StatelessAvatar } from '.';
 
 export type Props = {
-
     /**
      * The string we base the initials on (this is generated from a list of precendences).
      */
@@ -70,12 +69,12 @@ export type Props = {
     /**
      * URL of the avatar, if any.
      */
-    url: ?string,
-}
+    url: ?string
+};
 
 type State = {
     avatarFailed: boolean
-}
+};
 
 export const DEFAULT_SIZE = 65;
 
@@ -114,7 +113,6 @@ class Avatar<P: Props> extends PureComponent<P, State> {
      */
     componentDidUpdate(prevProps: P) {
         if (prevProps.url !== this.props.url) {
-
             // URI changed, so we need to try to fetch it again.
             // Eslint doesn't like this statement, but based on the React doc, it's safe if it's
             // wrapped in a condition: https://reactjs.org/docs/react-component.html#componentdidupdate
@@ -132,18 +130,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
      * @inheritdoc
      */
     render() {
-        const {
-            _initialsBase,
-            _loadableAvatarUrl,
-            className,
-            colorBase,
-            dynamicColor,
-            id,
-            size,
-            status,
-            testId,
-            url
-        } = this.props;
+        const { _initialsBase, _loadableAvatarUrl, className, colorBase, dynamicColor, id, size, status, testId, url } = this.props;
         const { avatarFailed } = this.state;
 
         const avatarProps = {
@@ -178,10 +165,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             avatarProps.initials = initials;
         }
 
-        return (
-            <StatelessAvatar
-                { ...avatarProps } />
-        );
+        return <StatelessAvatar {...avatarProps} />;
     }
 
     _onAvatarLoadError: () => void;

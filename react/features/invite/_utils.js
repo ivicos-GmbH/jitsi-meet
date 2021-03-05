@@ -21,8 +21,5 @@ export function _formatConferenceIDPin(conferenceID: Object) {
     // let's split the conferenceID in 3 parts, to be easier to read
     const partLen = Math.ceil(conferenceIDStr.length / 3);
 
-    return `${
-        conferenceIDStr.substring(0, partLen)} ${
-        conferenceIDStr.substring(partLen, 2 * partLen)} ${
-        conferenceIDStr.substring(2 * partLen, conferenceIDStr.length)}`;
+    return `${conferenceIDStr.substring(0, partLen)} ${conferenceIDStr.substring(partLen, 2 * partLen)} ${conferenceIDStr.substring(2 * partLen, conferenceIDStr.length)}`;
 }

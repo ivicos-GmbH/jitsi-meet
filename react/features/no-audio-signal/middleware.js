@@ -4,10 +4,7 @@ import React from 'react';
 
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../base/app';
 import { CONFERENCE_JOINED } from '../base/conference';
-import {
-    formatDeviceLabel,
-    setAudioInputDevice
-} from '../base/devices';
+import { formatDeviceLabel, setAudioInputDevice } from '../base/devices';
 import JitsiMeetJS, { JitsiConferenceEvents } from '../base/lib-jitsi-meet';
 import { MiddlewareRegistry } from '../base/redux';
 import { updateSettings } from '../base/settings';
@@ -19,20 +16,20 @@ import DialInLink from './components/DialInLink';
 import { NO_AUDIO_SIGNAL_SOUND_ID } from './constants';
 import { NO_AUDIO_SIGNAL_SOUND_FILE } from './sounds';
 
-MiddlewareRegistry.register(store => next => async action => {
+MiddlewareRegistry.register((store) => (next) => async (action) => {
     const result = next(action);
     const { dispatch } = store;
 
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        dispatch(registerSound(NO_AUDIO_SIGNAL_SOUND_ID, NO_AUDIO_SIGNAL_SOUND_FILE));
-        break;
-    case APP_WILL_UNMOUNT:
-        dispatch(unregisterSound(NO_AUDIO_SIGNAL_SOUND_ID));
-        break;
-    case CONFERENCE_JOINED:
-        _handleNoAudioSignalNotification(store, action);
-        break;
+        case APP_WILL_MOUNT:
+            dispatch(registerSound(NO_AUDIO_SIGNAL_SOUND_ID, NO_AUDIO_SIGNAL_SOUND_FILE));
+            break;
+        case APP_WILL_UNMOUNT:
+            dispatch(unregisterSound(NO_AUDIO_SIGNAL_SOUND_ID));
+            break;
+        case CONFERENCE_JOINED:
+            _handleNoAudioSignalNotification(store, action);
+            break;
     }
 
     return result;
@@ -49,10 +46,9 @@ MiddlewareRegistry.register(store => next => async action => {
  * @returns {void}
  */
 async function _handleNoAudioSignalNotification({ dispatch, getState }, action) {
-
     const { conference } = action;
 
-    conference.on(JitsiConferenceEvents.AUDIO_INPUT_STATE_CHANGE, hasAudioInput => {
+    conference.on(JitsiConferenceEvents.AUDIO_INPUT_STATE_CHANGE, (hasAudioInput) => {
         const { noAudioSignalNotificationUid } = getState()['features/no-audio-signal'];
 
         // In case the notification is displayed but the conference detected audio input signal we hide it.
@@ -81,7 +77,6 @@ async function _handleNoAudioSignalNotification({ dispatch, getState }, action) 
             dispatch(setNoAudioSignalNotificationUid());
         }
 
-
         let descriptionKey = 'toolbar.noAudioSignalDesc';
         let customActionNameKey;
         let customActionHandler;
@@ -98,23 +93,25 @@ async function _handleNoAudioSignalNotification({ dispatch, getState }, action) 
             customActionHandler = () => {
                 // Select device callback
                 dispatch(
-                        updateSettings({
-                            userSelectedMicDeviceId: activeDevice.deviceId,
-                            userSelectedMicDeviceLabel: activeDevice.deviceLabel
-                        })
+                    updateSettings({
+                        userSelectedMicDeviceId: activeDevice.deviceId,
+                        userSelectedMicDeviceLabel: activeDevice.deviceLabel
+                    })
                 );
 
                 dispatch(setAudioInputDevice(activeDevice.deviceId));
             };
         }
 
-        const notification = await dispatch(showNotification({
-            titleKey: 'toolbar.noAudioSignalTitle',
-            description: <DialInLink />,
-            descriptionKey,
-            customActionNameKey,
-            customActionHandler
-        }));
+        const notification = await dispatch(
+            showNotification({
+                titleKey: 'toolbar.noAudioSignalTitle',
+                description: <DialInLink />,
+                descriptionKey,
+                customActionNameKey,
+                customActionHandler
+            })
+        );
 
         dispatch(playSound(NO_AUDIO_SIGNAL_SOUND_ID));
 

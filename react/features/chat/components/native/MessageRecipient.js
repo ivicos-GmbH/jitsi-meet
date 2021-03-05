@@ -8,14 +8,9 @@ import { translate } from '../../../base/i18n';
 import { Icon, IconCancelSelection } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import { type StyleType } from '../../../base/styles';
-import AbstractMessageRecipient, {
-    _mapDispatchToProps,
-    _mapStateToProps as _abstractMapStateToProps,
-    type Props as AbstractProps
-} from '../AbstractMessageRecipient';
+import AbstractMessageRecipient, { _mapDispatchToProps, _mapStateToProps as _abstractMapStateToProps, type Props as AbstractProps } from '../AbstractMessageRecipient';
 
 type Props = AbstractProps & {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -41,16 +36,14 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
         const { t } = this.props;
 
         return (
-            <View style = { _styles.messageRecipientContainer }>
-                <Text style = { _styles.messageRecipientText }>
-                    { t('chat.messageTo', {
+            <View style={_styles.messageRecipientContainer}>
+                <Text style={_styles.messageRecipientText}>
+                    {t('chat.messageTo', {
                         recipient: _privateMessageRecipient
-                    }) }
+                    })}
                 </Text>
-                <TouchableHighlight onPress = { this.props._onRemovePrivateMessageRecipient }>
-                    <Icon
-                        src = { IconCancelSelection }
-                        style = { _styles.messageRecipientCancelIcon } />
+                <TouchableHighlight onPress={this.props._onRemovePrivateMessageRecipient}>
+                    <Icon src={IconCancelSelection} style={_styles.messageRecipientCancelIcon} />
                 </TouchableHighlight>
             </View>
         );

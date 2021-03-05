@@ -37,7 +37,7 @@ export default {
         }
 
         // Fix language format (en-US => enUS)
-        found = found.map<string>(f => f.replace(/[-_]+/g, ''));
+        found = found.map<string>((f) => f.replace(/[-_]+/g, ''));
 
         return found.length > 0 ? found : undefined;
     },

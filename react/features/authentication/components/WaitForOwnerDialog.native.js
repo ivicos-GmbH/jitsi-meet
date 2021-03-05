@@ -12,7 +12,6 @@ import { cancelWaitForOwner, _openLoginDialog } from '../actions';
  * The type of the React {@code Component} props of {@link WaitForOwnerDialog}.
  */
 type Props = {
-
     /**
      * The name of the conference room (without the domain part).
      */
@@ -57,22 +56,19 @@ class WaitForOwnerDialog extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _room: room
-        } = this.props;
+        const { _room: room } = this.props;
 
         return (
             <ConfirmDialog
-                cancelKey = 'dialog.Cancel'
-                contentKey = {
-                    {
-                        key: 'dialog.WaitForHostMsgWOk',
-                        params: { room }
-                    }
-                }
-                okKey = 'dialog.Ok'
-                onCancel = { this._onCancel }
-                onSubmit = { this._onLogin } />
+                cancelKey="dialog.Cancel"
+                contentKey={{
+                    key: 'dialog.WaitForHostMsgWOk',
+                    params: { room }
+                }}
+                okKey="dialog.Ok"
+                onCancel={this._onCancel}
+                onSubmit={this._onLogin}
+            />
         );
     }
 

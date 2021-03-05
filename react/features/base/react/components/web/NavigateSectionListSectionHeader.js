@@ -7,12 +7,11 @@ import type { Section } from '../../Types';
 import Text from './Text';
 
 type Props = {
-
     /**
      * A section containing the data to be rendered
      */
     section: Section
-}
+};
 
 /**
  * Implements a React/Web {@link Component} that renders the section header of
@@ -27,10 +26,6 @@ export default class NavigateSectionListSectionHeader extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <Text className = 'navigate-section-section-header'>
-                { this.props.section.title }
-            </Text>
-        );
+        return <Text className="navigate-section-section-header">{this.props.section.title}</Text>;
     }
 }

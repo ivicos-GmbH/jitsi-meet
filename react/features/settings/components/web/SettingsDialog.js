@@ -6,11 +6,7 @@ import { getAvailableDevices } from '../../../base/devices';
 import { DialogWithTabs, hideDialog } from '../../../base/dialog';
 import { connect } from '../../../base/redux';
 import { isCalendarEnabled } from '../../../calendar-sync';
-import {
-    DeviceSelection,
-    getDeviceSelectionDialogProps,
-    submitDeviceSelectionTab
-} from '../../../device-selection';
+import { DeviceSelection, getDeviceSelectionDialogProps, submitDeviceSelectionTab } from '../../../device-selection';
 import { submitMoreTab, submitProfileTab } from '../../actions';
 import { SETTINGS_TABS } from '../../constants';
 import { getMoreTabProps, getProfileTabProps } from '../../functions';
@@ -27,7 +23,6 @@ declare var interfaceConfig: Object;
  * {@link ConnectedSettingsDialog}.
  */
 type Props = {
-
     /**
      * Which settings tab should be initially displayed. If not defined then
      * the first tab will be displayed.
@@ -75,29 +70,24 @@ class SettingsDialog extends Component<Props> {
     render() {
         const { _tabs, defaultTab, dispatch } = this.props;
         const onSubmit = this._closeDialog;
-        const defaultTabIdx
-            = _tabs.findIndex(({ name }) => name === defaultTab);
-        const tabs = _tabs.map(tab => {
+        const defaultTabIdx = _tabs.findIndex(({ name }) => name === defaultTab);
+        const tabs = _tabs.map((tab) => {
             return {
                 ...tab,
-                onMount: tab.onMount
-                    ? (...args) => dispatch(tab.onMount(...args))
-                    : undefined,
-                submit: (...args) => tab.submit
-                    && dispatch(tab.submit(...args))
+                onMount: tab.onMount ? (...args) => dispatch(tab.onMount(...args)) : undefined,
+                submit: (...args) => tab.submit && dispatch(tab.submit(...args))
             };
         });
 
         return (
             <DialogWithTabs
-                closeDialog = { this._closeDialog }
-                cssClassName = 'settings-dialog'
-                defaultTab = {
-                    defaultTabIdx === -1 ? undefined : defaultTabIdx
-                }
-                onSubmit = { onSubmit }
-                tabs = { tabs }
-                titleKey = 'settings.title' />
+                closeDialog={this._closeDialog}
+                cssClassName="settings-dialog"
+                defaultTab={defaultTabIdx === -1 ? undefined : defaultTabIdx}
+                onSubmit={onSubmit}
+                tabs={tabs}
+                titleKey="settings.title"
+            />
         );
     }
 
@@ -131,10 +121,8 @@ function _mapStateToProps(state) {
     const showDeviceSettings = configuredTabs.includes('devices');
     const moreTabProps = getMoreTabProps(state);
     const { showModeratorSettings, showLanguageSettings, showPrejoinSettings } = moreTabProps;
-    const showProfileSettings
-        = configuredTabs.includes('profile') && !state['features/base/config'].disableProfile;
-    const showCalendarSettings
-        = configuredTabs.includes('calendar') && isCalendarEnabled(state);
+    const showProfileSettings = configuredTabs.includes('profile') && !state['features/base/config'].disableProfile;
+    const showCalendarSettings = configuredTabs.includes('calendar') && isCalendarEnabled(state);
     const tabs = [];
 
     if (showDeviceSettings) {

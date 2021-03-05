@@ -8,17 +8,14 @@ import { ConfirmDialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 import { StyleType } from '../../../base/styles';
-import AbstractMuteEveryoneDialog, {
-    abstractMapStateToProps,
-    type Props as AbstractProps } from '../AbstractMuteEveryoneDialog';
+import AbstractMuteEveryoneDialog, { abstractMapStateToProps, type Props as AbstractProps } from '../AbstractMuteEveryoneDialog';
 
 type Props = AbstractProps & {
-
     /**
      * The color-schemed stylesheet of the base/dialog feature.
      */
     _dialogStyles: StyleType
-}
+};
 
 /**
  * A React Component with the contents for a dialog that asks for confirmation
@@ -27,7 +24,6 @@ type Props = AbstractProps & {
  * @extends AbstractMuteEveryoneDialog
  */
 class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
-
     /**
      * Implements {@code Component#render}.
      *
@@ -35,12 +31,8 @@ class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
      */
     render() {
         return (
-            <ConfirmDialog
-                okKey = 'dialog.muteParticipantButton'
-                onSubmit = { this._onSubmit } >
-                <Text style = { this.props._dialogStyles.text }>
-                    { `${this.props.title} \n\n ${this.props.content}` }
-                </Text>
+            <ConfirmDialog okKey="dialog.muteParticipantButton" onSubmit={this._onSubmit}>
+                <Text style={this.props._dialogStyles.text}>{`${this.props.title} \n\n ${this.props.content}`}</Text>
             </ConfirmDialog>
         );
     }
@@ -54,8 +46,8 @@ class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
  * @param {Object} state - The Redux state.
  * @param {Props} ownProps - The own props of the component.
  * @returns {{
-    *     _dialogStyles: StyleType
-    * }}
+ *     _dialogStyles: StyleType
+ * }}
  */
 function _mapStateToProps(state: Object, ownProps: Props) {
     return {

@@ -7,14 +7,10 @@ import { CircularLabel } from '../../base/label';
 import { connect } from '../../base/redux';
 import { combineStyles, type StyleType } from '../../base/styles';
 
-import AbstractVideoQualityLabel, {
-    _abstractMapStateToProps,
-    type Props as AbstractProps
-} from './AbstractVideoQualityLabel';
+import AbstractVideoQualityLabel, { _abstractMapStateToProps, type Props as AbstractProps } from './AbstractVideoQualityLabel';
 import styles from './styles';
 
 type Props = AbstractProps & {
-
     /**
      * Style of the component passed as props.
      */
@@ -31,7 +27,6 @@ type Props = AbstractProps & {
  * api and extend this component with actual quality indication.
  */
 class VideoQualityLabel extends AbstractVideoQualityLabel<Props> {
-
     /**
      * Implements React {@link Component}'s render.
      *
@@ -45,13 +40,7 @@ class VideoQualityLabel extends AbstractVideoQualityLabel<Props> {
             return null;
         }
 
-        return (
-            <CircularLabel
-                label = { t('videoStatus.audioOnly') }
-                style = {
-                    combineStyles(styles.indicatorAudioOnly, style)
-                } />
-        );
+        return <CircularLabel label={t('videoStatus.audioOnly')} style={combineStyles(styles.indicatorAudioOnly, style)} />;
     }
 }
 

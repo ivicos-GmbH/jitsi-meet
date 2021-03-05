@@ -6,7 +6,6 @@ import { Component } from 'react';
  * {@code AbstractGoogleSignInButton} component's property types.
  */
 type Props = {
-
     /**
      * The callback to invoke when the button is clicked.
      */
@@ -30,5 +29,4 @@ type Props = {
  *
  * @inheritdoc
  */
-export default class AbstractGoogleSignInButton extends Component<Props> {
-}
+export default class AbstractGoogleSignInButton extends Component<Props> {}

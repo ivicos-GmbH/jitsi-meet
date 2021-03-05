@@ -1,4 +1,3 @@
-
 /**
  * The type of (redux) action which indicates that an endpoint message
  * sent by another participant to the data channel is received.
@@ -43,5 +42,4 @@ export const UPDATE_TRANSCRIPT_MESSAGE = 'UPDATE_TRANSCRIPT_MESSAGE';
  *      type: TOGGLE_REQUESTING_SUBTITLES
  * }
  */
-export const TOGGLE_REQUESTING_SUBTITLES
-    = 'TOGGLE_REQUESTING_SUBTITLES';
+export const TOGGLE_REQUESTING_SUBTITLES = 'TOGGLE_REQUESTING_SUBTITLES';

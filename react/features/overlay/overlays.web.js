@@ -1,11 +1,6 @@
 // @flow
 
-import {
-    PageReloadOverlay,
-    SlowGUMOverlay,
-    SuspendedOverlay,
-    UserMediaPermissionsOverlay
-} from './components/web';
+import { PageReloadOverlay, SlowGUMOverlay, SuspendedOverlay, UserMediaPermissionsOverlay } from './components/web';
 
 declare var interfaceConfig: Object;
 
@@ -15,10 +10,5 @@ declare var interfaceConfig: Object;
  * @returns {Array<Object>}
  */
 export function getOverlays(): Array<Object> {
-    return [
-        PageReloadOverlay,
-        SuspendedOverlay,
-        UserMediaPermissionsOverlay,
-        SlowGUMOverlay
-    ];
+    return [PageReloadOverlay, SuspendedOverlay, UserMediaPermissionsOverlay, SlowGUMOverlay];
 }

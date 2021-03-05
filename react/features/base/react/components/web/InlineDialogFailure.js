@@ -11,7 +11,6 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of {@link InlineDialogFailure}.
  */
 type Props = {
-
     /**
      * Allows to retry the call that previously didn't succeed.
      */
@@ -37,35 +36,24 @@ class InlineDialogFailure extends Component<Props> {
 
         const supportLink = interfaceConfig.SUPPORT_URL;
         const supportString = t('inlineDialogFailure.supportMsg');
-        const supportLinkElem
-            = supportLink
-                ? (
-                    <div className = 'inline-dialog-error-text'>
-                        <span>{ supportString.padEnd(supportString.length + 1) }
-                        </span>
-                        <span>
-                            <a
-                                href = { supportLink }
-                                rel = 'noopener noreferrer'
-                                target = '_blank'>
-                                { t('inlineDialogFailure.support') }
-                            </a>
-                        </span>
-                        <span>.</span>
-                    </div>
-                )
-                : null;
+        const supportLinkElem = supportLink ? (
+            <div className="inline-dialog-error-text">
+                <span>{supportString.padEnd(supportString.length + 1)}</span>
+                <span>
+                    <a href={supportLink} rel="noopener noreferrer" target="_blank">
+                        {t('inlineDialogFailure.support')}
+                    </a>
+                </span>
+                <span>.</span>
+            </div>
+        ) : null;
 
         return (
-            <div className = 'inline-dialog-error'>
-                <div className = 'inline-dialog-error-text'>
-                    { t('inlineDialogFailure.msg') }
-                </div>
-                { supportLinkElem }
-                <Button
-                    className = 'inline-dialog-error-button'
-                    onClick = { this.props.onRetry } >
-                    { t('inlineDialogFailure.retry') }
+            <div className="inline-dialog-error">
+                <div className="inline-dialog-error-text">{t('inlineDialogFailure.msg')}</div>
+                {supportLinkElem}
+                <Button className="inline-dialog-error-button" onClick={this.props.onRetry}>
+                    {t('inlineDialogFailure.retry')}
                 </Button>
             </div>
         );

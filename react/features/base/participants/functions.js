@@ -9,11 +9,7 @@ import { toState } from '../redux';
 import { getTrackByMediaTypeAndParticipant } from '../tracks';
 import { createDeferred } from '../util';
 
-import {
-    JIGASI_PARTICIPANT_ICON,
-    MAX_DISPLAY_NAME_LENGTH,
-    PARTICIPANT_ROLE
-} from './constants';
+import { JIGASI_PARTICIPANT_ICON, MAX_DISPLAY_NAME_LENGTH, PARTICIPANT_ROLE } from './constants';
 import { preloadImage } from './preloadImage';
 
 declare var interfaceConfig: Object;
@@ -34,8 +30,7 @@ const AVATAR_CHECKER_FUNCTIONS = [
     (participant, store) => {
         if (participant && participant.email) {
             // TODO: remove once libravatar has deployed their new scaled up infra. -saghul
-            const gravatarBaseURL
-                = store.getState()['features/base/config'].gravatarBaseURL ?? 'https://www.gravatar.com/avatar/';
+            const gravatarBaseURL = store.getState()['features/base/config'].gravatarBaseURL ?? 'https://www.gravatar.com/avatar/';
 
             return getGravatarURL(participant.email, gravatarBaseURL);
         }
@@ -56,8 +51,7 @@ export function getFirstLoadableAvatarUrl(participant: Object, store: Store<any,
     const deferred = createDeferred();
     const fullPromise = deferred.promise
         .then(() => _getFirstLoadableAvatarUrl(participant, store))
-        .then(src => {
-
+        .then((src) => {
             if (AVATAR_QUEUE.length) {
                 const next = AVATAR_QUEUE.shift();
 
@@ -88,7 +82,7 @@ export function getFirstLoadableAvatarUrl(participant: Object, store: Store<any,
 export function getLocalParticipant(stateful: Object | Function) {
     const participants = _getAllParticipants(stateful);
 
-    return participants.find(p => p.local);
+    return participants.find((p) => p.local);
 }
 
 /**
@@ -117,11 +111,10 @@ export function getNormalizedDisplayName(name: string) {
  * @private
  * @returns {(Participant|undefined)}
  */
-export function getParticipantById(
-        stateful: Object | Function, id: string): ?Object {
+export function getParticipantById(stateful: Object | Function, id: string): ?Object {
     const participants = _getAllParticipants(stateful);
 
-    return participants.find(p => p.id === id);
+    return participants.find((p) => p.id === id);
 }
 
 /**
@@ -163,9 +156,7 @@ export function getParticipantCountWithFake(stateful: Object | Function) {
  * @param {string} id - The ID of the participant's display name to retrieve.
  * @returns {string}
  */
-export function getParticipantDisplayName(
-        stateful: Object | Function,
-        id: string) {
+export function getParticipantDisplayName(stateful: Object | Function, id: string) {
     const participant = getParticipantById(stateful, id);
 
     if (participant) {
@@ -174,15 +165,11 @@ export function getParticipantDisplayName(
         }
 
         if (participant.local) {
-            return typeof interfaceConfig === 'object'
-                ? interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME
-                : 'me';
+            return typeof interfaceConfig === 'object' ? interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME : 'me';
         }
     }
 
-    return typeof interfaceConfig === 'object'
-        ? interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME
-        : 'Fellow Jitster';
+    return typeof interfaceConfig === 'object' ? interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME : 'Fellow Jitster';
 }
 
 /**
@@ -193,8 +180,7 @@ export function getParticipantDisplayName(
  * @param {string} id - The id of the participant.
  * @returns {string} - The presence status.
  */
-export function getParticipantPresenceStatus(
-        stateful: Object | Function, id: string) {
+export function getParticipantPresenceStatus(stateful: Object | Function, id: string) {
     if (!id) {
         return undefined;
     }
@@ -218,7 +204,7 @@ export function getParticipantPresenceStatus(
  * @returns {Participant[]}
  */
 export function getParticipants(stateful: Object | Function) {
-    return _getAllParticipants(stateful).filter(p => !p.isFakeParticipant);
+    return _getAllParticipants(stateful).filter((p) => !p.isFakeParticipant);
 }
 
 /**
@@ -231,7 +217,7 @@ export function getParticipants(stateful: Object | Function) {
  * @returns {(Participant|undefined)}
  */
 export function getPinnedParticipant(stateful: Object | Function) {
-    return _getAllParticipants(stateful).find(p => p.pinned);
+    return _getAllParticipants(stateful).find((p) => p.pinned);
 }
 
 /**
@@ -245,10 +231,7 @@ export function getPinnedParticipant(stateful: Object | Function) {
  * @returns {Participant[]}
  */
 function _getAllParticipants(stateful) {
-    return (
-        Array.isArray(stateful)
-            ? stateful
-            : toState(stateful)['features/base/participants'] || []);
+    return Array.isArray(stateful) ? stateful : toState(stateful)['features/base/participants'] || [];
 }
 
 /**
@@ -265,7 +248,7 @@ function _getAllParticipants(stateful) {
 export function getYoutubeParticipant(stateful: Object | Function) {
     const participants = _getAllParticipants(stateful);
 
-    return participants.filter(p => p.isFakeParticipant)[0];
+    return participants.filter((p) => p.isFakeParticipant)[0];
 }
 
 /**
@@ -338,8 +321,7 @@ export function shouldRenderParticipantVideo(stateful: Object | Function, id: st
     }
 
     /* First check if we have an unmuted video track. */
-    const videoTrack
-        = getTrackByMediaTypeAndParticipant(state['features/base/tracks'], MEDIA_TYPE.VIDEO, id);
+    const videoTrack = getTrackByMediaTypeAndParticipant(state['features/base/tracks'], MEDIA_TYPE.VIDEO, id);
 
     if (!shouldRenderVideoTrack(videoTrack, /* waitForVideoStarted */ false)) {
         return false;
@@ -362,8 +344,7 @@ export function shouldRenderParticipantVideo(stateful: Object | Function, id: st
     /* Last, check if the participant is sharing their screen and they are on stage. */
     const remoteScreenShares = state['features/video-layout'].remoteScreenShares || [];
     const largeVideoParticipantId = state['features/large-video'].participantId;
-    const participantIsInLargeVideoWithScreen
-        = participant.id === largeVideoParticipantId && remoteScreenShares.includes(participant.id);
+    const participantIsInLargeVideoWithScreen = participant.id === largeVideoParticipantId && remoteScreenShares.includes(participant.id);
 
     return participantIsInLargeVideoWithScreen;
 }

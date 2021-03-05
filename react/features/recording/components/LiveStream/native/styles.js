@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    BoxModel,
-    ColorPalette,
-    createStyleSheet
-} from '../../../../base/styles';
+import { BoxModel, ColorPalette, createStyleSheet } from '../../../../base/styles';
 
 /**
  * Opacity of the TouchableHighlight.
@@ -29,7 +25,7 @@ export default createStyleSheet({
         backgroundColor: ColorPalette.darkGrey,
         borderRadius: 2,
         marginLeft: 16,
-        opacity: 0.90,
+        opacity: 0.9,
         paddingLeft: 6,
         paddingRight: 6
     },

@@ -17,8 +17,7 @@ import { _cleanupConfig } from './functions';
  *
  * @type {Object}
  */
-const INITIAL_NON_RN_STATE = {
-};
+const INITIAL_NON_RN_STATE = {};
 
 /**
  * The initial state of the feature base/config when executing in a React Native
@@ -50,44 +49,44 @@ const INITIAL_RN_STATE = {
 
 ReducerRegistry.register('features/base/config', (state = _getInitialState(), action) => {
     switch (action.type) {
-    case UPDATE_CONFIG:
-        return _updateConfig(state, action);
+        case UPDATE_CONFIG:
+            return _updateConfig(state, action);
 
-    case CONFIG_WILL_LOAD:
-        return {
-            error: undefined,
-
-            /**
-                * The URL of the location associated with/configured by this
-                * configuration.
-                *
-                * @type URL
-                */
-            locationURL: action.locationURL
-        };
-
-    case LOAD_CONFIG_ERROR:
-        // XXX LOAD_CONFIG_ERROR is one of the settlement execution paths of
-        // the asynchronous "loadConfig procedure/process" started with
-        // CONFIG_WILL_LOAD. Due to the asynchronous nature of it, whoever
-        // is settling the process needs to provide proof that they have
-        // started it and that the iteration of the process being completed
-        // now is still of interest to the app.
-        if (state.locationURL === action.locationURL) {
+        case CONFIG_WILL_LOAD:
             return {
-                /**
-                    * The {@link Error} which prevented the loading of the
-                    * configuration of the associated {@code locationURL}.
-                    *
-                    * @type Error
-                    */
-                error: action.error
-            };
-        }
-        break;
+                error: undefined,
 
-    case SET_CONFIG:
-        return _setConfig(state, action);
+                /**
+                 * The URL of the location associated with/configured by this
+                 * configuration.
+                 *
+                 * @type URL
+                 */
+                locationURL: action.locationURL
+            };
+
+        case LOAD_CONFIG_ERROR:
+            // XXX LOAD_CONFIG_ERROR is one of the settlement execution paths of
+            // the asynchronous "loadConfig procedure/process" started with
+            // CONFIG_WILL_LOAD. Due to the asynchronous nature of it, whoever
+            // is settling the process needs to provide proof that they have
+            // started it and that the iteration of the process being completed
+            // now is still of interest to the app.
+            if (state.locationURL === action.locationURL) {
+                return {
+                    /**
+                     * The {@link Error} which prevented the loading of the
+                     * configuration of the associated {@code locationURL}.
+                     *
+                     * @type Error
+                     */
+                    error: action.error
+                };
+            }
+            break;
+
+        case SET_CONFIG:
+            return _setConfig(state, action);
     }
 
     return state;
@@ -103,10 +102,7 @@ ReducerRegistry.register('features/base/config', (state = _getInitialState(), ac
  * @returns {Object}
  */
 function _getInitialState() {
-    return (
-        navigator.product === 'ReactNative'
-            ? INITIAL_RN_STATE
-            : INITIAL_NON_RN_STATE);
+    return navigator.product === 'ReactNative' ? INITIAL_RN_STATE : INITIAL_NON_RN_STATE;
 }
 
 /**
@@ -164,18 +160,18 @@ function _translateLegacyConfig(oldValue: Object) {
 
     const oldConfigToNewConfig = {
         analytics: [
-            [ 'analyticsScriptUrls', 'scriptURLs' ],
-            [ 'googleAnalyticsTrackingId', 'googleAnalyticsTrackingId' ]
+            ['analyticsScriptUrls', 'scriptURLs'],
+            ['googleAnalyticsTrackingId', 'googleAnalyticsTrackingId']
         ]
     };
 
     // Translate the old config properties into the new config properties.
-    Object.keys(oldConfigToNewConfig).forEach(section => {
+    Object.keys(oldConfigToNewConfig).forEach((section) => {
         if (typeof oldValue[section] !== 'object') {
             newValue = set(newValue, section, {});
         }
 
-        for (const [ oldKey, newKey ] of oldConfigToNewConfig[section]) {
+        for (const [oldKey, newKey] of oldConfigToNewConfig[section]) {
             if (oldKey in newValue && !(newKey in newValue[section])) {
                 const v = newValue[oldKey];
 

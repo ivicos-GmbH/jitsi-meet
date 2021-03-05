@@ -11,7 +11,6 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@link FormSectionHeader}
  */
 type Props = {
-
     /**
      * The i18n key of the text label of the section.
      */
@@ -26,7 +25,7 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * Implements a React {@code Component} which renders a section header on a
@@ -44,14 +43,8 @@ class FormSectionHeader extends Component<Props> {
         const { label, style, t } = this.props;
 
         return (
-            <View
-                style = { [
-                    styles.formSectionTitle,
-                    style
-                ] } >
-                <Text>
-                    { t(label) }
-                </Text>
+            <View style={[styles.formSectionTitle, style]}>
+                <Text>{t(label)}</Text>
             </View>
         );
     }

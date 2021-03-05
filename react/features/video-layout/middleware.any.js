@@ -18,38 +18,36 @@ let previousTileViewEnabled;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     switch (action.type) {
+        // Actions that temporarily clear the user preferred state of tile view,
+        // then re-set it when needed.
+        case PIN_PARTICIPANT: {
+            const pinnedParticipant = getPinnedParticipant(store.getState());
 
-    // Actions that temporarily clear the user preferred state of tile view,
-    // then re-set it when needed.
-    case PIN_PARTICIPANT: {
-        const pinnedParticipant = getPinnedParticipant(store.getState());
-
-        if (pinnedParticipant) {
-            _storeTileViewStateAndClear(store);
-        } else {
-            _restoreTileViewState(store);
+            if (pinnedParticipant) {
+                _storeTileViewStateAndClear(store);
+            } else {
+                _restoreTileViewState(store);
+            }
+            break;
         }
-        break;
+        case SET_DOCUMENT_EDITING_STATUS:
+            if (action.editing) {
+                _storeTileViewStateAndClear(store);
+            } else {
+                _restoreTileViewState(store);
+            }
+            break;
+
+        // Things to update when tile view state changes
+        case SET_TILE_VIEW:
+            if (action.enabled && getPinnedParticipant(store)) {
+                store.dispatch(pinParticipant(null));
+            }
     }
-    case SET_DOCUMENT_EDITING_STATUS:
-        if (action.editing) {
-            _storeTileViewStateAndClear(store);
-        } else {
-            _restoreTileViewState(store);
-        }
-        break;
-
-    // Things to update when tile view state changes
-    case SET_TILE_VIEW:
-        if (action.enabled && getPinnedParticipant(store)) {
-            store.dispatch(pinParticipant(null));
-        }
-    }
-
 
     return result;
 });
@@ -59,14 +57,15 @@ MiddlewareRegistry.register(store => next => action => {
  * is left or failed.
  */
 StateListenerRegistry.register(
-    state => getCurrentConference(state),
+    (state) => getCurrentConference(state),
     (conference, { dispatch }, previousConference) => {
         if (conference !== previousConference) {
             // conference changed, left or failed...
             // Clear tile view state.
             dispatch(setTileView());
         }
-    });
+    }
+);
 
 /**
  * Respores tile view state, if it wasn't updated since then.

@@ -8,7 +8,6 @@ import { translate } from '../../../base/i18n';
  * The type of the React {@code Component} props of {@link NoRoomError}.
  */
 type Props = {
-
     /**
      * Additional CSS classnames to append to the root of the component.
      */
@@ -37,9 +36,9 @@ class NoRoomError extends Component<Props> {
         const { t } = this.props;
 
         return (
-            <div className = { this.props.className } >
-                <div>{ t('info.noNumbers') }</div>
-                <div>{ t('info.noRoom') }</div>
+            <div className={this.props.className}>
+                <div>{t('info.noNumbers')}</div>
+                <div>{t('info.noRoom')}</div>
             </div>
         );
     }

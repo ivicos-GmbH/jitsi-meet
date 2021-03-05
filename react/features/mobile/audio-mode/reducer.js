@@ -11,17 +11,17 @@ const DEFAULT_STATE = {
 
 ReducerRegistry.register('features/mobile/audio-mode', (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case _SET_AUDIOMODE_DEVICES: {
-        const { devices } = action;
+        case _SET_AUDIOMODE_DEVICES: {
+            const { devices } = action;
 
-        if (equals(state.devices, devices)) {
-            return state;
+            if (equals(state.devices, devices)) {
+                return state;
+            }
+
+            return set(state, 'devices', devices);
         }
-
-        return set(state, 'devices', devices);
-    }
-    case _SET_AUDIOMODE_SUBSCRIPTIONS:
-        return set(state, 'subscriptions', action.subscriptions);
+        case _SET_AUDIOMODE_SUBSCRIPTIONS:
+            return set(state, 'subscriptions', action.subscriptions);
     }
 
     return state;

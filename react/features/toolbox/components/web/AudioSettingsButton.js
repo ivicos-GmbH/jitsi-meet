@@ -12,7 +12,6 @@ import { isAudioSettingsButtonDisabled } from '../../functions';
 import AudioMuteButton from '../AudioMuteButton';
 
 type Props = {
-
     /**
      * Indicates whether audio permissions have been granted or denied.
      */
@@ -41,7 +40,6 @@ type Props = {
  * @returns {ReactElement}
  */
 class AudioSettingsButton extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render}.
      *
@@ -49,20 +47,17 @@ class AudioSettingsButton extends Component<Props> {
      */
     render() {
         const { hasPermissions, isDisabled, onAudioOptionsClick, visible } = this.props;
-        const settingsDisabled = !hasPermissions
-            || isDisabled
-            || !JitsiMeetJS.mediaDevices.isMultipleAudioInputSupported();
+        const settingsDisabled = !hasPermissions || isDisabled || !JitsiMeetJS.mediaDevices.isMultipleAudioInputSupported();
 
         return visible ? (
             <AudioSettingsPopup>
-                <ToolboxButtonWithIcon
-                    icon = { IconArrowDown }
-                    iconDisabled = { settingsDisabled }
-                    onIconClick = { onAudioOptionsClick }>
+                <ToolboxButtonWithIcon icon={IconArrowDown} iconDisabled={settingsDisabled} onIconClick={onAudioOptionsClick}>
                     <AudioMuteButton />
                 </ToolboxButtonWithIcon>
             </AudioSettingsPopup>
-        ) : <AudioMuteButton />;
+        ) : (
+            <AudioMuteButton />
+        );
     }
 }
 
@@ -86,7 +81,4 @@ const mapDispatchToProps = {
     onAudioOptionsClick: toggleAudioSettings
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AudioSettingsButton);
+export default connect(mapStateToProps, mapDispatchToProps)(AudioSettingsButton);

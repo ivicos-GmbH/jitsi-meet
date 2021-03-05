@@ -13,13 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const { room } = parseURLParams(window.location, true, 'search');
 
     ReactDOM.render(
-        <I18nextProvider i18n = { i18next }>
-            { room
-                ? <DialInSummary
-                    className = 'dial-in-page'
-                    clickableNumbers = { isMobileBrowser() }
-                    room = { decodeURIComponent(room) } />
-                : <NoRoomError className = 'dial-in-page' /> }
+        <I18nextProvider i18n={i18next}>
+            {room ? <DialInSummary className="dial-in-page" clickableNumbers={isMobileBrowser()} room={decodeURIComponent(room)} /> : <NoRoomError className="dial-in-page" />}
         </I18nextProvider>,
         document.getElementById('react')
     );

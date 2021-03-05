@@ -16,10 +16,6 @@ export default class DominantSpeakerIndicator extends Component<{}> {
      * @inheritdoc
      */
     render() {
-        return (
-            <BaseIndicator
-                highlight = { true }
-                icon = { IconDominantSpeaker } />
-        );
+        return <BaseIndicator highlight={true} icon={IconDominantSpeaker} />;
     }
 }

@@ -8,7 +8,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { DIAL_IN_SUMMARY_VIEW_ID } from '../../invite/constants';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */

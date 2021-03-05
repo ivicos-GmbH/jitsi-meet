@@ -5,7 +5,6 @@ import React from 'react';
 import { Icon, IconMeter } from '../../../../base/icons';
 
 type Props = {
-
     /**
      * Own class name for the component.
      */
@@ -20,7 +19,7 @@ type Props = {
      * The level of the meter.
      * Should be between 0 and 7 as per the used SVG.
      */
-    level: number,
+    level: number
 };
 
 /**
@@ -28,7 +27,7 @@ type Props = {
  *
  * @returns { ReactElement}
  */
-export default function({ className, isDisabled, level }: Props) {
+export default function ({ className, isDisabled, level }: Props) {
     let ownClassName;
 
     if (level > -1) {
@@ -37,10 +36,5 @@ export default function({ className, isDisabled, level }: Props) {
         ownClassName = `metr ${isDisabled ? 'metr--disabled' : ''}`;
     }
 
-    return (
-        <Icon
-            className = { `${ownClassName} ${className}` }
-            size = { 12 }
-            src = { IconMeter } />
-    );
+    return <Icon className={`${ownClassName} ${className}`} size={12} src={IconMeter} />;
 }

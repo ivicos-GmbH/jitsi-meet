@@ -2,10 +2,7 @@
 
 import { PersistenceRegistry, ReducerRegistry, set } from '../base/redux';
 
-import {
-    SET_SIDEBAR_VISIBLE,
-    SET_WELCOME_PAGE_LISTS_DEFAULT_PAGE
-} from './actionTypes';
+import { SET_SIDEBAR_VISIBLE, SET_WELCOME_PAGE_LISTS_DEFAULT_PAGE } from './actionTypes';
 
 /**
  * The name of the redux store/state property which is the root of the redux
@@ -25,11 +22,11 @@ PersistenceRegistry.register(STORE_NAME, {
  */
 ReducerRegistry.register(STORE_NAME, (state = {}, action) => {
     switch (action.type) {
-    case SET_SIDEBAR_VISIBLE:
-        return set(state, 'sideBarVisible', action.visible);
+        case SET_SIDEBAR_VISIBLE:
+            return set(state, 'sideBarVisible', action.visible);
 
-    case SET_WELCOME_PAGE_LISTS_DEFAULT_PAGE:
-        return set(state, 'defaultPage', action.pageIndex);
+        case SET_WELCOME_PAGE_LISTS_DEFAULT_PAGE:
+            return set(state, 'defaultPage', action.pageIndex);
     }
 
     return state;

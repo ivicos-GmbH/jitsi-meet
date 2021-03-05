@@ -46,7 +46,7 @@ export default class NetworkInfoService extends EventEmitter {
      * @returns {void}
      */
     start() {
-        this._subscription = NetInfo.addEventListener(netInfoState => {
+        this._subscription = NetInfo.addEventListener((netInfoState) => {
             this.emit(ONLINE_STATE_CHANGED_EVENT, NetworkInfoService._convertNetInfoState(netInfoState));
         });
     }

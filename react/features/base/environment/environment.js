@@ -7,13 +7,7 @@ import { isMobileBrowser } from './utils';
 
 const { browser } = JitsiMeetJS.util;
 
-const DEFAULT_OPTIMAL_BROWSERS = [
-    'chrome',
-    'electron',
-    'firefox',
-    'nwjs',
-    'safari'
-];
+const DEFAULT_OPTIMAL_BROWSERS = ['chrome', 'electron', 'firefox', 'nwjs', 'safari'];
 
 const DEFAULT_UNSUPPORTED_BROWSERS = [];
 
@@ -37,8 +31,7 @@ declare var interfaceConfig: Object;
  * @returns {boolean}
  */
 export function isBrowsersOptimal(browserName: string) {
-    return (interfaceConfig.OPTIMAL_BROWSERS || DEFAULT_OPTIMAL_BROWSERS)
-        .includes(browserName);
+    return (interfaceConfig.OPTIMAL_BROWSERS || DEFAULT_OPTIMAL_BROWSERS).includes(browserName);
 }
 
 /**
@@ -52,8 +45,7 @@ export function isBrowsersOptimal(browserName: string) {
  * @returns {boolean}
  */
 export function isSuboptimalBrowser() {
-    const optimalBrowsers
-        = interfaceConfig.OPTIMAL_BROWSERS || DEFAULT_OPTIMAL_BROWSERS;
+    const optimalBrowsers = interfaceConfig.OPTIMAL_BROWSERS || DEFAULT_OPTIMAL_BROWSERS;
 
     return !_isCurrentBrowserInList(optimalBrowsers) && isSupportedBrowser();
 }
@@ -70,9 +62,7 @@ export function isSupportedBrowser() {
     }
 
     // Blacklists apply to desktop browsers only right now.
-    if (!isMobileBrowser() && _isCurrentBrowserInList(
-        interfaceConfig.UNSUPPORTED_BROWSERS || DEFAULT_UNSUPPORTED_BROWSERS
-    )) {
+    if (!isMobileBrowser() && _isCurrentBrowserInList(interfaceConfig.UNSUPPORTED_BROWSERS || DEFAULT_UNSUPPORTED_BROWSERS)) {
         return false;
     }
 
@@ -90,9 +80,7 @@ export function isSupportedBrowser() {
  * @returns {boolean}
  */
 export function isSupportedMobileBrowser() {
-    return (Platform.OS === 'android' && browser.isChromiumBased())
-        || (Platform.OS === 'android' && browser.isFirefox())
-        || (Platform.OS === 'ios' && browser.isSafari());
+    return (Platform.OS === 'android' && browser.isChromiumBased()) || (Platform.OS === 'android' && browser.isFirefox()) || (Platform.OS === 'ios' && browser.isSafari());
 }
 
 /**
@@ -105,9 +93,11 @@ export function isSupportedMobileBrowser() {
  * @returns {boolean}
  */
 function _isCurrentBrowserInList(list) {
-    return Boolean(list.find(browserName => {
-        const checkFunction = browserNameToCheck[browserName];
+    return Boolean(
+        list.find((browserName) => {
+            const checkFunction = browserNameToCheck[browserName];
 
-        return checkFunction ? checkFunction.call(browser) : false;
-    }));
+            return checkFunction ? checkFunction.call(browser) : false;
+        })
+    );
 }

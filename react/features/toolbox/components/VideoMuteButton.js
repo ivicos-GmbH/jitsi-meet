@@ -1,20 +1,11 @@
 // @flow
 
 import UIEvents from '../../../../service/UI/UIEvents';
-import {
-    ACTION_SHORTCUT_TRIGGERED,
-    VIDEO_MUTE,
-    createShortcutEvent,
-    createToolbarEvent,
-    sendAnalytics
-} from '../../analytics';
+import { ACTION_SHORTCUT_TRIGGERED, VIDEO_MUTE, createShortcutEvent, createToolbarEvent, sendAnalytics } from '../../analytics';
 import { setAudioOnly } from '../../base/audio-only';
 import { getFeatureFlag, VIDEO_MUTE_BUTTON_ENABLED } from '../../base/flags';
 import { translate } from '../../base/i18n';
-import {
-    VIDEO_MUTISM_AUTHORITY,
-    setVideoMuted
-} from '../../base/media';
+import { VIDEO_MUTISM_AUTHORITY, setVideoMuted } from '../../base/media';
 import { connect } from '../../base/redux';
 import { AbstractVideoMuteButton } from '../../base/toolbox/components';
 import type { AbstractButtonProps } from '../../base/toolbox/components';
@@ -27,7 +18,6 @@ declare var APP: Object;
  * The type of the React {@code Component} props of {@link VideoMuteButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether the current conference is in audio only mode or not.
      */
@@ -52,7 +42,7 @@ type Props = AbstractButtonProps & {
      * The redux {@code dispatch} function.
      */
     dispatch: Function
-}
+};
 
 /**
  * Component that renders a toolbar button for toggling video mute.
@@ -84,12 +74,7 @@ class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
      * @returns {void}
      */
     componentDidMount() {
-        typeof APP === 'undefined'
-            || APP.keyboardshortcut.registerShortcut(
-                'V',
-                null,
-                this._onKeyboardShortcut,
-                'keyboardShortcuts.videoMute');
+        typeof APP === 'undefined' || APP.keyboardshortcut.registerShortcut('V', null, this._onKeyboardShortcut, 'keyboardShortcuts.videoMute');
     }
 
     /**
@@ -99,8 +84,7 @@ class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
      * @returns {void}
      */
     componentWillUnmount() {
-        typeof APP === 'undefined'
-            || APP.keyboardshortcut.unregisterShortcut('V');
+        typeof APP === 'undefined' || APP.keyboardshortcut.unregisterShortcut('V');
     }
 
     /**
@@ -135,11 +119,7 @@ class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
      * @returns {void}
      */
     _onKeyboardShortcut() {
-        sendAnalytics(
-            createShortcutEvent(
-                VIDEO_MUTE,
-                ACTION_SHORTCUT_TRIGGERED,
-                { enable: !this._isVideoMuted() }));
+        sendAnalytics(createShortcutEvent(VIDEO_MUTE, ACTION_SHORTCUT_TRIGGERED, { enable: !this._isVideoMuted() }));
 
         super._handleClick();
     }
@@ -155,22 +135,15 @@ class VideoMuteButton extends AbstractVideoMuteButton<Props, *> {
     _setVideoMuted(videoMuted: boolean) {
         sendAnalytics(createToolbarEvent(VIDEO_MUTE, { enable: videoMuted }));
         if (this.props._audioOnly) {
-            this.props.dispatch(
-                setAudioOnly(false, /* ensureTrack */ true));
+            this.props.dispatch(setAudioOnly(false, /* ensureTrack */ true));
         }
         const mediaType = this.props._videoMediaType;
 
-        this.props.dispatch(
-            setVideoMuted(
-                videoMuted,
-                mediaType,
-                VIDEO_MUTISM_AUTHORITY.USER,
-                /* ensureTrack */ true));
+        this.props.dispatch(setVideoMuted(videoMuted, mediaType, VIDEO_MUTISM_AUTHORITY.USER, /* ensureTrack */ true));
 
         // FIXME: The old conference logic still relies on this event being
         // emitted.
-        typeof APP === 'undefined'
-            || APP.UI.emitEvent(UIEvents.VIDEO_MUTED, videoMuted, true);
+        typeof APP === 'undefined' || APP.UI.emitEvent(UIEvents.VIDEO_MUTED, videoMuted, true);
     }
 }
 

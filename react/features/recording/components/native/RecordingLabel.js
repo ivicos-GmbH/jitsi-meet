@@ -6,9 +6,7 @@ import { translate } from '../../../base/i18n';
 import { CircularLabel } from '../../../base/label';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { connect } from '../../../base/redux';
-import AbstractRecordingLabel, {
-    _mapStateToProps
-} from '../AbstractRecordingLabel';
+import AbstractRecordingLabel, { _mapStateToProps } from '../AbstractRecordingLabel';
 
 import styles from './styles';
 
@@ -19,7 +17,6 @@ import styles from './styles';
  * @extends {Component}
  */
 class RecordingLabel extends AbstractRecordingLabel {
-
     /**
      * Renders the platform specific label component.
      *
@@ -29,37 +26,32 @@ class RecordingLabel extends AbstractRecordingLabel {
         let indicatorStyle;
 
         switch (this.props.mode) {
-        case JitsiRecordingConstants.mode.STREAM:
-            indicatorStyle = styles.indicatorLive;
-            break;
-        case JitsiRecordingConstants.mode.FILE:
-            indicatorStyle = styles.indicatorRecording;
-            break;
-        default:
-            // Invalid mode is passed to the component.
-            return null;
+            case JitsiRecordingConstants.mode.STREAM:
+                indicatorStyle = styles.indicatorLive;
+                break;
+            case JitsiRecordingConstants.mode.FILE:
+                indicatorStyle = styles.indicatorRecording;
+                break;
+            default:
+                // Invalid mode is passed to the component.
+                return null;
         }
 
         let status = 'on';
 
         switch (this.props._status) {
-        case JitsiRecordingConstants.status.PENDING:
-            status = 'in_progress';
-            break;
-        case JitsiRecordingConstants.status.OFF:
-            status = 'off';
-            break;
+            case JitsiRecordingConstants.status.PENDING:
+                status = 'in_progress';
+                break;
+            case JitsiRecordingConstants.status.OFF:
+                status = 'off';
+                break;
         }
 
-        return (
-            <CircularLabel
-                label = { this.props.t(this._getLabelKey()) }
-                status = { status }
-                style = { indicatorStyle } />
-        );
+        return <CircularLabel label={this.props.t(this._getLabelKey())} status={status} style={indicatorStyle} />;
     }
 
-    _getLabelKey: () => ?string
+    _getLabelKey: () => ?string;
 }
 
 export default translate(connect(_mapStateToProps)(RecordingLabel));

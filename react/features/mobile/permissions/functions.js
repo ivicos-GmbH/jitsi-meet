@@ -12,20 +12,14 @@ import { Platform } from '../../base/react';
  */
 export function openSettings() {
     switch (Platform.OS) {
-    case 'android':
-        NativeModules.AndroidSettings.open().catch(() => {
-            Alert.alert(
-                'Error opening settings',
-                'Please open settings and grant the required permissions',
-                [
-                    { text: 'OK' }
-                ]
-            );
-        });
-        break;
+        case 'android':
+            NativeModules.AndroidSettings.open().catch(() => {
+                Alert.alert('Error opening settings', 'Please open settings and grant the required permissions', [{ text: 'OK' }]);
+            });
+            break;
 
-    case 'ios':
-        Linking.openURL('app-settings:');
-        break;
+        case 'ios':
+            Linking.openURL('app-settings:');
+            break;
     }
 }

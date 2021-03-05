@@ -24,7 +24,6 @@ const TEXT_COLOR = ColorPalette.white;
  * {@code WelcomePage} and {@code BlankPage}.
  */
 export default {
-
     /**
      * The audio-video switch itself.
      */

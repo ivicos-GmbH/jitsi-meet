@@ -15,10 +15,7 @@ const PERSIST_STATE_DELAY = 2000;
 /**
  * A throttled function to avoid repetitive state persisting.
  */
-const throttledPersistState
-    = _.throttle(
-        state => PersistenceRegistry.persistState(state),
-        PERSIST_STATE_DELAY);
+const throttledPersistState = _.throttle((state) => PersistenceRegistry.persistState(state), PERSIST_STATE_DELAY);
 
 // Web only code.
 // We need the <tt>if</tt> beacuse it appears that on mobile the polyfill is not
@@ -37,7 +34,7 @@ if (typeof window.addEventListener === 'function') {
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const oldState = toState(store);
     const result = next(action);
     const newState = toState(store);

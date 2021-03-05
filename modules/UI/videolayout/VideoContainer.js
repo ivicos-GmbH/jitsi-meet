@@ -25,8 +25,22 @@ const FADE_DURATION_MS = 300;
  * container for every event in the list. The latest event will be stored in redux.
  */
 const containerEvents = [
-    'abort', 'canplay', 'canplaythrough', 'emptied', 'ended', 'error', 'loadeddata', 'loadedmetadata', 'loadstart',
-    'pause', 'play', 'playing', 'ratechange', 'stalled', 'suspend', 'waiting'
+    'abort',
+    'canplay',
+    'canplaythrough',
+    'emptied',
+    'ended',
+    'error',
+    'loadeddata',
+    'loadedmetadata',
+    'loadstart',
+    'pause',
+    'play',
+    'playing',
+    'ratechange',
+    'stalled',
+    'suspend',
+    'waiting'
 ];
 
 /**
@@ -40,14 +54,10 @@ const containerEvents = [
  * @param videoSpaceHeight the height of the available space
  * @return an array with 2 elements, the video width and the video height
  */
-function computeDesktopVideoSize( // eslint-disable-line max-params
-        videoWidth,
-        videoHeight,
-        videoSpaceWidth,
-        videoSpaceHeight) {
+function computeDesktopVideoSize(videoWidth, videoHeight, videoSpaceWidth, videoSpaceHeight) { // eslint-disable-line max-params
     if (videoWidth === 0 || videoHeight === 0 || videoSpaceWidth === 0 || videoSpaceHeight === 0) {
         // Avoid NaN values caused by devision by 0.
-        return [ 0, 0 ];
+        return [0, 0];
     }
 
     const aspectRatio = videoWidth / videoHeight;
@@ -72,9 +82,8 @@ function computeDesktopVideoSize( // eslint-disable-line max-params
         availableHeight = availableWidth / aspectRatio;
     }
 
-    return [ availableWidth, availableHeight ];
+    return [availableWidth, availableHeight];
 }
-
 
 /**
  * Returns an array of the video dimensions. It respects the
@@ -87,54 +96,43 @@ function computeDesktopVideoSize( // eslint-disable-line max-params
  * @param videoSpaceHeight the height of the video space
  * @return an array with 2 elements, the video width and the video height
  */
-function computeCameraVideoSize( // eslint-disable-line max-params
-        videoWidth,
-        videoHeight,
-        videoSpaceWidth,
-        videoSpaceHeight,
-        videoLayoutFit) {
+function computeCameraVideoSize(videoWidth, videoHeight, videoSpaceWidth, videoSpaceHeight, videoLayoutFit) { // eslint-disable-line max-params
     if (videoWidth === 0 || videoHeight === 0 || videoSpaceWidth === 0 || videoSpaceHeight === 0) {
         // Avoid NaN values caused by devision by 0.
-        return [ 0, 0 ];
+        return [0, 0];
     }
 
     const aspectRatio = videoWidth / videoHeight;
 
     switch (videoLayoutFit) {
-    case 'height':
-        return [ videoSpaceHeight * aspectRatio, videoSpaceHeight ];
-    case 'width':
-        return [ videoSpaceWidth, videoSpaceWidth / aspectRatio ];
-    case 'both': {
-        const videoSpaceRatio = videoSpaceWidth / videoSpaceHeight;
-        const maxZoomCoefficient = interfaceConfig.MAXIMUM_ZOOMING_COEFFICIENT
-            || Infinity;
+        case 'height':
+            return [videoSpaceHeight * aspectRatio, videoSpaceHeight];
+        case 'width':
+            return [videoSpaceWidth, videoSpaceWidth / aspectRatio];
+        case 'both': {
+            const videoSpaceRatio = videoSpaceWidth / videoSpaceHeight;
+            const maxZoomCoefficient = interfaceConfig.MAXIMUM_ZOOMING_COEFFICIENT || Infinity;
 
-        if (videoSpaceRatio === aspectRatio) {
-            return [ videoSpaceWidth, videoSpaceHeight ];
+            if (videoSpaceRatio === aspectRatio) {
+                return [videoSpaceWidth, videoSpaceHeight];
+            }
+
+            let [width, height] = computeCameraVideoSize(videoWidth, videoHeight, videoSpaceWidth, videoSpaceHeight, videoSpaceRatio < aspectRatio ? 'height' : 'width');
+            const maxWidth = videoSpaceWidth * maxZoomCoefficient;
+            const maxHeight = videoSpaceHeight * maxZoomCoefficient;
+
+            if (width > maxWidth) {
+                width = maxWidth;
+                height = width / aspectRatio;
+            } else if (height > maxHeight) {
+                height = maxHeight;
+                width = height * aspectRatio;
+            }
+
+            return [width, height];
         }
-
-        let [ width, height ] = computeCameraVideoSize(
-            videoWidth,
-            videoHeight,
-            videoSpaceWidth,
-            videoSpaceHeight,
-            videoSpaceRatio < aspectRatio ? 'height' : 'width');
-        const maxWidth = videoSpaceWidth * maxZoomCoefficient;
-        const maxHeight = videoSpaceHeight * maxZoomCoefficient;
-
-        if (width > maxWidth) {
-            width = maxWidth;
-            height = width / aspectRatio;
-        } else if (height > maxHeight) {
-            height = maxHeight;
-            width = height * aspectRatio;
-        }
-
-        return [ width, height ];
-    }
-    default:
-        return [ videoWidth, videoHeight ];
+        default:
+            return [videoWidth, videoHeight];
     }
 }
 
@@ -145,11 +143,7 @@ function computeCameraVideoSize( // eslint-disable-line max-params
  * @return an array with 2 elements, the horizontal indent and the vertical
  * indent
  */
-function getCameraVideoPosition( // eslint-disable-line max-params
-        videoWidth,
-        videoHeight,
-        videoSpaceWidth,
-        videoSpaceHeight) {
+function getCameraVideoPosition(videoWidth, videoHeight, videoSpaceWidth, videoSpaceHeight) { // eslint-disable-line max-params
     // Parent height isn't completely calculated when we position the video in
     // full screen mode and this is why we use the screen height in this case.
     // Need to think it further at some point and implement it properly.
@@ -161,8 +155,7 @@ function getCameraVideoPosition( // eslint-disable-line max-params
     const horizontalIndent = (videoSpaceWidth - videoWidth) / 2;
     const verticalIndent = (videoSpaceHeight - videoHeight) / 2;
 
-    return { horizontalIndent,
-        verticalIndent };
+    return { horizontalIndent, verticalIndent };
 }
 
 /**
@@ -242,7 +235,7 @@ export class VideoContainer extends LargeContainer {
          */
         this.$wrapperParent = this.$wrapper.parent();
         this.avatarHeight = $('#dominantSpeakerAvatarContainer').height();
-        this.$video[0].onplaying = function(event) {
+        this.$video[0].onplaying = function (event) {
             if (typeof resizeContainer === 'function') {
                 resizeContainer(event);
             }
@@ -258,9 +251,9 @@ export class VideoContainer extends LargeContainer {
         this.$video[0].onresize = this._onResize.bind(this);
 
         if (isTestModeEnabled(APP.store.getState())) {
-            const cb = name => APP.store.dispatch(updateLastLargeVideoMediaEvent(name));
+            const cb = (name) => APP.store.dispatch(updateLastLargeVideoMediaEvent(name));
 
-            containerEvents.forEach(event => {
+            containerEvents.forEach((event) => {
                 this.$video[0].addEventListener(event, cb.bind(this, event));
             });
         }
@@ -293,7 +286,6 @@ export class VideoContainer extends LargeContainer {
     getStreamSize() {
         const video = this.$video[0];
 
-
         return {
             width: video.videoWidth,
             height: video.videoHeight
@@ -310,17 +302,10 @@ export class VideoContainer extends LargeContainer {
         const { width, height } = this.getStreamSize();
 
         if (this.stream && this.isScreenSharing()) {
-            return computeDesktopVideoSize(width,
-                height,
-                containerWidth,
-                containerHeight);
+            return computeDesktopVideoSize(width, height, containerWidth, containerHeight);
         }
 
-        return computeCameraVideoSize(width,
-            height,
-            containerWidth,
-            containerHeight,
-            interfaceConfig.VIDEO_LAYOUT_FIT);
+        return computeCameraVideoSize(width, height, containerWidth, containerHeight, interfaceConfig.VIDEO_LAYOUT_FIT);
     }
 
     /* eslint-disable max-params */
@@ -342,17 +327,10 @@ export class VideoContainer extends LargeContainer {
                 containerWidthToUse -= Filmstrip.getVerticalFilmstripWidth();
             }
 
-            return getCameraVideoPosition(width,
-                height,
-                containerWidthToUse,
-                containerHeight);
+            return getCameraVideoPosition(width, height, containerWidthToUse, containerHeight);
         }
 
-        return getCameraVideoPosition(width,
-                height,
-                containerWidthToUse,
-                containerHeight);
-
+        return getCameraVideoPosition(width, height, containerWidthToUse, containerHeight);
     }
 
     /**
@@ -378,14 +356,12 @@ export class VideoContainer extends LargeContainer {
         if (this.avatarDisplayed) {
             const $avatarImage = $('#dominantSpeakerAvatarContainer');
 
-            $element.css(
-                'top',
-                $avatarImage.offset().top + $avatarImage.height() + 10);
+            $element.css('top', $avatarImage.offset().top + $avatarImage.height() + 10);
         } else {
             const height = $element.height();
             const parentHeight = $element.parent().height();
 
-            $element.css('top', (parentHeight / 2) - (height / 2));
+            $element.css('top', parentHeight / 2 - height / 2);
         }
     }
 
@@ -408,7 +384,7 @@ export class VideoContainer extends LargeContainer {
 
         this.positionRemoteStatusMessages();
 
-        const [ width, height ] = this._getVideoSize(containerWidth, containerHeight);
+        const [width, height] = this._getVideoSize(containerWidth, containerHeight);
 
         if (width === 0 || height === 0) {
             // We don't need to set 0 for width or height since the visibility is controled by the visibility css prop
@@ -419,7 +395,7 @@ export class VideoContainer extends LargeContainer {
             return;
         }
 
-        if ((containerWidth > width) || (containerHeight > height)) {
+        if (containerWidth > width || containerHeight > height) {
             this._backgroundOrientation = containerWidth > width ? ORIENTATION.LANDSCAPE : ORIENTATION.PORTRAIT;
             this._hideBackground = false;
         } else {
@@ -428,22 +404,24 @@ export class VideoContainer extends LargeContainer {
 
         this._updateBackground();
 
-        const { horizontalIndent, verticalIndent }
-            = this.getVideoPosition(width, height, containerWidth, containerHeight);
+        const { horizontalIndent, verticalIndent } = this.getVideoPosition(width, height, containerWidth, containerHeight);
 
-        this.$wrapper.animate({
-            width,
-            height,
+        this.$wrapper.animate(
+            {
+                width,
+                height,
 
-            top: verticalIndent,
-            bottom: verticalIndent,
+                top: verticalIndent,
+                bottom: verticalIndent,
 
-            left: horizontalIndent,
-            right: horizontalIndent
-        }, {
-            queue: false,
-            duration: animate ? 500 : 0
-        });
+                left: horizontalIndent,
+                right: horizontalIndent
+            },
+            {
+                queue: false,
+                duration: animate ? 500 : 0
+            }
+        );
     }
 
     /**
@@ -517,7 +495,6 @@ export class VideoContainer extends LargeContainer {
         this._updateBackground();
     }
 
-
     /**
      * Check if current video stream is screen sharing.
      * @returns {boolean}
@@ -548,16 +525,12 @@ export class VideoContainer extends LargeContainer {
      * TODO: refactor this since Temasys is no longer supported.
      */
     show() {
-        return new Promise(resolve => {
-            this.$wrapperParent.css('visibility', 'visible').fadeTo(
-                FADE_DURATION_MS,
-                1,
-                () => {
-                    this._isHidden = false;
-                    this._updateBackground();
-                    resolve();
-                }
-            );
+        return new Promise((resolve) => {
+            this.$wrapperParent.css('visibility', 'visible').fadeTo(FADE_DURATION_MS, 1, () => {
+                this._isHidden = false;
+                this._updateBackground();
+                resolve();
+            });
         });
     }
 
@@ -569,7 +542,7 @@ export class VideoContainer extends LargeContainer {
         // hide its avatar
         this.showAvatar(false);
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this.$wrapperParent.fadeTo(FADE_DURATION_MS, 0, () => {
                 this.$wrapperParent.css('visibility', 'hidden');
                 this._isHidden = true;
@@ -593,7 +566,7 @@ export class VideoContainer extends LargeContainer {
      * @returns {void}
      */
     _onResize() {
-        this._resizeListeners.forEach(callback => callback());
+        this._resizeListeners.forEach((callback) => callback());
     }
 
     /**
@@ -608,23 +581,18 @@ export class VideoContainer extends LargeContainer {
         // Do not the background display on browsers that might experience
         // performance issues from the presence of the background or if
         // explicitly disabled.
-        if (interfaceConfig.DISABLE_VIDEO_BACKGROUND
-                || browser.isFirefox()
-                || browser.isSafari()) {
+        if (interfaceConfig.DISABLE_VIDEO_BACKGROUND || browser.isFirefox() || browser.isSafari()) {
             return;
         }
 
         ReactDOM.render(
             <LargeVideoBackground
-                hidden = { this._hideBackground || this._isHidden }
-                mirror = {
-                    this.stream
-                    && this.stream.isLocal()
-                    && this.localFlipX
-                }
-                orientationFit = { this._backgroundOrientation }
-                videoElement = { this.$video && this.$video[0] }
-                videoTrack = { this.stream } />,
+                hidden={this._hideBackground || this._isHidden}
+                mirror={this.stream && this.stream.isLocal() && this.localFlipX}
+                orientationFit={this._backgroundOrientation}
+                videoElement={this.$video && this.$video[0]}
+                videoTrack={this.stream}
+            />,
             document.getElementById('largeVideoBackgroundContainer')
         );
     }

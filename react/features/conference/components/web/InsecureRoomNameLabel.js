@@ -20,12 +20,8 @@ class InsecureRoomNameLabel extends AbstractInsecureRoomNameLabel {
      */
     _render() {
         return (
-            <Tooltip
-                content = { this.props.t('security.insecureRoomNameWarning') }
-                position = 'left'>
-                <CircularLabel
-                    className = 'insecure'
-                    icon = { IconWarning } />
+            <Tooltip content={this.props.t('security.insecureRoomNameWarning')} position="left">
+                <CircularLabel className="insecure" icon={IconWarning} />
             </Tooltip>
         );
     }

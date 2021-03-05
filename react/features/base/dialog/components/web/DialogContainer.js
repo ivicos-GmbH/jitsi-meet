@@ -2,9 +2,7 @@ import { ModalTransition } from '@atlaskit/modal-dialog';
 import React from 'react';
 
 import { connect } from '../../../redux';
-import AbstractDialogContainer, {
-    abstractMapStateToProps
-} from '../AbstractDialogContainer';
+import AbstractDialogContainer, { abstractMapStateToProps } from '../AbstractDialogContainer';
 
 /**
  * Implements a DialogContainer responsible for showing all dialogs. Necessary
@@ -24,13 +22,8 @@ class DialogContainer extends AbstractDialogContainer {
             return this._renderDialogContent();
         }
 
-        return (
-            <ModalTransition>
-                { this._renderDialogContent() }
-            </ModalTransition>
-        );
+        return <ModalTransition>{this._renderDialogContent()}</ModalTransition>;
     }
 }
 
 export default connect(abstractMapStateToProps)(DialogContainer);
-

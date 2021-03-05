@@ -1,4 +1,3 @@
-
 // @flow
 
 import { Image } from 'react-native';

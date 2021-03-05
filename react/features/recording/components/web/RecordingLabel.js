@@ -6,9 +6,7 @@ import { translate } from '../../../base/i18n';
 import { CircularLabel } from '../../../base/label';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { connect } from '../../../base/redux';
-import AbstractRecordingLabel, {
-    _mapStateToProps
-} from '../AbstractRecordingLabel';
+import AbstractRecordingLabel, { _mapStateToProps } from '../AbstractRecordingLabel';
 
 /**
  * Implements a React {@link Component} which displays the current state of
@@ -31,14 +29,12 @@ class RecordingLabel extends AbstractRecordingLabel {
 
         return (
             <div>
-                <CircularLabel
-                    className = { this.props.mode }
-                    label = { this.props.t(this._getLabelKey()) } />
+                <CircularLabel className={this.props.mode} label={this.props.t(this._getLabelKey())} />
             </div>
         );
     }
 
-    _getLabelKey: () => ?string
+    _getLabelKey: () => ?string;
 }
 
 export default translate(connect(_mapStateToProps)(RecordingLabel));

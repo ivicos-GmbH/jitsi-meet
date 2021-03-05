@@ -14,7 +14,6 @@ import ShowDialInInfoButton from './ShowDialInInfoButton.native';
 import styles from './styles';
 
 type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -34,7 +33,7 @@ type Props = {
      * True if the menu is currently open, false otherwise.
      */
     _isOpen: boolean
-}
+};
 
 // eslint-disable-next-line prefer-const
 let RecentListItemMenu_;
@@ -70,11 +69,9 @@ class RecentListItemMenu extends PureComponent<Props> {
         };
 
         return (
-            <BottomSheet
-                onCancel = { this._onCancel }
-                renderHeader = { this._renderMenuHeader }>
-                <DeleteItemButton { ...buttonProps } />
-                <ShowDialInInfoButton { ...buttonProps } />
+            <BottomSheet onCancel={this._onCancel} renderHeader={this._renderMenuHeader}>
+                <DeleteItemButton {...buttonProps} />
+                <ShowDialInInfoButton {...buttonProps} />
             </BottomSheet>
         );
     }
@@ -108,16 +105,9 @@ class RecentListItemMenu extends PureComponent<Props> {
         const { _bottomSheetStyles, item } = this.props;
 
         return (
-            <View
-                style = { [
-                    _bottomSheetStyles.sheet,
-                    styles.entryNameContainer
-                ] }>
-                <Text
-                    ellipsizeMode = { 'middle' }
-                    numberOfLines = { 1 }
-                    style = { styles.entryNameLabel }>
-                    { item.title }
+            <View style={[_bottomSheetStyles.sheet, styles.entryNameContainer]}>
+                <Text ellipsizeMode={'middle'} numberOfLines={1} style={styles.entryNameLabel}>
+                    {item.title}
                 </Text>
             </View>
         );

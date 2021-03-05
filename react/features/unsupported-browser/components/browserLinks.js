@@ -19,8 +19,7 @@ export const CHROMIUM = 'https://www.chromium.org/';
  *
  * @type {string}
  */
-export const EDGE
-    = 'https://www.microsoft.com/en-us/windows/microsoft-edge';
+export const EDGE = 'https://www.microsoft.com/en-us/windows/microsoft-edge';
 
 /**
  * The URL at which Mozilla Firefox is available for download.

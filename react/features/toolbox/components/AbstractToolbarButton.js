@@ -7,7 +7,6 @@ import { Component } from 'react';
  * {@link AbstractToolbarButton}.
  */
 export type Props = {
-
     /**
      * A succinct description of what the button does. Used by accessibility
      * tools and torture tests.

@@ -1,11 +1,6 @@
 // @flow
 
-import {
-    ACTION_SHORTCUT_TRIGGERED,
-    AUDIO_MUTE,
-    createShortcutEvent,
-    sendAnalytics
-} from '../../analytics';
+import { ACTION_SHORTCUT_TRIGGERED, AUDIO_MUTE, createShortcutEvent, sendAnalytics } from '../../analytics';
 import { getFeatureFlag, AUDIO_MUTE_BUTTON_ENABLED } from '../../base/flags';
 import { translate } from '../../base/i18n';
 import { MEDIA_TYPE } from '../../base/media';
@@ -21,7 +16,6 @@ declare var APP: Object;
  * The type of the React {@code Component} props of {@link AudioMuteButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * Whether audio is currently muted or not.
      */
@@ -36,7 +30,7 @@ type Props = AbstractButtonProps & {
      * The redux {@code dispatch} function.
      */
     dispatch: Function
-}
+};
 
 /**
  * Component that renders a toolbar button for toggling audio mute.
@@ -68,12 +62,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
      * @returns {void}
      */
     componentDidMount() {
-        typeof APP === 'undefined'
-            || APP.keyboardshortcut.registerShortcut(
-                'M',
-                null,
-                this._onKeyboardShortcut,
-                'keyboardShortcuts.mute');
+        typeof APP === 'undefined' || APP.keyboardshortcut.registerShortcut('M', null, this._onKeyboardShortcut, 'keyboardShortcuts.mute');
     }
 
     /**
@@ -83,8 +72,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
      * @returns {void}
      */
     componentWillUnmount() {
-        typeof APP === 'undefined'
-            || APP.keyboardshortcut.unregisterShortcut('M');
+        typeof APP === 'undefined' || APP.keyboardshortcut.unregisterShortcut('M');
     }
 
     /**
@@ -108,11 +96,7 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
      * @returns {void}
      */
     _onKeyboardShortcut() {
-        sendAnalytics(
-            createShortcutEvent(
-                AUDIO_MUTE,
-                ACTION_SHORTCUT_TRIGGERED,
-                { enable: !this._isAudioMuted() }));
+        sendAnalytics(createShortcutEvent(AUDIO_MUTE, ACTION_SHORTCUT_TRIGGERED, { enable: !this._isAudioMuted() }));
 
         super._handleClick();
     }

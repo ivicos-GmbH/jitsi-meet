@@ -7,7 +7,6 @@ export const INDICATOR_COLOR = ColorPalette.lightGrey;
 const WV_BACKGROUND = 'rgb(71, 71, 71)';
 
 export default {
-
     backDrop: {
         backgroundColor: WV_BACKGROUND
     },

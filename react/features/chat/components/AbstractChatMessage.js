@@ -14,7 +14,6 @@ const TIMESTAMP_FORMAT = 'H:mm';
  * The type of the React {@code Component} props of {@code AbstractChatMessage}.
  */
 export type Props = {
-
     /**
      * The representation of a chat message.
      */
@@ -54,8 +53,7 @@ export default class AbstractChatMessage<P: Props> extends PureComponent<P> {
      * @returns {string}
      */
     _getFormattedTimestamp() {
-        return getLocalizedDateFormatter(new Date(this.props.message.timestamp))
-            .format(TIMESTAMP_FORMAT);
+        return getLocalizedDateFormatter(new Date(this.props.message.timestamp)).format(TIMESTAMP_FORMAT);
     }
 
     /**
@@ -68,8 +66,8 @@ export default class AbstractChatMessage<P: Props> extends PureComponent<P> {
 
         return message.messageType === MESSAGE_TYPE_ERROR
             ? this.props.t('chat.error', {
-                error: message.message
-            })
+                  error: message.message
+              })
             : message.message;
     }
 

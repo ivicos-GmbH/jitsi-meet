@@ -2,20 +2,13 @@
 
 import { Component } from 'react';
 
-import {
-    createRecordingDialogEvent,
-    sendAnalytics
-} from '../../../analytics';
+import { createRecordingDialogEvent, sendAnalytics } from '../../../analytics';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
-import {
-    getDropboxData,
-    isEnabled as isDropboxEnabled
-} from '../../../dropbox';
+import { getDropboxData, isEnabled as isDropboxEnabled } from '../../../dropbox';
 import { toggleRequestingSubtitles } from '../../../subtitles';
 import { RECORDING_TYPES } from '../../constants';
 
 type Props = {
-
     /**
      * Requests subtitles when recording is turned on.
      */
@@ -62,10 +55,9 @@ type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 type State = {
-
     /**
      * <tt>true</tt> if we have valid oauth token.
      */
@@ -111,16 +103,14 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
 
         // Bind event handler so it is only bound once for every instance.
         this._onSubmit = this._onSubmit.bind(this);
-        this._onSelectedRecordingServiceChanged
-            = this._onSelectedRecordingServiceChanged.bind(this);
+        this._onSelectedRecordingServiceChanged = this._onSelectedRecordingServiceChanged.bind(this);
         this._onSharingSettingChanged = this._onSharingSettingChanged.bind(this);
 
         let selectedRecordingService;
 
         // TODO: Potentially check if we need to handle changes of
         // _fileRecordingsServiceEnabled and _areIntegrationsEnabled()
-        if (this.props._fileRecordingsServiceEnabled
-                || !this._areIntegrationsEnabled()) {
+        if (this.props._fileRecordingsServiceEnabled || !this._areIntegrationsEnabled()) {
             selectedRecordingService = RECORDING_TYPES.JITSI_REC_SERVICE;
         } else if (this._areIntegrationsEnabled()) {
             selectedRecordingService = RECORDING_TYPES.DROPBOX;
@@ -221,7 +211,7 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
                 isTokenValid: false,
                 isValidating: true
             });
-            getDropboxData(_token, _appKey).then(data => {
+            getDropboxData(_token, _appKey).then((data) => {
                 if (typeof data === 'undefined') {
                     this.setState({
                         isTokenValid: false,
@@ -251,31 +241,26 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
         let appData;
         const attributes = {};
 
-        if (_isDropboxEnabled
-                && _token
-                && this.state.selectedRecordingService
-                    === RECORDING_TYPES.DROPBOX) {
+        if (_isDropboxEnabled && _token && this.state.selectedRecordingService === RECORDING_TYPES.DROPBOX) {
             appData = JSON.stringify({
-                'file_recording_metadata': {
-                    'upload_credentials': {
-                        'service_name': RECORDING_TYPES.DROPBOX,
-                        'token': _token
+                file_recording_metadata: {
+                    upload_credentials: {
+                        service_name: RECORDING_TYPES.DROPBOX,
+                        token: _token
                     }
                 }
             });
             attributes.type = RECORDING_TYPES.DROPBOX;
         } else {
             appData = JSON.stringify({
-                'file_recording_metadata': {
-                    'share': this.state.sharingEnabled
+                file_recording_metadata: {
+                    share: this.state.sharingEnabled
                 }
             });
             attributes.type = RECORDING_TYPES.JITSI_REC_SERVICE;
         }
 
-        sendAnalytics(
-            createRecordingDialogEvent('start', 'confirm.button', attributes)
-        );
+        sendAnalytics(createRecordingDialogEvent('start', 'confirm.button', attributes));
 
         _conference.startRecording({
             mode: JitsiRecordingConstants.mode.FILE,
@@ -295,7 +280,7 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
      * @protected
      * @returns {React$Component}
      */
-    _renderDialogContent: () => React$Component<*>
+    _renderDialogContent: () => React$Component<*>;
 }
 
 /**
@@ -315,12 +300,7 @@ class AbstractStartRecordingDialog extends Component<Props, State> {
  * }}
  */
 export function mapStateToProps(state: Object) {
-    const {
-        autoCaptionOnRecord = false,
-        fileRecordingsServiceEnabled = false,
-        fileRecordingsServiceSharingEnabled = false,
-        dropbox = {}
-    } = state['features/base/config'];
+    const { autoCaptionOnRecord = false, fileRecordingsServiceEnabled = false, fileRecordingsServiceSharingEnabled = false, dropbox = {} } = state['features/base/config'];
 
     return {
         _appKey: dropbox.appKey,

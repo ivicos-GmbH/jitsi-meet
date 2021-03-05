@@ -10,7 +10,6 @@ import { incomingCallAnswered } from '../actions';
  * The type of the React {@code Component} props of {@link AnswerButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */

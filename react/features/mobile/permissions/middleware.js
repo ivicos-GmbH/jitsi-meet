@@ -2,7 +2,6 @@
 
 import { Alert } from 'react-native';
 
-
 import { isRoomValid } from '../../base/conference';
 import { MiddlewareRegistry } from '../../base/redux';
 import { TRACK_CREATE_ERROR } from '../../base/tracks';
@@ -16,23 +15,21 @@ import { openSettings } from './functions';
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     switch (action.type) {
-    case TRACK_CREATE_ERROR:
-        // XXX We do not currently have user interface outside of a conference
-        // which the user may tap and cause a permission-related error. If we
-        // alert whenever we (intend to) ask for a permission, the scenario of
-        // entering the WelcomePage, being asked for the camera permission, me
-        // denying it, and being alerted that there is an error is overwhelming
-        // me.
-        if (action.permissionDenied
-                && isRoomValid(
-                        store.getState()['features/base/conference'].room)) {
-            _alertPermissionErrorWithSettings(action.trackType);
-        }
-        break;
+        case TRACK_CREATE_ERROR:
+            // XXX We do not currently have user interface outside of a conference
+            // which the user may tap and cause a permission-related error. If we
+            // alert whenever we (intend to) ask for a permission, the scenario of
+            // entering the WelcomePage, being asked for the camera permission, me
+            // denying it, and being alerted that there is an error is overwhelming
+            // me.
+            if (action.permissionDenied && isRoomValid(store.getState()['features/base/conference'].room)) {
+                _alertPermissionErrorWithSettings(action.trackType);
+            }
+            break;
     }
 
     return result;
@@ -53,10 +50,7 @@ function _alertPermissionErrorWithSettings(trackType) {
 
     /* eslint-disable indent */
 
-    const message
-        = `${deviceType
-            } permission is required to participate in conferences with ${
-            trackType}. Please grant it in Settings.`;
+    const message = `${deviceType} permission is required to participate in conferences with ${trackType}. Please grant it in Settings.`;
 
     /* eslint-ensable indent */
 
@@ -70,5 +64,6 @@ function _alertPermissionErrorWithSettings(trackType) {
                 text: 'Settings'
             }
         ],
-        { cancelable: false });
+        { cancelable: false }
+    );
 }

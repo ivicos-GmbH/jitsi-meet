@@ -8,11 +8,7 @@ import { JitsiModal } from '../../../base/modal';
 import { connect } from '../../../base/redux';
 import { SETTINGS_VIEW_ID } from '../../constants';
 import { normalizeUserInputURL, isServerURLChangeEnabled } from '../../functions';
-import {
-    AbstractSettingsView,
-    _mapStateToProps as _abstractMapStateToProps,
-    type Props as AbstractProps
-} from '../AbstractSettingsView';
+import { AbstractSettingsView, _mapStateToProps as _abstractMapStateToProps, type Props as AbstractProps } from '../AbstractSettingsView';
 
 import FormRow from './FormRow';
 import FormSectionHeader from './FormSectionHeader';
@@ -23,7 +19,6 @@ import FormSectionHeader from './FormSectionHeader';
 const { AppInfo } = NativeModules;
 
 type State = {
-
     /**
      * State variable for the disable call integration switch.
      */
@@ -67,22 +62,21 @@ type State = {
     /**
      * State variable for the start with video muted switch.
      */
-    startWithVideoMuted: boolean,
-}
+    startWithVideoMuted: boolean
+};
 
 /**
  * The type of the React {@code Component} props of
  * {@link SettingsView}.
  */
 type Props = AbstractProps & {
-
     /**
      * Flag indicating if URL can be changed by user.
      *
      * @protected
      */
     _serverURLChangeEnabled: boolean
-}
+};
 
 /**
  * The native container rendering the app settings page.
@@ -99,16 +93,7 @@ class SettingsView extends AbstractSettingsView<Props, State> {
      */
     constructor(props) {
         super(props);
-        const {
-            disableCallIntegration,
-            disableCrashReporting,
-            disableP2P,
-            displayName,
-            email,
-            serverURL,
-            startWithAudioMuted,
-            startWithVideoMuted
-        } = props._settings || {};
+        const { disableCallIntegration, disableCrashReporting, disableP2P, displayName, email, serverURL, startWithAudioMuted, startWithVideoMuted } = props._settings || {};
 
         this.state = {
             disableCallIntegration,
@@ -144,76 +129,59 @@ class SettingsView extends AbstractSettingsView<Props, State> {
 
         return (
             <JitsiModal
-                headerProps = {{
+                headerProps={{
                     headerLabelKey: 'settingsView.header'
                 }}
-                modalId = { SETTINGS_VIEW_ID }
-                onClose = { this._onClose }>
+                modalId={SETTINGS_VIEW_ID}
+                onClose={this._onClose}
+            >
                 <ScrollView>
-                    <FormSectionHeader
-                        label = 'settingsView.profileSection' />
-                    <FormRow
-                        fieldSeparator = { true }
-                        label = 'settingsView.displayName'
-                        layout = 'column'>
+                    <FormSectionHeader label="settingsView.profileSection" />
+                    <FormRow fieldSeparator={true} label="settingsView.displayName" layout="column">
                         <TextInput
-                            autoCorrect = { false }
-                            onChangeText = { this._onChangeDisplayName }
-                            placeholder = 'John Doe'
-                            textContentType = { 'name' } // iOS only
-                            value = { displayName } />
+                            autoCorrect={false}
+                            onChangeText={this._onChangeDisplayName}
+                            placeholder="John Doe"
+                            textContentType={'name'} // iOS only
+                            value={displayName}
+                        />
                     </FormRow>
-                    <FormRow
-                        label = 'settingsView.email'
-                        layout = 'column'>
+                    <FormRow label="settingsView.email" layout="column">
                         <TextInput
-                            autoCapitalize = 'none'
-                            autoCorrect = { false }
-                            keyboardType = { 'email-address' }
-                            onChangeText = { this._onChangeEmail }
-                            placeholder = 'email@example.com'
-                            textContentType = { 'emailAddress' } // iOS only
-                            value = { email } />
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            keyboardType={'email-address'}
+                            onChangeText={this._onChangeEmail}
+                            placeholder="email@example.com"
+                            textContentType={'emailAddress'} // iOS only
+                            value={email}
+                        />
                     </FormRow>
-                    <FormSectionHeader
-                        label = 'settingsView.conferenceSection' />
-                    <FormRow
-                        fieldSeparator = { true }
-                        label = 'settingsView.serverURL'
-                        layout = 'column'>
+                    <FormSectionHeader label="settingsView.conferenceSection" />
+                    <FormRow fieldSeparator={true} label="settingsView.serverURL" layout="column">
                         <TextInput
-                            autoCapitalize = 'none'
-                            autoCorrect = { false }
-                            editable = { this.props._serverURLChangeEnabled }
-                            keyboardType = { 'url' }
-                            onBlur = { this._onBlurServerURL }
-                            onChangeText = { this._onChangeServerURL }
-                            placeholder = { this.props._serverURL }
-                            textContentType = { 'URL' } // iOS only
-                            value = { serverURL } />
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            editable={this.props._serverURLChangeEnabled}
+                            keyboardType={'url'}
+                            onBlur={this._onBlurServerURL}
+                            onChangeText={this._onChangeServerURL}
+                            placeholder={this.props._serverURL}
+                            textContentType={'URL'} // iOS only
+                            value={serverURL}
+                        />
                     </FormRow>
-                    <FormRow
-                        fieldSeparator = { true }
-                        label = 'settingsView.startWithAudioMuted'>
-                        <Switch
-                            onValueChange = { this._onStartAudioMutedChange }
-                            value = { startWithAudioMuted } />
+                    <FormRow fieldSeparator={true} label="settingsView.startWithAudioMuted">
+                        <Switch onValueChange={this._onStartAudioMutedChange} value={startWithAudioMuted} />
                     </FormRow>
-                    <FormRow label = 'settingsView.startWithVideoMuted'>
-                        <Switch
-                            onValueChange = { this._onStartVideoMutedChange }
-                            value = { startWithVideoMuted } />
+                    <FormRow label="settingsView.startWithVideoMuted">
+                        <Switch onValueChange={this._onStartVideoMutedChange} value={startWithVideoMuted} />
                     </FormRow>
-                    <FormSectionHeader
-                        label = 'settingsView.buildInfoSection' />
-                    <FormRow
-                        label = 'settingsView.version'>
-                        <Text>
-                            {`${AppInfo.version} build ${AppInfo.buildNumber}`}
-                        </Text>
+                    <FormSectionHeader label="settingsView.buildInfoSection" />
+                    <FormRow label="settingsView.version">
+                        <Text>{`${AppInfo.version} build ${AppInfo.buildNumber}`}</Text>
                     </FormRow>
-                    <FormSectionHeader
-                        label = 'settingsView.advanced' />
+                    <FormSectionHeader label="settingsView.advanced" />
                     {this._renderAdvancedSettings()}
                 </ScrollView>
             </JitsiModal>
@@ -414,39 +382,23 @@ class SettingsView extends AbstractSettingsView<Props, State> {
 
         if (!showAdvanced) {
             return (
-                <FormRow
-                    fieldSeparator = { true }
-                    label = 'settingsView.showAdvanced'>
-                    <Switch
-                        onValueChange = { this._onShowAdvanced }
-                        value = { showAdvanced } />
+                <FormRow fieldSeparator={true} label="settingsView.showAdvanced">
+                    <Switch onValueChange={this._onShowAdvanced} value={showAdvanced} />
                 </FormRow>
             );
         }
 
         return (
             <>
-                <FormRow
-                    fieldSeparator = { true }
-                    label = 'settingsView.disableCallIntegration'>
-                    <Switch
-                        onValueChange = { this._onDisableCallIntegration }
-                        value = { disableCallIntegration } />
+                <FormRow fieldSeparator={true} label="settingsView.disableCallIntegration">
+                    <Switch onValueChange={this._onDisableCallIntegration} value={disableCallIntegration} />
                 </FormRow>
-                <FormRow
-                    fieldSeparator = { true }
-                    label = 'settingsView.disableP2P'>
-                    <Switch
-                        onValueChange = { this._onDisableP2P }
-                        value = { disableP2P } />
+                <FormRow fieldSeparator={true} label="settingsView.disableP2P">
+                    <Switch onValueChange={this._onDisableP2P} value={disableP2P} />
                 </FormRow>
                 {AppInfo.GOOGLE_SERVICES_ENABLED && (
-                    <FormRow
-                        fieldSeparator = { true }
-                        label = 'settingsView.disableCrashReporting'>
-                        <Switch
-                            onValueChange = { this._onDisableCrashReporting }
-                            value = { disableCrashReporting } />
+                    <FormRow fieldSeparator={true} label="settingsView.disableCrashReporting">
+                        <Switch onValueChange={this._onDisableCrashReporting} value={disableCrashReporting} />
                     </FormRow>
                 )}
             </>
@@ -476,16 +428,12 @@ class SettingsView extends AbstractSettingsView<Props, State> {
     _showURLAlert() {
         const { t } = this.props;
 
-        Alert.alert(
-            t('settingsView.alertTitle'),
-            t('settingsView.alertURLText'),
-            [
-                {
-                    onPress: () => this._urlField.focus(),
-                    text: t('settingsView.alertOk')
-                }
-            ]
-        );
+        Alert.alert(t('settingsView.alertTitle'), t('settingsView.alertURLText'), [
+            {
+                onPress: () => this._urlField.focus(),
+                text: t('settingsView.alertOk')
+            }
+        ]);
     }
 
     /**
@@ -496,19 +444,15 @@ class SettingsView extends AbstractSettingsView<Props, State> {
     _showCrashReportingDisableAlert() {
         const { t } = this.props;
 
-        Alert.alert(
-            t('settingsView.alertTitle'),
-            t('settingsView.disableCrashReportingWarning'),
-            [
-                {
-                    onPress: () => this._disableCrashReporting(true),
-                    text: t('settingsView.alertOk')
-                },
-                {
-                    text: t('settingsView.alertCancel')
-                }
-            ]
-        );
+        Alert.alert(t('settingsView.alertTitle'), t('settingsView.disableCrashReportingWarning'), [
+            {
+                onPress: () => this._disableCrashReporting(true),
+                text: t('settingsView.alertOk')
+            },
+            {
+                text: t('settingsView.alertCancel')
+            }
+        ]);
     }
 
     _updateSettings: (Object) => void;

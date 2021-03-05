@@ -9,7 +9,6 @@ import { connect } from '../../../base/redux';
 import { toggleLobbyMode } from '../../actions';
 
 type Props = {
-
     /**
      * True if lobby is currently enabled in the conference.
      */
@@ -32,12 +31,11 @@ type Props = {
 };
 
 type State = {
-
     /**
      * True if the lobby switch is toggled on.
      */
     lobbyEnabled: boolean
-}
+};
 
 /**
  * Implements a security feature section to control lobby mode.
@@ -65,7 +63,6 @@ class LobbySection extends PureComponent<Props, State> {
      */
     static getDerivedStateFromProps(props: Props, state: Object) {
         if (props._lobbyEnabled !== state.lobbyEnabled) {
-
             return {
                 lobbyEnabled: props._lobbyEnabled
             };
@@ -88,21 +85,14 @@ class LobbySection extends PureComponent<Props, State> {
 
         return (
             <>
-                <div id = 'lobby-section'>
-                    <p className = 'description'>
-                        { t('lobby.enableDialogText') }
-                    </p>
-                    <div className = 'control-row'>
-                        <label htmlFor = 'lobby-section-switch'>
-                            { t('lobby.toggleLabel') }
-                        </label>
-                        <Switch
-                            id = 'lobby-section-switch'
-                            onValueChange = { this._onToggleLobby }
-                            value = { this.state.lobbyEnabled } />
+                <div id="lobby-section">
+                    <p className="description">{t('lobby.enableDialogText')}</p>
+                    <div className="control-row">
+                        <label htmlFor="lobby-section-switch">{t('lobby.toggleLabel')}</label>
+                        <Switch id="lobby-section-switch" onValueChange={this._onToggleLobby} value={this.state.lobbyEnabled} />
                     </div>
                 </div>
-                <div className = 'separator-line' />
+                <div className="separator-line" />
             </>
         );
     }
@@ -137,8 +127,7 @@ function mapStateToProps(state: Object): $Shape<Props> {
 
     return {
         _lobbyEnabled: state['features/lobby'].lobbyEnabled,
-        _visible: conference && conference.isLobbySupported() && isLocalParticipantModerator(state)
-            && !hideLobbyButton
+        _visible: conference && conference.isLobbySupported() && isLocalParticipantModerator(state) && !hideLobbyButton
     };
 }
 

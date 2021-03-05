@@ -3,10 +3,7 @@
 import Spinner from '@atlaskit/spinner';
 import React from 'react';
 
-import {
-    createCalendarClickedEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createCalendarClickedEvent, sendAnalytics } from '../../analytics';
 import { translate } from '../../base/i18n';
 import { Icon, IconPlusCalendar } from '../../base/icons';
 import { AbstractPage } from '../../base/react';
@@ -23,7 +20,6 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of {@link CalendarList}.
  */
 type Props = {
-
     /**
      * The error object containing details about any error that has occurred
      * while interacting with calendar integration.
@@ -69,8 +65,7 @@ class CalendarList extends AbstractPage<Props> {
         super(props);
 
         // Bind event handlers so they are only bound once per instance.
-        this._getRenderListEmptyComponent
-            = this._getRenderListEmptyComponent.bind(this);
+        this._getRenderListEmptyComponent = this._getRenderListEmptyComponent.bind(this);
         this._onOpenSettings = this._onOpenSettings.bind(this);
         this._onRefreshEvents = this._onRefreshEvents.bind(this);
     }
@@ -83,14 +78,7 @@ class CalendarList extends AbstractPage<Props> {
     render() {
         const { disabled } = this.props;
 
-        return (
-            CalendarListContent
-                ? <CalendarListContent
-                    disabled = { disabled }
-                    listEmptyComponent
-                        = { this._getRenderListEmptyComponent() } />
-                : null
-        );
+        return CalendarListContent ? <CalendarListContent disabled={disabled} listEmptyComponent={this._getRenderListEmptyComponent()} /> : null;
     }
 
     /**
@@ -117,25 +105,19 @@ class CalendarList extends AbstractPage<Props> {
         }
 
         return (
-            <div className = 'meetings-list-empty'>
-                <p className = 'description'>
-                    { t(errorMessageKey) }
-                </p>
-                <div className = 'calendar-action-buttons'>
-                    { showSettingsButton
-                        && <div
-                            className = 'button'
-                            onClick = { this._onOpenSettings }>
-                            { t('calendarSync.permissionButton') }
+            <div className="meetings-list-empty">
+                <p className="description">{t(errorMessageKey)}</p>
+                <div className="calendar-action-buttons">
+                    {showSettingsButton && (
+                        <div className="button" onClick={this._onOpenSettings}>
+                            {t('calendarSync.permissionButton')}
                         </div>
-                    }
-                    { showRefreshButton
-                        && <div
-                            className = 'button'
-                            onClick = { this._onRefreshEvents }>
-                            { t('calendarSync.refresh') }
+                    )}
+                    {showRefreshButton && (
+                        <div className="button" onClick={this._onRefreshEvents}>
+                            {t('calendarSync.refresh')}
                         </div>
-                    }
+                    )}
                 </div>
             </div>
         );
@@ -151,57 +133,41 @@ class CalendarList extends AbstractPage<Props> {
      * @returns {React$Component}
      */
     _getRenderListEmptyComponent() {
-        const {
-            _calendarError,
-            _hasIntegrationSelected,
-            _hasLoadedEvents,
-            t
-        } = this.props;
+        const { _calendarError, _hasIntegrationSelected, _hasLoadedEvents, t } = this.props;
 
         if (_calendarError) {
             return this._getErrorMessage();
         } else if (_hasIntegrationSelected && _hasLoadedEvents) {
             return (
-                <div className = 'meetings-list-empty'>
-                    <p className = 'description'>
-                        { t('calendarSync.noEvents') }
-                    </p>
-                    <div
-                        className = 'button'
-                        onClick = { this._onRefreshEvents }>
-                        { t('calendarSync.refresh') }
+                <div className="meetings-list-empty">
+                    <p className="description">{t('calendarSync.noEvents')}</p>
+                    <div className="button" onClick={this._onRefreshEvents}>
+                        {t('calendarSync.refresh')}
                     </div>
                 </div>
             );
         } else if (_hasIntegrationSelected && !_hasLoadedEvents) {
             return (
-                <div className = 'meetings-list-empty'>
-                    <Spinner
-                        invertColor = { true }
-                        isCompleting = { false }
-                        size = 'medium' />
+                <div className="meetings-list-empty">
+                    <Spinner invertColor={true} isCompleting={false} size="medium" />
                 </div>
             );
         }
 
         return (
-            <div className = 'meetings-list-empty'>
-                <div className = 'meetings-list-empty-image'>
-                    <img src = './images/calendar.svg' />
+            <div className="meetings-list-empty">
+                <div className="meetings-list-empty-image">
+                    <img src="./images/calendar.svg" />
                 </div>
-                <div className = 'description'>
-                    { t('welcomepage.connectCalendarText', {
+                <div className="description">
+                    {t('welcomepage.connectCalendarText', {
                         app: interfaceConfig.APP_NAME,
                         provider: interfaceConfig.PROVIDER_NAME
-                    }) }
+                    })}
                 </div>
-                <div
-                    className = 'meetings-list-empty-button'
-                    onClick = { this._onOpenSettings }>
-                    <Icon
-                        className = 'meetings-list-empty-icon'
-                        src = { IconPlusCalendar } />
-                    <span>{ t('welcomepage.connectCalendarButton') }</span>
+                <div className="meetings-list-empty-button" onClick={this._onOpenSettings}>
+                    <Icon className="meetings-list-empty-icon" src={IconPlusCalendar} />
+                    <span>{t('welcomepage.connectCalendarButton')}</span>
                 </div>
             </div>
         );
@@ -222,7 +188,6 @@ class CalendarList extends AbstractPage<Props> {
     }
 
     _onRefreshEvents: () => void;
-
 
     /**
      * Gets an updated list of calendar events.
@@ -248,12 +213,7 @@ class CalendarList extends AbstractPage<Props> {
  * }}
  */
 function _mapStateToProps(state) {
-    const {
-        error,
-        events,
-        integrationType,
-        isLoadingEvents
-    } = state['features/calendar-sync'];
+    const { error, events, integrationType, isLoadingEvents } = state['features/calendar-sync'];
 
     return {
         _calendarError: error,

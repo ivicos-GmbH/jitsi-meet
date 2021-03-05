@@ -1,7 +1,7 @@
 import './native';
 
 // The library lib-jitsi-meet (externally) depends on the libraries jQuery
-(global => {
+((global) => {
     // jQuery
     if (typeof global.$ === 'undefined') {
         const jQuery = require('jquery');

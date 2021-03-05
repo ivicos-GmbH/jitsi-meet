@@ -107,7 +107,7 @@ export default class RnnoiseProcessor {
      * @returns {void}
      */
     _convertTo16BitPCM(f32Array: Float32Array) {
-        for (const [ index, value ] of f32Array.entries()) {
+        for (const [index, value] of f32Array.entries()) {
             f32Array[index] = value * 0x7fff;
         }
     }

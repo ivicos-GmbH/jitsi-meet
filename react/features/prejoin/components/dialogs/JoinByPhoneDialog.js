@@ -3,16 +3,8 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from '../../../base/redux';
-import {
-    getConferenceId,
-    getDefaultDialInNumber,
-    updateDialInNumbers
-} from '../../../invite';
-import {
-    dialOut as dialOutAction,
-    joinConferenceWithoutAudio as joinConferenceWithoutAudioAction,
-    openDialInPage as openDialInPageAction
-} from '../../actions';
+import { getConferenceId, getDefaultDialInNumber, updateDialInNumbers } from '../../../invite';
+import { dialOut as dialOutAction, joinConferenceWithoutAudio as joinConferenceWithoutAudioAction, openDialInPage as openDialInPageAction } from '../../actions';
 import { getDialOutStatus, getFullDialOutNumber } from '../../functions';
 
 import CallingDialog from './CallingDialog';
@@ -20,7 +12,6 @@ import DialInDialog from './DialInDialog';
 import DialOutDialog from './DialOutDialog';
 
 type Props = {
-
     /**
      * The number to call in order to join the conference.
      */
@@ -64,11 +55,10 @@ type Props = {
     /**
      * The passCode of the conference used when joining a meeting by phone.
      */
-    passCode: string,
+    passCode: string
 };
 
 type State = {
-
     /**
      * The dialout call is ongoing, 'CallingDialog' is shown;
      */
@@ -83,7 +73,7 @@ type State = {
      * If should show 'DialOutDialog'.
      */
     showDialOut: boolean
-}
+};
 
 /**
  * This is the dialog shown when a user wants to join with phone audio.
@@ -173,49 +163,26 @@ class JoinByPhoneDialog extends PureComponent<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            dialOutStatus,
-            dialInNumber,
-            dialOutNumber,
-            joinConferenceWithoutAudio,
-            passCode,
-            onClose,
-            openDialInPage
-        } = this.props;
-        const {
-            _dialOut,
-            _showDialInDialog,
-            _showDialOutDialog
-        } = this;
+        const { dialOutStatus, dialInNumber, dialOutNumber, joinConferenceWithoutAudio, passCode, onClose, openDialInPage } = this.props;
+        const { _dialOut, _showDialInDialog, _showDialOutDialog } = this;
         const { isCalling, showDialOut, showDialIn } = this.state;
-        const className = isCalling
-            ? 'prejoin-dialog prejoin-dialog--small'
-            : 'prejoin-dialog';
+        const className = isCalling ? 'prejoin-dialog prejoin-dialog--small' : 'prejoin-dialog';
 
         return (
-            <div className = 'prejoin-dialog-container'>
-                <div className = { className }>
-                    {showDialOut && (
-                        <DialOutDialog
-                            onClose = { onClose }
-                            onSubmit = { _dialOut }
-                            onTextButtonClick = { _showDialInDialog } />
-                    )}
+            <div className="prejoin-dialog-container">
+                <div className={className}>
+                    {showDialOut && <DialOutDialog onClose={onClose} onSubmit={_dialOut} onTextButtonClick={_showDialInDialog} />}
                     {showDialIn && (
                         <DialInDialog
-                            number = { dialInNumber }
-                            onBack = { _showDialOutDialog }
-                            onPrimaryButtonClick = { joinConferenceWithoutAudio }
-                            onSmallTextClick = { openDialInPage }
-                            onTextButtonClick = { onClose }
-                            passCode = { passCode } />
+                            number={dialInNumber}
+                            onBack={_showDialOutDialog}
+                            onPrimaryButtonClick={joinConferenceWithoutAudio}
+                            onSmallTextClick={openDialInPage}
+                            onTextButtonClick={onClose}
+                            passCode={passCode}
+                        />
                     )}
-                    {isCalling && (
-                        <CallingDialog
-                            number = { dialOutNumber }
-                            onClose = { onClose }
-                            status = { dialOutStatus } />
-                    )}
+                    {isCalling && <CallingDialog number={dialOutNumber} onClose={onClose} status={dialOutStatus} />}
                 </div>
             </div>
         );
@@ -243,6 +210,5 @@ const mapDispatchToProps = {
     joinConferenceWithoutAudio: joinConferenceWithoutAudioAction,
     openDialInPage: openDialInPageAction
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(JoinByPhoneDialog);

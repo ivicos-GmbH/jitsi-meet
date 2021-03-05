@@ -8,7 +8,6 @@ import { connect } from '../../../base/redux';
 import { toggleChat } from '../../actions.web';
 
 type Props = {
-
     /**
      * Function to be called when pressing the close button.
      */
@@ -32,12 +31,9 @@ type Props = {
  */
 function Header({ onCancel, className, t }: Props) {
     return (
-        <div
-            className = { className || 'chat-dialog-header' }>
-            { t('chat.title') }
-            <Icon
-                onClick = { onCancel }
-                src = { IconClose } />
+        <div className={className || 'chat-dialog-header'}>
+            {t('chat.title')}
+            <Icon onClick={onCancel} src={IconClose} />
         </div>
     );
 }

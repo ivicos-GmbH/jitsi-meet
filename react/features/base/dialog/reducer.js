@@ -15,25 +15,25 @@ import { HIDE_DIALOG, OPEN_DIALOG } from './actionTypes';
  */
 ReducerRegistry.register('features/base/dialog', (state = {}, action) => {
     switch (action.type) {
-    case HIDE_DIALOG: {
-        const { component } = action;
+        case HIDE_DIALOG: {
+            const { component } = action;
 
-        if (typeof component === 'undefined' || state.component === component) {
-            return assign(state, {
-                component: undefined,
-                componentProps: undefined,
-                rawDialog: false
-            });
+            if (typeof component === 'undefined' || state.component === component) {
+                return assign(state, {
+                    component: undefined,
+                    componentProps: undefined,
+                    rawDialog: false
+                });
+            }
+            break;
         }
-        break;
-    }
 
-    case OPEN_DIALOG:
-        return assign(state, {
-            component: action.component,
-            componentProps: action.componentProps,
-            rawDialog: action.rawDialog
-        });
+        case OPEN_DIALOG:
+            return assign(state, {
+                component: action.component,
+                componentProps: action.componentProps,
+                rawDialog: action.rawDialog
+            });
     }
 
     return state;

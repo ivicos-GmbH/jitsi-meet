@@ -9,7 +9,6 @@ import { CONNECTION_TYPE } from '../../constants';
 import { getConnectionData } from '../../functions';
 
 type Props = {
-
     /**
      * List of strings with details about the connection.
      */
@@ -24,7 +23,7 @@ type Props = {
      * Used for translation.
      */
     t: Function
-}
+};
 
 const CONNECTION_TYPE_MAP = {
     [CONNECTION_TYPE.POOR]: {
@@ -56,33 +55,28 @@ function ConnectionStatus({ connectionDetails, t, connectionType }: Props) {
     }
 
     const { connectionClass, icon, connectionText } = CONNECTION_TYPE_MAP[connectionType];
-    const [ showDetails, toggleDetails ] = useState(false);
-    const arrowClassName = showDetails
-        ? 'con-status-arrow con-status-arrow--up'
-        : 'con-status-arrow';
+    const [showDetails, toggleDetails] = useState(false);
+    const arrowClassName = showDetails ? 'con-status-arrow con-status-arrow--up' : 'con-status-arrow';
     const detailsText = connectionDetails.map(t).join(' ');
-    const detailsClassName = showDetails
-        ? 'con-status-details-visible'
-        : 'con-status-details-hidden';
+    const detailsClassName = showDetails ? 'con-status-details-visible' : 'con-status-details-hidden';
 
     return (
-        <div className = 'con-status'>
-            <div className = 'con-status-container'>
-                <div className = 'con-status-header'>
-                    <div className = { `con-status-circle ${connectionClass}` }>
-                        <Icon
-                            size = { 16 }
-                            src = { icon } />
+        <div className="con-status">
+            <div className="con-status-container">
+                <div className="con-status-header">
+                    <div className={`con-status-circle ${connectionClass}`}>
+                        <Icon size={16} src={icon} />
                     </div>
-                    <span className = 'con-status-text'>{t(connectionText)}</span>
+                    <span className="con-status-text">{t(connectionText)}</span>
                     <Icon
-                        className = { arrowClassName }
+                        className={arrowClassName}
                         // eslint-disable-next-line react/jsx-no-bind
-                        onClick = { () => toggleDetails(!showDetails) }
-                        size = { 24 }
-                        src = { IconArrowDownSmall } />
+                        onClick={() => toggleDetails(!showDetails)}
+                        size={24}
+                        src={IconArrowDownSmall}
+                    />
                 </div>
-                <div className = { `con-status-details ${detailsClassName}` }>{detailsText}</div>
+                <div className={`con-status-details ${detailsClassName}`}>{detailsText}</div>
             </div>
         </div>
     );

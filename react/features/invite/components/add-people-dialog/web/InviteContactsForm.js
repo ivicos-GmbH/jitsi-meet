@@ -11,16 +11,11 @@ import { getLocalParticipant } from '../../../../base/participants';
 import { MultiSelectAutocomplete } from '../../../../base/react';
 import { connect } from '../../../../base/redux';
 import { hideAddPeopleDialog } from '../../../actions';
-import AbstractAddPeopleDialog, {
-    type Props as AbstractProps,
-    type State,
-    _mapStateToProps as _abstractMapStateToProps
-} from '../AbstractAddPeopleDialog';
+import AbstractAddPeopleDialog, { type Props as AbstractProps, type State, _mapStateToProps as _abstractMapStateToProps } from '../AbstractAddPeopleDialog';
 
 declare var interfaceConfig: Object;
 
 type Props = AbstractProps & {
-
     /**
      * The {@link JitsiMeetConference} which will be used to invite "room" participants.
      */
@@ -39,7 +34,7 @@ type Props = AbstractProps & {
     /**
      * Invoked to obtain translated strings.
      */
-    t: Function,
+    t: Function
 };
 
 /**
@@ -93,10 +88,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
          * Clears selected items from the multi select component on successful
          * invite.
          */
-        if (prevState.addToCallError
-                && !this.state.addToCallInProgress
-                && !this.state.addToCallError
-                && this._multiselect) {
+        if (prevState.addToCallError && !this.state.addToCallInProgress && !this.state.addToCallError && this._multiselect) {
             this._multiselect.setSelectedItems([]);
         }
     }
@@ -107,11 +99,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _addPeopleEnabled,
-            _dialOutEnabled,
-            t
-        } = this.props;
+        const { _addPeopleEnabled, _dialOutEnabled, t } = this.props;
         const footerText = this._renderFooterText();
         let isMultiSelectDisabled = this.state.addToCallInProgress;
         let placeholder;
@@ -137,28 +125,27 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
         }
 
         return (
-            <div
-                className = 'add-people-form-wrap'
-                onKeyDown = { this._onKeyDown }>
-                { this._renderErrorMessage() }
+            <div className="add-people-form-wrap" onKeyDown={this._onKeyDown}>
+                {this._renderErrorMessage()}
                 <MultiSelectAutocomplete
-                    footer = { footerText }
-                    isDisabled = { isMultiSelectDisabled }
-                    loadingMessage = { t(loadingMessage) }
-                    noMatchesFound = { t(noMatches) }
-                    onItemSelected = { this._onItemSelected }
-                    onSelectionChange = { this._onSelectionChange }
-                    placeholder = { t(placeholder) }
-                    ref = { this._setMultiSelectElement }
-                    resourceClient = { this._resourceClient }
-                    shouldFitContainer = { true }
-                    shouldFocus = { true } />
-                { this._renderFormActions() }
+                    footer={footerText}
+                    isDisabled={isMultiSelectDisabled}
+                    loadingMessage={t(loadingMessage)}
+                    noMatchesFound={t(noMatches)}
+                    onItemSelected={this._onItemSelected}
+                    onSelectionChange={this._onSelectionChange}
+                    placeholder={t(placeholder)}
+                    ref={this._setMultiSelectElement}
+                    resourceClient={this._resourceClient}
+                    shouldFitContainer={true}
+                    shouldFocus={true}
+                />
+                {this._renderFormActions()}
             </div>
         );
     }
 
-    _invite: Array<Object> => Promise<*>
+    _invite: (Array<Object>) => Promise<*>;
 
     _isAddDisabled: () => boolean;
 
@@ -207,23 +194,18 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
         const { inviteItems } = this.state;
         const invitees = inviteItems.map(({ item }) => item);
 
-        this._invite(invitees)
-            .then(invitesLeftToSend => {
-                if (invitesLeftToSend.length) {
-                    const unsentInviteIDs
-                        = invitesLeftToSend.map(invitee =>
-                            invitee.id || invitee.user_id || invitee.number);
-                    const itemsToSelect
-                        = inviteItems.filter(({ item }) =>
-                            unsentInviteIDs.includes(item.id || item.user_id || item.number));
+        this._invite(invitees).then((invitesLeftToSend) => {
+            if (invitesLeftToSend.length) {
+                const unsentInviteIDs = invitesLeftToSend.map((invitee) => invitee.id || invitee.user_id || invitee.number);
+                const itemsToSelect = inviteItems.filter(({ item }) => unsentInviteIDs.includes(item.id || item.user_id || item.number));
 
-                    if (this._multiselect) {
-                        this._multiselect.setSelectedItems(itemsToSelect);
-                    }
-                } else {
-                    this.props.dispatch(hideAddPeopleDialog());
+                if (this._multiselect) {
+                    this._multiselect.setSelectedItems(itemsToSelect);
                 }
-            });
+            } else {
+                this.props.dispatch(hideAddPeopleDialog());
+            }
+        });
     }
 
     _onKeyDown: (Object) => void;
@@ -256,12 +238,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
      * @returns {ReactElement}
      */
     _getAvatar(user, className = 'avatar-small') {
-        return (
-            <Avatar
-                className = { className }
-                status = { user.status }
-                url = { user.avatar } />
-        );
+        return <Avatar className={className} status={user.status} url={user.avatar} />;
     }
 
     /**
@@ -277,7 +254,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
      */
     _parseQueryResults(response = []) {
         const { t, _dialOutEnabled } = this.props;
-        const users = response.filter(item => item.type !== 'phone');
+        const users = response.filter((item) => item.type !== 'phone');
         const userDisplayItems = [];
 
         for (const user of users) {
@@ -297,7 +274,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
 
             if (phone && _dialOutEnabled) {
                 userDisplayItems.push({
-                    filterValues: [ name, phone ],
+                    filterValues: [name, phone],
                     content: `${phone} (${name})`,
                     elemBefore: elemAvatar,
                     item: {
@@ -312,22 +289,16 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
             }
         }
 
-        const numbers = response.filter(item => item.type === 'phone');
+        const numbers = response.filter((item) => item.type === 'phone');
         const telephoneIcon = this._renderTelephoneIcon();
 
-        const numberDisplayItems = numbers.map(number => {
-            const numberNotAllowedMessage
-                = number.allowed ? '' : t('addPeople.countryNotSupported');
-            const countryCodeReminder = number.showCountryCodeReminder
-                ? t('addPeople.countryReminder') : '';
-            const description
-                = `${numberNotAllowedMessage} ${countryCodeReminder}`.trim();
+        const numberDisplayItems = numbers.map((number) => {
+            const numberNotAllowedMessage = number.allowed ? '' : t('addPeople.countryNotSupported');
+            const countryCodeReminder = number.showCountryCodeReminder ? t('addPeople.countryReminder') : '';
+            const description = `${numberNotAllowedMessage} ${countryCodeReminder}`.trim();
 
             return {
-                filterValues: [
-                    number.originalEntry,
-                    number.number
-                ],
+                filterValues: [number.originalEntry, number.number],
                 content: t('addPeople.telephone', { number: number.number }),
                 description,
                 isDisabled: !number.allowed,
@@ -340,10 +311,7 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
             };
         });
 
-        return [
-            ...userDisplayItems,
-            ...numberDisplayItems
-        ];
+        return [...userDisplayItems, ...numberDisplayItems];
     }
 
     _query: (string) => Promise<Array<Object>>;
@@ -361,14 +329,16 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
 
         if (_footerTextEnabled) {
             footerText = {
-                content: <div className = 'footer-text-wrap'>
-                    <div>
-                        <span className = 'footer-telephone-icon'>
-                            <Icon src = { IconPhone } />
-                        </span>
+                content: (
+                    <div className="footer-text-wrap">
+                        <div>
+                            <span className="footer-telephone-icon">
+                                <Icon src={IconPhone} />
+                            </span>
+                        </div>
+                        {translateToHTML(t, 'addPeople.footerText')}
                     </div>
-                    { translateToHTML(t, 'addPeople.footerText') }
-                </div>
+                )
             };
         }
 
@@ -403,15 +373,11 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
         }
 
         return (
-            <div className = { `invite-more-dialog invite-buttons${this._isAddDisabled() ? ' disabled' : ''}` }>
-                <a
-                    className = 'invite-more-dialog invite-buttons-cancel'
-                    onClick = { this._onClearItems }>
+            <div className={`invite-more-dialog invite-buttons${this._isAddDisabled() ? ' disabled' : ''}`}>
+                <a className="invite-more-dialog invite-buttons-cancel" onClick={this._onClearItems}>
                     {t('dialog.Cancel')}
                 </a>
-                <a
-                    className = 'invite-more-dialog invite-buttons-add'
-                    onClick = { this._onSubmit }>
+                <a className="invite-more-dialog invite-buttons-add" onClick={this._onSubmit}>
                     {t('addPeople.add')}
                 </a>
             </div>
@@ -439,15 +405,10 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
 
         const supportLinkContent = (
             <span>
+                <span>{supportString.padEnd(supportString.length + 1)}</span>
                 <span>
-                    { supportString.padEnd(supportString.length + 1) }
-                </span>
-                <span>
-                    <a
-                        href = { supportLink }
-                        rel = 'noopener noreferrer'
-                        target = '_blank'>
-                        { t('inlineDialogFailure.support') }
+                    <a href={supportLink} rel="noopener noreferrer" target="_blank">
+                        {t('inlineDialogFailure.support')}
                     </a>
                 </span>
                 <span>.</span>
@@ -455,11 +416,9 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
         );
 
         return (
-            <div className = 'modal-dialog-form-error'>
-                <InlineMessage
-                    title = { t('addPeople.failedToAdd') }
-                    type = 'error'>
-                    { supportLinkContent }
+            <div className="modal-dialog-form-error">
+                <InlineMessage title={t('addPeople.failedToAdd')} type="error">
+                    {supportLinkContent}
                 </InlineMessage>
             </div>
         );
@@ -473,8 +432,8 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
      */
     _renderTelephoneIcon() {
         return (
-            <span className = 'add-telephone-icon'>
-                <Icon src = { IconPhone } />
+            <span className="add-telephone-icon">
+                <Icon src={IconPhone} />
             </span>
         );
     }

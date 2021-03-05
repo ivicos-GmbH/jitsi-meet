@@ -1,10 +1,6 @@
 // @flow
 
-import {
-    _STORE_CURRENT_CONFERENCE,
-    _UPDATE_CONFERENCE_DURATION,
-    DELETE_RECENT_LIST_ENTRY
-} from './actionTypes';
+import { _STORE_CURRENT_CONFERENCE, _UPDATE_CONFERENCE_DURATION, DELETE_RECENT_LIST_ENTRY } from './actionTypes';
 
 /**
  * Deletes a recent list entry based on url and date.

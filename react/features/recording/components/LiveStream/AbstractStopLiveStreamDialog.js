@@ -2,10 +2,7 @@
 
 import { Component } from 'react';
 
-import {
-    createLiveStreamingDialogEvent,
-    sendAnalytics
-} from '../../../analytics';
+import { createLiveStreamingDialogEvent, sendAnalytics } from '../../../analytics';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { getActiveSession } from '../../functions';
 
@@ -14,7 +11,6 @@ import { getActiveSession } from '../../functions';
  * {@link StopLiveStreamDialog}.
  */
 type Props = {
-
     /**
      * The {@code JitsiConference} for the current conference.
      */

@@ -3,24 +3,10 @@ import { getLogger } from 'jitsi-meet-logger';
 import type { Dispatch } from 'redux';
 
 import UIEvents from '../../../service/UI/UIEvents';
-import {
-    AUDIO_MUTE,
-    createRemoteMuteConfirmedEvent,
-    createToolbarEvent,
-    sendAnalytics,
-    VIDEO_MUTE
-} from '../analytics';
+import { AUDIO_MUTE, createRemoteMuteConfirmedEvent, createToolbarEvent, sendAnalytics, VIDEO_MUTE } from '../analytics';
 import { hideDialog } from '../base/dialog';
-import {
-    MEDIA_TYPE,
-    setAudioMuted,
-    setVideoMuted,
-    VIDEO_MUTISM_AUTHORITY
-} from '../base/media';
-import {
-    getLocalParticipant,
-    muteRemoteParticipant
-} from '../base/participants';
+import { MEDIA_TYPE, setAudioMuted, setVideoMuted, VIDEO_MUTISM_AUTHORITY } from '../base/media';
+import { getLocalParticipant, muteRemoteParticipant } from '../base/participants';
 
 import { RemoteVideoMenu } from './components';
 
@@ -54,13 +40,11 @@ export function muteLocal(enable: boolean, mediaType: MEDIA_TYPE) {
             return;
         }
         sendAnalytics(createToolbarEvent(isAudio ? AUDIO_MUTE : VIDEO_MUTE, { enable }));
-        dispatch(isAudio ? setAudioMuted(enable, /* ensureTrack */ true)
-            : setVideoMuted(enable, mediaType, VIDEO_MUTISM_AUTHORITY.USER, /* ensureTrack */ true));
+        dispatch(isAudio ? setAudioMuted(enable, /* ensureTrack */ true) : setVideoMuted(enable, mediaType, VIDEO_MUTISM_AUTHORITY.USER, /* ensureTrack */ true));
 
         // FIXME: The old conference logic as well as the shared video feature
         // still rely on this event being emitted.
-        typeof APP === 'undefined'
-            || APP.UI.emitEvent(isAudio ? UIEvents.AUDIO_MUTED : UIEvents.VIDEO_MUTED, enable, true);
+        typeof APP === 'undefined' || APP.UI.emitEvent(isAudio ? UIEvents.AUDIO_MUTED : UIEvents.VIDEO_MUTED, enable, true);
     };
 }
 
@@ -94,13 +78,12 @@ export function muteAllParticipants(exclude: Array<string>, mediaType: MEDIA_TYP
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
         const localId = getLocalParticipant(state).id;
-        const participantIds = state['features/base/participants']
-            .map(p => p.id);
+        const participantIds = state['features/base/participants'].map((p) => p.id);
 
         /* eslint-disable no-confusing-arrow */
         participantIds
-            .filter(id => !exclude.includes(id))
-            .map(id => id === localId ? muteLocal(true, mediaType) : muteRemote(id, mediaType))
+            .filter((id) => !exclude.includes(id))
+            .map((id) => (id === localId ? muteLocal(true, mediaType) : muteRemote(id, mediaType)))
             .map(dispatch);
         /* eslint-enable no-confusing-arrow */
     };

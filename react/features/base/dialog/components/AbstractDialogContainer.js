@@ -6,7 +6,6 @@ import React, { Component } from 'react';
  * The type of the React {@code Component} props of {@link DialogContainer}.
  */
 type Props = {
-
     /**
      * The component to render.
      */
@@ -39,15 +38,9 @@ export default class AbstractDialogContainer extends Component<Props> {
      * @returns {ReactElement|null}
      */
     _renderDialogContent() {
-        const {
-            _component: component,
-            _reducedUI: reducedUI
-        } = this.props;
+        const { _component: component, _reducedUI: reducedUI } = this.props;
 
-        return (
-            component && !reducedUI
-                ? React.createElement(component, this.props._componentProps)
-                : null);
+        return component && !reducedUI ? React.createElement(component, this.props._componentProps) : null;
     }
 }
 

@@ -16,20 +16,8 @@ import {
     SET_CONTROLLED_PARTICIPANT
 } from './actionTypes';
 import { RemoteControlAuthorizationDialog } from './components';
-import {
-    DISCO_REMOTE_CONTROL_FEATURE,
-    EVENTS,
-    REMOTE_CONTROL_MESSAGE_NAME,
-    PERMISSIONS_ACTIONS,
-    REQUESTS
-} from './constants';
-import {
-    getKey,
-    getModifiers,
-    getRemoteConrolEventCaptureArea,
-    isRemoteControlEnabled,
-    sendRemoteControlEndpointMessage
-} from './functions';
+import { DISCO_REMOTE_CONTROL_FEATURE, EVENTS, REMOTE_CONTROL_MESSAGE_NAME, PERMISSIONS_ACTIONS, REQUESTS } from './constants';
+import { getKey, getModifiers, getRemoteConrolEventCaptureArea, isRemoteControlEnabled, sendRemoteControlEndpointMessage } from './functions';
 import logger from './logger';
 
 /**
@@ -102,7 +90,6 @@ export function requestRemoteControl(userId: string) {
 
         const { conference } = state['features/base/conference'];
 
-
         permissionsReplyListener = (participant, event) => {
             dispatch(processPermissionRequestReply(participant.getId(), event));
         };
@@ -114,13 +101,12 @@ export function requestRemoteControl(userId: string) {
             requestedParticipant: userId
         });
 
-        if (!sendRemoteControlEndpointMessage(
-            conference,
-            userId,
-            {
+        if (
+            !sendRemoteControlEndpointMessage(conference, userId, {
                 type: EVENTS.permissions,
                 action: PERMISSIONS_ACTIONS.request
-            })) {
+            })
+        ) {
             dispatch(clearRequest());
         }
     };
@@ -139,45 +125,45 @@ export function processPermissionRequestReply(participantId: string, event: Obje
         const { action, name, type } = event;
         const { requestedParticipant } = state['features/remote-control'].controller;
 
-        if (isRemoteControlEnabled(state) && name === REMOTE_CONTROL_MESSAGE_NAME && type === EVENTS.permissions
-                && participantId === requestedParticipant) {
-            let descriptionKey, permissionGranted = false;
+        if (isRemoteControlEnabled(state) && name === REMOTE_CONTROL_MESSAGE_NAME && type === EVENTS.permissions && participantId === requestedParticipant) {
+            let descriptionKey,
+                permissionGranted = false;
 
             switch (action) {
-            case PERMISSIONS_ACTIONS.grant: {
-                dispatch({
-                    type: SET_CONTROLLED_PARTICIPANT,
-                    controlled: participantId
-                });
+                case PERMISSIONS_ACTIONS.grant: {
+                    dispatch({
+                        type: SET_CONTROLLED_PARTICIPANT,
+                        controlled: participantId
+                    });
 
-                logger.log('Remote control permissions granted!', participantId);
-                logger.log('Starting remote control controller.');
+                    logger.log('Remote control permissions granted!', participantId);
+                    logger.log('Starting remote control controller.');
 
-                const { conference } = state['features/base/conference'];
+                    const { conference } = state['features/base/conference'];
 
-                stopListener = (participant, stopEvent) => {
-                    dispatch(handleRemoteControlStoppedEvent(participant.getId(), stopEvent));
-                };
+                    stopListener = (participant, stopEvent) => {
+                        dispatch(handleRemoteControlStoppedEvent(participant.getId(), stopEvent));
+                    };
 
-                conference.on(JitsiConferenceEvents.ENDPOINT_MESSAGE_RECEIVED, stopListener);
+                    conference.on(JitsiConferenceEvents.ENDPOINT_MESSAGE_RECEIVED, stopListener);
 
-                dispatch(resume());
+                    dispatch(resume());
 
-                permissionGranted = true;
-                descriptionKey = 'dialog.remoteControlAllowedMessage';
-                break;
-            }
-            case PERMISSIONS_ACTIONS.deny:
-                logger.log('Remote control permissions denied!', participantId);
-                descriptionKey = 'dialog.remoteControlDeniedMessage';
-                break;
-            case PERMISSIONS_ACTIONS.error:
-                logger.error('Error occurred on receiver side');
-                descriptionKey = 'dialog.remoteControlErrorMessage';
-                break;
-            default:
-                logger.error('Unknown reply received!');
-                descriptionKey = 'dialog.remoteControlErrorMessage';
+                    permissionGranted = true;
+                    descriptionKey = 'dialog.remoteControlAllowedMessage';
+                    break;
+                }
+                case PERMISSIONS_ACTIONS.deny:
+                    logger.log('Remote control permissions denied!', participantId);
+                    descriptionKey = 'dialog.remoteControlDeniedMessage';
+                    break;
+                case PERMISSIONS_ACTIONS.error:
+                    logger.error('Error occurred on receiver side');
+                    descriptionKey = 'dialog.remoteControlErrorMessage';
+                    break;
+                default:
+                    logger.error('Unknown reply received!');
+                    descriptionKey = 'dialog.remoteControlErrorMessage';
             }
 
             dispatch(clearRequest());
@@ -186,11 +172,13 @@ export function processPermissionRequestReply(participantId: string, event: Obje
                 dispatch(setRemoteControlActive(false));
             }
 
-            dispatch(showNotification({
-                descriptionArguments: { user: getParticipantDisplayName(state, participantId) },
-                descriptionKey,
-                titleKey: 'dialog.remoteControlTitle'
-            }));
+            dispatch(
+                showNotification({
+                    descriptionArguments: { user: getParticipantDisplayName(state, participantId) },
+                    descriptionKey,
+                    titleKey: 'dialog.remoteControlTitle'
+                })
+            );
 
             if (permissionGranted) {
                 // the remote control permissions has been granted
@@ -222,8 +210,7 @@ export function handleRemoteControlStoppedEvent(participantId: Object, event: Ob
         const { name, type } = event;
         const { controlled } = state['features/remote-control'].controller;
 
-        if (isRemoteControlEnabled(state) && name === REMOTE_CONTROL_MESSAGE_NAME && type === EVENTS.stop
-                && participantId === controlled) {
+        if (isRemoteControlEnabled(state) && name === REMOTE_CONTROL_MESSAGE_NAME && type === EVENTS.stop && participantId === controlled) {
             dispatch(stopController());
         }
     };
@@ -266,10 +253,12 @@ export function stopController(notifyRemoteParty: boolean = false) {
         });
 
         dispatch(setRemoteControlActive(false));
-        dispatch(showNotification({
-            descriptionKey: 'dialog.remoteControlStopMessage',
-            titleKey: 'dialog.remoteControlTitle'
-        }));
+        dispatch(
+            showNotification({
+                descriptionKey: 'dialog.remoteControlStopMessage',
+                titleKey: 'dialog.remoteControlTitle'
+            })
+        );
     };
 }
 
@@ -291,7 +280,6 @@ export function clearRequest() {
         permissionsReplyListener = undefined;
     };
 }
-
 
 /**
  * Sets that trasnport object that is used by the receiver to communicate with the native part of the remote control
@@ -328,7 +316,7 @@ export function enableReceiver() {
         const { conference } = state['features/base/conference'];
 
         if (!connection || !conference) {
-            logger.error('Couldn\'t enable the remote receiver! The connection or conference instance is undefined!');
+            logger.error("Couldn't enable the remote receiver! The connection or conference instance is undefined!");
 
             return;
         }
@@ -364,7 +352,7 @@ export function disableReceiver() {
         const { conference } = state['features/base/conference'];
 
         if (!connection || !conference) {
-            logger.error('Couldn\'t enable the remote receiver! The connection or conference instance is undefined!');
+            logger.error("Couldn't enable the remote receiver! The connection or conference instance is undefined!");
 
             return;
         }
@@ -422,14 +410,15 @@ export function stopReceiver(dontNotifyLocalParty: boolean = false, dontNotifyRe
         dispatch(setRemoteControlActive(false));
 
         if (!dontNotifyLocalParty) {
-            dispatch(showNotification({
-                descriptionKey: 'dialog.remoteControlStopMessage',
-                titleKey: 'dialog.remoteControlTitle'
-            }));
+            dispatch(
+                showNotification({
+                    descriptionKey: 'dialog.remoteControlStopMessage',
+                    titleKey: 'dialog.remoteControlTitle'
+                })
+            );
         }
     };
 }
-
 
 /**
  * Handles only remote control endpoint messages.
@@ -461,7 +450,8 @@ export function endpointMessageReceived(participantId: string, message: Object) 
             } else if (controller === participantId) {
                 if (type === EVENTS.stop) {
                     dispatch(stopReceiver(false, true));
-                } else { // forward the message
+                } else {
+                    // forward the message
                     transport.sendEvent(message);
                 }
             } // else ignore
@@ -538,10 +528,9 @@ export function grant(participantId: string) {
             promise = dispatch(sendStartRequest());
         } else {
             // FIXME: Use action here once toggleScreenSharing is moved to redux.
-            promise = APP.conference.toggleScreenSharing(
-                true,
-                {
-                    desktopSharingSources: [ 'screen' ]
+            promise = APP.conference
+                .toggleScreenSharing(true, {
+                    desktopSharingSources: ['screen']
                 })
                 .then(() => dispatch(sendStartRequest()));
         }
@@ -549,11 +538,13 @@ export function grant(participantId: string) {
         const { conference } = state['features/base/conference'];
 
         promise
-            .then(() => sendRemoteControlEndpointMessage(conference, participantId, {
-                type: EVENTS.permissions,
-                action: PERMISSIONS_ACTIONS.grant
-            }))
-            .catch(error => {
+            .then(() =>
+                sendRemoteControlEndpointMessage(conference, participantId, {
+                    type: EVENTS.permissions,
+                    action: PERMISSIONS_ACTIONS.grant
+                })
+            )
+            .catch((error) => {
                 logger.error(error);
 
                 sendRemoteControlEndpointMessage(conference, participantId, {
@@ -561,10 +552,12 @@ export function grant(participantId: string) {
                     action: PERMISSIONS_ACTIONS.error
                 });
 
-                dispatch(showNotification({
-                    descriptionKey: 'dialog.startRemoteControlErrorMessage',
-                    titleKey: 'dialog.remoteControlTitle'
-                }));
+                dispatch(
+                    showNotification({
+                        descriptionKey: 'dialog.startRemoteControlErrorMessage',
+                        titleKey: 'dialog.remoteControlTitle'
+                    })
+                );
 
                 dispatch(stopReceiver(true));
             });
@@ -660,12 +653,12 @@ export function keyPressed(type: string, event: Object) {
 }
 
 /**
-* Disables the keyboatd shortcuts. Starts collecting remote control
-* events. It can be used to resume an active remote control session which
-* was paused with the pause action.
-*
-* @returns {Function}
-*/
+ * Disables the keyboatd shortcuts. Starts collecting remote control
+ * events. It can be used to resume an active remote control session which
+ * was paused with the pause action.
+ *
+ * @returns {Function}
+ */
 export function resume() {
     return (dispatch: Function, getState: Function) => {
         const area = getRemoteConrolEventCaptureArea();
@@ -682,22 +675,22 @@ export function resume() {
         // FIXME: Once the keyboard shortcuts are using react/redux.
         APP.keyboardshortcut.enable(false);
 
-        area.mousemove(event => {
+        area.mousemove((event) => {
             dispatch(mouseMoved(event));
         });
-        area.mousedown(event => dispatch(mouseClicked(EVENTS.mousedown, event)));
-        area.mouseup(event => dispatch(mouseClicked(EVENTS.mouseup, event)));
-        area.dblclick(event => dispatch(mouseClicked(EVENTS.mousedblclick, event)));
+        area.mousedown((event) => dispatch(mouseClicked(EVENTS.mousedown, event)));
+        area.mouseup((event) => dispatch(mouseClicked(EVENTS.mouseup, event)));
+        area.dblclick((event) => dispatch(mouseClicked(EVENTS.mousedblclick, event)));
         area.contextmenu(() => false);
-        area[0].onmousewheel = event => {
+        area[0].onmousewheel = (event) => {
             event.preventDefault();
             event.stopPropagation();
             dispatch(mouseScrolled(event));
 
             return false;
         };
-        $(window).keydown(event => dispatch(keyPressed(EVENTS.keydown, event)));
-        $(window).keyup(event => dispatch(keyPressed(EVENTS.keyup, event)));
+        $(window).keydown((event) => dispatch(keyPressed(EVENTS.keydown, event)));
+        $(window).keyup((event) => dispatch(keyPressed(EVENTS.keyup, event)));
 
         dispatch({
             type: CAPTURE_EVENTS,
@@ -705,7 +698,6 @@ export function resume() {
         });
     };
 }
-
 
 /**
  * Pauses the collecting of events and enables the keyboard shortcus. But

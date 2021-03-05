@@ -19,11 +19,7 @@ class InsecureRoomNameLabel extends AbstractInsecureRoomNameLabel {
      * @inheritdoc
      */
     _render() {
-        return (
-            <CircularLabel
-                icon = { IconWarning }
-                style = { styles.insecureRoomNameLabel } />
-        );
+        return <CircularLabel icon={IconWarning} style={styles.insecureRoomNameLabel} />;
     }
 }
 

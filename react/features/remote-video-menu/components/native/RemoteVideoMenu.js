@@ -27,7 +27,6 @@ import styles from './styles';
 const AVATAR_SIZE = 25;
 
 type Props = {
-
     /**
      * The Redux dispatch function.
      */
@@ -62,7 +61,7 @@ type Props = {
      * Display name of the participant retreived from Redux.
      */
     _participantDisplayName: string
-}
+};
 
 // eslint-disable-next-line prefer-const
 let RemoteVideoMenu_;
@@ -98,16 +97,14 @@ class RemoteVideoMenu extends PureComponent<Props> {
         };
 
         return (
-            <BottomSheet
-                onCancel = { this._onCancel }
-                renderHeader = { this._renderMenuHeader }>
-                { !_disableRemoteMute && <MuteButton { ...buttonProps } /> }
-                { !_disableKick && <KickButton { ...buttonProps } /> }
-                <GrantModeratorButton { ...buttonProps } />
-                <PinButton { ...buttonProps } />
-                <PrivateMessageButton { ...buttonProps } />
-                <MuteEveryoneElseButton { ...buttonProps } />
-                <ConnectionStatusButton { ...buttonProps } />
+            <BottomSheet onCancel={this._onCancel} renderHeader={this._renderMenuHeader}>
+                {!_disableRemoteMute && <MuteButton {...buttonProps} />}
+                {!_disableKick && <KickButton {...buttonProps} />}
+                <GrantModeratorButton {...buttonProps} />
+                <PinButton {...buttonProps} />
+                <PrivateMessageButton {...buttonProps} />
+                <MuteEveryoneElseButton {...buttonProps} />
+                <ConnectionStatusButton {...buttonProps} />
             </BottomSheet>
         );
     }
@@ -141,16 +138,9 @@ class RemoteVideoMenu extends PureComponent<Props> {
         const { _bottomSheetStyles, participant } = this.props;
 
         return (
-            <View
-                style = { [
-                    _bottomSheetStyles.sheet,
-                    styles.participantNameContainer ] }>
-                <Avatar
-                    participantId = { participant.id }
-                    size = { AVATAR_SIZE } />
-                <Text style = { styles.participantNameLabel }>
-                    { this.props._participantDisplayName }
-                </Text>
+            <View style={[_bottomSheetStyles.sheet, styles.participantNameContainer]}>
+                <Avatar participantId={participant.id} size={AVATAR_SIZE} />
+                <Text style={styles.participantNameLabel}>{this.props._participantDisplayName}</Text>
             </View>
         );
     }

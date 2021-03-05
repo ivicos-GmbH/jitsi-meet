@@ -17,7 +17,7 @@ export const VIDEO_QUALITY_LEVELS = {
  * @type {Object}
  */
 export const CFG_LVL_TO_APP_QUALITY_LVL = {
-    'low': VIDEO_QUALITY_LEVELS.LOW,
-    'standard': VIDEO_QUALITY_LEVELS.STANDARD,
-    'high': VIDEO_QUALITY_LEVELS.HIGH
+    low: VIDEO_QUALITY_LEVELS.LOW,
+    standard: VIDEO_QUALITY_LEVELS.STANDARD,
+    high: VIDEO_QUALITY_LEVELS.HIGH
 };

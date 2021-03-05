@@ -21,7 +21,6 @@ const _TEXT_INPUT_PROPS = {
  * The type of the React {@code Component} props of {@link RoomLockPrompt}.
  */
 type Props = {
-
     /**
      * The JitsiConference which requires a password.
      */
@@ -75,14 +74,7 @@ class RoomLockPrompt extends Component<Props> {
             };
         }
 
-        return (
-            <InputDialog
-                contentKey = 'security.about'
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                textInputProps = { textInputProps }
-                validateInput = { this._validateInput } />
-        );
+        return <InputDialog contentKey="security.about" onCancel={this._onCancel} onSubmit={this._onSubmit} textInputProps={textInputProps} validateInput={this._validateInput} />;
     }
 
     _onCancel: () => boolean;
@@ -127,7 +119,6 @@ class RoomLockPrompt extends Component<Props> {
      * @returns {boolean} False when the value is not valid and True otherwise.
      */
     _validateInput(value: string) {
-
         // we want only digits, but both number-pad and numeric add ',' and '.' as symbols
         if (this.props.passwordNumberOfDigits && value.length > 0 && !/^\d+$/.test(value)) {
             return false;

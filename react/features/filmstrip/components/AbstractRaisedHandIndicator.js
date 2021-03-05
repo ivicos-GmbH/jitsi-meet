@@ -5,7 +5,6 @@ import { Component } from 'react';
 import { getParticipantById } from '../../base/participants';
 
 export type Props = {
-
     /**
      * The participant id who we want to render the raised hand indicator
      * for.
@@ -16,14 +15,12 @@ export type Props = {
      * True if the hand is raised for this participant.
      */
     _raisedHand?: boolean
-}
+};
 
 /**
  * Implements an abstract class for the RaisedHandIndicator component.
  */
-export default class AbstractRaisedHandIndicator<P: Props>
-    extends Component<P> {
-
+export default class AbstractRaisedHandIndicator<P: Props> extends Component<P> {
     /**
      * Implements {@code Component#render}.
      *
@@ -42,8 +39,7 @@ export default class AbstractRaisedHandIndicator<P: Props>
      *
      * @returns {React$Element<*>}
      */
-    _renderIndicator: () => React$Element<*>
-
+    _renderIndicator: () => React$Element<*>;
 }
 
 /**

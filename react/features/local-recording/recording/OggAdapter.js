@@ -7,7 +7,6 @@ import { RecordingAdapter } from './RecordingAdapter';
  * with Opus codec).
  */
 export class OggAdapter extends RecordingAdapter {
-
     /**
      * Instance of MediaRecorder.
      * @private
@@ -36,11 +35,12 @@ export class OggAdapter extends RecordingAdapter {
             this._initPromise = this._initialize(micDeviceId);
         }
 
-        return this._initPromise.then(() =>
-            new Promise(resolve => {
-                this._mediaRecorder.start();
-                resolve();
-            })
+        return this._initPromise.then(
+            () =>
+                new Promise((resolve) => {
+                    this._mediaRecorder.start();
+                    resolve();
+                })
         );
     }
 
@@ -50,12 +50,10 @@ export class OggAdapter extends RecordingAdapter {
      * @inheritdoc
      */
     stop() {
-        return new Promise(
-            resolve => {
-                this._mediaRecorder.onstop = () => resolve();
-                this._mediaRecorder.stop();
-            }
-        );
+        return new Promise((resolve) => {
+            this._mediaRecorder.onstop = () => resolve();
+            this._mediaRecorder.stop();
+        });
     }
 
     /**
@@ -116,17 +114,16 @@ export class OggAdapter extends RecordingAdapter {
 
         return new Promise((resolve, error) => {
             this._getAudioStream(micDeviceId)
-            .then(stream => {
-                this._stream = stream;
-                this._mediaRecorder = new MediaRecorder(stream);
-                this._mediaRecorder.ondataavailable
-                    = e => this._saveMediaData(e.data);
-                resolve();
-            })
-            .catch(err => {
-                logger.error(`Error calling getUserMedia(): ${err}`);
-                error();
-            });
+                .then((stream) => {
+                    this._stream = stream;
+                    this._mediaRecorder = new MediaRecorder(stream);
+                    this._mediaRecorder.ondataavailable = (e) => this._saveMediaData(e.data);
+                    resolve();
+                })
+                .catch((err) => {
+                    logger.error(`Error calling getUserMedia(): ${err}`);
+                    error();
+                });
         });
     }
 

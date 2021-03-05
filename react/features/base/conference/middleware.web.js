@@ -11,32 +11,30 @@ import './middleware.any';
 
 declare var APP: Object;
 
-MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
+MiddlewareRegistry.register(({ dispatch, getState }) => (next) => (action) => {
     const { enableForcedReload } = getState()['features/base/config'];
 
     switch (action.type) {
-    case CONFERENCE_JOINED: {
-        if (enableForcedReload) {
-            dispatch(setPrejoinPageVisibility(false));
-            dispatch(setSkipPrejoinOnReload(false));
+        case CONFERENCE_JOINED: {
+            if (enableForcedReload) {
+                dispatch(setPrejoinPageVisibility(false));
+                dispatch(setSkipPrejoinOnReload(false));
+            }
+
+            break;
         }
+        case CONFERENCE_FAILED: {
+            enableForcedReload && action.error?.name === JitsiConferenceErrors.CONFERENCE_RESTARTED && dispatch(setSkipPrejoinOnReload(true));
 
-        break;
-    }
-    case CONFERENCE_FAILED: {
-        enableForcedReload
-            && action.error?.name === JitsiConferenceErrors.CONFERENCE_RESTARTED
-            && dispatch(setSkipPrejoinOnReload(true));
-
-        break;
-    }
-    case TOGGLE_SCREENSHARING: {
-        if (typeof APP === 'object') {
-            APP.UI.emitEvent(UIEvents.TOGGLE_SCREENSHARING);
+            break;
         }
+        case TOGGLE_SCREENSHARING: {
+            if (typeof APP === 'object') {
+                APP.UI.emitEvent(UIEvents.TOGGLE_SCREENSHARING);
+            }
 
-        break;
-    }
+            break;
+        }
     }
 
     return next(action);

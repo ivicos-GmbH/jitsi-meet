@@ -23,10 +23,8 @@ class SlowGUMOverlay extends AbstractSlowGUMOverlay {
 
         return (
             <OverlayFrame>
-                <div className = { 'overlay__spinner-container' }>
-                    <Spinner
-                        invertColor = { true }
-                        size = { 'large' } />
+                <div className={'overlay__spinner-container'}>
+                    <Spinner invertColor={true} size={'large'} />
                 </div>
             </OverlayFrame>
         );

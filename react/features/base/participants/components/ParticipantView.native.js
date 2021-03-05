@@ -7,10 +7,7 @@ import { YoutubeLargeVideo } from '../../../youtube-player/components';
 import { Avatar } from '../../avatar';
 import { translate } from '../../i18n';
 import { JitsiParticipantConnectionStatus } from '../../lib-jitsi-meet';
-import {
-    MEDIA_TYPE,
-    VideoTrack
-} from '../../media';
+import { MEDIA_TYPE, VideoTrack } from '../../media';
 import { Container, TintedView } from '../../react';
 import { connect } from '../../redux';
 import type { StyleType } from '../../styles';
@@ -24,7 +21,6 @@ import styles from './styles';
  * The type of the React {@link Component} props of {@link ParticipantView}.
  */
 type Props = {
-
     /**
      * The connection status of the participant. Her video will only be rendered
      * if the connection status is 'active'; otherwise, the avatar will be
@@ -136,7 +132,6 @@ type Props = {
  * @extends Component
  */
 class ParticipantView extends Component<Props> {
-
     /**
      * Renders the connection status label, if appropriate.
      *
@@ -149,18 +144,14 @@ class ParticipantView extends Component<Props> {
         let messageKey;
 
         switch (connectionStatus) {
-        case JitsiParticipantConnectionStatus.INACTIVE:
-            messageKey = 'connection.LOW_BANDWIDTH';
-            break;
-        default:
-            return null;
+            case JitsiParticipantConnectionStatus.INACTIVE:
+                messageKey = 'connection.LOW_BANDWIDTH';
+                break;
+            default:
+                return null;
         }
 
-        const {
-            avatarSize,
-            _participantName: displayName,
-            t
-        } = this.props;
+        const { avatarSize, _participantName: displayName, t } = this.props;
 
         // XXX Consider splitting this component into 2: one for the large view
         // and one for the thumbnail. Some of these don't apply to both.
@@ -170,12 +161,8 @@ class ParticipantView extends Component<Props> {
         };
 
         return (
-            <View
-                pointerEvents = 'box-none'
-                style = { containerStyle }>
-                <Text style = { styles.connectionInfoText }>
-                    { t(messageKey, { displayName }) }
-                </Text>
+            <View pointerEvents="box-none" style={containerStyle}>
+                <Text style={styles.connectionInfoText}>{t(messageKey, { displayName })}</Text>
             </View>
         );
     }
@@ -187,69 +174,45 @@ class ParticipantView extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _connectionStatus: connectionStatus,
-            _isFakeParticipant,
-            _renderVideo: renderVideo,
-            _videoTrack: videoTrack,
-            disableVideo,
-            onPress,
-            tintStyle
-        } = this.props;
+        const { _connectionStatus: connectionStatus, _isFakeParticipant, _renderVideo: renderVideo, _videoTrack: videoTrack, disableVideo, onPress, tintStyle } = this.props;
 
         // If the connection has problems, we will "tint" the video / avatar.
-        const connectionProblem
-            = connectionStatus !== JitsiParticipantConnectionStatus.ACTIVE;
-        const useTint
-            = connectionProblem || this.props.tintEnabled;
+        const connectionProblem = connectionStatus !== JitsiParticipantConnectionStatus.ACTIVE;
+        const useTint = connectionProblem || this.props.tintEnabled;
 
-        const testHintId
-            = this.props.testHintId
-                ? this.props.testHintId
-                : `org.jitsi.meet.Participant#${this.props.participantId}`;
+        const testHintId = this.props.testHintId ? this.props.testHintId : `org.jitsi.meet.Participant#${this.props.participantId}`;
 
         const renderYoutubeLargeVideo = _isFakeParticipant && !disableVideo;
 
         return (
             <Container
-                onClick = { renderVideo || renderYoutubeLargeVideo ? undefined : onPress }
-                style = {{
+                onClick={renderVideo || renderYoutubeLargeVideo ? undefined : onPress}
+                style={{
                     ...styles.participantView,
                     ...this.props.style
                 }}
-                touchFeedback = { false }>
+                touchFeedback={false}
+            >
+                <TestHint id={testHintId} onPress={renderYoutubeLargeVideo ? undefined : onPress} value="" />
 
-                <TestHint
-                    id = { testHintId }
-                    onPress = { renderYoutubeLargeVideo ? undefined : onPress }
-                    value = '' />
+                {renderYoutubeLargeVideo && <YoutubeLargeVideo youtubeId={this.props.participantId} />}
 
-                { renderYoutubeLargeVideo && <YoutubeLargeVideo youtubeId = { this.props.participantId } /> }
+                {!_isFakeParticipant && renderVideo && (
+                    <VideoTrack onPress={onPress} videoTrack={videoTrack} waitForVideoStarted={false} zOrder={this.props.zOrder} zoomEnabled={this.props.zoomEnabled} />
+                )}
 
-                { !_isFakeParticipant && renderVideo
-                    && <VideoTrack
-                        onPress = { onPress }
-                        videoTrack = { videoTrack }
-                        waitForVideoStarted = { false }
-                        zOrder = { this.props.zOrder }
-                        zoomEnabled = { this.props.zoomEnabled } /> }
+                {!renderYoutubeLargeVideo && !renderVideo && (
+                    <View style={styles.avatarContainer}>
+                        <Avatar participantId={this.props.participantId} size={this.props.avatarSize} />
+                    </View>
+                )}
 
-                { !renderYoutubeLargeVideo && !renderVideo
-                    && <View style = { styles.avatarContainer }>
-                        <Avatar
-                            participantId = { this.props.participantId }
-                            size = { this.props.avatarSize } />
-                    </View> }
-
-                { useTint
-
+                {useTint && (
                     // If the connection has problems, tint the video / avatar.
-                    && <TintedView
-                        style = {
-                            connectionProblem ? undefined : tintStyle } /> }
+                    <TintedView style={connectionProblem ? undefined : tintStyle} />
+                )}
 
-                { this.props.useConnectivityInfoLabel
-                    && this._renderConnectionInfo(connectionStatus) }
+                {this.props.useConnectivityInfoLabel && this._renderConnectionInfo(connectionStatus)}
             </Container>
         );
     }
@@ -272,17 +235,11 @@ function _mapStateToProps(state, ownProps) {
     let participantName;
 
     return {
-        _connectionStatus:
-            connectionStatus
-                || JitsiParticipantConnectionStatus.ACTIVE,
+        _connectionStatus: connectionStatus || JitsiParticipantConnectionStatus.ACTIVE,
         _isFakeParticipant: participant && participant.isFakeParticipant,
         _participantName: participantName,
         _renderVideo: shouldRenderParticipantVideo(state, participantId) && !disableVideo,
-        _videoTrack:
-            getTrackByMediaTypeAndParticipant(
-                state['features/base/tracks'],
-                MEDIA_TYPE.VIDEO,
-                participantId)
+        _videoTrack: getTrackByMediaTypeAndParticipant(state['features/base/tracks'], MEDIA_TYPE.VIDEO, participantId)
     };
 }
 

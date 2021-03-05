@@ -40,12 +40,12 @@ const DEFAULT_STATE = {
  */
 ReducerRegistry.register('features/analytics', (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case UPDATE_LOCAL_TRACKS_DURATION:
-        return {
-            ...state,
-            localTracksDuration: action.localTracksDuration
-        };
-    default:
-        return state;
+        case UPDATE_LOCAL_TRACKS_DURATION:
+            return {
+                ...state,
+                localTracksDuration: action.localTracksDuration
+            };
+        default:
+            return state;
     }
 });

@@ -21,6 +21,4 @@ var loggingConfig = {
 // Mobile/react-native requires it in react/features/base/logging. For the
 // purposes of the latter, (try to) export loggingConfig. The following
 // detection of a module system is inspired by webpack.
-typeof module === 'object'
-    && typeof exports === 'object'
-    && (module.exports = loggingConfig);
+typeof module === 'object' && typeof exports === 'object' && (module.exports = loggingConfig);

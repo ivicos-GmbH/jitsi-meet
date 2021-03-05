@@ -5,8 +5,7 @@ import React from 'react';
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-import AbstractMuteRemoteParticipantDialog
-    from '../AbstractMuteRemoteParticipantDialog';
+import AbstractMuteRemoteParticipantDialog from '../AbstractMuteRemoteParticipantDialog';
 
 /**
  * A React Component with the contents for a dialog that asks for confirmation
@@ -23,14 +22,8 @@ class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
      */
     render() {
         return (
-            <Dialog
-                okKey = 'dialog.muteParticipantButton'
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.muteParticipantTitle'
-                width = 'small'>
-                <div>
-                    { this.props.t('dialog.muteParticipantBody') }
-                </div>
+            <Dialog okKey="dialog.muteParticipantButton" onSubmit={this._onSubmit} titleKey="dialog.muteParticipantTitle" width="small">
+                <div>{this.props.t('dialog.muteParticipantBody')}</div>
             </Dialog>
         );
     }

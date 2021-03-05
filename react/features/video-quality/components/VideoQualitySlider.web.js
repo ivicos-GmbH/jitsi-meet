@@ -11,12 +11,7 @@ import { setPreferredVideoQuality } from '../actions';
 import { VIDEO_QUALITY_LEVELS } from '../constants';
 import logger from '../logger';
 
-const {
-    ULTRA,
-    HIGH,
-    STANDARD,
-    LOW
-} = VIDEO_QUALITY_LEVELS;
+const { ULTRA, HIGH, STANDARD, LOW } = VIDEO_QUALITY_LEVELS;
 
 /**
  * Creates an analytics event for a press of one of the buttons in the video
@@ -26,19 +21,16 @@ const {
  * @returns {Object} The event in a format suitable for sending via
  *      sendAnalytics.
  */
-const createEvent = function(quality) {
-    return createToolbarEvent(
-        'video.quality',
-        {
-            quality
-        });
+const createEvent = function (quality) {
+    return createToolbarEvent('video.quality', {
+        quality
+    });
 };
 
 /**
  * The type of the React {@code Component} props of {@link VideoQualitySlider}.
  */
 type Props = {
-
     /**
      * Whether or not the conference is in audio only mode.
      */
@@ -88,8 +80,7 @@ class VideoQualitySlider extends Component<Props> {
         this._enableAudioOnly = this._enableAudioOnly.bind(this);
         this._enableHighDefinition = this._enableHighDefinition.bind(this);
         this._enableLowDefinition = this._enableLowDefinition.bind(this);
-        this._enableStandardDefinition
-            = this._enableStandardDefinition.bind(this);
+        this._enableStandardDefinition = this._enableStandardDefinition.bind(this);
         this._enableUltraHighDefinition = this._enableUltraHighDefinition.bind(this);
         this._onSliderChange = this._onSliderChange.bind(this);
 
@@ -137,31 +128,26 @@ class VideoQualitySlider extends Component<Props> {
         const activeSliderOption = this._mapCurrentQualityToSliderValue();
 
         return (
-            <div className = { 'video-quality-dialog' }>
-                <h3 className = 'video-quality-dialog-title'>
-                    { t('videoStatus.callQuality') }
-                </h3>
-                <div className = 'video-quality-dialog-contents'>
-                    <div className = 'video-quality-dialog-slider-container'>
-                        { /* FIXME: onChange and onMouseUp are both used for
-                           * compatibility with IE11. This workaround can be
-                           * removed after upgrading to React 16.
-                           */ }
+            <div className={'video-quality-dialog'}>
+                <h3 className="video-quality-dialog-title">{t('videoStatus.callQuality')}</h3>
+                <div className="video-quality-dialog-contents">
+                    <div className="video-quality-dialog-slider-container">
+                        {/* FIXME: onChange and onMouseUp are both used for
+                         * compatibility with IE11. This workaround can be
+                         * removed after upgrading to React 16.
+                         */}
                         <input
-                            className = 'video-quality-dialog-slider'
-                            max = { this._sliderOptions.length - 1 }
-                            min = '0'
-                            onChange = { this._onSliderChange }
-                            onMouseUp = { this._onSliderChange }
-                            step = '1'
-                            type = 'range'
-                            value
-                                = { activeSliderOption } />
-
+                            className="video-quality-dialog-slider"
+                            max={this._sliderOptions.length - 1}
+                            min="0"
+                            onChange={this._onSliderChange}
+                            onMouseUp={this._onSliderChange}
+                            step="1"
+                            type="range"
+                            value={activeSliderOption}
+                        />
                     </div>
-                    <div className = 'video-quality-dialog-labels'>
-                        { this._createLabels(activeSliderOption) }
-                    </div>
+                    <div className="video-quality-dialog-labels">{this._createLabels(activeSliderOption)}</div>
                 </div>
             </div>
         );
@@ -186,17 +172,11 @@ class VideoQualitySlider extends Component<Props> {
             };
 
             const isActiveClass = activeLabelIndex === index ? 'active' : '';
-            const className
-                = `video-quality-dialog-label-container ${isActiveClass}`;
+            const className = `video-quality-dialog-label-container ${isActiveClass}`;
 
             return (
-                <div
-                    className = { className }
-                    key = { index }
-                    style = { style }>
-                    <div className = 'video-quality-dialog-label'>
-                        { this.props.t(sliderOption.textKey) }
-                    </div>
+                <div className={className} key={index} style={style}>
+                    <div className="video-quality-dialog-label">{this.props.t(sliderOption.textKey)}</div>
                 </div>
             );
         });
@@ -289,8 +269,7 @@ class VideoQualitySlider extends Component<Props> {
         const { _sliderOptions } = this;
 
         if (_audioOnly) {
-            const audioOnlyOption = _sliderOptions.find(
-                ({ audioOnly }) => audioOnly);
+            const audioOnlyOption = _sliderOptions.find(({ audioOnly }) => audioOnly);
 
             return _sliderOptions.indexOf(audioOnlyOption);
         }
@@ -315,16 +294,11 @@ class VideoQualitySlider extends Component<Props> {
      */
     _onSliderChange(event) {
         const { _audioOnly, _sendrecvVideoQuality } = this.props;
-        const {
-            audioOnly,
-            onSelect,
-            videoQuality
-        } = this._sliderOptions[event.target.value];
+        const { audioOnly, onSelect, videoQuality } = this._sliderOptions[event.target.value];
 
         // Take no action if the newly chosen option does not change audio only
         // or video quality state.
-        if ((_audioOnly && audioOnly)
-            || (!_audioOnly && videoQuality === _sendrecvVideoQuality)) {
+        if ((_audioOnly && audioOnly) || (!_audioOnly && videoQuality === _sendrecvVideoQuality)) {
             return;
         }
 

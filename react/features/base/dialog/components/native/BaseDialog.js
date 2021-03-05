@@ -1,32 +1,22 @@
 // @flow
 
 import React from 'react';
-import {
-    KeyboardAvoidingView,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { KeyboardAvoidingView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import { Icon, IconClose } from '../../../icons';
 import { StyleType } from '../../../styles';
-import AbstractDialog, {
-    type Props as AbstractProps,
-    type State
-} from '../AbstractDialog';
+import AbstractDialog, { type Props as AbstractProps, type State } from '../AbstractDialog';
 
 import { brandedDialog as styles } from './styles';
 
 export type Props = AbstractProps & {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
     _dialogStyles: StyleType,
 
     t: Function
-}
+};
 
 /**
  * Component to render a custom dialog.
@@ -54,25 +44,12 @@ class BaseDialog<P: Props, S: State> extends AbstractDialog<P, S> {
 
         return (
             <TouchableWithoutFeedback>
-                <KeyboardAvoidingView
-                    behavior = 'height'
-                    style = { [
-                        styles.overlay
-                    ] }>
-                    <View
-                        pointerEvents = 'box-none'
-                        style = { [
-                            _dialogStyles.dialog,
-                            style
-                        ] }>
-                        <TouchableOpacity
-                            onPress = { this._onCancel }
-                            style = { styles.closeWrapper }>
-                            <Icon
-                                src = { IconClose }
-                                style = { _dialogStyles.closeStyle } />
+                <KeyboardAvoidingView behavior="height" style={[styles.overlay]}>
+                    <View pointerEvents="box-none" style={[_dialogStyles.dialog, style]}>
+                        <TouchableOpacity onPress={this._onCancel} style={styles.closeWrapper}>
+                            <Icon src={IconClose} style={_dialogStyles.closeStyle} />
                         </TouchableOpacity>
-                        { this._renderContent() }
+                        {this._renderContent()}
                     </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
@@ -81,14 +58,14 @@ class BaseDialog<P: Props, S: State> extends AbstractDialog<P, S> {
 
     _onCancel: () => void;
 
-    _onSubmit: ?string => boolean;
+    _onSubmit: (?string) => boolean;
 
     /**
      * Renders the content of the dialog.
      *
      * @returns {ReactElement}
      */
-    _renderContent: () => Object
+    _renderContent: () => Object;
 
     /**
      * Renders a specific {@code string} which may contain HTML.
@@ -116,19 +93,14 @@ class BaseDialog<P: Props, S: State> extends AbstractDialog<P, S> {
             const r = [];
 
             // eslint-disable-next-line no-cond-assign
-            while (o = opening.exec(html)) {
+            while ((o = opening.exec(html))) {
                 closing.lastIndex = opening.lastIndex;
 
                 // eslint-disable-next-line no-cond-assign
-                if (c = closing.exec(html)) {
+                if ((c = closing.exec(html))) {
                     r.push(html.substring(prevClosingLastIndex, o.index));
-                    r.push(
-                        <Text style = { styles.boldDialogText }>
-                            { html.substring(opening.lastIndex, c.index) }
-                        </Text>);
-                    opening.lastIndex
-                        = prevClosingLastIndex
-                        = closing.lastIndex;
+                    r.push(<Text style={styles.boldDialogText}>{html.substring(opening.lastIndex, c.index)}</Text>);
+                    opening.lastIndex = prevClosingLastIndex = closing.lastIndex;
                 } else {
                     break;
                 }

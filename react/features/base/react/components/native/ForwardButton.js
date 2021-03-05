@@ -11,11 +11,10 @@ import { connect } from '../../../redux';
  * The type of the React {@code Component} props of {@link ForwardButton}
  */
 type Props = {
-
     /**
      * True if the nutton should be disabled.
      */
-    disabled: boolean;
+    disabled: boolean,
 
     /**
      * The i18n label key of the button.
@@ -57,18 +56,8 @@ class ForwardButton extends Component<Props> {
         const { _headerStyles } = this.props;
 
         return (
-            <TouchableOpacity
-                accessibilityLabel = { 'Forward' }
-                disabled = { this.props.disabled }
-                onPress = { this.props.onPress } >
-                <Text
-                    style = { [
-                        _headerStyles.headerButtonText,
-                        this.props.disabled && _headerStyles.disabledButtonText,
-                        this.props.style
-                    ] }>
-                    { this.props.t(this.props.labelKey) }
-                </Text>
+            <TouchableOpacity accessibilityLabel={'Forward'} disabled={this.props.disabled} onPress={this.props.onPress}>
+                <Text style={[_headerStyles.headerButtonText, this.props.disabled && _headerStyles.disabledButtonText, this.props.style]}>{this.props.t(this.props.labelKey)}</Text>
             </TouchableOpacity>
         );
     }

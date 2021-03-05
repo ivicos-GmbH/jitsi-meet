@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import ReactLinkify from 'react-linkify';
 
 type Props = {
-
     /**
      * The children of the component.
      */
@@ -22,12 +21,7 @@ export default class Linkify extends Component<Props> {
      * @inheritdoc
      */
     render() {
-        return (
-            <ReactLinkify
-                componentDecorator = { this._componentDecorator }>
-                { this.props.children }
-            </ReactLinkify>
-        );
+        return <ReactLinkify componentDecorator={this._componentDecorator}>{this.props.children}</ReactLinkify>;
     }
 
     /**
@@ -40,12 +34,8 @@ export default class Linkify extends Component<Props> {
      */
     _componentDecorator(decoratedHref: string, decoratedText: string, key: number) {
         return (
-            <a
-                href = { decoratedHref }
-                key = { key }
-                rel = 'noopener noreferrer'
-                target = '_blank'>
-                { punycode.toASCII(decoratedText) }
+            <a href={decoratedHref} key={key} rel="noopener noreferrer" target="_blank">
+                {punycode.toASCII(decoratedText)}
             </a>
         );
     }

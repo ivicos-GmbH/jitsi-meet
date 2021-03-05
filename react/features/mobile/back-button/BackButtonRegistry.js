@@ -40,10 +40,10 @@ class BackButtonRegistry {
      * @returns {void}
      */
     removeListener(listener: Function) {
-        this._listeners = this._listeners.filter(f => f !== listener);
+        this._listeners = this._listeners.filter((f) => f !== listener);
     }
 
-    onHardwareBackPress: () => boolean
+    onHardwareBackPress: () => boolean;
 
     /**
      * Callback for the back button press event.

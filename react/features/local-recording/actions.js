@@ -1,10 +1,6 @@
 /* @flow */
 
-import {
-    LOCAL_RECORDING_ENGAGED,
-    LOCAL_RECORDING_UNENGAGED,
-    LOCAL_RECORDING_STATS_UPDATE
-} from './actionTypes';
+import { LOCAL_RECORDING_ENGAGED, LOCAL_RECORDING_UNENGAGED, LOCAL_RECORDING_STATS_UPDATE } from './actionTypes';
 
 // The following two actions signal state changes in local recording engagement.
 // In other words, the events of the local WebWorker / MediaRecorder starting to

@@ -14,7 +14,6 @@ import { isRecentListEnabled } from '../../recent-list/functions';
  * {@code AbstractWelcomePage}'s React {@code Component} prop types.
  */
 type Props = {
-
     /**
      * Whether the calendar functionality is enabled or not.
      */
@@ -103,8 +102,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         super(props);
 
         // Bind event handlers so they are only bound once per instance.
-        this._animateRoomnameChanging
-            = this._animateRoomnameChanging.bind(this);
+        this._animateRoomnameChanging = this._animateRoomnameChanging.bind(this);
         this._onJoin = this._onJoin.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._renderInsecureRoomNameWarning = this._renderInsecureRoomNameWarning.bind(this);
@@ -148,13 +146,9 @@ export class AbstractWelcomePage extends Component<Props, *> {
         const roomPlaceholder = this.state.roomPlaceholder + word.substr(0, 1);
 
         if (word.length > 1) {
-            animateTimeoutId
-                = setTimeout(
-                    () => {
-                        this._animateRoomnameChanging(
-                            word.substring(1, word.length));
-                    },
-                    70);
+            animateTimeoutId = setTimeout(() => {
+                this._animateRoomnameChanging(word.substring(1, word.length));
+            }, 70);
         }
         this.setState({
             animateTimeoutId,
@@ -196,18 +190,17 @@ export class AbstractWelcomePage extends Component<Props, *> {
             createWelcomePageEvent('clicked', 'joinButton', {
                 isGenerated: !this.state.room,
                 room
-            }));
+            })
+        );
 
         if (room) {
             this.setState({ joining: true });
 
             // By the time the Promise of appNavigate settles, this component
             // may have already been unmounted.
-            const onAppNavigateSettled
-                = () => this._mounted && this.setState({ joining: false });
+            const onAppNavigateSettled = () => this._mounted && this.setState({ joining: false });
 
-            this.props.dispatch(appNavigate(room))
-                .then(onAppNavigateSettled, onAppNavigateSettled);
+            this.props.dispatch(appNavigate(room)).then(onAppNavigateSettled, onAppNavigateSettled);
         }
     }
 
@@ -228,7 +221,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         });
     }
 
-    _renderInsecureRoomNameWarning: () => React$Component<any>;;
+    _renderInsecureRoomNameWarning: () => React$Component<any>;
 
     /**
      * Renders the insecure room name warning if needed.
@@ -264,7 +257,8 @@ export class AbstractWelcomePage extends Component<Props, *> {
                 roomPlaceholder,
                 updateTimeoutId
             },
-            () => this._animateRoomnameChanging(generatedRoomname));
+            () => this._animateRoomnameChanging(generatedRoomname)
+        );
     }
 }
 

@@ -7,10 +7,7 @@ import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../../base/app';
 import { MiddlewareRegistry } from '../../base/redux';
 
 import { _SET_APP_STATE_LISTENER } from './actionTypes';
-import {
-    _setAppStateListener as _setAppStateListenerA,
-    appStateChanged
-} from './actions';
+import { _setAppStateListener as _setAppStateListenerA, appStateChanged } from './actions';
 
 /**
  * Middleware that captures App lifetime actions and subscribes to application
@@ -22,21 +19,21 @@ import {
  * @returns {Function}
  * @see {@link https://facebook.github.io/react-native/docs/appstate.html}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case _SET_APP_STATE_LISTENER:
-        return _setAppStateListenerF(store, next, action);
+        case _SET_APP_STATE_LISTENER:
+            return _setAppStateListenerF(store, next, action);
 
-    case APP_WILL_MOUNT: {
-        const { dispatch } = store;
+        case APP_WILL_MOUNT: {
+            const { dispatch } = store;
 
-        dispatch(_setAppStateListenerA(_onAppStateChange.bind(undefined, dispatch)));
-        break;
-    }
+            dispatch(_setAppStateListenerA(_onAppStateChange.bind(undefined, dispatch)));
+            break;
+        }
 
-    case APP_WILL_UNMOUNT:
-        store.dispatch(_setAppStateListenerA(undefined));
-        break;
+        case APP_WILL_UNMOUNT:
+            store.dispatch(_setAppStateListenerA(undefined));
+            break;
     }
 
     return next(action);

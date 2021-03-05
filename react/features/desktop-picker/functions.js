@@ -1,4 +1,3 @@
-
 import logger from './logger';
 
 /**
@@ -25,17 +24,15 @@ export function obtainDesktopSources(types, options = {}) {
 
         if (JitsiMeetElectron && JitsiMeetElectron.obtainDesktopStreams) {
             JitsiMeetElectron.obtainDesktopStreams(
-                sources => resolve(_seperateSourcesByType(sources)),
-                error => {
-                    logger.error(
-                        `Error while obtaining desktop sources: ${error}`);
+                (sources) => resolve(_seperateSourcesByType(sources)),
+                (error) => {
+                    logger.error(`Error while obtaining desktop sources: ${error}`);
                     reject(error);
                 },
                 capturerOptions
             );
         } else {
-            const reason = 'Called JitsiMeetElectron.obtainDesktopStreams'
-                + ' but it is not defined';
+            const reason = 'Called JitsiMeetElectron.obtainDesktopStreams' + ' but it is not defined';
 
             logger.error(reason);
 
@@ -43,7 +40,6 @@ export function obtainDesktopSources(types, options = {}) {
         }
     });
 }
-
 
 /**
  * Converts an array of DesktopCapturerSources to an object with types for keys
@@ -60,7 +56,7 @@ function _seperateSourcesByType(sources = []) {
         window: []
     };
 
-    sources.forEach(source => {
+    sources.forEach((source) => {
         const idParts = source.id.split(':');
         const type = idParts[0];
 

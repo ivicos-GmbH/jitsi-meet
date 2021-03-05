@@ -11,7 +11,6 @@ import Container from './Container';
 import styles, { AVATAR_SIZE, UNDERLAY_COLOR } from './styles';
 
 type Props = {
-
     /**
      * If true, only the avatar gets rendered, no lines of text.
      */
@@ -89,42 +88,21 @@ export default class AvatarListItem extends Component<Props> {
      * @inheritdoc
      */
     render() {
-        const {
-            avatarOnly,
-            avatarSize = AVATAR_SIZE,
-            avatarStatus,
-            avatarStyle,
-            onLongPress,
-            onPress
-        } = this.props;
+        const { avatarOnly, avatarSize = AVATAR_SIZE, avatarStatus, avatarStyle, onLongPress, onPress } = this.props;
         const { avatar, colorBase, lines, title } = this.props.item;
 
         return (
-            <Container
-                onClick = { onPress }
-                onLongPress = { onLongPress }
-                style = { styles.listItem }
-                underlayColor = { UNDERLAY_COLOR }>
-                <Avatar
-                    colorBase = { colorBase }
-                    displayName = { title }
-                    size = { avatarSize }
-                    status = { avatarStatus }
-                    style = { avatarStyle }
-                    url = { avatar } />
-                { avatarOnly || <Container style = { styles.listItemDetails }>
-                    <Text
-                        numberOfLines = { 1 }
-                        style = { [
-                            styles.listItemText,
-                            styles.listItemTitle,
-                            this.props.titleStyle
-                        ] }>
-                        { title }
-                    </Text>
-                    {this._renderItemLines(lines)}
-                </Container>}
-                { this.props.children }
+            <Container onClick={onPress} onLongPress={onLongPress} style={styles.listItem} underlayColor={UNDERLAY_COLOR}>
+                <Avatar colorBase={colorBase} displayName={title} size={avatarSize} status={avatarStatus} style={avatarStyle} url={avatar} />
+                {avatarOnly || (
+                    <Container style={styles.listItemDetails}>
+                        <Text numberOfLines={1} style={[styles.listItemText, styles.listItemTitle, this.props.titleStyle]}>
+                            {title}
+                        </Text>
+                        {this._renderItemLines(lines)}
+                    </Container>
+                )}
+                {this.props.children}
             </Container>
         );
     }
@@ -145,19 +123,13 @@ export default class AvatarListItem extends Component<Props> {
         }
 
         return (
-            <Text
-                key = { index }
-                numberOfLines = { 1 }
-                style = { [
-                    styles.listItemText,
-                    this.props.linesStyle
-                ] }>
+            <Text key={index} numberOfLines={1} style={[styles.listItemText, this.props.linesStyle]}>
                 {line}
             </Text>
         );
     }
 
-    _renderItemLines: Array<string> => Array<React$Node>;
+    _renderItemLines: (Array<string>) => Array<React$Node>;
 
     /**
      * Renders the additional item lines, if any.

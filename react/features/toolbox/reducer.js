@@ -120,10 +120,8 @@ function _getInitialState() {
     };
 }
 
-ReducerRegistry.register(
-    'features/toolbox',
-    (state: Object = _getInitialState(), action: Object) => {
-        switch (action.type) {
+ReducerRegistry.register('features/toolbox', (state: Object = _getInitialState(), action: Object) => {
+    switch (action.type) {
         case CLEAR_TOOLBOX_TIMEOUT:
             return {
                 ...state,
@@ -185,7 +183,7 @@ ReducerRegistry.register(
 
         case TOGGLE_TOOLBOX_VISIBLE:
             return set(state, 'visible', state.alwaysVisible || !state.visible);
-        }
+    }
 
-        return state;
-    });
+    return state;
+});

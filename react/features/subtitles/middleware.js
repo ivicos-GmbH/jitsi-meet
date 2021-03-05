@@ -2,14 +2,8 @@
 
 import { MiddlewareRegistry } from '../base/redux';
 
-import {
-    ENDPOINT_MESSAGE_RECEIVED,
-    TOGGLE_REQUESTING_SUBTITLES
-} from './actionTypes';
-import {
-    removeTranscriptMessage,
-    updateTranscriptMessage
-} from './actions';
+import { ENDPOINT_MESSAGE_RECEIVED, TOGGLE_REQUESTING_SUBTITLES } from './actionTypes';
+import { removeTranscriptMessage, updateTranscriptMessage } from './actions';
 import logger from './logger';
 
 /**
@@ -37,8 +31,8 @@ const P_NAME_REQUESTING_TRANSCRIPTION = 'requestingTranscription';
 const P_NAME_TRANSLATION_LANGUAGE = 'translation_language';
 
 /**
-* Time after which the rendered subtitles will be removed.
-*/
+ * Time after which the rendered subtitles will be removed.
+ */
 const REMOVE_AFTER_MS = 3000;
 
 /**
@@ -48,14 +42,14 @@ const REMOVE_AFTER_MS = 3000;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case ENDPOINT_MESSAGE_RECEIVED:
-        return _endpointMessageReceived(store, next, action);
+        case ENDPOINT_MESSAGE_RECEIVED:
+            return _endpointMessageReceived(store, next, action);
 
-    case TOGGLE_REQUESTING_SUBTITLES:
-        _requestingSubtitlesToggled(store);
-        break;
+        case TOGGLE_REQUESTING_SUBTITLES:
+            _requestingSubtitlesToggled(store);
+            break;
     }
 
     return next(action);
@@ -78,23 +72,18 @@ MiddlewareRegistry.register(store => next => action => {
 function _endpointMessageReceived({ dispatch, getState }, next, action) {
     const { json } = action;
 
-    if (!(json
-            && (json.type === JSON_TYPE_TRANSCRIPTION_RESULT
-                || json.type === JSON_TYPE_TRANSLATION_RESULT))) {
+    if (!(json && (json.type === JSON_TYPE_TRANSCRIPTION_RESULT || json.type === JSON_TYPE_TRANSLATION_RESULT))) {
         return next(action);
     }
 
     const state = getState();
-    const translationLanguage
-        = state['features/base/conference'].conference
-            .getLocalParticipantProperty(P_NAME_TRANSLATION_LANGUAGE);
+    const translationLanguage = state['features/base/conference'].conference.getLocalParticipantProperty(P_NAME_TRANSLATION_LANGUAGE);
 
     try {
         const transcriptMessageID = json.message_id;
         const participantName = json.participant.name;
 
-        if (json.type === JSON_TYPE_TRANSLATION_RESULT
-                && json.language === translationLanguage) {
+        if (json.type === JSON_TYPE_TRANSLATION_RESULT && json.language === translationLanguage) {
             // Displays final results in the target language if translation is
             // enabled.
 
@@ -104,13 +93,9 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
                 participantName
             };
 
-            _setClearerOnTranscriptMessage(dispatch,
-                transcriptMessageID, newTranscriptMessage);
-            dispatch(updateTranscriptMessage(transcriptMessageID,
-                newTranscriptMessage));
-
-        } else if (json.type === JSON_TYPE_TRANSCRIPTION_RESULT
-                && !translationLanguage) {
+            _setClearerOnTranscriptMessage(dispatch, transcriptMessageID, newTranscriptMessage);
+            dispatch(updateTranscriptMessage(transcriptMessageID, newTranscriptMessage));
+        } else if (json.type === JSON_TYPE_TRANSCRIPTION_RESULT && !translationLanguage) {
             // Displays interim and final results without any translation if
             // translations are disabled.
 
@@ -120,26 +105,21 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
             // message ID or adds a new transcript message if it does not
             // exist in the map.
             const newTranscriptMessage = {
-                ...state['features/subtitles']._transcriptMessages
-                        .get(transcriptMessageID)
-                    || { participantName }
+                ...(state['features/subtitles']._transcriptMessages.get(transcriptMessageID) || { participantName })
             };
 
-            _setClearerOnTranscriptMessage(dispatch,
-                transcriptMessageID, newTranscriptMessage);
+            _setClearerOnTranscriptMessage(dispatch, transcriptMessageID, newTranscriptMessage);
 
             // If this is final result, update the state as a final result
             // and start a count down to remove the subtitle from the state
             if (!json.is_interim) {
                 newTranscriptMessage.final = text;
-
             } else if (json.stability > 0.85) {
                 // If the message has a high stability, we can update the
                 // stable field of the state and remove the previously
                 // unstable results
                 newTranscriptMessage.stable = text;
                 newTranscriptMessage.unstable = undefined;
-
             } else {
                 // Otherwise, this result has an unstable result, which we
                 // add to the state. The unstable result will be appended
@@ -147,10 +127,7 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
                 newTranscriptMessage.unstable = text;
             }
 
-            dispatch(
-                updateTranscriptMessage(
-                    transcriptMessageID,
-                    newTranscriptMessage));
+            dispatch(updateTranscriptMessage(transcriptMessageID, newTranscriptMessage));
         }
     } catch (error) {
         logger.error('Error occurred while updating transcriptions\n', error);
@@ -172,9 +149,7 @@ function _requestingSubtitlesToggled({ getState }) {
     const { _requestingSubtitles } = state['features/subtitles'];
     const { conference } = state['features/base/conference'];
 
-    conference.setLocalParticipantProperty(
-        P_NAME_REQUESTING_TRANSCRIPTION,
-        !_requestingSubtitles);
+    conference.setLocalParticipantProperty(P_NAME_REQUESTING_TRANSCRIPTION, !_requestingSubtitles);
 }
 
 /**
@@ -186,16 +161,10 @@ function _requestingSubtitlesToggled({ getState }) {
  * @param {Object} transcriptMessage - The message to remove.
  * @returns {void}
  */
-function _setClearerOnTranscriptMessage(
-        dispatch,
-        transcriptMessageID,
-        transcriptMessage) {
+function _setClearerOnTranscriptMessage(dispatch, transcriptMessageID, transcriptMessage) {
     if (transcriptMessage.clearTimeOut) {
         clearTimeout(transcriptMessage.clearTimeOut);
     }
 
-    transcriptMessage.clearTimeOut
-        = setTimeout(
-            () => dispatch(removeTranscriptMessage(transcriptMessageID)),
-            REMOVE_AFTER_MS);
+    transcriptMessage.clearTimeOut = setTimeout(() => dispatch(removeTranscriptMessage(transcriptMessageID)), REMOVE_AFTER_MS);
 }

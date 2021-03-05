@@ -17,14 +17,14 @@ import { escapeRegexp } from '../base/util';
  */
 const EMOTICON_REGEXP_ARRAY: Array<Array<Object>> = [];
 
-(function() {
-    for (const [ key, value ] of Object.entries(aliases)) {
+(function () {
+    for (const [key, value] of Object.entries(aliases)) {
         let escapedValues;
         const asciiEmojies = emojiAsciiAliases[key];
 
         // Adding ascii emoticons
         if (asciiEmojies) {
-            escapedValues = asciiEmojies.map(v => escapeRegexp(v));
+            escapedValues = asciiEmojies.map((v) => escapeRegexp(v));
         } else {
             escapedValues = [];
         }
@@ -34,7 +34,7 @@ const EMOTICON_REGEXP_ARRAY: Array<Array<Object>> = [];
 
         const regexp = `\\B(${escapedValues.join('|')})\\B`;
 
-        EMOTICON_REGEXP_ARRAY.push([ new RegExp(regexp, 'g'), value ]);
+        EMOTICON_REGEXP_ARRAY.push([new RegExp(regexp, 'g'), value]);
     }
 })();
 
@@ -48,7 +48,7 @@ const EMOTICON_REGEXP_ARRAY: Array<Array<Object>> = [];
 export function replaceNonUnicodeEmojis(message: string) {
     let replacedMessage = message;
 
-    for (const [ regexp, replaceValue ] of EMOTICON_REGEXP_ARRAY) {
+    for (const [regexp, replaceValue] of EMOTICON_REGEXP_ARRAY) {
         replacedMessage = replacedMessage.replace(regexp, replaceValue);
     }
 

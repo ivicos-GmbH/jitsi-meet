@@ -4,19 +4,13 @@ import React from 'react';
 
 import { connect } from '../../base/redux';
 
-import {
-    _abstractMapStateToProps,
-    AbstractCaptions,
-    type AbstractCaptionsProps as Props
-} from './AbstractCaptions';
+import { _abstractMapStateToProps, AbstractCaptions, type AbstractCaptionsProps as Props } from './AbstractCaptions';
 
 /**
  * React {@code Component} which can display speech-to-text results from
  * Jigasi as subtitles.
  */
-class Captions
-    extends AbstractCaptions<Props> {
-
+class Captions extends AbstractCaptions<Props> {
     /**
      * Renders the transcription text.
      *
@@ -29,8 +23,8 @@ class Captions
      */
     _renderParagraph(id: string, text: string): React$Element<*> {
         return (
-            <p key = { id }>
-                <span>{ text }</span>
+            <p key={id}>
+                <span>{text}</span>
             </p>
         );
     }
@@ -43,13 +37,8 @@ class Captions
      * @protected
      * @returns {React$Element} - The subtitles container.
      */
-    _renderSubtitlesContainer(
-            paragraphs: Array<React$Element<*>>): React$Element<*> {
-        return (
-            <div className = 'transcription-subtitles' >
-                { paragraphs }
-            </div>
-        );
+    _renderSubtitlesContainer(paragraphs: Array<React$Element<*>>): React$Element<*> {
+        return <div className="transcription-subtitles">{paragraphs}</div>;
     }
 }
 

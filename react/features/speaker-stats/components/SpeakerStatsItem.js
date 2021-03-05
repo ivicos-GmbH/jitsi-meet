@@ -8,7 +8,6 @@ import TimeElapsed from './TimeElapsed';
  * The type of the React {@code Component} props of {@link SpeakerStatsItem}.
  */
 type Props = {
-
     /**
      * The name of the participant.
      */
@@ -46,21 +45,17 @@ class SpeakerStatsItem extends Component<Props> {
         const hasLeftClass = this.props.hasLeft ? 'status-user-left' : '';
         const rowDisplayClass = `speaker-stats-item ${hasLeftClass}`;
 
-        const dotClass = this.props.isDominantSpeaker
-            ? 'status-active' : 'status-inactive';
+        const dotClass = this.props.isDominantSpeaker ? 'status-active' : 'status-inactive';
         const speakerStatusClass = `speaker-stats-item__status-dot ${dotClass}`;
 
         return (
-            <div className = { rowDisplayClass }>
-                <div className = 'speaker-stats-item__status'>
-                    <span className = { speakerStatusClass } />
+            <div className={rowDisplayClass}>
+                <div className="speaker-stats-item__status">
+                    <span className={speakerStatusClass} />
                 </div>
-                <div className = 'speaker-stats-item__name'>
-                    { this.props.displayName }
-                </div>
-                <div className = 'speaker-stats-item__time'>
-                    <TimeElapsed
-                        time = { this.props.dominantSpeakerTime } />
+                <div className="speaker-stats-item__name">{this.props.displayName}</div>
+                <div className="speaker-stats-item__time">
+                    <TimeElapsed time={this.props.dominantSpeakerTime} />
                 </div>
             </div>
         );

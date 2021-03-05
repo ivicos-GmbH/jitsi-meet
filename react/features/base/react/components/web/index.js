@@ -8,12 +8,9 @@ export { default as Linkify } from './Linkify';
 export { default as LoadingIndicator } from './LoadingIndicator';
 export { default as MeetingsList } from './MeetingsList';
 export { default as MultiSelectAutocomplete } from './MultiSelectAutocomplete';
-export { default as NavigateSectionListEmptyComponent } from
-    './NavigateSectionListEmptyComponent';
-export { default as NavigateSectionListItem } from
-    './NavigateSectionListItem';
-export { default as NavigateSectionListSectionHeader }
-    from './NavigateSectionListSectionHeader';
+export { default as NavigateSectionListEmptyComponent } from './NavigateSectionListEmptyComponent';
+export { default as NavigateSectionListItem } from './NavigateSectionListItem';
+export { default as NavigateSectionListSectionHeader } from './NavigateSectionListSectionHeader';
 export { default as SectionList } from './SectionList';
 export { default as Switch } from './Switch';
 export { default as Text } from './Text';

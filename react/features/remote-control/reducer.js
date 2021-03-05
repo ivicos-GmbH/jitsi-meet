@@ -26,9 +26,8 @@ const DEFAULT_STATE = {
 /**
  * Listen for actions that mutate the remote control state.
  */
-ReducerRegistry.register(
-    'features/remote-control', (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/remote-control', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case CAPTURE_EVENTS:
             return {
                 ...state,
@@ -61,8 +60,7 @@ ReducerRegistry.register(
                 ...state,
                 receiver: set(state.receiver, 'controller', action.controller)
             };
-        }
+    }
 
-        return state;
-    },
-);
+    return state;
+});

@@ -5,10 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconCrown } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-import AbstractGrantModeratorButton, {
-    _mapStateToProps,
-    type Props
-} from '../AbstractGrantModeratorButton';
+import AbstractGrantModeratorButton, { _mapStateToProps, type Props } from '../AbstractGrantModeratorButton';
 
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
 
@@ -45,16 +42,17 @@ class GrantModeratorButton extends AbstractGrantModeratorButton {
 
         return (
             <RemoteVideoMenuButton
-                buttonText = { t('videothumbnail.grantModerator') }
-                displayClass = 'grantmoderatorlink'
-                icon = { IconCrown }
-                id = { `grantmoderatorlink_${participantID}` }
+                buttonText={t('videothumbnail.grantModerator')}
+                displayClass="grantmoderatorlink"
+                icon={IconCrown}
+                id={`grantmoderatorlink_${participantID}`}
                 // eslint-disable-next-line react/jsx-handler-names
-                onClick = { this._handleClick } />
+                onClick={this._handleClick}
+            />
         );
     }
 
-    _handleClick: () => void
+    _handleClick: () => void;
 }
 
 export default translate(connect(_mapStateToProps)(GrantModeratorButton));

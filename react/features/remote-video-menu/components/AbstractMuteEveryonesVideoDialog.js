@@ -7,16 +7,13 @@ import { MEDIA_TYPE } from '../../base/media';
 import { getLocalParticipant, getParticipantDisplayName } from '../../base/participants';
 import { muteAllParticipants } from '../actions';
 
-import AbstractMuteRemoteParticipantsVideoDialog, {
-    type Props as AbstractProps
-} from './AbstractMuteRemoteParticipantsVideoDialog';
+import AbstractMuteRemoteParticipantsVideoDialog, { type Props as AbstractProps } from './AbstractMuteRemoteParticipantsVideoDialog';
 
 /**
  * The type of the React {@code Component} props of
  * {@link AbstractMuteEveryonesVideoDialog}.
  */
 export type Props = AbstractProps & {
-
     content: string,
     exclude: Array<string>,
     title: string
@@ -45,14 +42,8 @@ export default class AbstractMuteEveryonesVideoDialog<P: Props> extends Abstract
         const { content, title } = this.props;
 
         return (
-            <Dialog
-                okKey = 'dialog.muteParticipantsVideoButton'
-                onSubmit = { this._onSubmit }
-                titleString = { title }
-                width = 'small'>
-                <div>
-                    { content }
-                </div>
+            <Dialog okKey="dialog.muteParticipantsVideoButton" onSubmit={this._onSubmit} titleString={title} width="small">
+                <div>{content}</div>
             </Dialog>
         );
     }
@@ -65,10 +56,7 @@ export default class AbstractMuteEveryonesVideoDialog<P: Props> extends Abstract
      * @returns {boolean}
      */
     _onSubmit() {
-        const {
-            dispatch,
-            exclude
-        } = this.props;
+        const { dispatch, exclude } = this.props;
 
         dispatch(muteAllParticipants(exclude, MEDIA_TYPE.VIDEO));
 
@@ -88,16 +76,16 @@ export function abstractMapStateToProps(state: Object, ownProps: Props) {
 
     const whom = exclude
         // eslint-disable-next-line no-confusing-arrow
-        .map(id => id === getLocalParticipant(state).id
-            ? t('dialog.muteEveryoneSelf')
-            : getParticipantDisplayName(state, id))
+        .map((id) => (id === getLocalParticipant(state).id ? t('dialog.muteEveryoneSelf') : getParticipantDisplayName(state, id)))
         .join(', ');
 
-    return whom.length ? {
-        content: t('dialog.muteEveryoneElsesVideoDialog'),
-        title: t('dialog.muteEveryoneElsesVideoTitle', { whom })
-    } : {
-        content: t('dialog.muteEveryonesVideoDialog'),
-        title: t('dialog.muteEveryonesVideoTitle')
-    };
+    return whom.length
+        ? {
+              content: t('dialog.muteEveryoneElsesVideoDialog'),
+              title: t('dialog.muteEveryoneElsesVideoTitle', { whom })
+          }
+        : {
+              content: t('dialog.muteEveryonesVideoDialog'),
+              title: t('dialog.muteEveryonesVideoTitle')
+          };
 }

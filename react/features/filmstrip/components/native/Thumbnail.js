@@ -7,13 +7,7 @@ import type { Dispatch } from 'redux';
 import { ColorSchemeRegistry } from '../../../base/color-scheme';
 import { openDialog } from '../../../base/dialog';
 import { MEDIA_TYPE, VIDEO_TYPE } from '../../../base/media';
-import {
-    PARTICIPANT_ROLE,
-    ParticipantView,
-    getParticipantCount,
-    isEveryoneModerator,
-    pinParticipant
-} from '../../../base/participants';
+import { PARTICIPANT_ROLE, ParticipantView, getParticipantCount, isEveryoneModerator, pinParticipant } from '../../../base/participants';
 import { Container } from '../../../base/react';
 import { connect } from '../../../base/redux';
 import { StyleType } from '../../../base/styles';
@@ -36,7 +30,6 @@ import styles, { AVATAR_SIZE } from './styles';
  * Thumbnail component's property types.
  */
 type Props = {
-
     /**
      * Whether local audio (microphone) is muted or not.
      */
@@ -133,67 +126,59 @@ function Thumbnail(props: Props) {
     } = props;
 
     const participantId = participant.id;
-    const participantInLargeVideo
-        = participantId === largeVideo.participantId;
+    const participantInLargeVideo = participantId === largeVideo.participantId;
     const videoMuted = !videoTrack || videoTrack.muted;
     const isScreenShare = videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 
     return (
         <Container
-            onClick = { _onClick }
-            onLongPress = { _onThumbnailLongPress }
-            style = { [
-                styles.thumbnail,
-                participant.pinned && !tileView
-                    ? _styles.thumbnailPinned : null,
-                props.styleOverrides || null
-            ] }
-            touchFeedback = { false }>
-
+            onClick={_onClick}
+            onLongPress={_onThumbnailLongPress}
+            style={[styles.thumbnail, participant.pinned && !tileView ? _styles.thumbnailPinned : null, props.styleOverrides || null]}
+            touchFeedback={false}
+        >
             <ParticipantView
-                avatarSize = { tileView ? AVATAR_SIZE * 1.5 : AVATAR_SIZE }
-                disableVideo = { isScreenShare || participant.isFakeParticipant }
-                participantId = { participantId }
-                style = { _styles.participantViewStyle }
-                tintEnabled = { participantInLargeVideo && !disableTint }
-                tintStyle = { _styles.activeThumbnailTint }
-                zOrder = { 1 } />
+                avatarSize={tileView ? AVATAR_SIZE * 1.5 : AVATAR_SIZE}
+                disableVideo={isScreenShare || participant.isFakeParticipant}
+                participantId={participantId}
+                style={_styles.participantViewStyle}
+                tintEnabled={participantInLargeVideo && !disableTint}
+                tintStyle={_styles.activeThumbnailTint}
+                zOrder={1}
+            />
 
-            { renderDisplayName && <Container style = { styles.displayNameContainer }>
-                <DisplayNameLabel participantId = { participantId } />
-            </Container> }
+            {renderDisplayName && (
+                <Container style={styles.displayNameContainer}>
+                    <DisplayNameLabel participantId={participantId} />
+                </Container>
+            )}
 
-            { renderModeratorIndicator
-                && <View style = { styles.moderatorIndicatorContainer }>
+            {renderModeratorIndicator && (
+                <View style={styles.moderatorIndicatorContainer}>
                     <ModeratorIndicator />
-                </View>}
+                </View>
+            )}
 
-            { !participant.isFakeParticipant && <View
-                style = { [
-                    styles.thumbnailTopIndicatorContainer,
-                    styles.thumbnailTopLeftIndicatorContainer
-                ] }>
-                <RaisedHandIndicator participantId = { participant.id } />
-                { renderDominantSpeakerIndicator && <DominantSpeakerIndicator /> }
-            </View> }
+            {!participant.isFakeParticipant && (
+                <View style={[styles.thumbnailTopIndicatorContainer, styles.thumbnailTopLeftIndicatorContainer]}>
+                    <RaisedHandIndicator participantId={participant.id} />
+                    {renderDominantSpeakerIndicator && <DominantSpeakerIndicator />}
+                </View>
+            )}
 
-            { !participant.isFakeParticipant && <View
-                style = { [
-                    styles.thumbnailTopIndicatorContainer,
-                    styles.thumbnailTopRightIndicatorContainer
-                ] }>
-                <ConnectionIndicator participantId = { participant.id } />
-            </View> }
+            {!participant.isFakeParticipant && (
+                <View style={[styles.thumbnailTopIndicatorContainer, styles.thumbnailTopRightIndicatorContainer]}>
+                    <ConnectionIndicator participantId={participant.id} />
+                </View>
+            )}
 
-            { !participant.isFakeParticipant && <Container style = { styles.thumbnailIndicatorContainer }>
-                { audioMuted
-                    && <AudioMutedIndicator /> }
-                { videoMuted
-                    && <VideoMutedIndicator /> }
-                { isScreenShare
-                    && <ScreenShareIndicator /> }
-            </Container> }
-
+            {!participant.isFakeParticipant && (
+                <Container style={styles.thumbnailIndicatorContainer}>
+                    {audioMuted && <AudioMutedIndicator />}
+                    {videoMuted && <VideoMutedIndicator />}
+                    {isScreenShare && <ScreenShareIndicator />}
+                </Container>
+            )}
         </Container>
     );
 }
@@ -235,13 +220,17 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
             const { participant } = ownProps;
 
             if (participant.local) {
-                dispatch(openDialog(ConnectionStatusComponent, {
-                    participantID: participant.id
-                }));
+                dispatch(
+                    openDialog(ConnectionStatusComponent, {
+                        participantID: participant.id
+                    })
+                );
             } else {
-                dispatch(openDialog(RemoteVideoMenu, {
-                    participant
-                }));
+                dispatch(
+                    openDialog(RemoteVideoMenu, {
+                        participant
+                    })
+                );
             }
         }
     };
@@ -262,10 +251,8 @@ function _mapStateToProps(state, ownProps) {
     const tracks = state['features/base/tracks'];
     const { participant } = ownProps;
     const id = participant.id;
-    const audioTrack
-        = getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.AUDIO, id);
-    const videoTrack
-        = getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, id);
+    const audioTrack = getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.AUDIO, id);
+    const videoTrack = getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, id);
     const participantCount = getParticipantCount(state);
     const renderDominantSpeakerIndicator = participant.dominantSpeaker && participantCount > 2;
     const _isEveryoneModerator = isEveryoneModerator(state);

@@ -29,7 +29,6 @@ const _SNS = 'deep-linking-mobile';
  * {@link DeepLinkingMobilePage}.
  */
 type Props = {
-
     /**
      * Application download URL.
      */
@@ -78,9 +77,7 @@ class DeepLinkingMobilePage extends Component<Props> {
      * @inheritdoc
      */
     componentDidMount() {
-        sendAnalytics(
-            createDeepLinkingPageEvent(
-                'displayed', 'DeepLinkingMobile', { isMobileBrowser: true }));
+        sendAnalytics(createDeepLinkingPageEvent('displayed', 'DeepLinkingMobile', { isMobileBrowser: true }));
     }
 
     /**
@@ -92,88 +89,45 @@ class DeepLinkingMobilePage extends Component<Props> {
     render() {
         const { _downloadUrl, _room, t } = this.props;
         const { HIDE_DEEP_LINKING_LOGO, NATIVE_APP_NAME, SHOW_DEEP_LINKING_IMAGE } = interfaceConfig;
-        const downloadButtonClassName
-            = `${_SNS}__button ${_SNS}__button_primary`;
-
+        const downloadButtonClassName = `${_SNS}__button ${_SNS}__button_primary`;
 
         const onOpenLinkProperties = _downloadUrl
             ? {
-                // When opening a link to the download page, we want to let the
-                // OS itself handle intercepting and opening the appropriate
-                // app store. This avoids potential issues with browsers, such
-                // as iOS Chrome, not opening the store properly.
-            }
+                  // When opening a link to the download page, we want to let the
+                  // OS itself handle intercepting and opening the appropriate
+                  // app store. This avoids potential issues with browsers, such
+                  // as iOS Chrome, not opening the store properly.
+              }
             : {
-                // When falling back to another URL (Firebase) let the page be
-                // opened in a new window. This helps prevent the user getting
-                // trapped in an app-open-cycle where going back to the mobile
-                // browser re-triggers the app-open behavior.
-                target: '_blank',
-                rel: 'noopener noreferrer'
-            };
+                  // When falling back to another URL (Firebase) let the page be
+                  // opened in a new window. This helps prevent the user getting
+                  // trapped in an app-open-cycle where going back to the mobile
+                  // browser re-triggers the app-open behavior.
+                  target: '_blank',
+                  rel: 'noopener noreferrer'
+              };
 
         return (
-            <div className = { _SNS }>
-                <div className = 'header'>
-                    {
-                        HIDE_DEEP_LINKING_LOGO
-                            ? null
-                            : <img
-                                className = 'logo'
-                                src = 'images/logo-deep-linking.png' />
-                    }
-                </div>
-                <div className = { `${_SNS}__body` }>
-                    {
-                        SHOW_DEEP_LINKING_IMAGE
-                            ? <img
-                                className = 'image'
-                                src = 'images/deep-linking-image.png' />
-                            : null
-                    }
-                    <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.appNotInstalled`, { app: NATIVE_APP_NAME }) }
-                    </p>
-                    <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.ifHaveApp`) }
-                    </p>
-                    <a
-                        { ...onOpenLinkProperties }
-                        className = { `${_SNS}__href` }
-                        href = { generateDeepLinkingURL() }
-                        onClick = { this._onOpenApp }
-                        target = '_top'>
-                        <button className = { `${_SNS}__button ${_SNS}__button_primary` }>
-                            { t(`${_TNS}.joinInApp`) }
-                        </button>
+            <div className={_SNS}>
+                <div className="header">{HIDE_DEEP_LINKING_LOGO ? null : <img className="logo" src="images/logo-deep-linking.png" />}</div>
+                <div className={`${_SNS}__body`}>
+                    {SHOW_DEEP_LINKING_IMAGE ? <img className="image" src="images/deep-linking-image.png" /> : null}
+                    <p className={`${_SNS}__text`}>{t(`${_TNS}.appNotInstalled`, { app: NATIVE_APP_NAME })}</p>
+                    <p className={`${_SNS}__text`}>{t(`${_TNS}.ifHaveApp`)}</p>
+                    <a {...onOpenLinkProperties} className={`${_SNS}__href`} href={generateDeepLinkingURL()} onClick={this._onOpenApp} target="_top">
+                        <button className={`${_SNS}__button ${_SNS}__button_primary`}>{t(`${_TNS}.joinInApp`)}</button>
                     </a>
-                    <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.ifDoNotHaveApp`) }
-                    </p>
-                    <a
-                        { ...onOpenLinkProperties }
-                        href = { this._generateDownloadURL() }
-                        onClick = { this._onDownloadApp }
-                        target = '_top'>
-                        <button className = { downloadButtonClassName }>
-                            { t(`${_TNS}.downloadApp`) }
-                        </button>
+                    <p className={`${_SNS}__text`}>{t(`${_TNS}.ifDoNotHaveApp`)}</p>
+                    <a {...onOpenLinkProperties} href={this._generateDownloadURL()} onClick={this._onDownloadApp} target="_top">
+                        <button className={downloadButtonClassName}>{t(`${_TNS}.downloadApp`)}</button>
                     </a>
-                    {
-                        isSupportedMobileBrowser()
-                            && <a
-                                onClick = { this._onLaunchWeb }
-                                target = '_top'>
-                                <button className = { downloadButtonClassName }>
-                                    { t(`${_TNS}.launchWebButton`) }
-                                </button>
-                            </a>
-                    }
-                    { renderPromotionalFooter() }
-                    <DialInSummary
-                        className = 'deep-linking-dial-in'
-                        clickableNumbers = { true }
-                        room = { _room } />
+                    {isSupportedMobileBrowser() && (
+                        <a onClick={this._onLaunchWeb} target="_top">
+                            <button className={downloadButtonClassName}>{t(`${_TNS}.launchWebButton`)}</button>
+                        </a>
+                    )}
+                    {renderPromotionalFooter()}
+                    <DialInSummary className="deep-linking-dial-in" clickableNumbers={true} room={_room} />
                 </div>
             </div>
         );
@@ -195,23 +149,13 @@ class DeepLinkingMobilePage extends Component<Props> {
         // For information about the properties of
         // interfaceConfig.MOBILE_DYNAMIC_LINK check:
         // https://firebase.google.com/docs/dynamic-links/create-manually
-        const {
-            APN = 'org.jitsi.meet',
-            APP_CODE = 'w2atb',
-            CUSTOM_DOMAIN = undefined,
-            IBI = 'com.atlassian.JitsiMeet.ios',
-            ISI = '1165103905'
-        } = interfaceConfig.MOBILE_DYNAMIC_LINK || {};
+        const { APN = 'org.jitsi.meet', APP_CODE = 'w2atb', CUSTOM_DOMAIN = undefined, IBI = 'com.atlassian.JitsiMeet.ios', ISI = '1165103905' } =
+            interfaceConfig.MOBILE_DYNAMIC_LINK || {};
 
         const domain = CUSTOM_DOMAIN ?? `https://${APP_CODE}.app.goo.gl`;
         const IUS = interfaceConfig.APP_SCHEME || 'org.jitsi.meet';
 
-        return `${domain}/?link=${
-            encodeURIComponent(window.location.href)}&apn=${
-            APN}&ibi=${
-            IBI}&isi=${
-            ISI}&ius=${
-            IUS}&efr=1`;
+        return `${domain}/?link=${encodeURIComponent(window.location.href)}&apn=${APN}&ibi=${IBI}&isi=${ISI}&ius=${IUS}&efr=1`;
     }
 
     _onDownloadApp: () => void;
@@ -223,9 +167,7 @@ class DeepLinkingMobilePage extends Component<Props> {
      * @returns {void}
      */
     _onDownloadApp() {
-        sendAnalytics(
-            createDeepLinkingPageEvent(
-                'clicked', 'downloadAppButton', { isMobileBrowser: true }));
+        sendAnalytics(createDeepLinkingPageEvent('clicked', 'downloadAppButton', { isMobileBrowser: true }));
     }
 
     _onLaunchWeb: () => void;
@@ -236,9 +178,7 @@ class DeepLinkingMobilePage extends Component<Props> {
      * @returns {void}
      */
     _onLaunchWeb() {
-        sendAnalytics(
-            createDeepLinkingPageEvent(
-                'clicked', 'launchWebButton', { isMobileBrowser: true }));
+        sendAnalytics(createDeepLinkingPageEvent('clicked', 'launchWebButton', { isMobileBrowser: true }));
         this.props.dispatch(openWebApp());
     }
 
@@ -251,9 +191,7 @@ class DeepLinkingMobilePage extends Component<Props> {
      * @returns {void}
      */
     _onOpenApp() {
-        sendAnalytics(
-            createDeepLinkingPageEvent(
-                'clicked', 'openAppButton', { isMobileBrowser: true }));
+        sendAnalytics(createDeepLinkingPageEvent('clicked', 'openAppButton', { isMobileBrowser: true }));
     }
 }
 

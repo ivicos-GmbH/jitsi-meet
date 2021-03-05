@@ -9,10 +9,10 @@ import { SCREEN_SHARE_PARTICIPANTS_UPDATED } from './actionTypes';
  * @param {string} participantIds - The participants which currently have active
  * screen share streams.
  * @returns {{
-    *     type: SCREEN_SHARE_PARTICIPANTS_UPDATED,
-    *     participantId: string
-    * }}
-    */
+ *     type: SCREEN_SHARE_PARTICIPANTS_UPDATED,
+ *     participantId: string
+ * }}
+ */
 export function setParticipantsWithScreenShare(participantIds: Array<string>) {
     return {
         type: SCREEN_SHARE_PARTICIPANTS_UPDATED,

@@ -8,7 +8,6 @@ import { createAudioOnlyChangedEvent, sendAnalytics } from '../../analytics';
 import { SET_AUDIO_ONLY } from './actionTypes';
 import logger from './logger';
 
-
 declare var APP: Object;
 
 /**

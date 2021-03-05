@@ -16,7 +16,6 @@ import { InsecureRoomNameLabel } from '.';
  * The type of the React {@code Component} props of {@link AbstractLabels}.
  */
 export type Props = {
-
     /**
      * Whether the filmstrip is displayed with remote videos. Used to determine
      * display classes to set.
@@ -43,9 +42,7 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
      * @returns {React$Element}
      */
     _renderE2EELabel() {
-        return (
-            <E2EELabel />
-        );
+        return <E2EELabel />;
     }
 
     /**
@@ -55,9 +52,7 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
      * @returns {React$Element}
      */
     _renderLocalRecordingLabel() {
-        return (
-            <LocalRecordingLabel />
-        );
+        return <LocalRecordingLabel />;
     }
 
     /**
@@ -69,9 +64,7 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
      * @returns {React$Element}
      */
     _renderRecordingLabel(mode: string) {
-        return (
-            <RecordingLabel mode = { mode } />
-        );
+        return <RecordingLabel mode={mode} />;
     }
 
     /**
@@ -81,9 +74,7 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
      * @returns {React$Element}
      */
     _renderTranscribingLabel() {
-        return (
-            <TranscribingLabel />
-        );
+        return <TranscribingLabel />;
     }
 
     /**
@@ -93,9 +84,7 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
      * @returns {React$Element}
      */
     _renderInsecureRoomNameLabel() {
-        return (
-            <InsecureRoomNameLabel />
-        );
+        return <InsecureRoomNameLabel />;
     }
 
     /**
@@ -105,9 +94,7 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
      * @returns {React$Element}
      */
     _renderVideoQualityLabel() {
-        return (
-            <VideoQualityLabel />
-        );
+        return <VideoQualityLabel />;
     }
 }
 

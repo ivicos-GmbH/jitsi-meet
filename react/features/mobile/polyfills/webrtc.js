@@ -1,15 +1,8 @@
-import {
-    MediaStream,
-    MediaStreamTrack,
-    RTCSessionDescription,
-    RTCIceCandidate,
-    mediaDevices,
-    permissions
-} from 'react-native-webrtc';
+import { MediaStream, MediaStreamTrack, RTCSessionDescription, RTCIceCandidate, mediaDevices, permissions } from 'react-native-webrtc';
 
 import RTCPeerConnection from './RTCPeerConnection';
 
-(global => {
+((global) => {
     if (typeof global.MediaStream === 'undefined') {
         global.MediaStream = MediaStream;
     }
@@ -39,5 +32,4 @@ import RTCPeerConnection from './RTCPeerConnection';
             navigator.permissions = permissions;
         }
     }
-
 })(global || window || this); // eslint-disable-line no-invalid-this

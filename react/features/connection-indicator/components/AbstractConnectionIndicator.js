@@ -18,7 +18,6 @@ export const INDICATOR_DISPLAY_THRESHOLD = 30;
  * The type of the React {@code Component} props of {@link ConnectionIndicator}.
  */
 export type Props = {
-
     /**
      * The ID of the participant associated with the displayed connection indication and
      * stats.
@@ -30,7 +29,6 @@ export type Props = {
  * The type of the React {@code Component} state of {@link ConnectionIndicator}.
  */
 export type State = {
-
     /**
      * Whether or not a CSS class should be applied to the root for hiding the
      * connection indicator. By default the indicator should start out hidden
@@ -56,7 +54,7 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
     /**
      * The timeout for automatically hiding the indicator.
      */
-    autoHideTimeout: ?TimeoutID
+    autoHideTimeout: ?TimeoutID;
 
     /**
      * Initializes a new {@code ConnectionIndicator} instance.
@@ -78,8 +76,7 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
      * returns {void}
      */
     componentDidMount() {
-        statsEmitter.subscribeToClientStats(
-            this.props.participantId, this._onStatsUpdated);
+        statsEmitter.subscribeToClientStats(this.props.participantId, this._onStatsUpdated);
     }
 
     /**
@@ -90,10 +87,8 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
      */
     componentDidUpdate(prevProps: Props) {
         if (prevProps.participantId !== this.props.participantId) {
-            statsEmitter.unsubscribeToClientStats(
-                prevProps.participantId, this._onStatsUpdated);
-            statsEmitter.subscribeToClientStats(
-                this.props.participantId, this._onStatsUpdated);
+            statsEmitter.unsubscribeToClientStats(prevProps.participantId, this._onStatsUpdated);
+            statsEmitter.subscribeToClientStats(this.props.participantId, this._onStatsUpdated);
         }
     }
 
@@ -105,8 +100,7 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
      * @returns {void}
      */
     componentWillUnmount() {
-        statsEmitter.unsubscribeToClientStats(
-            this.props.participantId, this._onStatsUpdated);
+        statsEmitter.unsubscribeToClientStats(this.props.participantId, this._onStatsUpdated);
 
         clearTimeout(this.autoHideTimeout);
     }
@@ -125,13 +119,8 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
     _onStatsUpdated(stats = {}) {
         // Rely on React to batch setState actions.
         const { connectionQuality } = stats;
-        const newPercentageState = typeof connectionQuality === 'undefined'
-            ? {} : { percent: connectionQuality };
-        const newStats = Object.assign(
-            {},
-            this.state.stats,
-            stats,
-            newPercentageState);
+        const newPercentageState = typeof connectionQuality === 'undefined' ? {} : { percent: connectionQuality };
+        const newStats = Object.assign({}, this.state.stats, stats, newPercentageState);
 
         this.setState({
             stats: newStats
@@ -161,13 +150,14 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
             // is needed if the percent is below the threshold and there is an
             // autoHideTimeout set.
         } else {
-            this.autoHideTimeout = setTimeout(() => {
-                this.setState({
-                    showIndicator: false
-                });
-            }, typeof interfaceConfig === 'undefined'
-                ? 5000
-                : interfaceConfig.CONNECTION_INDICATOR_AUTO_HIDE_TIMEOUT);
+            this.autoHideTimeout = setTimeout(
+                () => {
+                    this.setState({
+                        showIndicator: false
+                    });
+                },
+                typeof interfaceConfig === 'undefined' ? 5000 : interfaceConfig.CONNECTION_INDICATOR_AUTO_HIDE_TIMEOUT
+            );
         }
     }
 }

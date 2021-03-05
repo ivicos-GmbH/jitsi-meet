@@ -16,14 +16,10 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<*> {
      * @inheritdoc
      */
     render() {
-        return (
-            <InputDialog
-                contentKey = 'dialog.enterDisplayName'
-                onSubmit = { this._onSetDisplayName } />
-        );
+        return <InputDialog contentKey="dialog.enterDisplayName" onSubmit={this._onSetDisplayName} />;
     }
 
-    _onSetDisplayName: string => boolean;
+    _onSetDisplayName: (string) => boolean;
 }
 
 export default connect()(DisplayNamePrompt);

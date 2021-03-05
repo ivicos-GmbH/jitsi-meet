@@ -24,8 +24,7 @@ export const API_URL_LIVE_BROADCASTS = 'https://content.googleapis.com/youtube/v
  *
  * @type {string[]}
  */
-export const DISCOVERY_DOCS
-    = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest' ];
+export const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 
 /**
  * An enumeration of the different states the Google API can be in.
@@ -68,5 +67,4 @@ export const GOOGLE_SCOPE_CALENDAR = 'https://www.googleapis.com/auth/calendar';
  *
  * @type {string}
  */
-export const GOOGLE_SCOPE_YOUTUBE
-    = 'https://www.googleapis.com/auth/youtube.readonly';
+export const GOOGLE_SCOPE_YOUTUBE = 'https://www.googleapis.com/auth/youtube.readonly';

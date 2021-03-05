@@ -13,16 +13,7 @@ import MuteEveryoneElseButton from './MuteEveryoneElseButton';
 import MuteEveryoneElsesVideoButton from './MuteEveryoneElsesVideoButton';
 import { REMOTE_CONTROL_MENU_STATES } from './RemoteControlButton';
 
-import {
-    GrantModeratorButton,
-    MuteButton,
-    MuteVideoButton,
-    KickButton,
-    PrivateMessageMenuButton,
-    RemoteControlButton,
-    RemoteVideoMenu,
-    VolumeSlider
-} from './';
+import { GrantModeratorButton, MuteButton, MuteVideoButton, KickButton, PrivateMessageMenuButton, RemoteControlButton, RemoteVideoMenu, VolumeSlider } from './';
 
 declare var $: Object;
 declare var interfaceConfig: Object;
@@ -32,7 +23,6 @@ declare var interfaceConfig: Object;
  * {@link RemoteVideoMenuTriggerButton}.
  */
 type Props = {
-
     /**
      * Whether or not to display the kick button.
      */
@@ -65,7 +55,6 @@ type Props = {
      */
     _remoteControlState: number,
 
-
     /**
      * The redux dispatch function.
      */
@@ -86,7 +75,7 @@ type Props = {
     /**
      * The ID for the participant on which the remote video menu will act.
      */
-    participantID: string,
+    participantID: string
 };
 
 /**
@@ -120,16 +109,9 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
         }
 
         return (
-            <Popover
-                content = { content }
-                overflowDrawer = { this.props._overflowDrawer }
-                position = { this.props._menuPosition }>
-                <span
-                    className = 'popover-trigger remote-video-menu-trigger'>
-                    <Icon
-                        size = '1em'
-                        src = { IconMenuThumb }
-                        title = 'Remote user controls' />
+            <Popover content={content} overflowDrawer={this.props._overflowDrawer} position={this.props._menuPosition}>
+                <span className="popover-trigger remote-video-menu-trigger">
+                    <Icon size="1em" src={IconMenuThumb} title="Remote user controls" />
                 </span>
             </Popover>
         );
@@ -143,55 +125,22 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
      * @returns {ReactElement}
      */
     _renderRemoteVideoMenu() {
-        const {
-            _disableKick,
-            _disableRemoteMute,
-            _isModerator,
-            dispatch,
-            initialVolumeValue,
-            onVolumeChange,
-            _remoteControlState,
-            participantID
-        } = this.props;
+        const { _disableKick, _disableRemoteMute, _isModerator, dispatch, initialVolumeValue, onVolumeChange, _remoteControlState, participantID } = this.props;
 
         const buttons = [];
 
         if (_isModerator) {
             if (!_disableRemoteMute) {
-                buttons.push(
-                    <MuteButton
-                        key = 'mute'
-                        participantID = { participantID } />
-                );
-                buttons.push(
-                    <MuteEveryoneElseButton
-                        key = 'mute-others'
-                        participantID = { participantID } />
-                );
-                buttons.push(
-                    <MuteVideoButton
-                        key = 'mute-video'
-                        participantID = { participantID } />
-                );
-                buttons.push(
-                    <MuteEveryoneElsesVideoButton
-                        key = 'mute-others-video'
-                        participantID = { participantID } />
-                );
+                buttons.push(<MuteButton key="mute" participantID={participantID} />);
+                buttons.push(<MuteEveryoneElseButton key="mute-others" participantID={participantID} />);
+                buttons.push(<MuteVideoButton key="mute-video" participantID={participantID} />);
+                buttons.push(<MuteEveryoneElsesVideoButton key="mute-others-video" participantID={participantID} />);
             }
 
-            buttons.push(
-                <GrantModeratorButton
-                    key = 'grant-moderator'
-                    participantID = { participantID } />
-            );
+            buttons.push(<GrantModeratorButton key="grant-moderator" participantID={participantID} />);
 
             if (!_disableKick) {
-                buttons.push(
-                    <KickButton
-                        key = 'kick'
-                        participantID = { participantID } />
-                );
+                buttons.push(<KickButton key="kick" participantID={participantID} />);
             }
         }
 
@@ -204,36 +153,17 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                 onRemoteControlToggle = () => dispatch(requestRemoteControl(participantID));
             }
 
-            buttons.push(
-                <RemoteControlButton
-                    key = 'remote-control'
-                    onClick = { onRemoteControlToggle }
-                    participantID = { participantID }
-                    remoteControlState = { _remoteControlState } />
-            );
+            buttons.push(<RemoteControlButton key="remote-control" onClick={onRemoteControlToggle} participantID={participantID} remoteControlState={_remoteControlState} />);
         }
 
-        buttons.push(
-            <PrivateMessageMenuButton
-                key = 'privateMessage'
-                participantID = { participantID } />
-        );
+        buttons.push(<PrivateMessageMenuButton key="privateMessage" participantID={participantID} />);
 
         if (onVolumeChange && typeof initialVolumeValue === 'number' && !isNaN(initialVolumeValue)) {
-            buttons.push(
-                <VolumeSlider
-                    initialValue = { initialVolumeValue }
-                    key = 'volume-slider'
-                    onChange = { onVolumeChange } />
-            );
+            buttons.push(<VolumeSlider initialValue={initialVolumeValue} key="volume-slider" onChange={onVolumeChange} />);
         }
 
         if (buttons.length > 0) {
-            return (
-                <RemoteVideoMenu id = { participantID }>
-                    { buttons }
-                </RemoteVideoMenu>
-            );
+            return <RemoteVideoMenu id={participantID}>{buttons}</RemoteVideoMenu>;
         }
 
         return null;
@@ -262,8 +192,7 @@ function _mapStateToProps(state, ownProps) {
     const activeParticipant = requestedParticipant || controlled;
     const { overflowDrawer } = state['features/toolbox'];
 
-    if (_supportsRemoteControl
-            && ((!active && !_isRemoteControlSessionActive) || activeParticipant === participantID)) {
+    if (_supportsRemoteControl && ((!active && !_isRemoteControlSessionActive) || activeParticipant === participantID)) {
         if (requestedParticipant === participantID) {
             _remoteControlState = REMOTE_CONTROL_MENU_STATES.REQUESTING;
         } else if (controlled) {
@@ -277,14 +206,14 @@ function _mapStateToProps(state, ownProps) {
     let _menuPosition;
 
     switch (currentLayout) {
-    case LAYOUTS.TILE_VIEW:
-        _menuPosition = 'left-start';
-        break;
-    case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-        _menuPosition = 'left-end';
-        break;
-    default:
-        _menuPosition = 'auto';
+        case LAYOUTS.TILE_VIEW:
+            _menuPosition = 'left-start';
+            break;
+        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+            _menuPosition = 'left-end';
+            break;
+        default:
+            _menuPosition = 'auto';
     }
 
     return {

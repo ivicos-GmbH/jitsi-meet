@@ -17,7 +17,6 @@ import DialInSummaryErrorDialog from './DialInSummaryErrorDialog';
 import styles, { INDICATOR_COLOR } from './styles';
 
 type Props = {
-
     /**
      * The URL to display the summary for.
      */
@@ -30,7 +29,6 @@ type Props = {
  * Implements a React native component that displays the dial in info page for a specific room.
  */
 class DialInSummary extends Component<Props> {
-
     /**
      * Initializes a new instance.
      *
@@ -54,18 +52,20 @@ class DialInSummary extends Component<Props> {
 
         return (
             <JitsiModal
-                headerProps = {{
+                headerProps={{
                     headerLabelKey: 'info.label'
                 }}
-                modalId = { DIAL_IN_SUMMARY_VIEW_ID }
-                style = { styles.backDrop } >
+                modalId={DIAL_IN_SUMMARY_VIEW_ID}
+                style={styles.backDrop}
+            >
                 <WebView
-                    onError = { this._onError }
-                    onShouldStartLoadWithRequest = { this._onNavigate }
-                    renderLoading = { this._renderLoading }
-                    source = {{ uri: getDialInfoPageURLForURIString(_summaryUrl) }}
-                    startInLoadingState = { true }
-                    style = { styles.webView } />
+                    onError={this._onError}
+                    onShouldStartLoadWithRequest={this._onNavigate}
+                    renderLoading={this._renderLoading}
+                    source={{ uri: getDialInfoPageURLForURIString(_summaryUrl) }}
+                    startInLoadingState={true}
+                    style={styles.webView}
+                />
             </JitsiModal>
         );
     }
@@ -82,7 +82,7 @@ class DialInSummary extends Component<Props> {
         this.props.dispatch(openDialog(DialInSummaryErrorDialog));
     }
 
-    _onNavigate: Object => Boolean;
+    _onNavigate: (Object) => Boolean;
 
     /**
      * Callback to intercept navigation inside the webview and make the native app handle the dial requests.
@@ -113,10 +113,8 @@ class DialInSummary extends Component<Props> {
      */
     _renderLoading() {
         return (
-            <View style = { styles.indicatorWrapper }>
-                <LoadingIndicator
-                    color = { INDICATOR_COLOR }
-                    size = 'large' />
+            <View style={styles.indicatorWrapper}>
+                <LoadingIndicator color={INDICATOR_COLOR} size="large" />
             </View>
         );
     }

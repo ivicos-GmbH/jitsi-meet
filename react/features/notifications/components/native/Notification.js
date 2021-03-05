@@ -5,9 +5,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import { translate } from '../../../base/i18n';
 import { Icon, IconClose } from '../../../base/icons';
-import AbstractNotification, {
-    type Props
-} from '../AbstractNotification';
+import AbstractNotification, { type Props } from '../AbstractNotification';
 
 import styles from './styles';
 
@@ -34,26 +32,17 @@ class Notification extends AbstractNotification<Props> {
         const { isDismissAllowed } = this.props;
 
         return (
-            <View
-                pointerEvents = 'box-none'
-                style = { styles.notification }>
-                <View style = { styles.contentColumn }>
-                    <View
-                        pointerEvents = 'box-none'
-                        style = { styles.notificationContent }>
-                        {
-                            this._renderContent()
-                        }
+            <View pointerEvents="box-none" style={styles.notification}>
+                <View style={styles.contentColumn}>
+                    <View pointerEvents="box-none" style={styles.notificationContent}>
+                        {this._renderContent()}
                     </View>
                 </View>
-                {
-                    isDismissAllowed
-                    && <TouchableOpacity onPress = { this._onDismissed }>
-                        <Icon
-                            src = { IconClose }
-                            style = { styles.dismissIcon } />
+                {isDismissAllowed && (
+                    <TouchableOpacity onPress={this._onDismissed}>
+                        <Icon src={IconClose} style={styles.dismissIcon} />
                     </TouchableOpacity>
-                }
+                )}
             </View>
         );
     }
@@ -72,20 +61,15 @@ class Notification extends AbstractNotification<Props> {
 
         if (description && description.length) {
             return description.map((line, index) => (
-                <Text
-                    key = { index }
-                    numberOfLines = { maxLines }
-                    style = { styles.contentText }>
-                    { line }
+                <Text key={index} numberOfLines={maxLines} style={styles.contentText}>
+                    {line}
                 </Text>
             ));
         }
 
         return (
-            <Text
-                numberOfLines = { maxLines }
-                style = { styles.contentText } >
-                { titleText }
+            <Text numberOfLines={maxLines} style={styles.contentText}>
+                {titleText}
             </Text>
         );
     }

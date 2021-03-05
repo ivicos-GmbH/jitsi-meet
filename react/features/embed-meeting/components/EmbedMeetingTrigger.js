@@ -9,7 +9,6 @@ import { translate } from '../../base/i18n';
 import EmbedMeetingDialog from './EmbedMeetingDialog';
 
 type Props = {
-
     /**
      * Open the embed meeting dialog
      */
@@ -18,7 +17,7 @@ type Props = {
     /**
      * Invoked to obtain translated strings.
      */
-    t: Function,
+    t: Function
 };
 
 /**
@@ -37,9 +36,7 @@ function EmbedMeetingTrigger({ t, openEmbedDialog }: Props) {
     }
 
     return (
-        <div
-            className = 'embed-meeting-trigger'
-            onClick = { onClick }>
+        <div className="embed-meeting-trigger" onClick={onClick}>
             {t('embedMeeting.title')}
         </div>
     );

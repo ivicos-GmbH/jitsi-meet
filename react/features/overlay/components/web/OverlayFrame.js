@@ -8,7 +8,6 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} props of {@link OverlayFrame}.
  */
 type Props = {
-
     /**
      * The children components to be displayed into the overlay frame.
      */
@@ -33,14 +32,8 @@ export default class OverlayFrame extends Component<Props> {
      */
     render() {
         return (
-            <div
-                className = { this.props.isLightOverlay ? 'overlay__container-light' : 'overlay__container' }
-                id = 'overlay'>
-                <div className = { 'overlay__content' }>
-                    {
-                        this.props.children
-                    }
-                </div>
+            <div className={this.props.isLightOverlay ? 'overlay__container-light' : 'overlay__container'} id="overlay">
+                <div className={'overlay__content'}>{this.props.children}</div>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 /* global ga */
 
-(function(ctx) {
+(function (ctx) {
     /**
      *
      */
@@ -8,18 +8,27 @@
         /* eslint-disable */
 
         if (!options.googleAnalyticsTrackingId) {
-            console.log(
-                'Failed to initialize Google Analytics handler, no tracking ID');
-             return;
+            console.log('Failed to initialize Google Analytics handler, no tracking ID');
+            return;
         }
 
         /**
          * Google Analytics
          * TODO: Keep this local, there's no need to add it to window.
          */
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            (i[r] =
+                i[r] ||
+                function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }),
+                (i[r].l = 1 * new Date());
+            (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
         ga('create', options.googleAnalyticsTrackingId, 'auto');
         ga('send', 'pageview');
 
@@ -34,7 +43,7 @@
      * Analytics event.
      * @private
      */
-    Analytics.prototype._extractAction = function(event) {
+    Analytics.prototype._extractAction = function (event) {
         // Page events have a single 'name' field.
         if (event.type === 'page') {
             return event.name;
@@ -57,8 +66,7 @@
             // eslint-disable-next-line prefer-template
             action = event.actionSubject + '.' + action;
         }
-        if (event.source && event.source !== event.action
-                && event.source !== event.action) {
+        if (event.source && event.source !== event.action && event.source !== event.action) {
             // eslint-disable-next-line prefer-template
             action = event.source + '.' + action;
         }
@@ -75,7 +83,7 @@
      * suitable value.
      * @private
      */
-    Analytics.prototype._extractValue = function(event) {
+    Analytics.prototype._extractValue = function (event) {
         let value = event && event.attributes && event.attributes.value;
 
         // Try to extract an integer from the "value" attribute.
@@ -92,16 +100,14 @@
      * Analytics event.
      * @private
      */
-    Analytics.prototype._extractLabel = function(event) {
+    Analytics.prototype._extractLabel = function (event) {
         let label = '';
 
         // The label field is limited to 500B. We will concatenate all
         // attributes of the event, except the user agent because it may be
         // lengthy and is probably included from elsewhere.
         for (const property in event.attributes) {
-            if (property !== 'permanent_user_agent'
-                && property !== 'permanent_callstats_name'
-                && event.attributes.hasOwnProperty(property)) {
+            if (property !== 'permanent_user_agent' && property !== 'permanent_callstats_name' && event.attributes.hasOwnProperty(property)) {
                 // eslint-disable-next-line prefer-template
                 label += property + '=' + event.attributes[property] + '&';
             }
@@ -121,14 +127,12 @@
      * @param {Object} event - the event in the format specified by
      * lib-jitsi-meet.
      */
-    Analytics.prototype.sendEvent = function(event) {
+    Analytics.prototype.sendEvent = function (event) {
         if (!event || !ga) {
             return;
         }
 
-        const ignoredEvents
-            = [ 'e2e_rtt', 'rtp.stats', 'rtt.by.region', 'available.device',
-                'stream.switch.delay', 'ice.state.changed', 'ice.duration' ];
+        const ignoredEvents = ['e2e_rtt', 'rtp.stats', 'rtt.by.region', 'available.device', 'stream.switch.delay', 'ice.state.changed', 'ice.duration'];
 
         // Temporary removing some of the events that are too noisy.
         if (ignoredEvents.indexOf(event.action) !== -1) {
@@ -136,9 +140,9 @@
         }
 
         const gaEvent = {
-            'eventCategory': 'jitsi-meet',
-            'eventAction': this._extractAction(event),
-            'eventLabel': this._extractLabel(event)
+            eventCategory: 'jitsi-meet',
+            eventAction: this._extractAction(event),
+            eventLabel: this._extractLabel(event)
         };
         const value = this._extractValue(event);
 

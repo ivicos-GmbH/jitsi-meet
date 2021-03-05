@@ -9,7 +9,6 @@ import AbstractButton, { type Props as AbstractProps } from '../../../base/toolb
 import { showDisableLobbyModeDialog, showEnableLobbyModeDialog } from '../../actions.native';
 
 type Props = AbstractProps & {
-
     /**
      * The Redux Dispatch function.
      */
@@ -28,7 +27,7 @@ class LobbyModeButton extends AbstractButton<Props, any> {
     accessibilityLabel = 'toolbar.accessibilityLabel.lobbyButton';
     icon = IconMeetingUnlocked;
     label = 'toolbar.lobbyButtonEnable';
-    toggledLabel = 'toolbar.lobbyButtonDisable'
+    toggledLabel = 'toolbar.lobbyButtonDisable';
     toggledIcon = IconMeetingLocked;
 
     /**

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // the page is loaded from the 'back-forward' cache on iOS which causes nothing
 // to be rendered.
 if (OS === 'ios') {
-    window.addEventListener('pageshow', event => {
+    window.addEventListener('pageshow', (event) => {
         // Detect pages loaded from the 'back-forward' cache
         // (https://webkit.org/blog/516/webkit-page-cache-ii-the-unload-event/)
         if (event.persisted) {
@@ -63,13 +63,6 @@ globalNS.entryPoints = {
     PREJOIN: PrejoinApp
 };
 
-globalNS.renderEntryPoint = ({
-    Component,
-    props = {},
-    elementId = 'react'
-}) => {
-    ReactDOM.render(
-        <Component { ...props } />,
-        document.getElementById(elementId)
-    );
+globalNS.renderEntryPoint = ({ Component, props = {}, elementId = 'react' }) => {
+    ReactDOM.render(<Component {...props} />, document.getElementById(elementId));
 };

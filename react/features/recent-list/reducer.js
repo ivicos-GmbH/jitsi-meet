@@ -6,11 +6,7 @@ import { APP_WILL_MOUNT } from '../base/app';
 import { getURLWithoutParamsNormalized } from '../base/connection';
 import { PersistenceRegistry, ReducerRegistry } from '../base/redux';
 
-import {
-    _STORE_CURRENT_CONFERENCE,
-    _UPDATE_CONFERENCE_DURATION,
-    DELETE_RECENT_LIST_ENTRY
-} from './actionTypes';
+import { _STORE_CURRENT_CONFERENCE, _UPDATE_CONFERENCE_DURATION, DELETE_RECENT_LIST_ENTRY } from './actionTypes';
 import { isRecentListEnabled } from './functions';
 import logger from './logger';
 
@@ -49,11 +45,9 @@ PersistenceRegistry.register(STORE_NAME);
 /**
  * Reduces redux actions for the purposes of the feature {@code recent-list}.
  */
-ReducerRegistry.register(
-    STORE_NAME,
-    (state = _getLegacyRecentRoomList(), action) => {
-        if (isRecentListEnabled()) {
-            switch (action.type) {
+ReducerRegistry.register(STORE_NAME, (state = _getLegacyRecentRoomList(), action) => {
+    if (isRecentListEnabled()) {
+        switch (action.type) {
             case APP_WILL_MOUNT:
                 return _appWillMount(state);
             case DELETE_RECENT_LIST_ENTRY:
@@ -65,11 +59,11 @@ ReducerRegistry.register(
                 return _updateConferenceDuration(state, action);
             default:
                 return state;
-            }
         }
+    }
 
-        return state;
-    });
+    return state;
+});
 
 /**
  * Deletes a recent list entry based on the url and date of the item.
@@ -78,10 +72,8 @@ ReducerRegistry.register(
  * @param {Object} entryId - The ID object of the entry.
  * @returns {Array<Object>}
  */
-function _deleteRecentListEntry(
-        state: Array<Object>, entryId: Object): Array<Object> {
-    return state.filter(entry =>
-        entry.conference !== entryId.url || entry.date !== entryId.date);
+function _deleteRecentListEntry(state: Array<Object>, entryId: Object): Array<Object> {
+    return state.filter((entry) => entry.conference !== entryId.url || entry.date !== entryId.date);
 }
 
 /**
@@ -131,7 +123,6 @@ function _getLegacyRecentRoomList(): Array<Object> {
         }
     }
 
-
     return [];
 }
 
@@ -147,8 +138,7 @@ function _storeCurrentConference(state, { locationURL }) {
 
     // If the current conference is already in the list, we remove it to re-add
     // it to the top.
-    const nextState
-        = state.filter(e => !_urlStringEquals(e.conference, conference));
+    const nextState = state.filter((e) => !_urlStringEquals(e.conference, conference));
 
     // The list is a reverse-sorted (i.e. the newer elements are at the end).
     nextState.push({

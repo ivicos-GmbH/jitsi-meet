@@ -58,7 +58,6 @@ export const SET_CONTROLLER = 'SET_CONTROLLER';
  */
 export const SET_CONTROLLED_PARTICIPANT = 'SET_CONTROLLED_PARTICIPANT';
 
-
 /**
  * The type of (redux) action which sets the requested participant on the controller side.
  * {
@@ -67,4 +66,3 @@ export const SET_CONTROLLED_PARTICIPANT = 'SET_CONTROLLED_PARTICIPANT';
  * }
  */
 export const SET_REQUESTED_PARTICIPANT = 'SET_REQUESTED_PARTICIPANT';
-

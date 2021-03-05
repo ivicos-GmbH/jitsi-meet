@@ -10,20 +10,16 @@ import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 import { StyleType } from '../../../base/styles';
 import { setFatalError } from '../../actions';
-import AbstractPageReloadOverlay, {
-    abstractMapStateToProps,
-    type Props as AbstractProps
-} from '../AbstractPageReloadOverlay';
+import AbstractPageReloadOverlay, { abstractMapStateToProps, type Props as AbstractProps } from '../AbstractPageReloadOverlay';
 
 import OverlayFrame from './OverlayFrame';
 
 type Props = AbstractProps & {
-
     /**
      * The color-schemed stylesheet of the base/dialog feature.
      */
     _dialogStyles: StyleType
-}
+};
 
 /**
  * Implements a React Component for page reload overlay. Shown before the
@@ -47,7 +43,7 @@ class PageReloadOverlay extends AbstractPageReloadOverlay<Props> {
         this._onReloadNow = this._onReloadNow.bind(this);
     }
 
-    _onCancel: () => void
+    _onCancel: () => void;
 
     /**
      * Handle clicking of the "Cancel" button. It will navigate back to the
@@ -62,7 +58,7 @@ class PageReloadOverlay extends AbstractPageReloadOverlay<Props> {
         this.props.dispatch(appNavigate(undefined));
     }
 
-    _onReloadNow: () => void
+    _onReloadNow: () => void;
 
     /**
      * Handle clicking on the "Reload Now" button. It will navigate to the same
@@ -89,14 +85,8 @@ class PageReloadOverlay extends AbstractPageReloadOverlay<Props> {
 
         return (
             <OverlayFrame>
-                <ConfirmDialog
-                    cancelKey = 'dialog.Cancel'
-                    okKey = 'dialog.rejoinNow'
-                    onCancel = { this._onCancel }
-                    onSubmit = { this._onReloadNow }>
-                    <Text style = { _dialogStyles.text }>
-                        { `${t(title)} ${t(message, { seconds: timeLeft })}` }
-                    </Text>
+                <ConfirmDialog cancelKey="dialog.Cancel" okKey="dialog.rejoinNow" onCancel={this._onCancel} onSubmit={this._onReloadNow}>
+                    <Text style={_dialogStyles.text}>{`${t(title)} ${t(message, { seconds: timeLeft })}`}</Text>
                 </ConfirmDialog>
             </OverlayFrame>
         );

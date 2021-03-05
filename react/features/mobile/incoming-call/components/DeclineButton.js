@@ -10,7 +10,6 @@ import { incomingCallDeclined } from '../actions';
  * The type of the React {@code Component} props of {@link DeclineButton}.
  */
 type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */

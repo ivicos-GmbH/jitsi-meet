@@ -9,12 +9,7 @@ import { toState } from '../base/redux';
 import { Conference } from '../conference';
 import { getDeepLinkingPage } from '../deep-linking';
 import { UnsupportedDesktopBrowser } from '../unsupported-browser';
-import {
-    BlankPage,
-    WelcomePage,
-    isWelcomePageAppEnabled,
-    isWelcomePageUserEnabled
-} from '../welcome';
+import { BlankPage, WelcomePage, isWelcomePageAppEnabled, isWelcomePageUserEnabled } from '../welcome';
 
 /**
  * Object describing application route.
@@ -93,18 +88,17 @@ function _getWebConferenceRoute(state): ?Promise<Route> {
         return Promise.resolve(route);
     }
 
-    return getDeepLinkingPage(state)
-        .then(deepLinkComponent => {
-            if (deepLinkComponent) {
-                route.component = deepLinkComponent;
-            } else if (isSupportedBrowser()) {
-                route.component = Conference;
-            } else {
-                route.component = UnsupportedDesktopBrowser;
-            }
+    return getDeepLinkingPage(state).then((deepLinkComponent) => {
+        if (deepLinkComponent) {
+            route.component = deepLinkComponent;
+        } else if (isSupportedBrowser()) {
+            route.component = Conference;
+        } else {
+            route.component = UnsupportedDesktopBrowser;
+        }
 
-            return route;
-        });
+        return route;
+    });
 }
 
 /**

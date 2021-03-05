@@ -10,7 +10,6 @@ import { BaseIndicator } from '../../../base/react';
  * {@link DominantSpeakerIndicator}.
  */
 type Props = {
-
     /**
      * The font-size for the icon.
      */
@@ -37,13 +36,14 @@ class DominantSpeakerIndicator extends Component<Props> {
     render() {
         return (
             <BaseIndicator
-                className = 'indicator show-inline'
-                icon = { IconDominantSpeaker }
-                iconClassName = 'indicatoricon'
-                iconSize = { `${this.props.iconSize}px` }
-                id = 'dominantspeakerindicator'
-                tooltipKey = 'speaker'
-                tooltipPosition = { this.props.tooltipPosition } />
+                className="indicator show-inline"
+                icon={IconDominantSpeaker}
+                iconClassName="indicatoricon"
+                iconSize={`${this.props.iconSize}px`}
+                id="dominantspeakerindicator"
+                tooltipKey="speaker"
+                tooltipPosition={this.props.tooltipPosition}
+            />
         );
     }
 }

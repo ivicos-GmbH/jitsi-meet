@@ -18,10 +18,7 @@ import { fullScreenChanged, showToolbox } from '../../../toolbox/actions.web';
 import { Toolbox } from '../../../toolbox/components/web';
 import { LAYOUTS, getCurrentLayout } from '../../../video-layout';
 import { maybeShowSuboptimalExperienceNotification } from '../../functions';
-import {
-    AbstractConference,
-    abstractMapStateToProps
-} from '../AbstractConference';
+import { AbstractConference, abstractMapStateToProps } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
 
 import Labels from './Labels';
@@ -37,11 +34,7 @@ declare var interfaceConfig: Object;
  * @private
  * @type {Array<string>}
  */
-const FULL_SCREEN_EVENTS = [
-    'webkitfullscreenchange',
-    'mozfullscreenchange',
-    'fullscreenchange'
-];
+const FULL_SCREEN_EVENTS = ['webkitfullscreenchange', 'mozfullscreenchange', 'fullscreenchange'];
 
 /**
  * The CSS class to apply to the root element of the conference so CSS can
@@ -60,7 +53,6 @@ const LAYOUT_CLASSNAMES = {
  * The type of the React {@code Component} props of {@link Conference}.
  */
 type Props = AbstractProps & {
-
     /**
      * Whether the local participant is recording the conference.
      */
@@ -89,7 +81,7 @@ type Props = AbstractProps & {
 
     dispatch: Function,
     t: Function
-}
+};
 
 /**
  * The conference page of the Web application.
@@ -111,13 +103,10 @@ class Conference extends AbstractConference<Props, *> {
         // Throttle and bind this component's mousemove handler to prevent it
         // from firing too often.
         this._originalOnShowToolbar = this._onShowToolbar;
-        this._onShowToolbar = _.throttle(
-            () => this._originalOnShowToolbar(),
-            100,
-            {
-                leading: true,
-                trailing: false
-            });
+        this._onShowToolbar = _.throttle(() => this._originalOnShowToolbar(), 100, {
+            leading: true,
+            trailing: false
+        });
 
         // Bind event handler so it is only bound once for every instance.
         this._onFullScreenChange = this._onFullScreenChange.bind(this);
@@ -140,8 +129,7 @@ class Conference extends AbstractConference<Props, *> {
      * returns {void}
      */
     componentDidUpdate(prevProps) {
-        if (this.props._shouldDisplayTileView
-            === prevProps._shouldDisplayTileView) {
+        if (this.props._shouldDisplayTileView === prevProps._shouldDisplayTileView) {
             return;
         }
 
@@ -161,8 +149,7 @@ class Conference extends AbstractConference<Props, *> {
     componentWillUnmount() {
         APP.UI.unbindEvents();
 
-        FULL_SCREEN_EVENTS.forEach(name =>
-            document.removeEventListener(name, this._onFullScreenChange));
+        FULL_SCREEN_EVENTS.forEach((name) => document.removeEventListener(name, this._onFullScreenChange));
 
         APP.conference.isJoined() && this.props.dispatch(disconnect());
     }
@@ -174,36 +161,27 @@ class Conference extends AbstractConference<Props, *> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            _iAmRecorder,
-            _isLobbyScreenVisible,
-            _layoutClassName,
-            _showPrejoin
-        } = this.props;
+        const { _iAmRecorder, _isLobbyScreenVisible, _layoutClassName, _showPrejoin } = this.props;
         const hideLabels = _iAmRecorder;
 
         return (
-            <div
-                className = { _layoutClassName }
-                id = 'videoconference_page'
-                onMouseMove = { this._onShowToolbar }>
-
+            <div className={_layoutClassName} id="videoconference_page" onMouseMove={this._onShowToolbar}>
                 <Notice />
-                <div id = 'videospace'>
+                <div id="videospace">
                     <LargeVideo />
                     <KnockingParticipantList />
                     <Filmstrip />
-                    { hideLabels || <Labels /> }
+                    {hideLabels || <Labels />}
                 </div>
 
-                { _showPrejoin || _isLobbyScreenVisible || <Toolbox /> }
+                {_showPrejoin || _isLobbyScreenVisible || <Toolbox />}
                 <Chat />
 
-                { this.renderNotificationsContainer() }
+                {this.renderNotificationsContainer()}
 
                 <CalleeInfoContainer />
 
-                { _showPrejoin && <Prejoin />}
+                {_showPrejoin && <Prejoin />}
             </div>
         );
     }
@@ -242,8 +220,7 @@ class Conference extends AbstractConference<Props, *> {
         APP.UI.registerListeners();
         APP.UI.bindEvents();
 
-        FULL_SCREEN_EVENTS.forEach(name =>
-            document.addEventListener(name, this._onFullScreenChange));
+        FULL_SCREEN_EVENTS.forEach((name) => document.addEventListener(name, this._onFullScreenChange));
 
         const { dispatch, t } = this.props;
 

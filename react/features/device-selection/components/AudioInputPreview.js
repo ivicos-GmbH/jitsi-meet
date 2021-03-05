@@ -10,7 +10,6 @@ const JitsiTrackEvents = JitsiMeetJS.events.track;
  * The type of the React {@code Component} props of {@link AudioInputPreview}.
  */
 type Props = {
-
     /**
      * The JitsiLocalTrack to show an audio level meter for.
      */
@@ -21,7 +20,6 @@ type Props = {
  * The type of the React {@code Component} props of {@link AudioInputPreview}.
  */
 type State = {
-
     /**
      * The current audio input level being received, from 0 to 1.
      */
@@ -94,10 +92,8 @@ class AudioInputPreview extends Component<Props, State> {
         };
 
         return (
-            <div className = 'audio-input-preview' >
-                <div
-                    className = 'audio-input-preview-level'
-                    style = { audioMeterFill } />
+            <div className="audio-input-preview">
+                <div className="audio-input-preview-level" style={audioMeterFill} />
             </div>
         );
     }
@@ -113,9 +109,7 @@ class AudioInputPreview extends Component<Props, State> {
     _listenForAudioUpdates(track) {
         this._stopListeningForAudioUpdates();
 
-        track && track.on(
-            JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED,
-            this._updateAudioLevel);
+        track && track.on(JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED, this._updateAudioLevel);
     }
 
     /**
@@ -125,9 +119,7 @@ class AudioInputPreview extends Component<Props, State> {
      * @returns {void}
      */
     _stopListeningForAudioUpdates() {
-        this.props.track && this.props.track.off(
-            JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED,
-            this._updateAudioLevel);
+        this.props.track && this.props.track.off(JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED, this._updateAudioLevel);
     }
 
     _updateAudioLevel: (number) => void;

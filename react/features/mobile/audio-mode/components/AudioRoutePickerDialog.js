@@ -7,13 +7,7 @@ import { NativeModules, Text, TouchableHighlight, View } from 'react-native';
 import { ColorSchemeRegistry } from '../../../base/color-scheme';
 import { hideDialog, BottomSheet } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
-import {
-    Icon,
-    IconDeviceBluetooth,
-    IconDeviceEarpiece,
-    IconDeviceHeadphone,
-    IconDeviceSpeaker
-} from '../../../base/icons';
+import { Icon, IconDeviceBluetooth, IconDeviceEarpiece, IconDeviceHeadphone, IconDeviceSpeaker } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import { ColorPalette, type StyleType } from '../../../base/styles';
 
@@ -25,7 +19,6 @@ const { AudioMode } = NativeModules;
  * Type definition for a single entry in the device list.
  */
 type Device = {
-
     /**
      * Name of the icon which will be rendered on the right.
      */
@@ -57,7 +50,6 @@ type Device = {
  * "Raw" device, as returned by native.
  */
 type RawDevice = {
-
     /**
      * Display name for the device.
      */
@@ -83,7 +75,6 @@ type RawDevice = {
  * {@code AudioRoutePickerDialog}'s React {@code Component} prop types.
  */
 type Props = {
-
     /**
      * Style of the bottom sheet feature.
      */
@@ -109,7 +100,6 @@ type Props = {
  * {@code AudioRoutePickerDialog}'s React {@code Component} state types.
  */
 type State = {
-
     /**
      * Array of available devices.
      */
@@ -263,17 +253,10 @@ class AudioRoutePickerDialog extends Component<Props, State> {
         const selectedStyle = selected ? styles.selectedText : {};
 
         return (
-            <TouchableHighlight
-                key = { device.type }
-                onPress = { this._onSelectDeviceFn(device) }
-                underlayColor = { ColorPalette.overflowMenuItemUnderlay } >
-                <View style = { styles.deviceRow } >
-                    <Icon
-                        src = { icon }
-                        style = { [ styles.deviceIcon, _bottomSheetStyles.buttons.iconStyle, selectedStyle ] } />
-                    <Text style = { [ styles.deviceText, _bottomSheetStyles.buttons.labelStyle, selectedStyle ] } >
-                        { text }
-                    </Text>
+            <TouchableHighlight key={device.type} onPress={this._onSelectDeviceFn(device)} underlayColor={ColorPalette.overflowMenuItemUnderlay}>
+                <View style={styles.deviceRow}>
+                    <Icon src={icon} style={[styles.deviceIcon, _bottomSheetStyles.buttons.iconStyle, selectedStyle]} />
+                    <Text style={[styles.deviceText, _bottomSheetStyles.buttons.labelStyle, selectedStyle]}>{text}</Text>
                 </View>
             </TouchableHighlight>
         );
@@ -289,13 +272,9 @@ class AudioRoutePickerDialog extends Component<Props, State> {
         const { _bottomSheetStyles, t } = this.props;
 
         return (
-            <View style = { styles.deviceRow } >
-                <Icon
-                    src = { deviceInfoMap.SPEAKER.icon }
-                    style = { [ styles.deviceIcon, _bottomSheetStyles.buttons.iconStyle ] } />
-                <Text style = { [ styles.deviceText, _bottomSheetStyles.buttons.labelStyle ] } >
-                    { t('audioDevices.none') }
-                </Text>
+            <View style={styles.deviceRow}>
+                <Icon src={deviceInfoMap.SPEAKER.icon} style={[styles.deviceIcon, _bottomSheetStyles.buttons.iconStyle]} />
+                <Text style={[styles.deviceText, _bottomSheetStyles.buttons.labelStyle]}>{t('audioDevices.none')}</Text>
             </View>
         );
     }
@@ -316,11 +295,7 @@ class AudioRoutePickerDialog extends Component<Props, State> {
             content = this.state.devices.map(this._renderDevice, this);
         }
 
-        return (
-            <BottomSheet onCancel = { this._onCancel }>
-                { content }
-            </BottomSheet>
-        );
+        return <BottomSheet onCancel={this._onCancel}>{content}</BottomSheet>;
     }
 }
 

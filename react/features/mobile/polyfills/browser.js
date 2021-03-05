@@ -23,9 +23,7 @@ function _getCommonPrototype(a, b) {
 
     let p;
 
-    if (((p = Object.getPrototypeOf(a)) && (p = _getCommonPrototype(b, p)))
-            || ((p = Object.getPrototypeOf(b))
-                && (p = _getCommonPrototype(a, p)))) {
+    if (((p = Object.getPrototypeOf(a)) && (p = _getCommonPrototype(b, p))) || ((p = Object.getPrototypeOf(b)) && (p = _getCommonPrototype(a, p)))) {
         return p;
     }
 
@@ -46,16 +44,16 @@ function _getCommonPrototype(a, b) {
 function _querySelector(node, selectors) {
     let element = null;
 
-    node && _visitNode(node, n => {
-        if (n.nodeType === 1 /* ELEMENT_NODE */
-                && n.nodeName === selectors) {
-            element = n;
+    node &&
+        _visitNode(node, (n) => {
+            if (n.nodeType === 1 /* ELEMENT_NODE */ && n.nodeName === selectors) {
+                element = n;
 
-            return true;
-        }
+                return true;
+            }
 
-        return false;
-    });
+            return false;
+        });
 
     return element;
 }
@@ -90,7 +88,7 @@ function _visitNode(node, callback) {
     return false;
 }
 
-(global => {
+((global) => {
     const { DOMParser } = require('xmldom');
 
     // DOMParser
@@ -123,10 +121,7 @@ function _visitNode(node, callback) {
     // - jQuery
     // - Strophe
     if (typeof global.document === 'undefined') {
-        const document
-            = new DOMParser().parseFromString(
-                '<html><head></head><body></body></html>',
-                'text/xml');
+        const document = new DOMParser().parseFromString('<html><head></head><body></body></html>', 'text/xml');
 
         // document.addEventListener
         //
@@ -150,14 +145,14 @@ function _visitNode(node, callback) {
         // Required by:
         // - jQuery
         if (typeof document.implementation.createHTMLDocument === 'undefined') {
-            document.implementation.createHTMLDocument = function(title = '') {
-                const htmlDocument
-                    = new DOMParser().parseFromString(
-                        `<html>
+            document.implementation.createHTMLDocument = function (title = '') {
+                const htmlDocument = new DOMParser().parseFromString(
+                    `<html>
                             <head><title>${title}</title></head>
                             <body></body>
                         </html>`,
-                        'text/xml');
+                    'text/xml'
+                );
 
                 Object.defineProperty(htmlDocument, 'body', {
                     get() {
@@ -173,12 +168,11 @@ function _visitNode(node, callback) {
         //
         // Required by:
         // - lib-jitsi-meet/modules/xmpp
-        const elementPrototype
-            = Object.getPrototypeOf(document.documentElement);
+        const elementPrototype = Object.getPrototypeOf(document.documentElement);
 
         if (elementPrototype) {
             if (typeof elementPrototype.querySelector === 'undefined') {
-                elementPrototype.querySelector = function(selectors) {
+                elementPrototype.querySelector = function (selectors) {
                     return _querySelector(this, selectors);
                 };
             }
@@ -188,7 +182,7 @@ function _visitNode(node, callback) {
             // Required by:
             // - lib-jitsi-meet ChatRoom#onPresence parsing
             if (typeof elementPrototype.remove === 'undefined') {
-                elementPrototype.remove = function() {
+                elementPrototype.remove = function () {
                     if (this.parentNode !== null) {
                         this.parentNode.removeChild(this);
                     }
@@ -214,10 +208,7 @@ function _visitNode(node, callback) {
                         this.textContent = '';
 
                         // Parse the content string.
-                        const d
-                            = new DOMParser().parseFromString(
-                                `<div>${innerHTML}</div>`,
-                                'text/xml');
+                        const d = new DOMParser().parseFromString(`<div>${innerHTML}</div>`, 'text/xml');
 
                         // Assign the resulting nodes as children of the
                         // element.
@@ -225,7 +216,7 @@ function _visitNode(node, callback) {
                         let child;
 
                         // eslint-disable-next-line no-cond-assign
-                        while (child = documentElement.firstChild) {
+                        while ((child = documentElement.firstChild)) {
                             this.appendChild(child);
                         }
                     }
@@ -262,29 +253,29 @@ function _visitNode(node, callback) {
         // Document and/or Element at the time of this writing. Work around it
         // by patching Node and/or overriding console.log.
         const documentPrototype = Object.getPrototypeOf(document);
-        const nodePrototype
-            = _getCommonPrototype(documentPrototype, elementPrototype);
+        const nodePrototype = _getCommonPrototype(documentPrototype, elementPrototype);
 
-        if (nodePrototype
-
-                // XXX The intention was to find Node from which Document and
-                // Element extend. If for whatever reason we've reached Object,
-                // then it doesn't sound like what expected.
-                && nodePrototype !== Object.getPrototypeOf({})) {
+        if (
+            nodePrototype &&
+            // XXX The intention was to find Node from which Document and
+            // Element extend. If for whatever reason we've reached Object,
+            // then it doesn't sound like what expected.
+            nodePrototype !== Object.getPrototypeOf({})
+        ) {
             // Override console.log.
             const { console } = global;
 
             if (console) {
                 const loggerLevels = require('jitsi-meet-logger').levels;
 
-                Object.keys(loggerLevels).forEach(key => {
+                Object.keys(loggerLevels).forEach((key) => {
                     const level = loggerLevels[key];
                     const consoleLog = console[level];
 
                     /* eslint-disable prefer-rest-params */
 
                     if (typeof consoleLog === 'function') {
-                        console[level] = function(...args) {
+                        console[level] = function (...args) {
                             // XXX If console's disableYellowBox is truthy, then
                             // react-native will not automatically display the
                             // yellow box for the warn level. However, it will
@@ -307,12 +298,13 @@ function _visitNode(node, callback) {
                             for (let i = 0; i < length; ++i) {
                                 let arg = args[i];
 
-                                if (arg
-                                        && typeof arg !== 'string'
-
-                                        // Limit the console.log override to
-                                        // Node (instances).
-                                        && nodePrototype.isPrototypeOf(arg)) {
+                                if (
+                                    arg &&
+                                    typeof arg !== 'string' &&
+                                    // Limit the console.log override to
+                                    // Node (instances).
+                                    nodePrototype.isPrototypeOf(arg)
+                                ) {
                                     const toString = arg.toString;
 
                                     if (toString) {
@@ -396,11 +388,7 @@ function _visitNode(node, callback) {
                 get() {
                     const { responseText } = this;
 
-                    return (
-                        responseText
-                            && new DOMParser().parseFromString(
-                                responseText,
-                                'text/xml'));
+                    return responseText && new DOMParser().parseFromString(responseText, 'text/xml');
                 }
             });
         }
@@ -435,5 +423,4 @@ function _visitNode(node, callback) {
     if (typeof global.sessionStorage === 'undefined') {
         global.sessionStorage = new Storage();
     }
-
 })(global || window || this); // eslint-disable-line no-invalid-this

@@ -10,12 +10,12 @@ PersistenceRegistry.register('features/screnshot-capture', true, {
 
 ReducerRegistry.register('features/screenshot-capture', (state = {}, action) => {
     switch (action.type) {
-    case SET_SCREENSHOT_CAPTURE: {
-        return {
-            ...state,
-            capturesEnabled: action.payload
-        };
-    }
+        case SET_SCREENSHOT_CAPTURE: {
+            return {
+                ...state,
+                capturesEnabled: action.payload
+            };
+        }
     }
 
     return state;

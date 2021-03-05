@@ -2,12 +2,7 @@
 
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    CLEAR_NOTIFICATIONS,
-    HIDE_NOTIFICATION,
-    SET_NOTIFICATIONS_ENABLED,
-    SHOW_NOTIFICATION
-} from './actionTypes';
+import { CLEAR_NOTIFICATIONS, HIDE_NOTIFICATION, SET_NOTIFICATIONS_ENABLED, SHOW_NOTIFICATION } from './actionTypes';
 import { NOTIFICATION_TYPE_PRIORITIES } from './constants';
 
 /**
@@ -28,9 +23,8 @@ const DEFAULT_STATE = {
  * @returns {Object} The next redux state which is the result of reducing the
  * specified {@code action}.
  */
-ReducerRegistry.register('features/notifications',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/notifications', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case CLEAR_NOTIFICATIONS:
             return {
                 ...state,
@@ -39,8 +33,7 @@ ReducerRegistry.register('features/notifications',
         case HIDE_NOTIFICATION:
             return {
                 ...state,
-                notifications: state.notifications.filter(
-                    notification => notification.uid !== action.uid)
+                notifications: state.notifications.filter((notification) => notification.uid !== action.uid)
             };
 
         case SET_NOTIFICATIONS_ENABLED:
@@ -52,18 +45,17 @@ ReducerRegistry.register('features/notifications',
         case SHOW_NOTIFICATION:
             return {
                 ...state,
-                notifications:
-                    _insertNotificationByPriority(state.notifications, {
-                        component: action.component,
-                        props: action.props,
-                        timeout: action.timeout,
-                        uid: action.uid
-                    })
+                notifications: _insertNotificationByPriority(state.notifications, {
+                    component: action.component,
+                    props: action.props,
+                    timeout: action.timeout,
+                    uid: action.uid
+                })
             };
-        }
+    }
 
-        return state;
-    });
+    return state;
+});
 
 /**
  * Creates a new notification queue with the passed in notification placed at
@@ -76,8 +68,7 @@ ReducerRegistry.register('features/notifications',
  * queue.
  */
 function _insertNotificationByPriority(notifications, notification) {
-    const newNotificationPriority
-        = NOTIFICATION_TYPE_PRIORITIES[notification.props.appearance] || 0;
+    const newNotificationPriority = NOTIFICATION_TYPE_PRIORITIES[notification.props.appearance] || 0;
 
     // Default to putting the new notification at the end of the queue.
     let insertAtLocation = notifications.length;
@@ -87,9 +78,7 @@ function _insertNotificationByPriority(notifications, notification) {
     // any notification currently being read.
     for (let i = 1; i < notifications.length; i++) {
         const queuedNotification = notifications[i];
-        const queuedNotificationPriority
-            = NOTIFICATION_TYPE_PRIORITIES[queuedNotification.props.appearance]
-                || 0;
+        const queuedNotificationPriority = NOTIFICATION_TYPE_PRIORITIES[queuedNotification.props.appearance] || 0;
 
         if (queuedNotificationPriority < newNotificationPriority) {
             insertAtLocation = i;

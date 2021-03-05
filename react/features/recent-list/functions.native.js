@@ -1,7 +1,4 @@
-import {
-    getLocalizedDateFormatter,
-    getLocalizedDurationFormatter
-} from '../base/i18n';
+import { getLocalizedDateFormatter, getLocalizedDurationFormatter } from '../base/i18n';
 import { NavigateSectionList } from '../base/react';
 import { parseURIString, safeDecodeURIComponent } from '../base/util';
 
@@ -26,11 +23,7 @@ function toDisplayableItem(item, defaultServerURL, t) {
             url: item.conference
         },
         key: `key-${item.conference}-${item.date}`,
-        lines: [
-            _toDateString(item.date, t),
-            _toDurationString(item.duration),
-            serverName
-        ],
+        lines: [_toDateString(item.date, t), _toDurationString(item.duration), serverName],
         title: safeDecodeURIComponent(location.room),
         url: item.conference
     };
@@ -64,7 +57,7 @@ function _toDateString(itemDate, t) {
     const date = new Date(itemDate);
     const dateInMs = date.getTime();
     const now = new Date();
-    const todayInMs = (new Date()).setHours(0, 0, 0, 0);
+    const todayInMs = new Date().setHours(0, 0, 0, 0);
     const yesterdayInMs = todayInMs - 86400000; // 1 day = 86400000ms
 
     if (dateInMs >= todayInMs) {
@@ -93,10 +86,8 @@ function _toDateString(itemDate, t) {
 export function toDisplayableList(recentList, t, defaultServerURL) {
     const { createSection } = NavigateSectionList;
     const todaySection = createSection(t('dateUtils.today'), 'today');
-    const yesterdaySection
-        = createSection(t('dateUtils.yesterday'), 'yesterday');
-    const earlierSection
-        = createSection(t('dateUtils.earlier'), 'earlier');
+    const yesterdaySection = createSection(t('dateUtils.yesterday'), 'yesterday');
+    const earlierSection = createSection(t('dateUtils.earlier'), 'earlier');
     const today = new Date();
     const todayString = today.toDateString();
     const yesterday = new Date();

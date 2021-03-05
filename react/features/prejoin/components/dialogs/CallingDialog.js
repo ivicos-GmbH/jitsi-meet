@@ -8,7 +8,6 @@ import { Icon, IconClose } from '../../../base/icons';
 import Label from '../Label';
 
 type Props = {
-
     /**
      * The phone number that is being called.
      */
@@ -32,7 +31,7 @@ type Props = {
     /**
      * Used for translation.
      */
-    t: Function,
+    t: Function
 };
 
 /**
@@ -45,19 +44,13 @@ function CallingDialog(props: Props) {
     const { number, onClose, status, t } = props;
 
     return (
-        <div className = 'prejoin-dialog-calling'>
-            <div className = 'prejoin-dialog-calling-header'>
-                <Icon
-                    className = 'prejoin-dialog-icon'
-                    onClick = { onClose }
-                    size = { 24 }
-                    src = { IconClose } />
+        <div className="prejoin-dialog-calling">
+            <div className="prejoin-dialog-calling-header">
+                <Icon className="prejoin-dialog-icon" onClick={onClose} size={24} src={IconClose} />
             </div>
-            <Label className = 'prejoin-dialog-calling-label'>
-                {t(status)}
-            </Label>
-            <Avatar size = { 72 } />
-            <div className = 'prejoin-dialog-calling-number'>{number}</div>
+            <Label className="prejoin-dialog-calling-label">{t(status)}</Label>
+            <Avatar size={72} />
+            <div className="prejoin-dialog-calling-number">{number}</div>
         </div>
     );
 }

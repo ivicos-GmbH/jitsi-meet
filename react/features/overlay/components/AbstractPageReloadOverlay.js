@@ -4,15 +4,9 @@ import { randomInt } from '@jitsi/js-utils/random';
 import React, { Component } from 'react';
 import type { Dispatch } from 'redux';
 
-import {
-    createPageReloadScheduledEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createPageReloadScheduledEvent, sendAnalytics } from '../../analytics';
 import { reloadNow } from '../../app/actions';
-import {
-    isFatalJitsiConferenceError,
-    isFatalJitsiConnectionError
-} from '../../base/lib-jitsi-meet';
+import { isFatalJitsiConferenceError, isFatalJitsiConnectionError } from '../../base/lib-jitsi-meet';
 import logger from '../logger';
 
 import ReloadButton from './web/ReloadButton';
@@ -24,7 +18,6 @@ declare var APP: Object;
  * {@link AbstractPageReloadOverlay}.
  */
 export type Props = {
-
     /**
      * The details is an object containing more information about the connection
      * failed (shard changes, was the computer suspended, etc.)
@@ -56,7 +49,6 @@ export type Props = {
  * {@link AbstractPageReloadOverlay}.
  */
 type State = {
-
     /**
      * The translation key for the title of the overlay.
      */
@@ -84,8 +76,7 @@ type State = {
  *
  * FIXME: This is not really an abstract class as some components and functions are very web specific.
  */
-export default class AbstractPageReloadOverlay<P: Props>
-    extends Component<P, State> {
+export default class AbstractPageReloadOverlay<P: Props> extends Component<P, State> {
     /**
      * Determines whether this overlay needs to be rendered (according to a
      * specific redux state). Called by {@link OverlayContainer}.
@@ -100,9 +91,7 @@ export default class AbstractPageReloadOverlay<P: Props>
         // the value of 'fatalError' which relies on the flag should not be used
         // on web yet (until conference/connection and their errors handling is
         // not unified).
-        return typeof APP === 'undefined'
-            ? Boolean(state['features/overlay'].fatalError)
-            : this.needsRenderWeb(state);
+        return typeof APP === 'undefined' ? Boolean(state['features/overlay'].fatalError) : this.needsRenderWeb(state);
     }
 
     /**
@@ -118,11 +107,7 @@ export default class AbstractPageReloadOverlay<P: Props>
         const configError = state['features/base/config'].error;
         const connectionError = state['features/base/connection'].error;
 
-        return (
-            (connectionError && isFatalJitsiConnectionError(connectionError))
-                || (conferenceError
-                    && isFatalJitsiConferenceError(conferenceError))
-                || configError);
+        return (connectionError && isFatalJitsiConnectionError(connectionError)) || (conferenceError && isFatalJitsiConferenceError(conferenceError)) || configError;
     }
 
     _interval: ?IntervalID;
@@ -176,41 +161,35 @@ export default class AbstractPageReloadOverlay<P: Props>
         // FIXME: We should dispatch action for this.
         if (typeof APP !== 'undefined') {
             if (APP.conference && APP.conference._room) {
-                APP.conference._room.sendApplicationLog(JSON.stringify({
-                    name: 'page.reload',
-                    label: this.props.reason
-                }));
+                APP.conference._room.sendApplicationLog(
+                    JSON.stringify({
+                        name: 'page.reload',
+                        label: this.props.reason
+                    })
+                );
             }
         }
 
-        sendAnalytics(createPageReloadScheduledEvent(
-            this.props.reason,
-            this.state.timeoutSeconds,
-            this.props.details));
+        sendAnalytics(createPageReloadScheduledEvent(this.props.reason, this.state.timeoutSeconds, this.props.details));
 
-        logger.info(
-            `The conference will be reloaded after ${
-                this.state.timeoutSeconds} seconds.`);
+        logger.info(`The conference will be reloaded after ${this.state.timeoutSeconds} seconds.`);
 
-        this._interval
-            = setInterval(
-                () => {
-                    if (this.state.timeLeft === 0) {
-                        if (this._interval) {
-                            clearInterval(this._interval);
-                            this._interval = undefined;
-                        }
+        this._interval = setInterval(() => {
+            if (this.state.timeLeft === 0) {
+                if (this._interval) {
+                    clearInterval(this._interval);
+                    this._interval = undefined;
+                }
 
-                        this.props.dispatch(reloadNow());
-                    } else {
-                        this.setState(prevState => {
-                            return {
-                                timeLeft: prevState.timeLeft - 1
-                            };
-                        });
-                    }
-                },
-                1000);
+                this.props.dispatch(reloadNow());
+            } else {
+                this.setState((prevState) => {
+                    return {
+                        timeLeft: prevState.timeLeft - 1
+                    };
+                });
+            }
+        }, 1000);
     }
 
     /**
@@ -234,9 +213,7 @@ export default class AbstractPageReloadOverlay<P: Props>
      */
     _renderButton() {
         if (this.props.isNetworkFailure) {
-            return (
-                <ReloadButton textKey = 'dialog.rejoinNow' />
-            );
+            return <ReloadButton textKey="dialog.rejoinNow" />;
         }
 
         return null;
@@ -251,16 +228,11 @@ export default class AbstractPageReloadOverlay<P: Props>
     _renderProgressBar() {
         const { timeLeft, timeoutSeconds } = this.state;
         const timeRemaining = timeoutSeconds - timeLeft;
-        const percentageComplete
-            = Math.floor((timeRemaining / timeoutSeconds) * 100);
+        const percentageComplete = Math.floor((timeRemaining / timeoutSeconds) * 100);
 
         return (
-            <div
-                className = 'progress-indicator'
-                id = 'reloadProgressBar'>
-                <div
-                    className = 'progress-indicator-fill'
-                    style = {{ width: `${percentageComplete}%` }} />
+            <div className="progress-indicator" id="reloadProgressBar">
+                <div className="progress-indicator-fill" style={{ width: `${percentageComplete}%` }} />
             </div>
         );
     }
@@ -284,8 +256,7 @@ export function abstractMapStateToProps(state: Object) {
 
     return {
         details: fatalError && fatalError.details,
-        isNetworkFailure:
-            fatalError === configError || fatalError === connectionError,
+        isNetworkFailure: fatalError === configError || fatalError === connectionError,
         reason: fatalError && (fatalError.message || fatalError.name)
     };
 }

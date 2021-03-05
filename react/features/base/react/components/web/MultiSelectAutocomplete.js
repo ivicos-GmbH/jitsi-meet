@@ -14,7 +14,6 @@ import InlineDialogFailure from './InlineDialogFailure';
  * {@link MultiSelectAutocomplete}.
  */
 type Props = {
-
     /**
      * The default value of the selected item.
      */
@@ -78,7 +77,6 @@ type Props = {
  * {@link MultiSelectAutocomplete}.
  */
 type State = {
-
     /**
      * Indicates if the dropdown is open.
      */
@@ -131,7 +129,7 @@ class MultiSelectAutocomplete extends Component<Props, State> {
             loading: false,
             error: false,
             items: [],
-            selectedItems: [ ...defaultValue ]
+            selectedItems: [...defaultValue]
         };
 
         this._onFilterChange = this._onFilterChange.bind(this);
@@ -166,23 +164,24 @@ class MultiSelectAutocomplete extends Component<Props, State> {
         return (
             <div>
                 <MultiSelectStateless
-                    filterValue = { this.state.filterValue }
-                    footer = { this.props.footer }
-                    icon = { null }
-                    isDisabled = { isDisabled }
-                    isLoading = { this.state.loading }
-                    isOpen = { this.state.isOpen }
-                    items = { this.state.items }
-                    loadingMessage = { this.props.loadingMessage }
-                    noMatchesFound = { noMatchesFound }
-                    onFilterChange = { this._onFilterChange }
-                    onRemoved = { this._onSelectionChange }
-                    onSelected = { this._onSelectionChange }
-                    placeholder = { placeholder }
-                    selectedItems = { this.state.selectedItems }
-                    shouldFitContainer = { shouldFitContainer }
-                    shouldFocus = { shouldFocus } />
-                { this._renderError() }
+                    filterValue={this.state.filterValue}
+                    footer={this.props.footer}
+                    icon={null}
+                    isDisabled={isDisabled}
+                    isLoading={this.state.loading}
+                    isOpen={this.state.isOpen}
+                    items={this.state.items}
+                    loadingMessage={this.props.loadingMessage}
+                    noMatchesFound={noMatchesFound}
+                    onFilterChange={this._onFilterChange}
+                    onRemoved={this._onSelectionChange}
+                    onSelected={this._onSelectionChange}
+                    placeholder={placeholder}
+                    selectedItems={this.state.selectedItems}
+                    shouldFitContainer={shouldFitContainer}
+                    shouldFocus={shouldFocus}
+                />
+                {this._renderError()}
             </div>
         );
     }
@@ -232,12 +231,11 @@ class MultiSelectAutocomplete extends Component<Props, State> {
      * @returns {void}
      */
     _onSelectionChange(item) {
-        const existing
-            = this.state.selectedItems.find(k => k.value === item.value);
+        const existing = this.state.selectedItems.find((k) => k.value === item.value);
         let selectedItems = this.state.selectedItems;
 
         if (existing) {
-            selectedItems = selectedItems.filter(k => k !== existing);
+            selectedItems = selectedItems.filter((k) => k !== existing);
         } else {
             selectedItems.push(this.props.onItemSelected(item));
         }
@@ -261,17 +259,12 @@ class MultiSelectAutocomplete extends Component<Props, State> {
             return null;
         }
         const content = (
-            <div className = 'autocomplete-error'>
-                <InlineDialogFailure
-                    onRetry = { this._onRetry } />
+            <div className="autocomplete-error">
+                <InlineDialogFailure onRetry={this._onRetry} />
             </div>
         );
 
-        return (
-            <AKInlineDialog
-                content = { content }
-                isOpen = { true } />
-        );
+        return <AKInlineDialog content={content} isOpen={true} />;
     }
 
     _sendQuery: (string) => void;
@@ -293,11 +286,12 @@ class MultiSelectAutocomplete extends Component<Props, State> {
 
         const resourceClient = this.props.resourceClient || {
             makeQuery: () => Promise.resolve([]),
-            parseResults: results => results
+            parseResults: (results) => results
         };
 
-        resourceClient.makeQuery(filterValue)
-            .then(results => {
+        resourceClient
+            .makeQuery(filterValue)
+            .then((results) => {
                 if (this.state.filterValue !== filterValue) {
                     this.setState({
                         error: false
@@ -318,7 +312,7 @@ class MultiSelectAutocomplete extends Component<Props, State> {
                     error: false
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 logger.error('MultiSelectAutocomplete error in query', error);
 
                 this.setState({

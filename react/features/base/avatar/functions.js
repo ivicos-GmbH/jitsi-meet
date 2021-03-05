@@ -2,13 +2,7 @@
 
 import _ from 'lodash';
 
-const AVATAR_COLORS = [
-    '232, 105, 156',
-    '255, 198, 115',
-    '128, 128, 255',
-    '105, 232, 194',
-    '234, 255, 128'
-];
+const AVATAR_COLORS = ['232, 105, 156', '255, 198, 115', '128, 128, 255', '105, 232, 194', '234, 255, 128'];
 
 const AVATAR_OPACITY = 0.4;
 
@@ -47,7 +41,7 @@ export function getInitials(s: ?string) {
     let initials = '';
 
     for (const w of words) {
-        (initials.length < 2) && (initials += w.substr(0, 1).toUpperCase());
+        initials.length < 2 && (initials += w.substr(0, 1).toUpperCase());
     }
 
     return initials;

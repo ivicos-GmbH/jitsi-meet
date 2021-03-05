@@ -3,11 +3,10 @@
 import React from 'react';
 
 type Props = {
-
     /**
      * Click handler for the button.
      */
-    onClick: Function,
+    onClick: Function
 };
 
 /**
@@ -17,9 +16,7 @@ type Props = {
  */
 export default function TestButton({ onClick }: Props) {
     return (
-        <div
-            className = 'audio-preview-test-button'
-            onClick = { onClick }>
+        <div className="audio-preview-test-button" onClick={onClick}>
             Test
         </div>
     );

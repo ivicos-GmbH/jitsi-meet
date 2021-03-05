@@ -13,7 +13,6 @@ import DesktopSourcePreview from './DesktopSourcePreview';
  * The type of the React {@code Component} props of {@link DesktopPickerPane}.
  */
 type Props = {
-
     /**
      * The handler to be invoked when a DesktopSourcePreview is clicked.
      */
@@ -56,7 +55,6 @@ type Props = {
  * @extends Component
  */
 class DesktopPickerPane extends Component<Props> {
-
     /**
      * Initializes a new DesktopPickerPane instance.
      *
@@ -88,34 +86,18 @@ class DesktopPickerPane extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const {
-            onClick,
-            onDoubleClick,
-            selectedSourceId,
-            sources,
-            type,
-            t
-        } = this.props;
+        const { onClick, onDoubleClick, selectedSourceId, sources, type, t } = this.props;
 
-        const classNames
-            = `desktop-picker-pane default-scrollbar source-type-${type}`;
-        const previews
-            = sources
-                ? sources.map(source => (
-                    <DesktopSourcePreview
-                        key = { source.id }
-                        onClick = { onClick }
-                        onDoubleClick = { onDoubleClick }
-                        selected = { source.id === selectedSourceId }
-                        source = { source }
-                        type = { type } />))
-                : (
-                    <div className = 'desktop-picker-pane-spinner'>
-                        <Spinner
-                            isCompleting = { false }
-                            size = 'medium' />
-                    </div>
-                );
+        const classNames = `desktop-picker-pane default-scrollbar source-type-${type}`;
+        const previews = sources ? (
+            sources.map((source) => (
+                <DesktopSourcePreview key={source.id} onClick={onClick} onDoubleClick={onDoubleClick} selected={source.id === selectedSourceId} source={source} type={type} />
+            ))
+        ) : (
+            <div className="desktop-picker-pane-spinner">
+                <Spinner isCompleting={false} size="medium" />
+            </div>
+        );
 
         let checkBox;
 
@@ -123,16 +105,13 @@ class DesktopPickerPane extends Component<Props> {
         // desktop sharing tab.
         // App window and Mac OS screen sharing doesn't work with system audio.
         if (type === 'screen' && Platform.OS === 'windows') {
-            checkBox = (<Checkbox
-                label = { t('dialog.screenSharingAudio') }
-                name = 'share-system-audio'
-                onChange = { this._onShareAudioCheck } />);
+            checkBox = <Checkbox label={t('dialog.screenSharingAudio')} name="share-system-audio" onChange={this._onShareAudioCheck} />;
         }
 
         return (
-            <div className = { classNames }>
-                { previews }
-                { checkBox }
+            <div className={classNames}>
+                {previews}
+                {checkBox}
             </div>
         );
     }

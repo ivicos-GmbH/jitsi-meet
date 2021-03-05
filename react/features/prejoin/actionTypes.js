@@ -1,4 +1,3 @@
-
 /**
  * Action type to signal the start of the conference.
  */

@@ -15,7 +15,6 @@ const VOLUME_SLIDER_SCALE = 100;
  * The type of the React {@code Component} props of {@link VolumeSlider}.
  */
 type Props = {
-
     /**
      * The value of the audio slider should display at when the component first
      * mounts. Changes will be stored in state. The value should be a number
@@ -33,7 +32,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link VolumeSlider}.
  */
 type State = {
-
     /**
      * The volume of the participant's audio element. The value will
      * be represented by a slider.
@@ -73,19 +71,13 @@ class VolumeSlider extends Component<Props, State> {
      */
     render() {
         return (
-            <li className = 'popupmenu__item'>
-                <div className = 'popupmenu__contents'>
-                    <span className = 'popupmenu__icon'>
-                        <Icon src = { IconVolume } />
+            <li className="popupmenu__item">
+                <div className="popupmenu__contents">
+                    <span className="popupmenu__icon">
+                        <Icon src={IconVolume} />
                     </span>
-                    <div className = 'popupmenu__slider_container'>
-                        <input
-                            className = 'popupmenu__slider'
-                            max = { VOLUME_SLIDER_SCALE }
-                            min = { 0 }
-                            onChange = { this._onVolumeChange }
-                            type = 'range'
-                            value = { this.state.volumeLevel } />
+                    <div className="popupmenu__slider_container">
+                        <input className="popupmenu__slider" max={VOLUME_SLIDER_SCALE} min={0} onChange={this._onVolumeChange} type="range" value={this.state.volumeLevel} />
                     </div>
                 </div>
             </li>

@@ -9,7 +9,6 @@ import Text from './Text';
  * The type of the React {@code Component} props of {@link Link}.
  */
 type Props = {
-
     /**
      * The children to be displayed within this Link.
      */
@@ -56,10 +55,8 @@ export default class Link extends Component<Props> {
      */
     render() {
         return (
-            <Text
-                onPress = { this._onPress }
-                style = { this.props.style }>
-                { this.props.children }
+            <Text onPress={this._onPress} style={this.props.style}>
+                {this.props.children}
             </Text>
         );
     }
@@ -86,7 +83,6 @@ export default class Link extends Component<Props> {
      * @returns {void}
      */
     _onPress() {
-        Linking.openURL(this.props.url)
-            .catch(reason => this._onLinkingOpenURLRejected(reason));
+        Linking.openURL(this.props.url).catch((reason) => this._onLinkingOpenURLRejected(reason));
     }
 }

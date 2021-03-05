@@ -11,7 +11,6 @@ const TEST_SOUND_PATH = 'sounds/ring.wav';
  * The type of the React {@code Component} props of {@link AudioOutputPreview}.
  */
 type Props = {
-
     /**
      * The device id of the audio output device to use.
      */
@@ -65,13 +64,9 @@ class AudioOutputPreview extends Component<Props> {
      */
     render() {
         return (
-            <div className = 'audio-output-preview'>
-                <a onClick = { this._onClick }>
-                    { this.props.t('deviceSelection.testAudio') }
-                </a>
-                <Audio
-                    setRef = { this._audioElementReady }
-                    src = { TEST_SOUND_PATH } />
+            <div className="audio-output-preview">
+                <a onClick={this._onClick}>{this.props.t('deviceSelection.testAudio')}</a>
+                <Audio setRef={this._audioElementReady} src={TEST_SOUND_PATH} />
             </div>
         );
     }
@@ -101,8 +96,7 @@ class AudioOutputPreview extends Component<Props> {
      * @returns {void}
      */
     _onClick() {
-        this._audioElement
-            && this._audioElement.play();
+        this._audioElement && this._audioElement.play();
     }
 
     /**
@@ -112,9 +106,7 @@ class AudioOutputPreview extends Component<Props> {
      * @returns {void}
      */
     _setAudioSink() {
-        this._audioElement
-            && this.props.deviceId
-            && this._audioElement.setSinkId(this.props.deviceId);
+        this._audioElement && this.props.deviceId && this._audioElement.setSinkId(this.props.deviceId);
     }
 }
 

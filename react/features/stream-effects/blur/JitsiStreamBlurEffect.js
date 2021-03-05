@@ -1,10 +1,5 @@
 // @flow
-import {
-    CLEAR_TIMEOUT,
-    TIMEOUT_TICK,
-    SET_TIMEOUT,
-    timerWorkerScript
-} from './TimerWorker';
+import { CLEAR_TIMEOUT, TIMEOUT_TICK, SET_TIMEOUT, timerWorkerScript } from './TimerWorker';
 
 const blurValue = '25px';
 
@@ -105,14 +100,14 @@ export default class JitsiStreamBlurEffect {
         const outputMemoryOffset = this._model._getOutputMemoryOffset() / 4;
 
         for (let i = 0; i < this._segmentationPixelCount; i++) {
-            const background = this._model.HEAPF32[outputMemoryOffset + (i * 2)];
-            const person = this._model.HEAPF32[outputMemoryOffset + (i * 2) + 1];
+            const background = this._model.HEAPF32[outputMemoryOffset + i * 2];
+            const person = this._model.HEAPF32[outputMemoryOffset + i * 2 + 1];
             const shift = Math.max(background, person);
             const backgroundExp = Math.exp(background - shift);
             const personExp = Math.exp(person - shift);
 
             // Sets only the alpha component of each pixel.
-            this._segmentationMask.data[(i * 4) + 3] = (255 * personExp) / (backgroundExp + personExp);
+            this._segmentationMask.data[i * 4 + 3] = (255 * personExp) / (backgroundExp + personExp);
         }
         this._segmentationMaskCtx.putImageData(this._segmentationMask, 0, 0);
     }
@@ -152,18 +147,13 @@ export default class JitsiStreamBlurEffect {
             this._options.height
         );
 
-        const imageData = this._segmentationMaskCtx.getImageData(
-            0,
-            0,
-            this._options.width,
-            this._options.height
-        );
+        const imageData = this._segmentationMaskCtx.getImageData(0, 0, this._options.width, this._options.height);
         const inputMemoryOffset = this._model._getInputMemoryOffset() / 4;
 
         for (let i = 0; i < this._segmentationPixelCount; i++) {
-            this._model.HEAPF32[inputMemoryOffset + (i * 3)] = imageData.data[i * 4] / 255;
-            this._model.HEAPF32[inputMemoryOffset + (i * 3) + 1] = imageData.data[(i * 4) + 1] / 255;
-            this._model.HEAPF32[inputMemoryOffset + (i * 3) + 2] = imageData.data[(i * 4) + 2] / 255;
+            this._model.HEAPF32[inputMemoryOffset + i * 3] = imageData.data[i * 4] / 255;
+            this._model.HEAPF32[inputMemoryOffset + i * 3 + 1] = imageData.data[i * 4 + 1] / 255;
+            this._model.HEAPF32[inputMemoryOffset + i * 3 + 2] = imageData.data[i * 4 + 2] / 255;
         }
     }
 
@@ -188,8 +178,7 @@ export default class JitsiStreamBlurEffect {
         this._maskFrameTimerWorker = new Worker(timerWorkerScript, { name: 'Blur effect worker' });
         this._maskFrameTimerWorker.onmessage = this._onMaskFrameTimer;
         const firstVideoTrack = stream.getVideoTracks()[0];
-        const { height, frameRate, width }
-            = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
+        const { height, frameRate, width } = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
 
         this._segmentationMask = new ImageData(this._options.width, this._options.height);
         this._segmentationMaskCanvas = document.createElement('canvas');

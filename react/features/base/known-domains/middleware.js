@@ -8,17 +8,17 @@ import { parseURIString } from '../util';
 
 import { addKnownDomains } from './actions';
 
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const result = next(action);
 
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        _appWillMount(store);
-        break;
+        case APP_WILL_MOUNT:
+            _appWillMount(store);
+            break;
 
-    case SET_ROOM:
-        _setRoom(store);
-        break;
+        case SET_ROOM:
+            _setRoom(store);
+            break;
     }
 
     return result;
@@ -50,7 +50,5 @@ function _setRoom({ dispatch, getState }) {
     const { locationURL } = getState()['features/base/connection'];
     let host;
 
-    locationURL
-        && (host = locationURL.host)
-        && dispatch(addKnownDomains(host));
+    locationURL && (host = locationURL.host) && dispatch(addKnownDomains(host));
 }

@@ -18,12 +18,8 @@ import { parseURLParams } from '../react/features/base/util/parseURLParams';
 if (typeof createConnectionExternally === 'function') {
     // URL params have higher priority than config params.
     // Do not use external connect if websocket is enabled.
-    let url
-        = parseURLParams(window.location, true, 'hash')[
-                'config.externalConnectUrl']
-            || config.websocket ? undefined : config.externalConnectUrl;
-    const isRecorder
-        = parseURLParams(window.location, true, 'hash')['config.iAmRecorder'];
+    let url = parseURLParams(window.location, true, 'hash')['config.externalConnectUrl'] || config.websocket ? undefined : config.externalConnectUrl;
+    const isRecorder = parseURLParams(window.location, true, 'hash')['config.iAmRecorder'];
 
     let roomName;
 
@@ -38,7 +34,7 @@ if (typeof createConnectionExternally === 'function') {
 
         createConnectionExternally(
             url,
-            connectionInfo => {
+            (connectionInfo) => {
                 // Sets that global variable to be used later by connect method
                 // in connection.js.
                 window.XMPPAttachInfo = {
@@ -47,7 +43,8 @@ if (typeof createConnectionExternally === 'function') {
                 };
                 checkForConnectHandlerAndConnect();
             },
-            errorCallback);
+            errorCallback
+        );
     } else {
         errorCallback();
     }
@@ -62,9 +59,7 @@ if (typeof createConnectionExternally === 'function') {
  * @returns {void}
  */
 function checkForConnectHandlerAndConnect() {
-    window.APP
-        && window.APP.connect.status === 'ready'
-        && window.APP.connect.handler();
+    window.APP && window.APP.connect.status === 'ready' && window.APP.connect.handler();
 }
 
 /**

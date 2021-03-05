@@ -34,10 +34,8 @@ const DEFAULT_STATE = {
  * video devices.
  * @returns {Object}
  */
-ReducerRegistry.register(
-    'features/base/devices',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/devices', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case UPDATE_DEVICE_LIST: {
             const deviceList = groupDevicesByKind(action.devices);
 
@@ -50,16 +48,13 @@ ReducerRegistry.register(
         case ADD_PENDING_DEVICE_REQUEST:
             return {
                 ...state,
-                pendingRequests: [
-                    ...state.pendingRequests,
-                    action.request
-                ]
+                pendingRequests: [...state.pendingRequests, action.request]
             };
 
         case REMOVE_PENDING_DEVICE_REQUESTS:
             return {
                 ...state,
-                pendingRequests: [ ]
+                pendingRequests: []
             };
 
         // TODO: Changing of current audio and video device id is currently handled outside of react/redux.
@@ -81,6 +76,5 @@ ReducerRegistry.register(
         }
         default:
             return state;
-        }
-    });
-
+    }
+});

@@ -26,7 +26,6 @@ import { _mapStateToProps } from './AbstractTestHint';
  * exposing id and value properties.
  */
 class TestHint extends Component<TestHintProps> {
-
     /**
      * Renders the test hint on Android.
      *
@@ -38,10 +37,8 @@ class TestHint extends Component<TestHintProps> {
         }
 
         return (
-            <Text
-                accessibilityLabel = { this.props.id }
-                onPress = { this.props.onPress } >
-                { this.props.value }
+            <Text accessibilityLabel={this.props.id} onPress={this.props.onPress}>
+                {this.props.value}
             </Text>
         );
     }

@@ -11,7 +11,6 @@ import { connect } from '../../../redux';
  * The type of the React {@code Component} props of {@link BackButton}
  */
 type Props = {
-
     /**
      * The action to be performed when the button is pressed.
      */
@@ -40,15 +39,8 @@ class BackButton extends Component<Props> {
      */
     render() {
         return (
-            <TouchableOpacity
-                accessibilityLabel = { 'Back' }
-                onPress = { this.props.onPress }>
-                <Icon
-                    src = { IconArrowBack }
-                    style = { [
-                        this.props._headerStyles.headerButtonIcon,
-                        this.props.style
-                    ] } />
+            <TouchableOpacity accessibilityLabel={'Back'} onPress={this.props.onPress}>
+                <Icon src={IconArrowBack} style={[this.props._headerStyles.headerButtonIcon, this.props.style]} />
             </TouchableOpacity>
         );
     }

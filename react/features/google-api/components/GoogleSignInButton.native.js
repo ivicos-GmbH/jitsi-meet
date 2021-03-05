@@ -25,7 +25,6 @@ const GOOGLE_BRAND_IMAGE = require('../../../../images/btn_google_signin_dark_no
  * @extends Component
  */
 class GoogleSignInButton extends AbstractGoogleSignInButton {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -37,24 +36,15 @@ class GoogleSignInButton extends AbstractGoogleSignInButton {
 
         if (signedIn) {
             return (
-                <TouchableOpacity
-                    onPress = { onClick }
-                    style = { styles.signOutButton } >
-                    <Text style = { styles.signOutButtonText }>
-                        { t('liveStreaming.signOut') }
-                    </Text>
+                <TouchableOpacity onPress={onClick} style={styles.signOutButton}>
+                    <Text style={styles.signOutButtonText}>{t('liveStreaming.signOut')}</Text>
                 </TouchableOpacity>
             );
         }
 
         return (
-            <TouchableOpacity
-                onPress = { onClick }
-                style = { styles.signInButton } >
-                <Image
-                    resizeMode = { 'contain' }
-                    source = { GOOGLE_BRAND_IMAGE }
-                    style = { styles.signInImage } />
+            <TouchableOpacity onPress={onClick} style={styles.signInButton}>
+                <Image resizeMode={'contain'} source={GOOGLE_BRAND_IMAGE} style={styles.signInImage} />
             </TouchableOpacity>
         );
     }

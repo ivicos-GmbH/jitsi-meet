@@ -13,33 +13,12 @@ import { AudioLevelIndicator } from '../../../react/features/audio-level-indicat
 import { Avatar as AvatarDisplay } from '../../../react/features/base/avatar';
 import { i18next } from '../../../react/features/base/i18n';
 import { MEDIA_TYPE } from '../../../react/features/base/media';
-import {
-    getLocalParticipant,
-    getParticipantById,
-    getParticipantCount,
-    getPinnedParticipant,
-    pinParticipant
-} from '../../../react/features/base/participants';
-import {
-    getLocalVideoTrack,
-    getTrackByMediaTypeAndParticipant,
-    isLocalTrackMuted,
-    isRemoteTrackMuted
-} from '../../../react/features/base/tracks';
+import { getLocalParticipant, getParticipantById, getParticipantCount, getPinnedParticipant, pinParticipant } from '../../../react/features/base/participants';
+import { getLocalVideoTrack, getTrackByMediaTypeAndParticipant, isLocalTrackMuted, isRemoteTrackMuted } from '../../../react/features/base/tracks';
 import { ConnectionIndicator } from '../../../react/features/connection-indicator';
 import { DisplayName } from '../../../react/features/display-name';
-import {
-    DominantSpeakerIndicator,
-    RaisedHandIndicator,
-    StatusIndicators,
-    isVideoPlayable
-} from '../../../react/features/filmstrip';
-import {
-    LAYOUTS,
-    getCurrentLayout,
-    setTileView,
-    shouldDisplayTileView
-} from '../../../react/features/video-layout';
+import { DominantSpeakerIndicator, RaisedHandIndicator, StatusIndicators, isVideoPlayable } from '../../../react/features/filmstrip';
+import { LAYOUTS, getCurrentLayout, setTileView, shouldDisplayTileView } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
 
 const logger = Logger.getLogger(__filename);
@@ -82,7 +61,6 @@ const DISPLAY_VIDEO_WITH_NAME = 3;
  * @constant
  */
 const DISPLAY_AVATAR_WITH_NAME = 4;
-
 
 /**
  *
@@ -240,8 +218,7 @@ export default class SmallVideo {
         const participant = getParticipantById(state, id);
         const isLocal = participant?.local ?? true;
         const tracks = state['features/base/tracks'];
-        const videoTrack
-            = isLocal ? getLocalVideoTrack(tracks) : getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, id);
+        const videoTrack = isLocal ? getLocalVideoTrack(tracks) : getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.VIDEO, id);
 
         if (typeof participant !== 'undefined' && !participant.isFakeParticipant && !participant.local) {
             isScreenSharing = videoTrack?.videoType === 'desktop';
@@ -277,8 +254,7 @@ export default class SmallVideo {
      * Updates the css classes of the thumbnail based on the current state.
      */
     updateView() {
-        this.$container.removeClass((index, classNames) =>
-            classNames.split(' ').filter(name => name.startsWith('display-')));
+        this.$container.removeClass((index, classNames) => classNames.split(' ').filter((name) => name.startsWith('display-')));
 
         const oldDisplayMode = this.displayMode;
         let displayModeString = '';
@@ -289,43 +265,47 @@ export default class SmallVideo {
         this.displayMode = this.selectDisplayMode(displayModeInput);
 
         switch (this.displayMode) {
-        case DISPLAY_AVATAR_WITH_NAME:
-            displayModeString = 'avatar-with-name';
-            this.$container.addClass('display-avatar-with-name');
-            break;
-        case DISPLAY_BLACKNESS_WITH_NAME:
-            displayModeString = 'blackness-with-name';
-            this.$container.addClass('display-name-on-black');
-            break;
-        case DISPLAY_VIDEO:
-            displayModeString = 'video';
-            this.$container.addClass('display-video');
-            break;
-        case DISPLAY_VIDEO_WITH_NAME:
-            displayModeString = 'video-with-name';
-            this.$container.addClass('display-name-on-video');
-            break;
-        case DISPLAY_AVATAR:
-        default:
-            displayModeString = 'avatar';
-            this.$container.addClass('display-avatar-only');
-            break;
+            case DISPLAY_AVATAR_WITH_NAME:
+                displayModeString = 'avatar-with-name';
+                this.$container.addClass('display-avatar-with-name');
+                break;
+            case DISPLAY_BLACKNESS_WITH_NAME:
+                displayModeString = 'blackness-with-name';
+                this.$container.addClass('display-name-on-black');
+                break;
+            case DISPLAY_VIDEO:
+                displayModeString = 'video';
+                this.$container.addClass('display-video');
+                break;
+            case DISPLAY_VIDEO_WITH_NAME:
+                displayModeString = 'video-with-name';
+                this.$container.addClass('display-name-on-video');
+                break;
+            case DISPLAY_AVATAR:
+            default:
+                displayModeString = 'avatar';
+                this.$container.addClass('display-avatar-only');
+                break;
         }
 
         if (this.displayMode !== oldDisplayMode) {
             logger.debug(`Displaying ${displayModeString} for ${this.id}, data: [${JSON.stringify(displayModeInput)}]`);
         }
 
-        if (this.displayMode !== DISPLAY_VIDEO
-            && this.displayMode !== DISPLAY_VIDEO_WITH_NAME
-            && displayModeInput.tileViewActive
-            && displayModeInput.isScreenSharing
-            && !displayModeInput.isAudioOnly) {
+        if (
+            this.displayMode !== DISPLAY_VIDEO &&
+            this.displayMode !== DISPLAY_VIDEO_WITH_NAME &&
+            displayModeInput.tileViewActive &&
+            displayModeInput.isScreenSharing &&
+            !displayModeInput.isAudioOnly
+        ) {
             // send the event
-            sendAnalytics(createScreenSharingIssueEvent({
-                source: 'thumbnail',
-                ...displayModeInput
-            }));
+            sendAnalytics(
+                createScreenSharingIssueEvent({
+                    source: 'thumbnail',
+                    ...displayModeInput
+                })
+            );
         }
     }
 
@@ -364,8 +344,7 @@ export default class SmallVideo {
     initBrowserSpecificProperties() {
         const userAgent = window.navigator.userAgent;
 
-        if (userAgent.indexOf('QtWebEngine') > -1
-                && (userAgent.indexOf('Windows') > -1 || userAgent.indexOf('Linux') > -1)) {
+        if (userAgent.indexOf('QtWebEngine') > -1 && (userAgent.indexOf('Windows') > -1 || userAgent.indexOf('Linux') > -1)) {
             this.$container.css('overflow', 'hidden');
         }
     }
@@ -434,9 +413,7 @@ export default class SmallVideo {
         // the components share the same eventing system.
         const $source = $(event.target || event.srcElement);
 
-        return $source.parents('.displayNameContainer').length === 0
-            && $source.parents('.popover').length === 0
-            && !event.target.classList.contains('popover');
+        return $source.parents('.displayNameContainer').length === 0 && $source.parents('.popover').length === 0 && !event.target.classList.contains('popover');
     }
 
     /**
@@ -463,47 +440,46 @@ export default class SmallVideo {
      */
     _setThumbnailSize() {
         const layout = getCurrentLayout(APP.store.getState());
-        const heightToWidthPercent = 100
-                / (this.isLocal ? interfaceConfig.LOCAL_THUMBNAIL_RATIO : interfaceConfig.REMOTE_THUMBNAIL_RATIO);
+        const heightToWidthPercent = 100 / (this.isLocal ? interfaceConfig.LOCAL_THUMBNAIL_RATIO : interfaceConfig.REMOTE_THUMBNAIL_RATIO);
 
         switch (layout) {
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
-            this.$container.css('padding-top', `${heightToWidthPercent}%`);
-            break;
-        }
-        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
-            const state = APP.store.getState();
-            const { local, remote } = state['features/filmstrip'].horizontalViewDimensions;
-            const size = this.isLocal ? local : remote;
-
-            if (typeof size !== 'undefined') {
-                const { height, width } = size;
-
-                this.$container.css({
-                    height: `${height}px`,
-                    'min-height': `${height}px`,
-                    'min-width': `${width}px`,
-                    width: `${width}px`
-                });
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
+                this.$container.css('padding-top', `${heightToWidthPercent}%`);
+                break;
             }
-            break;
-        }
-        case LAYOUTS.TILE_VIEW: {
-            const state = APP.store.getState();
-            const { thumbnailSize } = state['features/filmstrip'].tileViewDimensions;
+            case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
+                const state = APP.store.getState();
+                const { local, remote } = state['features/filmstrip'].horizontalViewDimensions;
+                const size = this.isLocal ? local : remote;
 
-            if (typeof thumbnailSize !== 'undefined') {
-                const { height, width } = thumbnailSize;
+                if (typeof size !== 'undefined') {
+                    const { height, width } = size;
 
-                this.$container.css({
-                    height: `${height}px`,
-                    'min-height': `${height}px`,
-                    'min-width': `${width}px`,
-                    width: `${width}px`
-                });
+                    this.$container.css({
+                        height: `${height}px`,
+                        'min-height': `${height}px`,
+                        'min-width': `${width}px`,
+                        width: `${width}px`
+                    });
+                }
+                break;
             }
-            break;
-        }
+            case LAYOUTS.TILE_VIEW: {
+                const state = APP.store.getState();
+                const { thumbnailSize } = state['features/filmstrip'].tileViewDimensions;
+
+                if (typeof thumbnailSize !== 'undefined') {
+                    const { height, width } = thumbnailSize;
+
+                    this.$container.css({
+                        height: `${height}px`,
+                        'min-height': `${height}px`,
+                        'min-width': `${width}px`,
+                        width: `${width}px`
+                    });
+                }
+                break;
+            }
         }
     }
 }

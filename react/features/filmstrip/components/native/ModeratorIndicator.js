@@ -15,10 +15,6 @@ export default class ModeratorIndicator extends Component<{}> {
      * @inheritdoc
      */
     render() {
-        return (
-            <BaseIndicator
-                highlight = { false }
-                icon = { IconModerator } />
-        );
+        return <BaseIndicator highlight={false} icon={IconModerator} />;
     }
 }

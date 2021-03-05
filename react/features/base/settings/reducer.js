@@ -46,7 +46,7 @@ const STORE_NAME = 'features/base/settings';
 const filterSubtree = {};
 
 // start with the default state
-Object.keys(DEFAULT_STATE).forEach(key => {
+Object.keys(DEFAULT_STATE).forEach((key) => {
     filterSubtree[key] = true;
 });
 
@@ -60,14 +60,14 @@ PersistenceRegistry.register(STORE_NAME, filterSubtree);
 
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        return _initSettings(state);
+        case APP_WILL_MOUNT:
+            return _initSettings(state);
 
-    case SETTINGS_UPDATED:
-        return {
-            ...state,
-            ...action.settings
-        };
+        case SETTINGS_UPDATED:
+            return {
+                ...state,
+                ...action.settings
+            };
     }
 
     return state;
@@ -100,10 +100,13 @@ function _initSettings(featureState) {
     const displayName = savedDisplayName === null ? undefined : _.escape(savedDisplayName);
     const email = savedEmail === null ? undefined : _.escape(savedEmail);
 
-    settings = assignIfDefined({
-        displayName,
-        email
-    }, settings);
+    settings = assignIfDefined(
+        {
+            displayName,
+            email
+        },
+        settings
+    );
 
     return settings;
 }

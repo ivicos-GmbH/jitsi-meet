@@ -7,7 +7,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { KickRemoteParticipantDialog } from '.';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * The redux {@code dispatch} function.
      */

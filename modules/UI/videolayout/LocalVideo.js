@@ -72,11 +72,13 @@ export default class LocalVideo extends SmallVideo {
      */
     renderThumbnail(isHovered = false) {
         ReactDOM.render(
-            <Provider store = { APP.store }>
-                <I18nextProvider i18n = { i18next }>
-                    <Thumbnail participantID = { this.id } isHovered = { isHovered } />
+            <Provider store={APP.store}>
+                <I18nextProvider i18n={i18next}>
+                    <Thumbnail participantID={this.id} isHovered={isHovered} />
                 </I18nextProvider>
-            </Provider>, this.container);
+            </Provider>,
+            this.container
+        );
     }
 
     /**
@@ -161,21 +163,20 @@ export default class LocalVideo extends SmallVideo {
                     name: 'Flip',
                     callback: () => {
                         const { store } = APP;
-                        const val = !store.getState()['features/base/settings']
-                        .localFlipX;
+                        const val = !store.getState()['features/base/settings'].localFlipX;
 
                         this.setFlipX(val);
-                        store.dispatch(updateSettings({
-                            localFlipX: val
-                        }));
+                        store.dispatch(
+                            updateSettings({
+                                localFlipX: val
+                            })
+                        );
                     }
                 }
             },
             events: {
                 show(options) {
-                    options.items.flip.name
-                        = APP.translation.generateTranslationHTML(
-                            'videothumbnail.flip');
+                    options.items.flip.name = APP.translation.generateTranslationHTML('videothumbnail.flip');
                 }
             }
         });

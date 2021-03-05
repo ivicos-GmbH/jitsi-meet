@@ -24,9 +24,7 @@ export default class FocusLockWrapper extends FocusLock<*> {
 
         // MoveFocusInside is added in order to initially bring the focus on the dialog.
         return (
-            <FocusLock
-                { ...props }
-                className = 'focus-lock'>
+            <FocusLock {...props} className="focus-lock">
                 <MoveFocusInside>{children}</MoveFocusInside>
             </FocusLock>
         );

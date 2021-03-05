@@ -14,20 +14,16 @@
  * {@code promise} settles and is automatically rejected after {@code timeout}
  * milliseconds.
  */
-export function timeoutPromise<T>(
-        promise: Promise<T>,
-        timeout: number
-): Promise<T> {
+export function timeoutPromise<T>(promise: Promise<T>, timeout: number): Promise<T> {
     return new Promise((resolve, reject) => {
-        const timeoutID
-            = setTimeout(() => reject(new Error('timeout')), timeout);
+        const timeoutID = setTimeout(() => reject(new Error('timeout')), timeout);
 
         promise.then(
-            /* onFulfilled */ value => {
+            /* onFulfilled */ (value) => {
                 resolve(value);
                 clearTimeout(timeoutID);
             },
-            /* onRejected */ reason => {
+            /* onRejected */ (reason) => {
                 reject(reason);
                 clearTimeout(timeoutID);
             }

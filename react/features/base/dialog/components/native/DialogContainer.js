@@ -1,7 +1,5 @@
 import { connect } from '../../../redux';
-import AbstractDialogContainer, {
-    abstractMapStateToProps
-} from '../AbstractDialogContainer';
+import AbstractDialogContainer, { abstractMapStateToProps } from '../AbstractDialogContainer';
 
 /**
  * Implements a DialogContainer responsible for showing all dialogs. We will

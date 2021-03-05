@@ -2,10 +2,7 @@
 
 import { Component } from 'react';
 
-import {
-    createLiveStreamingDialogEvent,
-    sendAnalytics
-} from '../../../analytics';
+import { createLiveStreamingDialogEvent, sendAnalytics } from '../../../analytics';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 
 /**
@@ -13,7 +10,6 @@ import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
  * {@link AbstractStartLiveStreamDialog}.
  */
 export type Props = {
-
     /**
      * The {@code JitsiConference} for the current conference.
      */
@@ -45,14 +41,13 @@ export type Props = {
      * Invoked to obtain translated strings.
      */
     t: Function
-}
+};
 
 /**
  * The type of the React {@code Component} state of
  * {@link AbstractStartLiveStreamDialog}.
  */
 export type State = {
-
     /**
      * Details about the broadcasts available for use for the logged in Google
      * user's YouTube account.
@@ -84,8 +79,7 @@ export type State = {
  * but the abstraction of its properties are already present in this abstract
  * class.
  */
-export default class AbstractStartLiveStreamDialog<P: Props>
-    extends Component<P, State> {
+export default class AbstractStartLiveStreamDialog<P: Props> extends Component<P, State> {
     _isMounted: boolean;
 
     /**
@@ -165,7 +159,7 @@ export default class AbstractStartLiveStreamDialog<P: Props>
      */
     _onGetYouTubeBroadcasts: () => Promise<*>;
 
-    _onStreamKeyChange: string => void;
+    _onStreamKeyChange: (string) => void;
 
     /**
      * Callback invoked to update the {@code StartLiveStreamDialog} component's
@@ -194,8 +188,7 @@ export default class AbstractStartLiveStreamDialog<P: Props>
      */
     _onSubmit() {
         const { broadcasts, selectedBoundStreamID } = this.state;
-        const key
-            = (this.state.streamKey || this.props._streamKey || '').trim();
+        const key = (this.state.streamKey || this.props._streamKey || '').trim();
 
         if (!key) {
             return false;
@@ -204,14 +197,12 @@ export default class AbstractStartLiveStreamDialog<P: Props>
         let selectedBroadcastID = null;
 
         if (selectedBoundStreamID) {
-            const selectedBroadcast = broadcasts && broadcasts.find(
-                broadcast => broadcast.boundStreamID === selectedBoundStreamID);
+            const selectedBroadcast = broadcasts && broadcasts.find((broadcast) => broadcast.boundStreamID === selectedBoundStreamID);
 
             selectedBroadcastID = selectedBroadcast && selectedBroadcast.id;
         }
 
-        sendAnalytics(
-            createLiveStreamingDialogEvent('start', 'confirm.button'));
+        sendAnalytics(createLiveStreamingDialogEvent('start', 'confirm.button'));
 
         this.props._conference.startRecording({
             broadcastId: selectedBroadcastID,

@@ -8,7 +8,6 @@ import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/com
 import { openChat } from '../actions';
 
 export type Props = AbstractButtonProps & {
-
     /**
      * The ID of the participant that the message is to be sent.
      */
@@ -32,7 +31,7 @@ export type Props = AbstractButtonProps & {
     /**
      * The participant object retreived from Redux.
      */
-    _participant: Object,
+    _participant: Object
 };
 
 /**
@@ -66,7 +65,6 @@ class PrivateMessageButton extends AbstractButton<Props, any> {
     _isToggled() {
         return this.props.reply;
     }
-
 }
 
 /**

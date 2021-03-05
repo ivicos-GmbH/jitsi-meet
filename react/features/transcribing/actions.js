@@ -1,18 +1,8 @@
 // @flow
 
-import {
-    NOTIFICATION_TIMEOUT,
-    hideNotification,
-    showErrorNotification,
-    showNotification
-} from '../notifications';
+import { NOTIFICATION_TIMEOUT, hideNotification, showErrorNotification, showNotification } from '../notifications';
 
-import {
-    _POTENTIAL_TRANSCRIBER_JOINED,
-    _TRANSCRIBER_JOINED,
-    _TRANSCRIBER_LEFT,
-    SET_PENDING_TRANSCRIBING_NOTIFICATION_UID
-} from './actionTypes';
+import { _POTENTIAL_TRANSCRIBER_JOINED, _TRANSCRIBER_JOINED, _TRANSCRIBER_LEFT, SET_PENDING_TRANSCRIBING_NOTIFICATION_UID } from './actionTypes';
 
 /**
  * Notify that the transcriber, with a unique ID, has joined.
@@ -70,11 +60,13 @@ export function potentialTranscriberJoined(participantId: string) {
  */
 export function showPendingTranscribingNotification() {
     return async (dispatch: Function) => {
-        const notification = await dispatch(showNotification({
-            descriptionKey: 'transcribing.pending',
-            isDismissAllowed: false,
-            titleKey: 'dialog.transcribing'
-        }));
+        const notification = await dispatch(
+            showNotification({
+                descriptionKey: 'transcribing.pending',
+                isDismissAllowed: false,
+                titleKey: 'dialog.transcribing'
+            })
+        );
 
         if (notification) {
             dispatch(setPendingTranscribingNotificationUid(notification.uid));
@@ -124,12 +116,14 @@ export function hidePendingTranscribingNotification() {
  * @returns {showNotification}
  */
 export function showStoppedTranscribingNotification() {
-    return showNotification({
-        descriptionKey: 'transcribing.off',
-        titleKey: 'dialog.transcribing'
-    }, NOTIFICATION_TIMEOUT);
+    return showNotification(
+        {
+            descriptionKey: 'transcribing.off',
+            titleKey: 'dialog.transcribing'
+        },
+        NOTIFICATION_TIMEOUT
+    );
 }
-
 
 /**
  * Signals that the transcribing error notification should be shown.

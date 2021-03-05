@@ -17,7 +17,6 @@ const LIVE_STREAMING_HELP_LINK = 'https://jitsi.org/live';
  * The props of the component.
  */
 export type Props = {
-
     /**
      * Callback invoked when the entered stream key has changed.
      */
@@ -38,7 +37,6 @@ export type Props = {
  * The state of the component.
  */
 type State = {
-
     /**
      * Whether or not to show the warnings that the passed in value seems like
      * an improperly formatted stream key.
@@ -52,8 +50,7 @@ type State = {
  *
  * @extends Component
  */
-export default class AbstractStreamKeyForm<P: Props>
-    extends Component<P, State> {
+export default class AbstractStreamKeyForm<P: Props> extends Component<P, State> {
     helpURL: string;
     _debouncedUpdateValidationErrorVisibility: Function;
 
@@ -66,19 +63,12 @@ export default class AbstractStreamKeyForm<P: Props>
         super(props);
 
         this.state = {
-            showValidationError: Boolean(this.props.value)
-                && !this._validateStreamKey(this.props.value)
+            showValidationError: Boolean(this.props.value) && !this._validateStreamKey(this.props.value)
         };
 
-        this.helpURL = (typeof interfaceConfig !== 'undefined'
-            && interfaceConfig.LIVE_STREAMING_HELP_LINK)
-            || LIVE_STREAMING_HELP_LINK;
+        this.helpURL = (typeof interfaceConfig !== 'undefined' && interfaceConfig.LIVE_STREAMING_HELP_LINK) || LIVE_STREAMING_HELP_LINK;
 
-        this._debouncedUpdateValidationErrorVisibility = debounce(
-            this._updateValidationErrorVisibility.bind(this),
-            800,
-            { leading: false }
-        );
+        this._debouncedUpdateValidationErrorVisibility = debounce(this._updateValidationErrorVisibility.bind(this), 800, { leading: false });
 
         // Bind event handlers so they are only bound once per instance.
         this._onInputChange = this._onInputChange.bind(this);
@@ -104,7 +94,7 @@ export default class AbstractStreamKeyForm<P: Props>
         this._debouncedUpdateValidationErrorVisibility.cancel();
     }
 
-    _onInputChange: Object => void
+    _onInputChange: (Object) => void;
 
     /**
      * Callback invoked when the value of the input field has updated through
@@ -131,8 +121,7 @@ export default class AbstractStreamKeyForm<P: Props>
      * @returns {boolean}
      */
     _updateValidationErrorVisibility() {
-        const newShowValidationError = Boolean(this.props.value)
-            && !this._validateStreamKey(this.props.value);
+        const newShowValidationError = Boolean(this.props.value) && !this._validateStreamKey(this.props.value);
 
         if (newShowValidationError !== this.state.showValidationError) {
             this.setState({

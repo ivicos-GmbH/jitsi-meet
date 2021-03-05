@@ -8,11 +8,7 @@ import { Avatar } from '../../../base/avatar';
 import JitsiMeetJS from '../../../base/lib-jitsi-meet/_';
 import { MEDIA_TYPE, VideoTrack } from '../../../base/media';
 import AudioTrack from '../../../base/media/components/web/AudioTrack';
-import {
-    getLocalParticipant,
-    getParticipantById,
-    getParticipantCount
-} from '../../../base/participants';
+import { getLocalParticipant, getParticipantById, getParticipantCount } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { getLocalAudioTrack, getLocalVideoTrack, getTrackByMediaTypeAndParticipant } from '../../../base/tracks';
 import { ConnectionIndicator } from '../../../connection-indicator';
@@ -26,12 +22,10 @@ const JitsiTrackEvents = JitsiMeetJS.events.track;
 
 declare var interfaceConfig: Object;
 
-
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
  */
 type State = {
-
     /**
      * The current audio level value for the Thumbnail.
      */
@@ -47,7 +41,6 @@ type State = {
  * The type of the React {@code Component} props of {@link Thumbnail}.
  */
 type Props = {
-
     /**
      * The audio track related to the participant.
      */
@@ -113,7 +106,7 @@ type Props = {
      */
     _startSilent: Boolean,
 
-     /**
+    /**
      * The video track that will be displayed in the thumbnail.
      */
     _videoTrack: ?Object,
@@ -145,7 +138,6 @@ type Props = {
  * @extends Component
  */
 class Thumbnail extends Component<Props, State> {
-
     /**
      * Initializes a new Thumbnail instance.
      *
@@ -257,27 +249,27 @@ class Thumbnail extends Component<Props, State> {
         let styles;
 
         switch (_currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
-            const avatarSize = _height / 2;
+            case LAYOUTS.TILE_VIEW:
+            case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
+                const avatarSize = _height / 2;
 
-            styles = {
-                avatarContainer: {
-                    height: `${avatarSize}px`,
-                    width: `${avatarSize}px`
-                }
-            };
-            break;
-        }
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
-            styles = {
-                avatarContainer: {
-                    height: '50%',
-                    width: `${_heightToWidthPercent / 2}%`
-                }
-            };
-            break;
-        }
+                styles = {
+                    avatarContainer: {
+                        height: `${avatarSize}px`,
+                        width: `${avatarSize}px`
+                    }
+                };
+                break;
+            }
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
+                styles = {
+                    avatarContainer: {
+                        height: '50%',
+                        width: `${_heightToWidthPercent / 2}%`
+                    }
+                };
+                break;
+            }
         }
 
         return styles;
@@ -295,13 +287,9 @@ class Thumbnail extends Component<Props, State> {
 
         return (
             <>
-                <img
-                    className = 'sharedVideoAvatar'
-                    src = { `https://img.youtube.com/vi/${id}/0.jpg` } />
-                <div className = 'displayNameContainer'>
-                    <DisplayName
-                        elementID = 'sharedVideoContainer_name'
-                        participantID = { id } />
+                <img className="sharedVideoAvatar" src={`https://img.youtube.com/vi/${id}/0.jpg`} />
+                <div className="displayNameContainer">
+                    <DisplayName elementID="sharedVideoContainer_name" participantID={id} />
                 </div>
             </>
         );
@@ -329,42 +317,37 @@ class Thumbnail extends Component<Props, State> {
         let statsPopoverPosition, tooltipPosition;
 
         switch (_currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-            statsPopoverPosition = 'right-start';
-            tooltipPosition = 'right';
-            break;
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            statsPopoverPosition = 'left-start';
-            tooltipPosition = 'left';
-            break;
-        default:
-            statsPopoverPosition = 'auto';
-            tooltipPosition = 'top';
+            case LAYOUTS.TILE_VIEW:
+                statsPopoverPosition = 'right-start';
+                tooltipPosition = 'right';
+                break;
+            case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+                statsPopoverPosition = 'left-start';
+                tooltipPosition = 'left';
+                break;
+            default:
+                statsPopoverPosition = 'auto';
+                tooltipPosition = 'top';
         }
 
         return (
             <div>
-                <AtlasKitThemeProvider mode = 'dark'>
-                    { !_connectionIndicatorDisabled
-                        && <ConnectionIndicator
-                            alwaysVisible = { showConnectionIndicator }
-                            enableStatsDisplay = { true }
-                            iconSize = { iconSize }
-                            isLocalVideo = { local }
-                            participantId = { id }
-                            statsPopoverPosition = { statsPopoverPosition } />
-                    }
-                    <RaisedHandIndicator
-                        iconSize = { iconSize }
-                        participantId = { id }
-                        tooltipPosition = { tooltipPosition } />
-                    { showDominantSpeaker && _participantCount > 2
-                        && <DominantSpeakerIndicator
-                            iconSize = { iconSize }
-                            tooltipPosition = { tooltipPosition } />
-                    }
+                <AtlasKitThemeProvider mode="dark">
+                    {!_connectionIndicatorDisabled && (
+                        <ConnectionIndicator
+                            alwaysVisible={showConnectionIndicator}
+                            enableStatsDisplay={true}
+                            iconSize={iconSize}
+                            isLocalVideo={local}
+                            participantId={id}
+                            statsPopoverPosition={statsPopoverPosition}
+                        />
+                    )}
+                    <RaisedHandIndicator iconSize={iconSize} participantId={id} tooltipPosition={tooltipPosition} />
+                    {showDominantSpeaker && _participantCount > 2 && <DominantSpeakerIndicator iconSize={iconSize} tooltipPosition={tooltipPosition} />}
                 </AtlasKitThemeProvider>
-            </div>);
+            </div>
+        );
     }
 
     /**
@@ -378,12 +361,8 @@ class Thumbnail extends Component<Props, State> {
         const styles = this._getStyles();
 
         return (
-            <div
-                className = 'avatar-container'
-                style = { styles.avatarContainer }>
-                <Avatar
-                    className = 'userAvatar'
-                    participantId = { id } />
+            <div className="avatar-container" style={styles.avatarContainer}>
+                <Avatar className="userAvatar" participantId={id} />
             </div>
         );
     }
@@ -394,46 +373,31 @@ class Thumbnail extends Component<Props, State> {
      * @returns {ReactElement}
      */
     _renderLocalParticipant() {
-        const {
-            _defaultLocalDisplayName,
-            _disableProfile,
-            _participant,
-            _videoTrack
-        } = this.props;
+        const { _defaultLocalDisplayName, _disableProfile, _participant, _videoTrack } = this.props;
         const { id } = _participant || {};
         const { audioLevel } = this.state;
 
-
         return (
             <>
-                <div className = 'videocontainer__background' />
-                <span id = 'localVideoWrapper'>
-                    <VideoTrack
-                        id = 'localVideo_container'
-                        videoTrack = { _videoTrack } />
+                <div className="videocontainer__background" />
+                <span id="localVideoWrapper">
+                    <VideoTrack id="localVideo_container" videoTrack={_videoTrack} />
                 </span>
-                <div className = 'videocontainer__toolbar'>
-                    <StatusIndicators participantID = { id } />
+                <div className="videocontainer__toolbar">
+                    <StatusIndicators participantID={id} />
                 </div>
-                <div className = 'videocontainer__toptoolbar'>
-                    { this._renderTopIndicators() }
+                <div className="videocontainer__toptoolbar">{this._renderTopIndicators()}</div>
+                <div className="videocontainer__hoverOverlay" />
+                <div className="displayNameContainer">
+                    <DisplayName allowEditing={!_disableProfile} displayNameSuffix={_defaultLocalDisplayName} elementID="localDisplayName" participantID={id} />
                 </div>
-                <div className = 'videocontainer__hoverOverlay' />
-                <div className = 'displayNameContainer'>
-                    <DisplayName
-                        allowEditing = { !_disableProfile }
-                        displayNameSuffix = { _defaultLocalDisplayName }
-                        elementID = 'localDisplayName'
-                        participantID = { id } />
-                </div>
-                { this._renderAvatar() }
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
+                {this._renderAvatar()}
+                <span className="audioindicator-container">
+                    <AudioLevelIndicator audioLevel={audioLevel} />
                 </span>
             </>
         );
     }
-
 
     /**
      * Renders a remote participant's 'thumbnail.
@@ -441,11 +405,7 @@ class Thumbnail extends Component<Props, State> {
      * @returns {ReactElement}
      */
     _renderRemoteParticipant() {
-        const {
-            _audioTrack,
-            _participant,
-            _startSilent
-        } = this.props;
+        const { _audioTrack, _participant, _startSilent } = this.props;
         const { id } = _participant;
         const { audioLevel, volume } = this.state;
 
@@ -456,52 +416,41 @@ class Thumbnail extends Component<Props, State> {
 
         return (
             <>
-                {
-                    _audioTrack
-                        ? <AudioTrack
-                            audioTrack = { _audioTrack }
-                            id = { `remoteAudio_${audioTrackId || ''}` }
-                            muted = { _startSilent }
-                            onInitialVolumeSet = { this._onInitialVolumeSet }
-                            volume = { this.state.volume } />
-                        : null
-
-                }
-                <div className = 'videocontainer__background' />
-                <div className = 'videocontainer__toptoolbar'>
-                    { this._renderTopIndicators() }
+                {_audioTrack ? (
+                    <AudioTrack
+                        audioTrack={_audioTrack}
+                        id={`remoteAudio_${audioTrackId || ''}`}
+                        muted={_startSilent}
+                        onInitialVolumeSet={this._onInitialVolumeSet}
+                        volume={this.state.volume}
+                    />
+                ) : null}
+                <div className="videocontainer__background" />
+                <div className="videocontainer__toptoolbar">{this._renderTopIndicators()}</div>
+                <div className="videocontainer__toolbar">
+                    <StatusIndicators participantID={id} />
                 </div>
-                <div className = 'videocontainer__toolbar'>
-                    <StatusIndicators participantID = { id } />
+                <div className="videocontainer__hoverOverlay" />
+                <div className="displayNameContainer">
+                    <DisplayName elementID={`participant_${id}_name`} participantID={id} />
                 </div>
-                <div className = 'videocontainer__hoverOverlay' />
-                <div className = 'displayNameContainer'>
-                    <DisplayName
-                        elementID = { `participant_${id}_name` }
-                        participantID = { id } />
+                {this._renderAvatar()}
+                <div className="presence-label-container">
+                    <PresenceLabel className="presence-label" participantID={id} />
                 </div>
-                { this._renderAvatar() }
-                <div className = 'presence-label-container'>
-                    <PresenceLabel
-                        className = 'presence-label'
-                        participantID = { id } />
-                </div>
-                <span className = 'remotevideomenu'>
-                    <AtlasKitThemeProvider mode = 'dark'>
-                        <RemoteVideoMenuTriggerButton
-                            initialVolumeValue = { volume }
-                            onVolumeChange = { onVolumeChange }
-                            participantID = { id } />
+                <span className="remotevideomenu">
+                    <AtlasKitThemeProvider mode="dark">
+                        <RemoteVideoMenuTriggerButton initialVolumeValue={volume} onVolumeChange={onVolumeChange} participantID={id} />
                     </AtlasKitThemeProvider>
                 </span>
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
+                <span className="audioindicator-container">
+                    <AudioLevelIndicator audioLevel={audioLevel} />
                 </span>
             </>
         );
     }
 
-    _onInitialVolumeSet: Object => void;
+    _onInitialVolumeSet: (Object) => void;
 
     /**
      * A handler for the initial volume value of the audio element.
@@ -515,7 +464,7 @@ class Thumbnail extends Component<Props, State> {
         }
     }
 
-    _onVolumeChange: number => void;
+    _onVolumeChange: (number) => void;
 
     /**
      * Handles volume changes.
@@ -526,7 +475,6 @@ class Thumbnail extends Component<Props, State> {
     _onVolumeChange(value) {
         this.setState({ volume: value });
     }
-
 
     /**
      * Implements React's {@link Component#render()}.
@@ -580,43 +528,39 @@ function _mapStateToProps(state, ownProps): Object {
     const { startSilent, disableProfile = false } = state['features/base/config'];
     const { NORMAL = 8 } = interfaceConfig.INDICATOR_FONT_SIZES || {};
 
-
     switch (_currentLayout) {
-    case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
-        const {
-            horizontalViewDimensions = {
-                local: {},
-                remote: {}
-            }
-        } = state['features/filmstrip'];
-        const { local, remote } = horizontalViewDimensions;
-        const { width, height } = isLocal ? local : remote;
+        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
+            const {
+                horizontalViewDimensions = {
+                    local: {},
+                    remote: {}
+                }
+            } = state['features/filmstrip'];
+            const { local, remote } = horizontalViewDimensions;
+            const { width, height } = isLocal ? local : remote;
 
-        size = {
-            _width: width,
-            _height: height
-        };
+            size = {
+                _width: width,
+                _height: height
+            };
 
-        break;
+            break;
+        }
+        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+            size = {
+                _heightToWidthPercent: isLocal ? 100 / interfaceConfig.LOCAL_THUMBNAIL_RATIO : 100 / interfaceConfig.REMOTE_THUMBNAIL_RATIO
+            };
+            break;
+        case LAYOUTS.TILE_VIEW: {
+            const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
+
+            size = {
+                _width: width,
+                _height: height
+            };
+            break;
+        }
     }
-    case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-        size = {
-            _heightToWidthPercent: isLocal
-                ? 100 / interfaceConfig.LOCAL_THUMBNAIL_RATIO
-                : 100 / interfaceConfig.REMOTE_THUMBNAIL_RATIO
-        };
-        break;
-    case LAYOUTS.TILE_VIEW: {
-        const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
-
-        size = {
-            _width: width,
-            _height: height
-        };
-        break;
-    }
-    }
-
 
     return {
         _audioTrack,

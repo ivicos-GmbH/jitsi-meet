@@ -2,10 +2,7 @@
 
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    SET_GOOGLE_API_PROFILE,
-    SET_GOOGLE_API_STATE
-} from './actionTypes';
+import { SET_GOOGLE_API_PROFILE, SET_GOOGLE_API_STATE } from './actionTypes';
 import { GOOGLE_API_STATES } from './constants';
 
 /**
@@ -21,9 +18,8 @@ const DEFAULT_STATE = {
 /**
  * Reduces the Redux actions of the feature features/google-api.
  */
-ReducerRegistry.register('features/google-api',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/google-api', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case SET_GOOGLE_API_STATE:
             return {
                 ...state,
@@ -35,7 +31,7 @@ ReducerRegistry.register('features/google-api',
                 ...state,
                 profileEmail: action.profileEmail
             };
-        }
+    }
 
-        return state;
-    });
+    return state;
+});

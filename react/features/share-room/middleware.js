@@ -17,11 +17,11 @@ import logger from './logger';
  * @param {Store} store - Redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case BEGIN_SHARE_ROOM:
-        _shareRoom(action.roomURL, store);
-        break;
+        case BEGIN_SHARE_ROOM:
+            _shareRoom(action.roomURL, store);
+            break;
     }
 
     return next(action);
@@ -36,30 +36,27 @@ MiddlewareRegistry.register(store => next => action => {
  * @returns {void}
  */
 function _shareRoom(roomURL: string, { dispatch, getState }) {
-    getShareInfoText(getState(), roomURL)
-        .then(message => {
-            const title = `${getName()} Conference`;
-            const onFulfilled
-                = (shared: boolean) => dispatch(endShareRoom(roomURL, shared));
+    getShareInfoText(getState(), roomURL).then((message) => {
+        const title = `${getName()} Conference`;
+        const onFulfilled = (shared: boolean) => dispatch(endShareRoom(roomURL, shared));
 
-            Share.share(
-                /* content */ {
-                    message,
-                    title
-                },
-                /* options */ {
-                    dialogTitle: title, // Android
-                    subject: title // iOS
-                })
-                .then(
-                    /* onFulfilled */ value => {
-                        onFulfilled(value.action === Share.sharedAction);
-                    },
-                    /* onRejected */ reason => {
-                        logger.error(
-                            `Failed to share conference/room URL ${roomURL}:`,
-                            reason);
-                        onFulfilled(false);
-                    });
-        });
+        Share.share(
+            /* content */ {
+                message,
+                title
+            },
+            /* options */ {
+                dialogTitle: title, // Android
+                subject: title // iOS
+            }
+        ).then(
+            /* onFulfilled */ (value) => {
+                onFulfilled(value.action === Share.sharedAction);
+            },
+            /* onRejected */ (reason) => {
+                logger.error(`Failed to share conference/room URL ${roomURL}:`, reason);
+                onFulfilled(false);
+            }
+        );
+    });
 }

@@ -20,7 +20,6 @@ const _SNS = 'unsupported-desktop-browser';
  * {@link UnsupportedDesktopBrowser}.
  */
 type Props = {
-
     /**
      * The function to translate human-readable text.
      */
@@ -40,20 +39,22 @@ class UnsupportedDesktopBrowser extends Component<Props> {
      */
     render() {
         return (
-            <div className = { _SNS }>
-                <h2 className = { `${_SNS}__title` }>
-                    It looks like you're using a browser we don't support.
-                </h2>
-                <p className = { `${_SNS}__description` }>
+            <div className={_SNS}>
+                <h2 className={`${_SNS}__title`}>It looks like you're using a browser we don't support.</h2>
+                <p className={`${_SNS}__description`}>
                     Please try again with the latest version of&nbsp;
-                    <a
-                        className = { `${_SNS}__link` }
-                        href = { CHROME } >Chrome</a>&nbsp;
-                    {
-                        this._showFirefox() && <>or <a
-                            className = { `${_SNS}__link` }
-                            href = { FIREFOX }>Firefox</a></>
-                    }
+                    <a className={`${_SNS}__link`} href={CHROME}>
+                        Chrome
+                    </a>
+                    &nbsp;
+                    {this._showFirefox() && (
+                        <>
+                            or{' '}
+                            <a className={`${_SNS}__link`} href={FIREFOX}>
+                                Firefox
+                            </a>
+                        </>
+                    )}
                 </p>
             </div>
         );

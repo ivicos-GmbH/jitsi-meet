@@ -21,10 +21,8 @@ const DEFAULT_STATE = {
     logCollector: undefined
 };
 
-ReducerRegistry.register(
-    'features/base/logging',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/logging', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case SET_LOGGING_CONFIG:
             return _setLoggingConfig(state, action);
         case SET_LOG_COLLECTOR: {
@@ -33,8 +31,8 @@ ReducerRegistry.register(
 
         default:
             return state;
-        }
-    });
+    }
+});
 
 /**
  * Reduces a specific Redux action SET_LOGGING_CONFIG of the feature

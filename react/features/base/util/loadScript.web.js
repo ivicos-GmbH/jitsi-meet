@@ -11,11 +11,6 @@ declare var JitsiMeetJS: Object;
  */
 export function loadScript(url: string): Promise<void> {
     return new Promise((resolve, reject) =>
-        JitsiMeetJS.util.ScriptUtil.loadScript(
-            url,
-            /* async */ true,
-            /* prepend */ false,
-            /* relativeURL */ false,
-            /* loadCallback */ resolve,
-            /* errorCallback */ reject));
+        JitsiMeetJS.util.ScriptUtil.loadScript(url, /* async */ true, /* prepend */ false, /* relativeURL */ false, /* loadCallback */ resolve, /* errorCallback */ reject)
+    );
 }

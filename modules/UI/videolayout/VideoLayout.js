@@ -3,12 +3,7 @@
 import Logger from 'jitsi-meet-logger';
 
 import { MEDIA_TYPE, VIDEO_TYPE } from '../../../react/features/base/media';
-import {
-    getLocalParticipant as getLocalParticipantFromStore,
-    getPinnedParticipant,
-    getParticipantById,
-    pinParticipant
-} from '../../../react/features/base/participants';
+import { getLocalParticipant as getLocalParticipantFromStore, getPinnedParticipant, getParticipantById, pinParticipant } from '../../../react/features/base/participants';
 import { getTrackByMediaTypeAndParticipant } from '../../../react/features/base/tracks';
 import UIEvents from '../../../service/UI/UIEvents';
 import { SHARED_VIDEO_CONTAINER_TYPE } from '../shared_video/SharedVideo';
@@ -51,10 +46,7 @@ function onLocalFlipXChanged(val) {
  * @returns {Array}
  */
 function getAllThumbnails() {
-    return [
-        ...localVideoThumbnail ? [ localVideoThumbnail ] : [],
-        ...Object.values(remoteVideos)
-    ];
+    return [...(localVideoThumbnail ? [localVideoThumbnail] : []), ...Object.values(remoteVideos)];
 }
 
 /**
@@ -71,9 +63,7 @@ const VideoLayout = {
     init(emitter) {
         eventEmitter = emitter;
 
-        localVideoThumbnail = new LocalVideo(
-            emitter,
-            this._updateLargeVideoIfDisplayed.bind(this));
+        localVideoThumbnail = new LocalVideo(emitter, this._updateLargeVideoIfDisplayed.bind(this));
 
         this.registerListeners();
     },
@@ -84,8 +74,7 @@ const VideoLayout = {
      * @returns {void}
      */
     registerListeners() {
-        eventEmitter.addListener(UIEvents.LOCAL_FLIPX_CHANGED,
-            onLocalFlipXChanged);
+        eventEmitter.addListener(UIEvents.LOCAL_FLIPX_CHANGED, onLocalFlipXChanged);
     },
 
     /**
@@ -233,8 +222,7 @@ const VideoLayout = {
      * @returns {void}
      */
     onPinChange(pinnedParticipantID) {
-        getAllThumbnails().forEach(thumbnail =>
-            thumbnail.focus(pinnedParticipantID === thumbnail.getId()));
+        getAllThumbnails().forEach((thumbnail) => thumbnail.focus(pinnedParticipantID === thumbnail.getId()));
     },
 
     /**
@@ -302,8 +290,7 @@ const VideoLayout = {
      * @returns {void}
      */
     onDominantSpeakerChanged(id) {
-        getAllThumbnails().forEach(thumbnail =>
-            thumbnail.showDominantSpeakerIndicator(id === thumbnail.getId()));
+        getAllThumbnails().forEach((thumbnail) => thumbnail.showDominantSpeakerIndicator(id === thumbnail.getId()));
     },
 
     /**
@@ -314,7 +301,6 @@ const VideoLayout = {
      */
     onParticipantConnectionStatusChanged(id) {
         if (APP.conference.isLocalId(id)) {
-
             return;
         }
 
@@ -407,7 +393,6 @@ const VideoLayout = {
         }
 
         return remoteVideos[id];
-
     },
 
     changeUserAvatar(id, avatarUrl) {
@@ -445,7 +430,7 @@ const VideoLayout = {
             this.updateLargeVideo(displayedUserId, true);
         }
 
-        Object.keys(remoteVideos).forEach(video => {
+        Object.keys(remoteVideos).forEach((video) => {
             remoteVideos[video].updateView();
         });
     },
@@ -461,9 +446,7 @@ const VideoLayout = {
         const videoTrack = getTrackByMediaTypeAndParticipant(state['features/base/tracks'], MEDIA_TYPE.VIDEO, id);
         const videoStream = videoTrack?.jitsiTrack;
 
-        if (isOnLarge && !forceUpdate
-                && LargeVideoManager.isVideoContainer(currentContainerType)
-                && videoStream) {
+        if (isOnLarge && !forceUpdate && LargeVideoManager.isVideoContainer(currentContainerType) && videoStream) {
             const currentStreamId = currentContainer.getStreamID();
             const newStreamId = videoStream?.getId() || null;
 
@@ -477,12 +460,7 @@ const VideoLayout = {
         if (!isOnLarge || forceUpdate) {
             const videoType = this.getRemoteVideoType(id);
 
-
-            largeVideo.updateLargeVideo(
-                id,
-                videoStream,
-                videoType || VIDEO_TYPE.CAMERA
-            ).catch(() => {
+            largeVideo.updateLargeVideo(id, videoStream, videoType || VIDEO_TYPE.CAMERA).catch(() => {
                 // do nothing
             });
         }
@@ -533,12 +511,11 @@ const VideoLayout = {
             }
         }
 
-        return largeVideo.showContainer(containerTypeToShow)
-            .then(() => {
-                if (oldSmallVideo) {
-                    oldSmallVideo && oldSmallVideo.updateView();
-                }
-            });
+        return largeVideo.showContainer(containerTypeToShow).then(() => {
+            if (oldSmallVideo) {
+                oldSmallVideo && oldSmallVideo.updateView();
+            }
+        });
     },
 
     isLargeContainerTypeVisible(type) {
@@ -598,7 +575,7 @@ const VideoLayout = {
 
         // Rerender the thumbnails since they are dependant on the layout because of the tooltip positioning.
         localVideoThumbnail && localVideoThumbnail.rerender();
-        Object.values(remoteVideos).forEach(remoteVideoThumbnail => remoteVideoThumbnail.rerender());
+        Object.values(remoteVideos).forEach((remoteVideoThumbnail) => remoteVideoThumbnail.rerender());
     },
 
     /**
@@ -624,7 +601,7 @@ const VideoLayout = {
      * @returns {void}
      */
     _resetFilmstrip() {
-        Object.keys(remoteVideos).forEach(remoteVideoId => {
+        Object.keys(remoteVideos).forEach((remoteVideoId) => {
             this.removeParticipantContainer(remoteVideoId);
             delete remoteVideos[remoteVideoId];
         });

@@ -3,18 +3,12 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
-import {
-    getLocalParticipant,
-    getParticipantById,
-    getParticipantDisplayName,
-    shouldRenderParticipantVideo
-} from '../../../base/participants';
+import { getLocalParticipant, getParticipantById, getParticipantDisplayName, shouldRenderParticipantVideo } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 
 import styles from './styles';
 
 type Props = {
-
     /**
      * The name of the participant to render.
      */
@@ -29,7 +23,7 @@ type Props = {
      * The ID of the participant to render the label for.
      */
     participantId: string
-}
+};
 
 /**
  * Renders a label with the display name of the on-stage participant.
@@ -46,10 +40,8 @@ class DisplayNameLabel extends Component<Props> {
         }
 
         return (
-            <View style = { styles.displayNameBackdrop }>
-                <Text style = { styles.displayNameText }>
-                    { this.props._participantName }
-                </Text>
+            <View style={styles.displayNameBackdrop}>
+                <Text style={styles.displayNameText}>{this.props._participantName}</Text>
             </View>
         );
     }
@@ -72,14 +64,10 @@ function _mapStateToProps(state: Object, ownProps: Props) {
     // Currently we only render the display name if it's not the local
     // participant and there is no video rendered for
     // them.
-    const _render = Boolean(participantId)
-        && localParticipant?.id !== participantId
-        && !shouldRenderParticipantVideo(state, participantId)
-        && !isFakeParticipant;
+    const _render = Boolean(participantId) && localParticipant?.id !== participantId && !shouldRenderParticipantVideo(state, participantId) && !isFakeParticipant;
 
     return {
-        _participantName:
-            getParticipantDisplayName(state, participantId),
+        _participantName: getParticipantDisplayName(state, participantId),
         _render
     };
 }

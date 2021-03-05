@@ -1,13 +1,7 @@
 // @flow
 
 import { CONFERENCE_LEFT, getCurrentConference } from '../base/conference';
-import {
-    PARTICIPANT_LEFT,
-    getLocalParticipant,
-    participantJoined,
-    participantLeft,
-    pinParticipant
-} from '../base/participants';
+import { PARTICIPANT_LEFT, getLocalParticipant, participantJoined, participantLeft, pinParticipant } from '../base/participants';
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 
 import { TOGGLE_SHARED_VIDEO, SET_SHARED_VIDEO_STATUS } from './actionTypes';
@@ -23,7 +17,7 @@ const SHARED_VIDEO = 'shared-video';
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     const { dispatch, getState } = store;
     const state = getState();
     const conference = getCurrentConference(state);
@@ -32,23 +26,23 @@ MiddlewareRegistry.register(store => next => action => {
     const { ownerId: stateOwnerId, videoId: stateVideoId } = state['features/youtube-player'];
 
     switch (action.type) {
-    case TOGGLE_SHARED_VIDEO:
-        _toggleSharedVideo(store, next, action);
-        break;
-    case CONFERENCE_LEFT:
-        dispatch(setSharedVideoStatus('', 'stop', 0, ''));
-        break;
-    case PARTICIPANT_LEFT:
-        if (action.participant.id === stateOwnerId) {
+        case TOGGLE_SHARED_VIDEO:
+            _toggleSharedVideo(store, next, action);
+            break;
+        case CONFERENCE_LEFT:
             dispatch(setSharedVideoStatus('', 'stop', 0, ''));
-            dispatch(participantLeft(stateVideoId, conference));
-        }
-        break;
-    case SET_SHARED_VIDEO_STATUS:
-        if (localParticipantId === ownerId) {
-            sendShareVideoCommand(videoId, status, conference, localParticipantId, time);
-        }
-        break;
+            break;
+        case PARTICIPANT_LEFT:
+            if (action.participant.id === stateOwnerId) {
+                dispatch(setSharedVideoStatus('', 'stop', 0, ''));
+                dispatch(participantLeft(stateVideoId, conference));
+            }
+            break;
+        case SET_SHARED_VIDEO_STATUS:
+            if (localParticipantId === ownerId) {
+                sendShareVideoCommand(videoId, status, conference, localParticipantId, time);
+            }
+            break;
     }
 
     return next(action);
@@ -60,29 +54,27 @@ MiddlewareRegistry.register(store => next => action => {
  * open.
  */
 StateListenerRegistry.register(
-    state => getCurrentConference(state),
+    (state) => getCurrentConference(state),
     (conference, store, previousConference) => {
         if (conference && conference !== previousConference) {
-            conference.addCommandListener(SHARED_VIDEO,
-                ({ value, attributes }) => {
+            conference.addCommandListener(SHARED_VIDEO, ({ value, attributes }) => {
+                const { dispatch, getState } = store;
+                const { from } = attributes;
+                const localParticipantId = getLocalParticipant(getState()).id;
+                const status = attributes.state;
 
-                    const { dispatch, getState } = store;
-                    const { from } = attributes;
-                    const localParticipantId = getLocalParticipant(getState()).id;
-                    const status = attributes.state;
-
-                    if ([ 'playing', 'pause', 'start' ].includes(status)) {
-                        handleSharingVideoStatus(store, value, attributes, conference);
-                    } else if (status === 'stop') {
-                        dispatch(participantLeft(value, conference));
-                        if (localParticipantId !== from) {
-                            dispatch(setSharedVideoStatus(value, 'stop', 0, from));
-                        }
+                if (['playing', 'pause', 'start'].includes(status)) {
+                    handleSharingVideoStatus(store, value, attributes, conference);
+                } else if (status === 'stop') {
+                    dispatch(participantLeft(value, conference));
+                    if (localParticipantId !== from) {
+                        dispatch(setSharedVideoStatus(value, 'stop', 0, from));
                     }
                 }
-            );
+            });
         }
-    });
+    }
+);
 
 /**
  * Handles the playing, pause and start statuses for the shared video.
@@ -100,14 +92,16 @@ function handleSharingVideoStatus(store, videoId, { state, time, from }, confere
     const localParticipantId = getLocalParticipant(getState()).id;
     const oldStatus = getState()['features/youtube-player']?.status;
 
-    if (state === 'start' || ![ 'playing', 'pause', 'start' ].includes(oldStatus)) {
-        dispatch(participantJoined({
-            conference,
-            id: videoId,
-            isFakeParticipant: true,
-            avatarURL: `https://img.youtube.com/vi/${videoId}/0.jpg`,
-            name: YOUTUBE_PARTICIPANT_NAME
-        }));
+    if (state === 'start' || !['playing', 'pause', 'start'].includes(oldStatus)) {
+        dispatch(
+            participantJoined({
+                conference,
+                id: videoId,
+                isFakeParticipant: true,
+                avatarURL: `https://img.youtube.com/vi/${videoId}/0.jpg`,
+                name: YOUTUBE_PARTICIPANT_NAME
+            })
+        );
 
         dispatch(pinParticipant(videoId));
     }
@@ -138,7 +132,7 @@ function _toggleSharedVideo(store, next, action) {
             dispatch(setSharedVideoStatus(videoId, 'stop', 0, localParticipant.id));
         }
     } else {
-        dispatch(showEnterVideoLinkPrompt(id => _onVideoLinkEntered(store, id)));
+        dispatch(showEnterVideoLinkPrompt((id) => _onVideoLinkEntered(store, id)));
     }
 
     return next(action);

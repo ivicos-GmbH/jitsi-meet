@@ -13,10 +13,7 @@ import { reportError } from './helpers';
  * of {@code url.search}; otherwise, out of {@code url.hash}.
  * @returns {Object}
  */
-export function parseURLParams(
-        url: URL,
-        dontParse: boolean = false,
-        source: string = 'hash'): Object {
+export function parseURLParams(url: URL, dontParse: boolean = false, source: string = 'hash'): Object {
     const paramStr = source === 'search' ? url.search : url.hash;
     const params = {};
     const paramParts = (paramStr && paramStr.substr(1).split('&')) || [];
@@ -30,7 +27,7 @@ export function parseURLParams(
         }
     }
 
-    paramParts.forEach(part => {
+    paramParts.forEach((part) => {
         const param = part.split('=');
         const key = param[0];
 
@@ -49,8 +46,7 @@ export function parseURLParams(
                 value = decoded === 'undefined' ? undefined : JSON.parse(decoded);
             }
         } catch (e) {
-            reportError(
-                e, `Failed to parse URL parameter value: ${String(value)}`);
+            reportError(e, `Failed to parse URL parameter value: ${String(value)}`);
 
             return;
         }

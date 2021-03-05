@@ -19,15 +19,15 @@ let userInteractionListener = null;
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => action => {
+MiddlewareRegistry.register((store) => (next) => (action) => {
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        _startListeningForUserInteraction(store);
-        break;
+        case APP_WILL_MOUNT:
+            _startListeningForUserInteraction(store);
+            break;
 
-    case APP_WILL_UNMOUNT:
-        _stopListeningForUserInteraction();
-        break;
+        case APP_WILL_UNMOUNT:
+            _stopListeningForUserInteraction();
+            break;
     }
 
     return next(action);

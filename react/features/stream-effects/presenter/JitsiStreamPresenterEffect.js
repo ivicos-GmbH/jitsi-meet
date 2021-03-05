@@ -1,11 +1,6 @@
 // @flow
 
-import {
-    CLEAR_INTERVAL,
-    INTERVAL_TIMEOUT,
-    SET_INTERVAL,
-    timerWorkerScript
-} from './TimeWorker';
+import { CLEAR_INTERVAL, INTERVAL_TIMEOUT, SET_INTERVAL, timerWorkerScript } from './TimeWorker';
 
 /**
  * Represents a modified MediaStream that adds video as pip on a desktop stream.
@@ -90,21 +85,25 @@ export default class JitsiStreamPresenterEffect {
      */
     _renderVideo() {
         // adjust the canvas width/height on every frame incase the window has been resized.
-        const [ track ] = this._desktopStream.getVideoTracks();
+        const [track] = this._desktopStream.getVideoTracks();
         const { height, width } = track.getSettings() ?? track.getConstraints();
 
         this._canvas.width = parseInt(width, 10);
         this._canvas.height = parseInt(height, 10);
         this._ctx.drawImage(this._desktopElement, 0, 0, this._canvas.width, this._canvas.height);
-        this._ctx.drawImage(this._videoElement, this._canvas.width - this._videoElement.width, this._canvas.height
-            - this._videoElement.height, this._videoElement.width, this._videoElement.height);
+        this._ctx.drawImage(
+            this._videoElement,
+            this._canvas.width - this._videoElement.width,
+            this._canvas.height - this._videoElement.height,
+            this._videoElement.width,
+            this._videoElement.height
+        );
 
         // draw a border around the video element.
         this._ctx.beginPath();
         this._ctx.lineWidth = 2;
         this._ctx.strokeStyle = '#A9A9A9'; // dark grey
-        this._ctx.rect(this._canvas.width - this._videoElement.width, this._canvas.height - this._videoElement.height,
-            this._videoElement.width, this._videoElement.height);
+        this._ctx.rect(this._canvas.width - this._videoElement.width, this._canvas.height - this._videoElement.height, this._videoElement.width, this._videoElement.height);
         this._ctx.stroke();
     }
 
@@ -162,5 +161,4 @@ export default class JitsiStreamPresenterEffect {
         });
         this._videoFrameTimerWorker.terminate();
     }
-
 }

@@ -14,7 +14,6 @@ import { setWelcomePageListsDefaultPage } from '../actions';
  * The type of the React {@code Component} props of {@link WelcomePageLists}.
  */
 type Props = {
-
     /**
      * Whether the calendar functionality is enabled or not.
      */
@@ -78,25 +77,17 @@ class WelcomePageLists extends Component<Props> {
         ];
 
         if (_calendarEnabled) {
-            pages.push(
-                {
-                    component: CalendarList,
-                    icon: IconEventNote,
-                    title: t('welcomepage.calendar')
-                }
-            );
+            pages.push({
+                component: CalendarList,
+                icon: IconEventNote,
+                title: t('welcomepage.calendar')
+            });
         }
 
-        return (
-            <PagedList
-                defaultPage = { _defaultPage }
-                disabled = { this.props.disabled }
-                onSelectPage = { this._onSelectPage }
-                pages = { pages } />
-        );
+        return <PagedList defaultPage={_defaultPage} disabled={this.props.disabled} onSelectPage={this._onSelectPage} pages={pages} />;
     }
 
-    _onSelectPage: number => void;
+    _onSelectPage: (number) => void;
 
     /**
      * Callback for the {@code PagedList} page select action.

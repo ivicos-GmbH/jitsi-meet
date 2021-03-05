@@ -53,9 +53,7 @@ export const URI_PROTOCOL_PATTERN = '^([a-z][a-z0-9\\.\\+-]*:)';
  * @returns {?string}
  */
 function _fixRoom(room: ?string) {
-    return room
-        ? room.replace(new RegExp(_ROOM_EXCLUDE_PATTERN, 'g'), '')
-        : room;
+    return room ? room.replace(new RegExp(_ROOM_EXCLUDE_PATTERN, 'g'), '') : room;
 }
 
 /**
@@ -111,10 +109,7 @@ export function getBackendSafePath(path: ?string): ?string {
         return path;
     }
 
-    return path
-        .split('/')
-        .map(getBackendSafeRoomName)
-        .join('/');
+    return path.split('/').map(getBackendSafeRoomName).join('/');
 }
 
 /**
@@ -170,10 +165,7 @@ export function getBackendSafeRoomName(room: ?string): ?string {
 export function getLocationContextRoot({ pathname }: { pathname: string }) {
     const contextRootEndIndex = pathname.lastIndexOf('/');
 
-    return (
-        contextRootEndIndex === -1
-            ? '/'
-            : pathname.substring(0, contextRootEndIndex + 1));
+    return contextRootEndIndex === -1 ? '/' : pathname.substring(0, contextRootEndIndex + 1);
 }
 
 /**
@@ -188,10 +180,10 @@ export function getLocationContextRoot({ pathname }: { pathname: string }) {
 function _objectToURLParamsArray(obj = {}) {
     const params = [];
 
-    for (const key in obj) { // eslint-disable-line guard-for-in
+    for (const key in obj) {
+        // eslint-disable-line guard-for-in
         try {
-            params.push(
-                `${key}=${encodeURIComponent(JSON.stringify(obj[key]))}`);
+            params.push(`${key}=${encodeURIComponent(JSON.stringify(obj[key]))}`);
         } catch (e) {
             console.warn(`Error encoding ${key}: ${e}`);
         }
@@ -357,8 +349,7 @@ export function parseURIString(uri: ?string) {
 
             // XXX Drive fixedRoom into pathname (because room is derived from
             // pathname).
-            obj.pathname
-                = pathname.substring(0, contextRootEndIndex + 1) + (room || '');
+            obj.pathname = pathname.substring(0, contextRootEndIndex + 1) + (room || '');
         }
     }
     obj.room = room;
@@ -431,19 +422,19 @@ export function toURLString(obj: ?(Object | string)): ?string {
     let str;
 
     switch (typeof obj) {
-    case 'object':
-        if (obj) {
-            if (obj instanceof URL) {
-                str = obj.href;
-            } else {
-                str = urlObjectToString(obj);
+        case 'object':
+            if (obj) {
+                if (obj instanceof URL) {
+                    str = obj.href;
+                } else {
+                    str = urlObjectToString(obj);
+                }
             }
-        }
-        break;
+            break;
 
-    case 'string':
-        str = String(obj);
-        break;
+        case 'string':
+            str = String(obj);
+            break;
     }
 
     return str;
@@ -496,13 +487,12 @@ export function urlObjectToString(o: Object): ?string {
         const domain: ?string = o.domain || o.host || o.hostname;
 
         if (domain) {
-            const { host, hostname, pathname: contextRoot, port }
-                = parseStandardURIString(
-
-                    // XXX The value of domain in supposed to be host/hostname
-                    // and, optionally, pathname. Make sure it is not taken for
-                    // a pathname only.
-                    _fixURIStringScheme(`${APP_LINK_SCHEME}//${domain}`));
+            const { host, hostname, pathname: contextRoot, port } = parseStandardURIString(
+                // XXX The value of domain in supposed to be host/hostname
+                // and, optionally, pathname. Make sure it is not taken for
+                // a pathname only.
+                _fixURIStringScheme(`${APP_LINK_SCHEME}//${domain}`)
+            );
 
             // authority
             if (host) {
@@ -521,9 +511,7 @@ export function urlObjectToString(o: Object): ?string {
     // Web's ExternalAPI roomName
     const room = o.roomName || o.room;
 
-    if (room
-            && (url.pathname.endsWith('/')
-                || !url.pathname.endsWith(`/${room}`))) {
+    if (room && (url.pathname.endsWith('/') || !url.pathname.endsWith(`/${room}`))) {
         pathname.endsWith('/') || (pathname += '/');
         pathname += room;
     }
@@ -551,16 +539,11 @@ export function urlObjectToString(o: Object): ?string {
 
     let { hash } = url;
 
-    for (const urlPrefix of [ 'config', 'interfaceConfig', 'devices', 'userInfo', 'appData' ]) {
-        const urlParamsArray
-            = _objectToURLParamsArray(
-                o[`${urlPrefix}Overwrite`]
-                    || o[urlPrefix]
-                    || o[`${urlPrefix}Override`]);
+    for (const urlPrefix of ['config', 'interfaceConfig', 'devices', 'userInfo', 'appData']) {
+        const urlParamsArray = _objectToURLParamsArray(o[`${urlPrefix}Overwrite`] || o[urlPrefix] || o[`${urlPrefix}Override`]);
 
         if (urlParamsArray.length) {
-            let urlParamsString
-                = `${urlPrefix}.${urlParamsArray.join(`&${urlPrefix}.`)}`;
+            let urlParamsString = `${urlPrefix}.${urlParamsArray.join(`&${urlPrefix}.`)}`;
 
             if (hash.length) {
                 urlParamsString = `&${urlParamsString}`;

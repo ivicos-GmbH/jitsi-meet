@@ -2,11 +2,7 @@
 
 import React, { Component } from 'react';
 
-import {
-    createCalendarClickedEvent,
-    createCalendarSelectedEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createCalendarClickedEvent, createCalendarSelectedEvent, sendAnalytics } from '../../analytics';
 import { appNavigate } from '../../app/actions';
 import { MeetingsList } from '../../base/react';
 import { connect } from '../../base/redux';
@@ -19,7 +15,6 @@ import JoinButton from './JoinButton';
  * {@link CalendarListContent}.
  */
 type Props = {
-
     /**
      * The calendar event list.
      */
@@ -38,7 +33,7 @@ type Props = {
     /**
      *
      */
-    listEmptyComponent: React$Node,
+    listEmptyComponent: React$Node
 };
 
 /**
@@ -87,13 +82,7 @@ class CalendarListContent extends Component<Props> {
         const { _eventList = [] } = this.props;
         const meetings = _eventList.map(this._toDisplayableItem);
 
-        return (
-            <MeetingsList
-                disabled = { disabled }
-                listEmptyComponent = { listEmptyComponent }
-                meetings = { meetings }
-                onPress = { this._onPress } />
-        );
+        return <MeetingsList disabled={disabled} listEmptyComponent={listEmptyComponent} meetings={meetings} onPress={this._onPress} />;
     }
 
     _onJoinPress: (Object, string) => Function;
@@ -129,7 +118,7 @@ class CalendarListContent extends Component<Props> {
         this.props.dispatch(appNavigate(url));
     }
 
-    _toDisplayableItem: Object => Object;
+    _toDisplayableItem: (Object) => Object;
 
     /**
      * Creates a displayable object from an event.
@@ -140,15 +129,9 @@ class CalendarListContent extends Component<Props> {
      */
     _toDisplayableItem(event) {
         return {
-            elementAfter: event.url
-                ? <JoinButton
-                    onPress = { this._onJoinPress }
-                    url = { event.url } />
-                : (<AddMeetingUrlButton
-                    calendarId = { event.calendarId }
-                    eventId = { event.id } />),
+            elementAfter: event.url ? <JoinButton onPress={this._onJoinPress} url={event.url} /> : <AddMeetingUrlButton calendarId={event.calendarId} eventId={event.id} />,
             date: event.startDate,
-            time: [ event.startDate, event.endDate ],
+            time: [event.startDate, event.endDate],
             description: event.url,
             title: event.title,
             url: event.url

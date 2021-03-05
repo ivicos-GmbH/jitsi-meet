@@ -9,7 +9,6 @@ import { Icon, IconChatSend } from '../../../base/icons';
 import styles from './styles';
 
 type Props = {
-
     /**
      * Callback to invoke on message send.
      */
@@ -22,7 +21,6 @@ type Props = {
 };
 
 type State = {
-
     /**
      * Boolean to show if an extra padding needs to be added to the bar.
      */
@@ -70,35 +68,30 @@ class ChatInputBar extends Component<Props, State> {
      */
     render() {
         return (
-            <View
-                style = { [
-                    styles.inputBar,
-                    this.state.addPadding ? styles.extraBarPadding : null
-                ] }>
+            <View style={[styles.inputBar, this.state.addPadding ? styles.extraBarPadding : null]}>
                 <TextInput
-                    blurOnSubmit = { false }
-                    multiline = { false }
-                    onBlur = { this._onFocused(false) }
-                    onChangeText = { this._onChangeText }
-                    onFocus = { this._onFocused(true) }
-                    onSubmitEditing = { this._onSubmit }
-                    placeholder = { this.props.t('chat.fieldPlaceHolder') }
-                    ref = { this._onFieldReferenceAvailable }
-                    returnKeyType = 'send'
-                    style = { styles.inputField }
-                    value = { this.state.message } />
-                {
-                    this.state.showSend && <TouchableOpacity onPress = { this._onSubmit }>
-                        <Icon
-                            src = { IconChatSend }
-                            style = { styles.sendButtonIcon } />
+                    blurOnSubmit={false}
+                    multiline={false}
+                    onBlur={this._onFocused(false)}
+                    onChangeText={this._onChangeText}
+                    onFocus={this._onFocused(true)}
+                    onSubmitEditing={this._onSubmit}
+                    placeholder={this.props.t('chat.fieldPlaceHolder')}
+                    ref={this._onFieldReferenceAvailable}
+                    returnKeyType="send"
+                    style={styles.inputField}
+                    value={this.state.message}
+                />
+                {this.state.showSend && (
+                    <TouchableOpacity onPress={this._onSubmit}>
+                        <Icon src={IconChatSend} style={styles.sendButtonIcon} />
                     </TouchableOpacity>
-                }
+                )}
             </View>
         );
     }
 
-    _onChangeText: string => void;
+    _onChangeText: (string) => void;
 
     /**
      * Callback to handle the change of the value of the text field.
@@ -113,7 +106,7 @@ class ChatInputBar extends Component<Props, State> {
         });
     }
 
-    _onFieldReferenceAvailable: Object => void;
+    _onFieldReferenceAvailable: (Object) => void;
 
     /**
      * Callback to be invoked when the field reference is available.
@@ -125,7 +118,7 @@ class ChatInputBar extends Component<Props, State> {
         field && field.focus();
     }
 
-    _onFocused: boolean => Function;
+    _onFocused: (boolean) => Function;
 
     /**
      * Constructs a callback to be used to update the padding of the field if necessary.
@@ -135,9 +128,10 @@ class ChatInputBar extends Component<Props, State> {
      */
     _onFocused(focused) {
         return () => {
-            Platform.OS === 'android' && this.setState({
-                addPadding: focused
-            });
+            Platform.OS === 'android' &&
+                this.setState({
+                    addPadding: focused
+                });
         };
     }
 

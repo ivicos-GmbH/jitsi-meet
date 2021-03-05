@@ -6,7 +6,6 @@ import React, { Component } from 'react';
  * The type of the React {@code Component} props of {@link RemoteVideoMenu}.
  */
 type Props = {
-
     /**
      * The components to place as the body of the {@code RemoteVideoMenu}.
      */
@@ -34,10 +33,8 @@ export default class RemoteVideoMenu extends Component<Props> {
      */
     render() {
         return (
-            <ul
-                className = 'popupmenu'
-                id = { this.props.id }>
-                { this.props.children }
+            <ul className="popupmenu" id={this.props.id}>
+                {this.props.children}
             </ul>
         );
     }

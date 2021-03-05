@@ -14,7 +14,6 @@ import { getSessionStatusToShow } from '../functions';
  * easier to align web's behaviour to mobile's later if necessary.
  */
 type Props = {
-
     /**
      * The status of the highermost priority session.
      */
@@ -35,7 +34,6 @@ type Props = {
  * State of the component.
  */
 type State = {
-
     /**
      * True if the label status is stale, so it needs to be removed.
      */
@@ -51,8 +49,7 @@ const STALE_TIMEOUT = 10 * 1000;
 /**
  * Abstract class for the {@code RecordingLabel} component.
  */
-export default class AbstractRecordingLabel
-    extends Component<Props, State> {
+export default class AbstractRecordingLabel extends Component<Props, State> {
     /**
      * Implements {@code Component#getDerivedStateFromProps}.
      *
@@ -60,8 +57,7 @@ export default class AbstractRecordingLabel
      */
     static getDerivedStateFromProps(props: Props, prevState: State) {
         return {
-            staleLabel: props._status !== JitsiRecordingConstants.status.OFF
-                && prevState.staleLabel ? false : prevState.staleLabel
+            staleLabel: props._status !== JitsiRecordingConstants.status.OFF && prevState.staleLabel ? false : prevState.staleLabel
         };
     }
 
@@ -95,11 +91,10 @@ export default class AbstractRecordingLabel
      * @inheritdoc
      */
     render() {
-        return this.props._status && !this.state.staleLabel
-            ? this._renderLabel() : null;
+        return this.props._status && !this.state.staleLabel ? this._renderLabel() : null;
     }
 
-    _getLabelKey: () => ?string
+    _getLabelKey: () => ?string;
 
     /**
      * Returns the label key that this indicator should render.
@@ -109,13 +104,13 @@ export default class AbstractRecordingLabel
      */
     _getLabelKey() {
         switch (this.props.mode) {
-        case JitsiRecordingConstants.mode.STREAM:
-            return 'recording.live';
-        case JitsiRecordingConstants.mode.FILE:
-            return 'recording.rec';
-        default:
-            // Invalid mode is passed to the component.
-            return undefined;
+            case JitsiRecordingConstants.mode.STREAM:
+                return 'recording.live';
+            case JitsiRecordingConstants.mode.FILE:
+                return 'recording.rec';
+            default:
+                // Invalid mode is passed to the component.
+                return undefined;
         }
     }
 
@@ -125,7 +120,7 @@ export default class AbstractRecordingLabel
      * @protected
      * @returns {React$Element}
      */
-    _renderLabel: () => React$Element<*>
+    _renderLabel: () => React$Element<*>;
 
     /**
      * Updates the stale status of the label on a prop change. A label is stale
@@ -140,8 +135,7 @@ export default class AbstractRecordingLabel
             if (oldProps._status !== JitsiRecordingConstants.status.OFF) {
                 setTimeout(() => {
                     // Only if it's still OFF.
-                    if (this.props._status
-                            === JitsiRecordingConstants.status.OFF) {
+                    if (this.props._status === JitsiRecordingConstants.status.OFF) {
                         this.setState({
                             staleLabel: true
                         });

@@ -2,7 +2,6 @@
 
 import { parseURIString, safeDecodeURIComponent } from '../base/util';
 
-
 /**
  * Transforms the history list to a displayable list.
  *
@@ -11,17 +10,15 @@ import { parseURIString, safeDecodeURIComponent } from '../base/util';
  * @returns {Array<Object>}
  */
 export function toDisplayableList(recentList) {
-    return (
-        [ ...recentList ].reverse()
-            .map(item => {
-                return {
-                    date: item.date,
-                    duration: item.duration,
-                    time: [ item.date ],
-                    title: safeDecodeURIComponent(parseURIString(item.conference).room),
-                    url: item.conference
-                };
-            }));
+    return [...recentList].reverse().map((item) => {
+        return {
+            date: item.date,
+            duration: item.duration,
+            time: [item.date],
+            title: safeDecodeURIComponent(parseURIString(item.conference).room),
+            url: item.conference
+        };
+    });
 }
 
 /**

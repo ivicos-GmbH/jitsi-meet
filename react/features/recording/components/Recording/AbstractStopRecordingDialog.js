@@ -2,10 +2,7 @@
 
 import { Component } from 'react';
 
-import {
-    createRecordingDialogEvent,
-    sendAnalytics
-} from '../../../analytics';
+import { createRecordingDialogEvent, sendAnalytics } from '../../../analytics';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { getActiveSession } from '../../functions';
 
@@ -14,7 +11,6 @@ import { getActiveSession } from '../../functions';
  * {@link AbstractStopRecordingDialog}.
  */
 export type Props = {
-
     /**
      * The {@code JitsiConference} for the current conference.
      */
@@ -37,8 +33,7 @@ export type Props = {
  *
  * @extends Component
  */
-export default class AbstractStopRecordingDialog<P: Props>
-    extends Component<P> {
+export default class AbstractStopRecordingDialog<P: Props> extends Component<P> {
     /**
      * Initializes a new {@code AbstrStopRecordingDialog} instance.
      *
@@ -86,7 +81,6 @@ export default class AbstractStopRecordingDialog<P: Props>
 export function _mapStateToProps(state: Object) {
     return {
         _conference: state['features/base/conference'].conference,
-        _fileRecordingSession:
-            getActiveSession(state, JitsiRecordingConstants.mode.FILE)
+        _fileRecordingSession: getActiveSession(state, JitsiRecordingConstants.mode.FILE)
     };
 }

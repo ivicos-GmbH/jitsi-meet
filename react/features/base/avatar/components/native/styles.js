@@ -10,7 +10,6 @@ const DEFAULT_SIZE = 65;
  * The styles of the feature base/participants.
  */
 export default {
-
     avatarContainer: (size: number = DEFAULT_SIZE) => {
         return {
             alignItems: 'center',
@@ -33,18 +32,18 @@ export default {
         let color;
 
         switch (status) {
-        case 'available':
-            color = 'rgb(110, 176, 5)';
-            break;
-        case 'away':
-            color = 'rgb(250, 201, 20)';
-            break;
-        case 'busy':
-            color = 'rgb(233, 0, 27)';
-            break;
-        case 'idle':
-            color = 'rgb(172, 172, 172)';
-            break;
+            case 'available':
+                color = 'rgb(110, 176, 5)';
+                break;
+            case 'away':
+                color = 'rgb(250, 201, 20)';
+                break;
+            case 'busy':
+                color = 'rgb(233, 0, 27)';
+                break;
+            case 'idle':
+                color = 'rgb(172, 172, 172)';
+                break;
         }
 
         return {

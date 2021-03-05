@@ -10,7 +10,6 @@ import { Tooltip } from '../../base/tooltip';
  * The type of the React {@code Component} props of {@link JoinButton}.
  */
 type Props = {
-
     /**
      * The function called when the button is pressed.
      */
@@ -33,7 +32,6 @@ type Props = {
  * @extends Component
  */
 class JoinButton extends Component<Props> {
-
     /**
      * Initializes a new {@code JoinButton} instance.
      *
@@ -56,14 +54,9 @@ class JoinButton extends Component<Props> {
         const { t } = this.props;
 
         return (
-            <Tooltip
-                content = { t('calendarSync.joinTooltip') }>
-                <div
-                    className = 'button join-button'
-                    onClick = { this._onClick }>
-                    <Icon
-                        size = '14'
-                        src = { IconAdd } />
+            <Tooltip content={t('calendarSync.joinTooltip')}>
+                <div className="button join-button" onClick={this._onClick}>
+                    <Icon size="14" src={IconAdd} />
                 </div>
             </Tooltip>
         );

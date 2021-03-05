@@ -16,22 +16,18 @@ import {
     signIn,
     updateProfile
 } from '../../../../google-api';
-import AbstractStartLiveStreamDialog, {
-    _mapStateToProps as _abstractMapStateToProps,
-    type Props as AbstractProps
-} from '../AbstractStartLiveStreamDialog';
+import AbstractStartLiveStreamDialog, { _mapStateToProps as _abstractMapStateToProps, type Props as AbstractProps } from '../AbstractStartLiveStreamDialog';
 
 import StreamKeyForm from './StreamKeyForm';
 import StreamKeyPicker from './StreamKeyPicker';
 
 type Props = AbstractProps & {
-
     /**
      * The ID for the Google client application used for making stream key
      * related requests.
      */
     _googleApiApplicationClientID: string
-}
+};
 
 /**
  * A React Component for requesting a YouTube stream key to use for live
@@ -39,9 +35,7 @@ type Props = AbstractProps & {
  *
  * @extends Component
  */
-class StartLiveStreamDialog
-    extends AbstractStartLiveStreamDialog<Props> {
-
+class StartLiveStreamDialog extends AbstractStartLiveStreamDialog<Props> {
     /**
      * Initializes a new {@code StartLiveStreamDialog} instance.
      *
@@ -56,8 +50,7 @@ class StartLiveStreamDialog
         this._onInitializeGoogleApi = this._onInitializeGoogleApi.bind(this);
         this._onGoogleSignIn = this._onGoogleSignIn.bind(this);
         this._onRequestGoogleSignIn = this._onRequestGoogleSignIn.bind(this);
-        this._onYouTubeBroadcastIDSelected
-            = this._onYouTubeBroadcastIDSelected.bind(this);
+        this._onYouTubeBroadcastIDSelected = this._onYouTubeBroadcastIDSelected.bind(this);
     }
 
     /**
@@ -84,21 +77,10 @@ class StartLiveStreamDialog
         const { _googleApiApplicationClientID } = this.props;
 
         return (
-            <Dialog
-                cancelKey = 'dialog.Cancel'
-                okKey = 'dialog.startLiveStreaming'
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                titleKey = 'liveStreaming.start'
-                width = { 'small' }>
-                <div className = 'live-stream-dialog'>
-                    { _googleApiApplicationClientID
-                        ? this._renderYouTubePanel() : null }
-                    <StreamKeyForm
-                        onChange = { this._onStreamKeyChange }
-                        value = {
-                            this.state.streamKey || this.props._streamKey
-                        } />
+            <Dialog cancelKey="dialog.Cancel" okKey="dialog.startLiveStreaming" onCancel={this._onCancel} onSubmit={this._onSubmit} titleKey="liveStreaming.start" width={'small'}>
+                <div className="live-stream-dialog">
+                    {_googleApiApplicationClientID ? this._renderYouTubePanel() : null}
+                    <StreamKeyForm onChange={this._onStreamKeyChange} value={this.state.streamKey || this.props._streamKey} />
                 </div>
             </Dialog>
         );
@@ -119,8 +101,7 @@ class StartLiveStreamDialog
      * @returns {void}
      */
     _onInitializeGoogleApi() {
-        this.props.dispatch(loadGoogleAPI())
-        .catch(response => this._parseErrorFromResponse(response));
+        this.props.dispatch(loadGoogleAPI()).catch((response) => this._parseErrorFromResponse(response));
     }
 
     /**
@@ -131,8 +112,7 @@ class StartLiveStreamDialog
      * @returns {void}
      */
     componentDidUpdate(previousProps) {
-        if (previousProps._googleAPIState === GOOGLE_API_STATES.LOADED
-            && this.props._googleAPIState === GOOGLE_API_STATES.SIGNED_IN) {
+        if (previousProps._googleAPIState === GOOGLE_API_STATES.LOADED && this.props._googleAPIState === GOOGLE_API_STATES.SIGNED_IN) {
             this._onGetYouTubeBroadcasts();
         }
     }
@@ -147,11 +127,11 @@ class StartLiveStreamDialog
      * @returns {void}
      */
     _onGetYouTubeBroadcasts() {
-        this.props.dispatch(updateProfile())
-            .catch(response => this._parseErrorFromResponse(response));
+        this.props.dispatch(updateProfile()).catch((response) => this._parseErrorFromResponse(response));
 
-        this.props.dispatch(requestAvailableYouTubeBroadcasts())
-            .then(broadcasts => {
+        this.props
+            .dispatch(requestAvailableYouTubeBroadcasts())
+            .then((broadcasts) => {
                 this._setStateIfMounted({
                     broadcasts
                 });
@@ -162,7 +142,7 @@ class StartLiveStreamDialog
                     this._onYouTubeBroadcastIDSelected(broadcast.boundStreamID);
                 }
             })
-            .catch(response => this._parseErrorFromResponse(response));
+            .catch((response) => this._parseErrorFromResponse(response));
     }
 
     _onGoogleSignIn: () => Object;
@@ -175,8 +155,7 @@ class StartLiveStreamDialog
      * @returns {Promise}
      */
     _onGoogleSignIn() {
-        this.props.dispatch(signIn())
-            .catch(response => this._parseErrorFromResponse(response));
+        this.props.dispatch(signIn()).catch((response) => this._parseErrorFromResponse(response));
     }
 
     _onRequestGoogleSignIn: () => Object;
@@ -191,16 +170,18 @@ class StartLiveStreamDialog
     _onRequestGoogleSignIn() {
         // when there is an error we show the google sign-in button.
         // once we click it we want to clear the error from the state
-        this.props.dispatch(showAccountSelection())
+        this.props
+            .dispatch(showAccountSelection())
             .then(() =>
                 this._setStateIfMounted({
                     broadcasts: undefined,
                     errorType: undefined
-                }))
+                })
+            )
             .then(() => this._onGetYouTubeBroadcasts());
     }
 
-    _onStreamKeyChange: string => void;
+    _onStreamKeyChange: (string) => void;
 
     _onYouTubeBroadcastIDSelected: (string) => Object;
 
@@ -214,14 +195,12 @@ class StartLiveStreamDialog
      * @returns {Promise}
      */
     _onYouTubeBroadcastIDSelected(boundStreamID) {
-        this.props.dispatch(
-            requestLiveStreamsForYouTubeBroadcast(boundStreamID))
-            .then(({ streamKey, selectedBoundStreamID }) =>
-                this._setStateIfMounted({
-                    streamKey,
-                    selectedBoundStreamID
-                }));
-
+        this.props.dispatch(requestLiveStreamsForYouTubeBroadcast(boundStreamID)).then(({ streamKey, selectedBoundStreamID }) =>
+            this._setStateIfMounted({
+                streamKey,
+                selectedBoundStreamID
+            })
+        );
     }
 
     /**
@@ -235,7 +214,6 @@ class StartLiveStreamDialog
      * @returns {string|null}
      */
     _parseErrorFromResponse(response) {
-
         if (!response || !response.result) {
             return;
         }
@@ -257,91 +235,62 @@ class StartLiveStreamDialog
      * @returns {ReactElement}
      */
     _renderYouTubePanel() {
-        const {
-            t,
-            _googleProfileEmail
-        } = this.props;
-        const {
-            broadcasts,
-            selectedBoundStreamID
-        } = this.state;
+        const { t, _googleProfileEmail } = this.props;
+        const { broadcasts, selectedBoundStreamID } = this.state;
 
         let googleContent, helpText;
 
         switch (this.props._googleAPIState) {
-        case GOOGLE_API_STATES.LOADED:
-            googleContent
-                = <GoogleSignInButton onClick = { this._onGoogleSignIn } />;
-            helpText = t('liveStreaming.signInCTA');
+            case GOOGLE_API_STATES.LOADED:
+                googleContent = <GoogleSignInButton onClick={this._onGoogleSignIn} />;
+                helpText = t('liveStreaming.signInCTA');
 
-            break;
+                break;
 
-        case GOOGLE_API_STATES.SIGNED_IN:
-            if (broadcasts) {
-                googleContent = (
-                    <StreamKeyPicker
-                        broadcasts = { broadcasts }
-                        onBroadcastSelected
-                            = { this._onYouTubeBroadcastIDSelected }
-                        selectedBoundStreamID = { selectedBoundStreamID } />
+            case GOOGLE_API_STATES.SIGNED_IN:
+                if (broadcasts) {
+                    googleContent = (
+                        <StreamKeyPicker broadcasts={broadcasts} onBroadcastSelected={this._onYouTubeBroadcastIDSelected} selectedBoundStreamID={selectedBoundStreamID} />
+                    );
+                } else {
+                    googleContent = <Spinner isCompleting={false} size="medium" />;
+                }
+
+                /**
+                 * FIXME: Ideally this help text would be one translation string
+                 * that also accepts the anchor. This can be done using the Trans
+                 * component of react-i18next but I couldn't get it working...
+                 */
+                helpText = (
+                    <div>
+                        {`${t('liveStreaming.chooseCTA', { email: _googleProfileEmail })} `}
+                        <a onClick={this._onRequestGoogleSignIn}>{t('liveStreaming.changeSignIn')}</a>
+                    </div>
                 );
-            } else {
-                googleContent = (
-                    <Spinner
-                        isCompleting = { false }
-                        size = 'medium' />
-                );
-            }
 
-            /**
-             * FIXME: Ideally this help text would be one translation string
-             * that also accepts the anchor. This can be done using the Trans
-             * component of react-i18next but I couldn't get it working...
-             */
-            helpText = (
-                <div>
-                    { `${t('liveStreaming.chooseCTA',
-                        { email: _googleProfileEmail })} ` }
-                    <a onClick = { this._onRequestGoogleSignIn }>
-                        { t('liveStreaming.changeSignIn') }
-                    </a>
-                </div>
-            );
+                break;
 
-            break;
+            case GOOGLE_API_STATES.NEEDS_LOADING:
+            default:
+                googleContent = <Spinner isCompleting={false} size="medium" />;
 
-        case GOOGLE_API_STATES.NEEDS_LOADING:
-        default:
-            googleContent = (
-                <Spinner
-                    isCompleting = { false }
-                    size = 'medium' />
-            );
-
-            break;
+                break;
         }
 
         if (this.state.errorType !== undefined) {
-            googleContent = (
-                <GoogleSignInButton
-                    onClick = { this._onRequestGoogleSignIn } />
-            );
+            googleContent = <GoogleSignInButton onClick={this._onRequestGoogleSignIn} />;
             helpText = this._getGoogleErrorMessageToDisplay();
         }
 
         return (
-            <div className = 'google-panel'>
-                <div className = 'live-stream-cta'>
-                    { helpText }
-                </div>
-                <div className = 'google-api'>
-                    { googleContent }
-                </div>
+            <div className="google-panel">
+                <div className="live-stream-cta">{helpText}</div>
+                <div className="google-api">{googleContent}</div>
             </div>
         );
     }
 
-    _setStateIfMounted: Object => void
+    _setStateIfMounted: (Object) => void;
 
     /**
      * Returns the error message to display for the current error state.
@@ -353,17 +302,15 @@ class StartLiveStreamDialog
         let text;
 
         switch (this.state.errorType) {
-        case 'liveStreamingNotEnabled':
-            text = this.props.t(
-                'liveStreaming.errorLiveStreamNotEnabled',
-                { email: this.props._googleProfileEmail });
-            break;
-        default:
-            text = this.props.t('liveStreaming.errorAPI');
-            break;
+            case 'liveStreamingNotEnabled':
+                text = this.props.t('liveStreaming.errorLiveStreamNotEnabled', { email: this.props._googleProfileEmail });
+                break;
+            default:
+                text = this.props.t('liveStreaming.errorAPI');
+                break;
         }
 
-        return <div className = 'google-error'>{ text }</div>;
+        return <div className="google-error">{text}</div>;
     }
 }
 
@@ -374,12 +321,11 @@ class StartLiveStreamDialog
  * @returns {{
  *     _googleApiApplicationClientID: string
  * }}
-*/
+ */
 function _mapStateToProps(state: Object) {
     return {
         ..._abstractMapStateToProps(state),
-        _googleApiApplicationClientID:
-        state['features/base/config'].googleApiApplicationClientID
+        _googleApiApplicationClientID: state['features/base/config'].googleApiApplicationClientID
     };
 }
 

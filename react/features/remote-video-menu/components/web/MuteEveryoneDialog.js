@@ -22,14 +22,8 @@ class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
      */
     render() {
         return (
-            <Dialog
-                okKey = 'dialog.muteParticipantButton'
-                onSubmit = { this._onSubmit }
-                titleString = { this.props.title }
-                width = 'small'>
-                <div>
-                    { this.props.content }
-                </div>
+            <Dialog okKey="dialog.muteParticipantButton" onSubmit={this._onSubmit} titleString={this.props.title} width="small">
+                <div>{this.props.content}</div>
             </Dialog>
         );
     }

@@ -10,7 +10,6 @@ import { parseStandardURIString, parseURLParams } from '../../base/util';
 import { getShareInfoText } from '../../invite';
 import { setCalendarAPIAuthState } from '../actions';
 
-
 /**
  * Constants used for interacting with the Microsoft API.
  *
@@ -22,8 +21,7 @@ const MS_API_CONFIGURATION = {
      * The URL to use when authenticating using Microsoft API.
      * @type {string}
      */
-    AUTH_ENDPOINT:
-        'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?',
+    AUTH_ENDPOINT: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?',
 
     CALENDAR_ENDPOINT: '/me/calendars',
 
@@ -89,26 +87,26 @@ export const microsoftCalendarApi = {
             }
 
             const client = Client.init({
-                authProvider: done => done(null, token)
+                authProvider: (done) => done(null, token)
             });
 
-            return client
-                .api(MS_API_CONFIGURATION.CALENDAR_ENDPOINT)
-                .get()
-                .then(response => {
-                    const calendarIds = response.value.map(en => en.id);
-                    const getEventsPromises = calendarIds.map(id =>
-                        requestCalendarEvents(
-                            client, id, fetchStartDays, fetchEndDays));
+            return (
+                client
+                    .api(MS_API_CONFIGURATION.CALENDAR_ENDPOINT)
+                    .get()
+                    .then((response) => {
+                        const calendarIds = response.value.map((en) => en.id);
+                        const getEventsPromises = calendarIds.map((id) => requestCalendarEvents(client, id, fetchStartDays, fetchEndDays));
 
-                    return Promise.all(getEventsPromises);
-                })
+                        return Promise.all(getEventsPromises);
+                    })
 
-                // get .value of every element from the array of results,
-                // which is an array of events and flatten it to one array
-                // of events
-                .then(result => [].concat(...result))
-                .then(entries => entries.map(e => formatCalendarEntry(e)));
+                    // get .value of every element from the array of results,
+                    // which is an array of events and flatten it to one array
+                    // of events
+                    .then((result) => [].concat(...result))
+                    .then((entries) => entries.map((e) => formatCalendarEntry(e)))
+            );
         };
     },
 
@@ -119,8 +117,7 @@ export const microsoftCalendarApi = {
      */
     getCurrentEmail(): Function {
         return (dispatch: Dispatch<any>, getState: Function) => {
-            const { msAuthState = {} }
-                = getState()['features/calendar-sync'] || {};
+            const { msAuthState = {} } = getState()['features/calendar-sync'] || {};
             const email = msAuthState.userSigninName || '';
 
             return Promise.resolve(email);
@@ -159,26 +156,16 @@ export const microsoftCalendarApi = {
 
             dispatch(setCalendarAPIAuthState(guids));
 
-            const { microsoftApiApplicationClientID }
-                = getState()['features/base/config'];
-            const authUrl = getAuthUrl(
-                microsoftApiApplicationClientID,
-                guids.authState,
-                guids.authNonce);
+            const { microsoftApiApplicationClientID } = getState()['features/base/config'];
+            const authUrl = getAuthUrl(microsoftApiApplicationClientID, guids.authState, guids.authNonce);
             const h = 600;
             const w = 480;
 
-            popupAuthWindow = window.open(
-                authUrl,
-                'Auth M$',
-                `width=${w}, height=${h}, top=${
-                    (screen.height / 2) - (h / 2)}, left=${
-                    (screen.width / 2) - (w / 2)}`);
+            popupAuthWindow = window.open(authUrl, 'Auth M$', `width=${w}, height=${h}, top=${screen.height / 2 - h / 2}, left=${screen.width / 2 - w / 2}`);
 
             const windowCloseCheck = setInterval(() => {
                 if (popupAuthWindow && popupAuthWindow.closed) {
-                    signInDeferred.reject(
-                        'Popup closed before completing auth.');
+                    signInDeferred.reject('Popup closed before completing auth.');
                     popupAuthWindow = null;
                     window.removeEventListener('message', handleAuth);
                     clearInterval(windowCloseCheck);
@@ -208,8 +195,7 @@ export const microsoftCalendarApi = {
                 popupAuthWindow = null;
 
                 const params = getParamsFromHash(data.url);
-                const tokenParts = getValidatedTokenParts(
-                    params, guids, microsoftApiApplicationClientID);
+                const tokenParts = getValidatedTokenParts(params, guids, microsoftApiApplicationClientID);
 
                 if (!tokenParts) {
                     signInDeferred.reject('Invalid token received');
@@ -217,14 +203,16 @@ export const microsoftCalendarApi = {
                     return;
                 }
 
-                dispatch(setCalendarAPIAuthState({
-                    authState: undefined,
-                    accessToken: tokenParts.accessToken,
-                    idToken: tokenParts.idToken,
-                    tokenExpires: params.tokenExpires,
-                    userDomainType: tokenParts.userDomainType,
-                    userSigninName: tokenParts.userSigninName
-                }));
+                dispatch(
+                    setCalendarAPIAuthState({
+                        authState: undefined,
+                        accessToken: tokenParts.accessToken,
+                        idToken: tokenParts.idToken,
+                        tokenExpires: params.tokenExpires,
+                        userDomainType: tokenParts.userDomainType,
+                        userSigninName: tokenParts.userSigninName
+                    })
+                );
 
                 signInDeferred.resolve();
             }
@@ -243,8 +231,7 @@ export const microsoftCalendarApi = {
     _isSignedIn(): Function {
         return (dispatch: Dispatch<any>, getState: Function) => {
             const now = new Date().getTime();
-            const state
-                = getState()['features/calendar-sync'].msAuthState || {};
+            const state = getState()['features/calendar-sync'].msAuthState || {};
             const tokenExpires = parseInt(state.tokenExpires, 10);
             const isExpired = now > tokenExpires && !isNaN(tokenExpires);
 
@@ -277,37 +264,33 @@ export const microsoftCalendarApi = {
                 return Promise.reject('Not authorized, please sign in!');
             }
 
-            return getShareInfoText(getState(), location, true/* use html */)
-                .then(text => {
-                    const client = Client.init({
-                        authProvider: done => done(null, token)
-                    });
-
-                    return client
-                        .api(`/me/events/${id}`)
-                        .get()
-                        .then(description => {
-                            const body = description.body;
-
-                            if (description.bodyPreview) {
-                                body.content
-                                    = `${description.bodyPreview}<br><br>`;
-                            }
-
-                            // replace all new lines from the text with html
-                            // <br> to make it pretty
-                            body.content += text.split('\n').join('<br>');
-
-                            return client
-                                .api(`/me/calendar/events/${id}`)
-                                .patch({
-                                    body,
-                                    location: {
-                                        'displayName': location
-                                    }
-                                });
-                        });
+            return getShareInfoText(getState(), location, true /* use html */).then((text) => {
+                const client = Client.init({
+                    authProvider: (done) => done(null, token)
                 });
+
+                return client
+                    .api(`/me/events/${id}`)
+                    .get()
+                    .then((description) => {
+                        const body = description.body;
+
+                        if (description.bodyPreview) {
+                            body.content = `${description.bodyPreview}<br><br>`;
+                        }
+
+                        // replace all new lines from the text with html
+                        // <br> to make it pretty
+                        body.content += text.split('\n').join('<br>');
+
+                        return client.api(`/me/calendar/events/${id}`).patch({
+                            body,
+                            location: {
+                                displayName: location
+                            }
+                        });
+                    });
+            });
         };
     }
 };
@@ -350,8 +333,7 @@ function generateGuid() {
 
     window.crypto.getRandomValues(buf);
 
-    return `${s4(buf[0])}${s4(buf[1])}-${s4(buf[2])}-${s4(buf[3])}-${
-        s4(buf[4])}-${s4(buf[5])}${s4(buf[6])}${s4(buf[7])}`;
+    return `${s4(buf[0])}${s4(buf[1])}-${s4(buf[2])}-${s4(buf[3])}-${s4(buf[4])}-${s4(buf[5])}${s4(buf[6])}${s4(buf[7])}`;
 }
 
 /**
@@ -366,12 +348,7 @@ function generateGuid() {
  * @returns {string} - The auth URL.
  */
 function getAuthRefreshUrl(appId, userDomainType, userSigninName) {
-    return [
-        getAuthUrl(appId, 'undefined', 'undefined'),
-        'prompt=none',
-        `domain_hint=${userDomainType}`,
-        `login_hint=${userSigninName}`
-    ].join('&');
+    return [getAuthUrl(appId, 'undefined', 'undefined'), 'prompt=none', `domain_hint=${userDomainType}`, `login_hint=${userSigninName}`].join('&');
 }
 
 /**
@@ -458,10 +435,7 @@ function getValidatedTokenParts(tokenInfo, guids, appId) {
         return null;
     }
 
-    if (payload.nonce !== guids.authNonce
-        || payload.aud !== appId
-        || payload.iss
-            !== `https://login.microsoftonline.com/${payload.tid}/v2.0`) {
+    if (payload.nonce !== guids.authNonce || payload.aud !== appId || payload.iss !== `https://login.microsoftonline.com/${payload.tid}/v2.0`) {
         return null;
     }
 
@@ -479,9 +453,7 @@ function getValidatedTokenParts(tokenInfo, guids, appId) {
         accessToken: tokenInfo.access_token,
         idToken,
         userDisplayName: payload.name,
-        userDomainType:
-            payload.tid === MS_API_CONFIGURATION.MS_CONSUMER_TENANT
-                ? 'consumers' : 'organizations',
+        userDomainType: payload.tid === MS_API_CONFIGURATION.MS_CONSUMER_TENANT ? 'consumers' : 'organizations',
         userSigninName: payload.preferred_username
     };
 }
@@ -494,15 +466,10 @@ function getValidatedTokenParts(tokenInfo, guids, appId) {
  */
 function refreshAuthToken(): Function {
     return (dispatch: Dispatch<any>, getState: Function) => {
-        const { microsoftApiApplicationClientID }
-            = getState()['features/base/config'];
-        const { msAuthState = {} }
-            = getState()['features/calendar-sync'] || {};
+        const { microsoftApiApplicationClientID } = getState()['features/base/config'];
+        const { msAuthState = {} } = getState()['features/calendar-sync'] || {};
 
-        const refreshAuthUrl = getAuthRefreshUrl(
-            microsoftApiApplicationClientID,
-            msAuthState.userDomainType,
-            msAuthState.userSigninName);
+        const refreshAuthUrl = getAuthRefreshUrl(microsoftApiApplicationClientID, msAuthState.userDomainType, msAuthState.userSigninName);
 
         const iframe = document.createElement('iframe');
 
@@ -511,7 +478,7 @@ function refreshAuthToken(): Function {
         iframe.setAttribute('style', 'display: none');
         iframe.setAttribute('src', refreshAuthUrl);
 
-        const signInPromise = new Promise(resolve => {
+        const signInPromise = new Promise((resolve) => {
             iframe.onload = () => {
                 resolve(iframe.contentWindow.location.hash);
             };
@@ -520,20 +487,21 @@ function refreshAuthToken(): Function {
         // The check for body existence is done for flow, which also runs
         // against native where document.body may not be defined.
         if (!document.body) {
-            return Promise.reject(
-                'Cannot refresh auth token in this environment');
+            return Promise.reject('Cannot refresh auth token in this environment');
         }
 
         document.body.appendChild(iframe);
 
-        return signInPromise.then(hash => {
+        return signInPromise.then((hash) => {
             const params = getParamsFromHash(hash);
 
-            dispatch(setCalendarAPIAuthState({
-                accessToken: params.access_token,
-                idToken: params.id_token,
-                tokenExpires: params.tokenExpires
-            }));
+            dispatch(
+                setCalendarAPIAuthState({
+                    accessToken: params.access_token,
+                    idToken: params.id_token,
+                    tokenExpires: params.tokenExpires
+                })
+            );
         });
     };
 }
@@ -549,20 +517,14 @@ function refreshAuthToken(): Function {
  * @returns {Promise<any> | Promise}
  * @private
  */
-function requestCalendarEvents( // eslint-disable-line max-params
-        client,
-        calendarId,
-        fetchStartDays,
-        fetchEndDays): Promise<*> {
+function requestCalendarEvents(client, calendarId, fetchStartDays, fetchEndDays): Promise<*> { // eslint-disable-line max-params
     const startDate = new Date();
     const endDate = new Date();
 
     startDate.setDate(startDate.getDate() + fetchStartDays);
     endDate.setDate(endDate.getDate() + fetchEndDays);
 
-    const filter = `Start/DateTime ge '${
-        startDate.toISOString()}' and End/DateTime lt '${
-        endDate.toISOString()}'`;
+    const filter = `Start/DateTime ge '${startDate.toISOString()}' and End/DateTime lt '${endDate.toISOString()}'`;
 
     const ianaTimeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
     const windowsTimeZone = findWindows(ianaTimeZone);
@@ -574,12 +536,14 @@ function requestCalendarEvents( // eslint-disable-line max-params
         .select('id,subject,start,end,location,body')
         .orderby('createdDateTime DESC')
         .get()
-        .then(result => result.value.map(item => {
-            return {
-                ...item,
-                calendarId
-            };
-        }));
+        .then((result) =>
+            result.value.map((item) => {
+                return {
+                    ...item,
+                    calendarId
+                };
+            })
+        );
 }
 
 /**

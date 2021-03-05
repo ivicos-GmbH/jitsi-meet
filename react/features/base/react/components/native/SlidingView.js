@@ -1,12 +1,7 @@
 // @flow
 
 import React, { PureComponent, type Node } from 'react';
-import {
-    Animated,
-    Dimensions,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { Animated, Dimensions, TouchableWithoutFeedback, View } from 'react-native';
 
 import { BackButtonRegistry } from '../../../../mobile/back-button';
 import { type StyleType } from '../../../styles';
@@ -17,7 +12,6 @@ import styles from './slidingviewstyles';
  * The type of the React {@code Component} props of {@link SlidingView}.
  */
 type Props = {
-
     /**
      * The children of {@code SlidingView}.
      */
@@ -50,7 +44,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link SlidingView}.
  */
 type State = {
-
     /**
      * Whether the sliding overlay should be displayed/rendered/shown.
      */
@@ -164,17 +157,12 @@ export default class SlidingView extends PureComponent<Props, State> {
         }
 
         return (
-            <View
-                pointerEvents = 'box-none'
-                style = { styles.sliderViewContainer } >
-                <TouchableWithoutFeedback
-                    onPress = { this._onHide } >
-                    <View style = { styles.sliderViewShadow } />
+            <View pointerEvents="box-none" style={styles.sliderViewContainer}>
+                <TouchableWithoutFeedback onPress={this._onHide}>
+                    <View style={styles.sliderViewShadow} />
                 </TouchableWithoutFeedback>
-                <Animated.View
-                    pointerEvents = 'box-none'
-                    style = { this._getContentStyle() }>
-                    { this.props.children }
+                <Animated.View pointerEvents="box-none" style={this._getContentStyle()}>
+                    {this.props.children}
                 </Animated.View>
             </View>
         );
@@ -196,26 +184,34 @@ export default class SlidingView extends PureComponent<Props, State> {
         const { positionOffset } = this.state;
 
         switch (this.props.position) {
-        case 'bottom':
-            Object.assign(style, {
-                bottom: -positionOffset,
-                left: 0,
-                right: 0,
-                top: positionOffset
-            }, {
-                transform: [ { translateY: this.state.sliderAnimation } ]
-            });
-            break;
-        case 'left':
-            Object.assign(style, {
-                bottom: 0,
-                left: -positionOffset,
-                right: positionOffset,
-                top: 0
-            }, {
-                transform: [ { translateX: this.state.sliderAnimation } ]
-            });
-            break;
+            case 'bottom':
+                Object.assign(
+                    style,
+                    {
+                        bottom: -positionOffset,
+                        left: 0,
+                        right: 0,
+                        top: positionOffset
+                    },
+                    {
+                        transform: [{ translateY: this.state.sliderAnimation }]
+                    }
+                );
+                break;
+            case 'left':
+                Object.assign(
+                    style,
+                    {
+                        bottom: 0,
+                        left: -positionOffset,
+                        right: positionOffset,
+                        top: 0
+                    },
+                    {
+                        transform: [{ translateX: this.state.sliderAnimation }]
+                    }
+                );
+                break;
         }
 
         return style;
@@ -247,12 +243,11 @@ export default class SlidingView extends PureComponent<Props, State> {
      * @returns {void}
      */
     _onHide() {
-        this._setShow(false)
-            .then(() => {
-                const { onHide } = this.props;
+        this._setShow(false).then(() => {
+            const { onHide } = this.props;
 
-                onHide && onHide();
-            });
+            onHide && onHide();
+        });
     }
 
     _setShow: (boolean) => Promise<*>;
@@ -266,7 +261,7 @@ export default class SlidingView extends PureComponent<Props, State> {
      * @returns {Promise}
      */
     _setShow(show) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             if (!this._mounted) {
                 resolve();
 
@@ -281,21 +276,22 @@ export default class SlidingView extends PureComponent<Props, State> {
                 toValue = -positionOffset;
             }
 
-            Animated
-                .timing(
-                    /* value */ this.state.sliderAnimation,
-                    /* config */ {
-                        duration: 200,
-                        toValue: show ? toValue : 0,
-                        useNativeDriver: true
-                    })
-                .start(({ finished }) => {
-                    finished && this._mounted && !show
-                        && this.setState({ showOverlay: false }, () => {
-                            this.forceUpdate();
-                        });
-                    resolve();
-                });
+            Animated.timing(
+                /* value */ this.state.sliderAnimation,
+                /* config */ {
+                    duration: 200,
+                    toValue: show ? toValue : 0,
+                    useNativeDriver: true
+                }
+            ).start(({ finished }) => {
+                finished &&
+                    this._mounted &&
+                    !show &&
+                    this.setState({ showOverlay: false }, () => {
+                        this.forceUpdate();
+                    });
+                resolve();
+            });
         });
     }
 }

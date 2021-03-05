@@ -16,8 +16,7 @@ export const DIAL_IN_SUMMARY_VIEW_ID = 'DIAL_IN_SUMMARY_VIEW_ID';
  *
  * @type {string}
  */
-export const OUTGOING_CALL_EXPIRED_SOUND_ID
-    = 'OUTGOING_CALL_EXPIRED_SOUND_ID';
+export const OUTGOING_CALL_EXPIRED_SOUND_ID = 'OUTGOING_CALL_EXPIRED_SOUND_ID';
 
 /**
  * The identifier of the sound to be played when the status of an outgoing call
@@ -25,8 +24,7 @@ export const OUTGOING_CALL_EXPIRED_SOUND_ID
  *
  * @type {string}
  */
-export const OUTGOING_CALL_REJECTED_SOUND_ID
-    = 'OUTGOING_CALL_REJECTED_SOUND_ID';
+export const OUTGOING_CALL_REJECTED_SOUND_ID = 'OUTGOING_CALL_REJECTED_SOUND_ID';
 
 /**
  * The identifier of the sound to be played when the status of an outgoing call

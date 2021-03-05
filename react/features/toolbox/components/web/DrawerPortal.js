@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 type Props = {
-
     /**
      * The component(s) to be displayed within the drawer portal.
      */
@@ -18,7 +17,7 @@ type Props = {
  * @returns {ReactElement}
  */
 function DrawerPortal({ children }: Props) {
-    const [ portalTarget ] = useState(() => {
+    const [portalTarget] = useState(() => {
         const portalDiv = document.createElement('div');
 
         portalDiv.className = 'drawer-portal';
@@ -38,10 +37,7 @@ function DrawerPortal({ children }: Props) {
         };
     }, []);
 
-    return ReactDOM.createPortal(
-      children,
-      portalTarget
-    );
+    return ReactDOM.createPortal(children, portalTarget);
 }
 
 export default DrawerPortal;

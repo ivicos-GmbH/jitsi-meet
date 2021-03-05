@@ -5,7 +5,6 @@ import { Component } from 'react';
 import type { StyleType } from '../../styles';
 
 export type Styles = {
-
     /**
      * Style for the item's icon.
      */
@@ -28,7 +27,6 @@ export type Styles = {
 };
 
 export type Props = {
-
     /**
      * A succinct description of what the item does. Used by accessibility
      * tools and torture tests.
@@ -111,7 +109,7 @@ export type Props = {
  *
  * @abstract
  */
-export default class AbstractToolboxItem<P : Props> extends Component<P> {
+export default class AbstractToolboxItem<P: Props> extends Component<P> {
     /**
      * Default values for {@code AbstractToolboxItem} component's properties.
      *

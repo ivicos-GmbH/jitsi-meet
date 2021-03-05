@@ -5,18 +5,11 @@ import React from 'react';
 import { IconSignalLevel0, IconSignalLevel1, IconSignalLevel2 } from '../../../base/icons';
 import { BaseIndicator } from '../../../base/react';
 import { connect } from '../../../base/redux';
-import AbstractConnectionIndicator, {
-    type Props,
-    type State
-} from '../AbstractConnectionIndicator';
+import AbstractConnectionIndicator, { type Props, type State } from '../AbstractConnectionIndicator';
 
 import { CONNECTOR_INDICATOR_COLORS } from './styles';
 
-const ICONS = [
-    IconSignalLevel0,
-    IconSignalLevel1,
-    IconSignalLevel2
-];
+const ICONS = [IconSignalLevel0, IconSignalLevel1, IconSignalLevel2];
 
 /**
  * Implements an indicator to show the quality of the connection of a participant.
@@ -56,13 +49,13 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 
         return (
             <BaseIndicator
-                icon = { ICONS[signalLevel] }
-                iconStyle = {{
+                icon={ICONS[signalLevel]}
+                iconStyle={{
                     color: CONNECTOR_INDICATOR_COLORS[signalLevel]
-                }} />
+                }}
+            />
         );
     }
-
 }
 
 export default connect()(ConnectionIndicator);

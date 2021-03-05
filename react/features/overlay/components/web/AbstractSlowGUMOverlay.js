@@ -7,7 +7,6 @@ import { Component } from 'react';
  * {@link AbstractSlowGUMOverlay}.
  */
 type Props = {
-
     /**
      * The function to translate human-readable text.
      */

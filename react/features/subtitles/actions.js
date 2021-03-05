@@ -1,11 +1,6 @@
 // @flow
 
-import {
-    ENDPOINT_MESSAGE_RECEIVED,
-    REMOVE_TRANSCRIPT_MESSAGE,
-    TOGGLE_REQUESTING_SUBTITLES,
-    UPDATE_TRANSCRIPT_MESSAGE
-} from './actionTypes';
+import { ENDPOINT_MESSAGE_RECEIVED, REMOVE_TRANSCRIPT_MESSAGE, TOGGLE_REQUESTING_SUBTITLES, UPDATE_TRANSCRIPT_MESSAGE } from './actionTypes';
 
 /**
  * Signals that a participant sent an endpoint message on the data channel.
@@ -54,8 +49,7 @@ export function removeTranscriptMessage(transcriptMessageID: string) {
  *      newTranscriptMessage: Object
  * }}
  */
-export function updateTranscriptMessage(transcriptMessageID: string,
-        newTranscriptMessage: Object) {
+export function updateTranscriptMessage(transcriptMessageID: string, newTranscriptMessage: Object) {
     return {
         type: UPDATE_TRANSCRIPT_MESSAGE,
         transcriptMessageID,

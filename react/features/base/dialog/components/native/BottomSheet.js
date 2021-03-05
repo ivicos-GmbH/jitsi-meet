@@ -24,7 +24,6 @@ const GESTURE_SPEED_THRESHOLD = 0.2;
  * The type of {@code BottomSheet}'s React {@code Component} prop types.
  */
 type Props = {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -83,30 +82,13 @@ class BottomSheet extends PureComponent<Props> {
         const { _styles, renderHeader } = this.props;
 
         return (
-            <SlidingView
-                accessibilityRole = 'menu'
-                accessibilityViewIsModal = { true }
-                onHide = { this.props.onCancel }
-                position = 'bottom'
-                show = { true }>
-                <View
-                    pointerEvents = 'box-none'
-                    style = { styles.sheetContainer }>
-                    <View
-                        pointerEvents = 'box-none'
-                        style = { styles.sheetAreaCover } />
-                    { renderHeader && renderHeader() }
-                    <SafeAreaView
-                        style = { [
-                            styles.sheetItemContainer,
-                            _styles.sheet
-                        ] }
-                        { ...this.panResponder.panHandlers }>
-                        <ScrollView
-                            bounces = { false }
-                            showsVerticalScrollIndicator = { false }
-                            style = { styles.scrollView } >
-                            { this.props.children }
+            <SlidingView accessibilityRole="menu" accessibilityViewIsModal={true} onHide={this.props.onCancel} position="bottom" show={true}>
+                <View pointerEvents="box-none" style={styles.sheetContainer}>
+                    <View pointerEvents="box-none" style={styles.sheetAreaCover} />
+                    {renderHeader && renderHeader()}
+                    <SafeAreaView style={[styles.sheetItemContainer, _styles.sheet]} {...this.panResponder.panHandlers}>
+                        <ScrollView bounces={false} showsVerticalScrollIndicator={false} style={styles.scrollView}>
+                            {this.props.children}
                         </ScrollView>
                     </SafeAreaView>
                 </View>
@@ -122,8 +104,7 @@ class BottomSheet extends PureComponent<Props> {
      * @returns {void}
      */
     _onGestureEnd(evt, gestureState) {
-        const verticalSwipe = Math.abs(gestureState.vy) > Math.abs(gestureState.vx)
-            && Math.abs(gestureState.vy) > GESTURE_SPEED_THRESHOLD;
+        const verticalSwipe = Math.abs(gestureState.vy) > Math.abs(gestureState.vx) && Math.abs(gestureState.vy) > GESTURE_SPEED_THRESHOLD;
 
         if (verticalSwipe) {
             const direction = gestureState.vy > 0 ? 'down' : 'up';
@@ -151,9 +132,7 @@ class BottomSheet extends PureComponent<Props> {
      * @returns {boolean}
      */
     _onShouldSetResponder({ nativeEvent }, gestureState) {
-        return nativeEvent.touches.length === 1
-            && Math.abs(gestureState.dx) > GESTURE_DISTANCE_THRESHOLD
-            && Math.abs(gestureState.dy) > GESTURE_DISTANCE_THRESHOLD;
+        return nativeEvent.touches.length === 1 && Math.abs(gestureState.dx) > GESTURE_DISTANCE_THRESHOLD && Math.abs(gestureState.dy) > GESTURE_DISTANCE_THRESHOLD;
     }
 }
 

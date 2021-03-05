@@ -1,9 +1,6 @@
 // @flow
 
-import {
-    SET_SIDEBAR_VISIBLE,
-    SET_WELCOME_PAGE_LISTS_DEFAULT_PAGE
-} from './actionTypes';
+import { SET_SIDEBAR_VISIBLE, SET_WELCOME_PAGE_LISTS_DEFAULT_PAGE } from './actionTypes';
 
 /**
  * Sets the visibility of {@link WelcomePageSideBar}.

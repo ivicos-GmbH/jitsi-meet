@@ -43,13 +43,13 @@ export default class Audio extends AbstractAudio {
     render() {
         return (
             <audio
-                loop = { Boolean(this.props.loop) }
-                onCanPlayThrough = { this._onCanPlayThrough }
-                preload = 'auto'
-
+                loop={Boolean(this.props.loop)}
+                onCanPlayThrough={this._onCanPlayThrough}
+                preload="auto"
                 // $FlowFixMe
-                ref = { this._setRef }
-                src = { this.props.src } />
+                ref={this._setRef}
+                src={this.props.src}
+            />
         );
     }
 

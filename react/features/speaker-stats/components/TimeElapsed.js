@@ -8,7 +8,6 @@ import { translate } from '../../base/i18n';
  * The type of the React {@code Component} props of {@link TimeElapsed}.
  */
 type Props = {
-
     /**
      * The function to translate human-readable text.
      */
@@ -42,35 +41,22 @@ class TimeElapsed extends Component<Props> {
         const timeElapsed = [];
 
         if (hours) {
-            const hourPassed
-                = this._createTimeDisplay(hours, 'speakerStats.hours', 'hours');
+            const hourPassed = this._createTimeDisplay(hours, 'speakerStats.hours', 'hours');
 
             timeElapsed.push(hourPassed);
         }
 
         if (hours || minutes) {
-            const minutesPassed
-                = this._createTimeDisplay(
-                    minutes,
-                    'speakerStats.minutes',
-                    'minutes');
+            const minutesPassed = this._createTimeDisplay(minutes, 'speakerStats.minutes', 'minutes');
 
             timeElapsed.push(minutesPassed);
         }
 
-        const secondsPassed
-            = this._createTimeDisplay(
-                seconds,
-                'speakerStats.seconds',
-                'seconds');
+        const secondsPassed = this._createTimeDisplay(seconds, 'speakerStats.seconds', 'seconds');
 
         timeElapsed.push(secondsPassed);
 
-        return (
-            <div>
-                { timeElapsed }
-            </div>
-        );
+        return <div>{timeElapsed}</div>;
     }
 
     /**
@@ -87,11 +73,7 @@ class TimeElapsed extends Component<Props> {
     _createTimeDisplay(count, countNounKey, countType) {
         const { t } = this.props;
 
-        return (
-            <span key = { countType } >
-                { t(countNounKey, { count }) }
-            </span>
-        );
+        return <span key={countType}>{t(countNounKey, { count })}</span>;
     }
 }
 
@@ -116,7 +98,7 @@ function _getHoursCount(milliseconds) {
  * @returns {number}
  */
 function _getMinutesCount(milliseconds) {
-    return Math.floor(milliseconds / (60 * 1000) % 60);
+    return Math.floor((milliseconds / (60 * 1000)) % 60);
 }
 
 /**
@@ -127,5 +109,5 @@ function _getMinutesCount(milliseconds) {
  * @returns {number}
  */
 function _getSecondsCount(milliseconds) {
-    return Math.floor(milliseconds / 1000 % 60);
+    return Math.floor((milliseconds / 1000) % 60);
 }

@@ -9,7 +9,6 @@ import { getUnreadCount } from '../../functions';
  * The type of the React {@code Component} props of {@link ChatCounter}.
  */
 type Props = {
-
     /**
      * The value of to display as a count.
      */
@@ -23,7 +22,6 @@ type Props = {
  * @extends Component
  */
 class ChatCounter extends Component<Props> {
-
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -32,10 +30,8 @@ class ChatCounter extends Component<Props> {
      */
     render() {
         return (
-            <span className = 'badge-round'>
-                <span>
-                    { this.props._count || null }
-                </span>
+            <span className="badge-round">
+                <span>{this.props._count || null}</span>
             </span>
         );
     }

@@ -6,18 +6,9 @@ import type { Dispatch } from 'redux';
 import { conferenceLeft, conferenceWillLeave } from '../conference/actions';
 import { getCurrentConference } from '../conference/functions';
 import JitsiMeetJS, { JitsiConnectionEvents } from '../lib-jitsi-meet';
-import {
-    getBackendSafeRoomName,
-    parseURIString
-} from '../util';
+import { getBackendSafeRoomName, parseURIString } from '../util';
 
-import {
-    CONNECTION_DISCONNECTED,
-    CONNECTION_ESTABLISHED,
-    CONNECTION_FAILED,
-    CONNECTION_WILL_CONNECT,
-    SET_LOCATION_URL
-} from './actionTypes';
+import { CONNECTION_DISCONNECTED, CONNECTION_ESTABLISHED, CONNECTION_FAILED, CONNECTION_WILL_CONNECT, SET_LOCATION_URL } from './actionTypes';
 import { JITSI_CONNECTION_URL_KEY } from './constants';
 import logger from './logger';
 
@@ -28,13 +19,11 @@ import logger from './logger';
  * the extent that jitsi-meet needs it).
  */
 export type ConnectionFailedError = {
-
     /**
      * The invalid credentials that were used to authenticate and the
      * authentication failed.
      */
     credentials?: {
-
         /**
          * The XMPP user's ID.
          */
@@ -87,15 +76,9 @@ export function connect(id: ?string, password: ?string) {
 
         dispatch(_connectionWillConnect(connection));
 
-        connection.addEventListener(
-            JitsiConnectionEvents.CONNECTION_DISCONNECTED,
-            _onConnectionDisconnected);
-        connection.addEventListener(
-            JitsiConnectionEvents.CONNECTION_ESTABLISHED,
-            _onConnectionEstablished);
-        connection.addEventListener(
-            JitsiConnectionEvents.CONNECTION_FAILED,
-            _onConnectionFailed);
+        connection.addEventListener(JitsiConnectionEvents.CONNECTION_DISCONNECTED, _onConnectionDisconnected);
+        connection.addEventListener(JitsiConnectionEvents.CONNECTION_ESTABLISHED, _onConnectionEstablished);
+        connection.addEventListener(JitsiConnectionEvents.CONNECTION_FAILED, _onConnectionFailed);
 
         connection.connect({
             id,
@@ -121,9 +104,7 @@ export function connect(id: ?string, password: ?string) {
          * @returns {void}
          */
         function _onConnectionEstablished() {
-            connection.removeEventListener(
-                JitsiConnectionEvents.CONNECTION_ESTABLISHED,
-                _onConnectionEstablished);
+            connection.removeEventListener(JitsiConnectionEvents.CONNECTION_ESTABLISHED, _onConnectionEstablished);
             dispatch(connectionEstablished(connection, Date.now()));
         }
 
@@ -140,21 +121,16 @@ export function connect(id: ?string, password: ?string) {
          * @private
          * @returns {void}
          */
-        function _onConnectionFailed( // eslint-disable-line max-params
-                err: string,
-                msg: string,
-                credentials: Object,
-                details: Object) {
+        function _onConnectionFailed(err: string, msg: string, credentials: Object, details: Object) { // eslint-disable-line max-params
             unsubscribe();
             dispatch(
-                connectionFailed(
-                    connection, {
-                        credentials,
-                        details,
-                        name: err,
-                        message: msg
-                    }
-                ));
+                connectionFailed(connection, {
+                    credentials,
+                    details,
+                    name: err,
+                    message: msg
+                })
+            );
         }
 
         /**
@@ -164,12 +140,8 @@ export function connect(id: ?string, password: ?string) {
          * @returns {void}
          */
         function unsubscribe() {
-            connection.removeEventListener(
-                JitsiConnectionEvents.CONNECTION_DISCONNECTED,
-                _onConnectionDisconnected);
-            connection.removeEventListener(
-                JitsiConnectionEvents.CONNECTION_FAILED,
-                _onConnectionFailed);
+            connection.removeEventListener(JitsiConnectionEvents.CONNECTION_DISCONNECTED, _onConnectionDisconnected);
+            connection.removeEventListener(JitsiConnectionEvents.CONNECTION_FAILED, _onConnectionFailed);
         }
     };
 }
@@ -206,8 +178,7 @@ export function connectionDisconnected(connection: Object) {
  *     timeEstablished: number
  * }}
  */
-export function connectionEstablished(
-        connection: Object, timeEstablished: number) {
+export function connectionEstablished(connection: Object, timeEstablished: number) {
     return {
         type: CONNECTION_ESTABLISHED,
         connection,
@@ -228,9 +199,7 @@ export function connectionEstablished(
  *     error: ConnectionFailedError
  * }}
  */
-export function connectionFailed(
-        connection: Object,
-        error: ConnectionFailedError) {
+export function connectionFailed(connection: Object, error: ConnectionFailedError) {
     const { credentials } = error;
 
     if (credentials && !Object.keys(credentials).length) {
@@ -286,11 +255,7 @@ function _constructOptions(state) {
             bosh = `${locationURL.protocol}${bosh}`;
         } else if (bosh.startsWith('/')) {
             // Handle relative URLs, which won't work on mobile.
-            const {
-                protocol,
-                host,
-                contextRoot
-            } = parseURIString(locationURL.href);
+            const { protocol, host, contextRoot } = parseURIString(locationURL.href);
 
             // eslint-disable-next-line max-len
             bosh = `${protocol}//${host}${contextRoot || '/'}${bosh.substr(1)}`;
@@ -332,20 +297,16 @@ export function disconnect() {
             // intention to leave the conference.
             dispatch(conferenceWillLeave(conference_));
 
-            promise
-                = conference_.leave()
-                    .catch(error => {
-                        logger.warn(
-                            'JitsiConference.leave() rejected with:',
-                            error);
+            promise = conference_.leave().catch((error) => {
+                logger.warn('JitsiConference.leave() rejected with:', error);
 
-                        // The library lib-jitsi-meet failed to make the
-                        // JitsiConference leave. Which may be because
-                        // JitsiConference thinks it has already left.
-                        // Regardless of the failure reason, continue in
-                        // jitsi-meet as if the leave has succeeded.
-                        dispatch(conferenceLeft(conference_));
-                    });
+                // The library lib-jitsi-meet failed to make the
+                // JitsiConference leave. Which may be because
+                // JitsiConference thinks it has already left.
+                // Regardless of the failure reason, continue in
+                // jitsi-meet as if the leave has succeeded.
+                dispatch(conferenceLeft(conference_));
+            });
         } else {
             promise = Promise.resolve();
         }

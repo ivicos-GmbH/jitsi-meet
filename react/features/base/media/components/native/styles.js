@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
  * The styles of the feature base/media.
  */
 export default StyleSheet.create({
-
     /**
      * Base style of the transformed video view.
      */

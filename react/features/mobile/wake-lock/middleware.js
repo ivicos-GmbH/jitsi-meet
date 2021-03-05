@@ -8,13 +8,13 @@ import { StateListenerRegistry } from '../../base/redux';
  * the wake lock is active, it will prevent the screen from dimming.
  */
 StateListenerRegistry.register(
-    /* selector */ state => {
+    /* selector */ (state) => {
         const { enabled: audioOnly } = state['features/base/audio-only'];
         const conference = getCurrentConference(state);
 
         return Boolean(conference && !audioOnly);
     },
-    /* listener */ wakeLock => _setWakeLock(wakeLock)
+    /* listener */ (wakeLock) => _setWakeLock(wakeLock)
 );
 
 /**

@@ -24,14 +24,11 @@ class SuspendedOverlay extends AbstractSuspendedOverlay {
 
         return (
             <OverlayFrame>
-                <div className = 'inlay'>
-                    <span className = 'inlay__icon icon-microphone' />
-                    <span className = 'inlay__icon icon-camera' />
-                    <h3
-                        className = 'inlay__title'>
-                        { t('suspendedoverlay.title') }
-                    </h3>
-                    <ReloadButton textKey = 'suspendedoverlay.rejoinKeyTitle' />
+                <div className="inlay">
+                    <span className="inlay__icon icon-microphone" />
+                    <span className="inlay__icon icon-camera" />
+                    <h3 className="inlay__title">{t('suspendedoverlay.title')}</h3>
+                    <ReloadButton textKey="suspendedoverlay.rejoinKeyTitle" />
                 </div>
             </OverlayFrame>
         );

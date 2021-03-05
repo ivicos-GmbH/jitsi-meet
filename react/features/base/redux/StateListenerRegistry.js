@@ -19,8 +19,7 @@ import logger from './logger';
  * invoked only if {@code prevSelection} and {@code selection} are different.
  * Immutable!
  */
-type Listener
-    = (selection: any, store: Store<*, *>, prevSelection: any) => void;
+type Listener = (selection: any, store: Store<*, *>, prevSelection: any) => void;
 
 /**
  * The type selector supported for registration with
@@ -42,13 +41,12 @@ type Selector = (state: Object, prevSelection: any) => any;
  * Options that can be passed to the register method.
  */
 type RegistrationOptions = {
-
     /**
      * @property {boolean} [deepEquals=false] - whether or not a deep equals check should be performed on the selection
      * returned by {@link Selector}.
      */
     deepEquals: ?boolean
-}
+};
 
 /**
  * A type of a {@link Selector}-{@link Listener} association in which the
@@ -56,7 +54,6 @@ type RegistrationOptions = {
  * store/state by the {@code Selector}.
  */
 type SelectorListener = {
-
     /**
      * The {@code Listener} which listens to changes in the values selected by
      * {@link selector}.
@@ -100,22 +97,15 @@ class StateListenerRegistry {
      * redux store.
      * @returns {void}
      */
-    _listener({ prevSelections, store }: {
-            prevSelections: Map<SelectorListener, any>,
-            store: Store<*, *>
-    }) {
+    _listener({ prevSelections, store }: { prevSelections: Map<SelectorListener, any>, store: Store<*, *> }) {
         for (const selectorListener of this._selectorListeners) {
             const prevSelection = prevSelections.get(selectorListener);
 
             try {
-                const selection
-                    = selectorListener.selector(
-                        store.getState(),
-                        prevSelection);
+                const selection = selectorListener.selector(store.getState(), prevSelection);
                 const useDeepEquals = selectorListener?.options?.deepEquals;
 
-                if ((useDeepEquals && !equals(prevSelection, selection))
-                        || (!useDeepEquals && prevSelection !== selection)) {
+                if ((useDeepEquals && !equals(prevSelection, selection)) || (!useDeepEquals && prevSelection !== selection)) {
                     prevSelections.set(selectorListener, selection);
                     selectorListener.listener(selection, store, prevSelection);
                 }
@@ -162,24 +152,23 @@ class StateListenerRegistry {
         // state changes, do not bother subscribing to the store at all.
         if (this._selectorListeners.size) {
             store.subscribe(
-                this._listener.bind(
-                    this,
-                    {
-                        /**
-                         * The previous selections of the {@code Selector}s
-                         * registered with this {@code StateListenerRegistry}.
-                         *
-                         * @type Map<any>
-                         */
-                        prevSelections: new Map(),
+                this._listener.bind(this, {
+                    /**
+                     * The previous selections of the {@code Selector}s
+                     * registered with this {@code StateListenerRegistry}.
+                     *
+                     * @type Map<any>
+                     */
+                    prevSelections: new Map(),
 
-                        /**
-                         * The redux store.
-                         *
-                         * @type Store
-                         */
-                        store
-                    }));
+                    /**
+                     * The redux store.
+                     *
+                     * @type Store
+                     */
+                    store
+                })
+            );
         }
     }
 }

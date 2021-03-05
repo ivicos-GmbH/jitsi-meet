@@ -8,7 +8,6 @@ import AbstractHandler from './AbstractHandler';
  * Analytics handler for Matomo.
  */
 export default class MatomoHandler extends AbstractHandler {
-
     /**
      * Creates new instance of the Matomo handler.
      *
@@ -21,14 +20,10 @@ export default class MatomoHandler extends AbstractHandler {
         this._userProperties = {};
 
         if (!options.matomoEndpoint) {
-            throw new Error(
-                'Failed to initialize Matomo handler: no endpoint defined.'
-            );
+            throw new Error('Failed to initialize Matomo handler: no endpoint defined.');
         }
         if (!options.matomoSiteID) {
-            throw new Error(
-                'Failed to initialize Matomo handler: no site ID defined.'
-            );
+            throw new Error('Failed to initialize Matomo handler: no site ID defined.');
         }
 
         this._enabled = true;
@@ -48,18 +43,16 @@ export default class MatomoHandler extends AbstractHandler {
 
         window._paq = _paq;
 
-        _paq.push([ 'trackPageView' ]);
-        _paq.push([ 'enableLinkTracking' ]);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
 
-        (function() {
+        (function () {
             // add trailing slash if needed
-            const u = options.matomoEndpoint.endsWith('/')
-                ? options.matomoEndpoint
-                : `${options.matomoEndpoint}/`;
+            const u = options.matomoEndpoint.endsWith('/') ? options.matomoEndpoint : `${options.matomoEndpoint}/`;
 
             // configure the tracker
-            _paq.push([ 'setTrackerUrl', `${u}matomo.php` ]);
-            _paq.push([ 'setSiteId', options.matomoSiteID ]);
+            _paq.push(['setTrackerUrl', `${u}matomo.php`]);
+            _paq.push(['setSiteId', options.matomoSiteID]);
 
             // insert the matomo script
             const d = document,
@@ -102,33 +95,20 @@ export default class MatomoHandler extends AbstractHandler {
             return;
         }
 
-        const visitScope = [ 'user_agent', 'callstats_name', 'browser_name' ];
+        const visitScope = ['user_agent', 'callstats_name', 'browser_name'];
 
         // add variables in the 'page' scope
         Object.keys(userProps)
-            .filter(key => visitScope.indexOf(key) === -1)
+            .filter((key) => visitScope.indexOf(key) === -1)
             .forEach((key, index) => {
-                _paq.push([
-                    'setCustomVariable',
-                    1 + index,
-                    key,
-                    userProps[key],
-                    'page'
-                ]);
+                _paq.push(['setCustomVariable', 1 + index, key, userProps[key], 'page']);
             });
-
 
         // add variables in the 'visit' scope
         Object.keys(userProps)
-            .filter(key => visitScope.indexOf(key) !== -1)
+            .filter((key) => visitScope.indexOf(key) !== -1)
             .forEach((key, index) => {
-                _paq.push([
-                    'setCustomVariable',
-                    1 + index,
-                    key,
-                    userProps[key],
-                    'visit'
-                ]);
+                _paq.push(['setCustomVariable', 1 + index, key, userProps[key], 'visit']);
             });
     }
 
@@ -147,7 +127,7 @@ export default class MatomoHandler extends AbstractHandler {
         }
 
         const value = this._extractValue(event);
-        const matomoEvent = [ 'trackEvent', 'jitsi-meet', this._extractName(event) ];
+        const matomoEvent = ['trackEvent', 'jitsi-meet', this._extractName(event)];
 
         if (!isNaN(value)) {
             matomoEvent.push(value);

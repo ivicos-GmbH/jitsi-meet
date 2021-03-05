@@ -39,10 +39,8 @@ const DEFAULT_STATE = {
  * Listen for actions that contain the conference object, so that it can be
  * stored for use by other action creators.
  */
-ReducerRegistry.register(
-    'features/base/conference',
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
+ReducerRegistry.register('features/base/conference', (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case AUTH_STATUS_CHANGED:
             return _authStatusChanged(state, action);
 
@@ -95,10 +93,10 @@ ReducerRegistry.register(
                 startAudioMutedPolicy: action.startAudioMutedPolicy,
                 startVideoMutedPolicy: action.startVideoMutedPolicy
             };
-        }
+    }
 
-        return state;
-    });
+    return state;
+});
 
 /**
  * Reduces a specific Redux action AUTH_STATUS_CHANGED of the feature
@@ -141,18 +139,18 @@ function _conferenceFailed(state, { conference, error }) {
     let passwordRequired;
 
     switch (error.name) {
-    case JitsiConferenceErrors.AUTHENTICATION_REQUIRED:
-        authRequired = conference;
-        break;
+        case JitsiConferenceErrors.AUTHENTICATION_REQUIRED:
+            authRequired = conference;
+            break;
 
-    case JitsiConferenceErrors.CONFERENCE_ACCESS_DENIED:
-    case JitsiConferenceErrors.MEMBERS_ONLY_ERROR:
-        membersOnly = conference;
-        break;
+        case JitsiConferenceErrors.CONFERENCE_ACCESS_DENIED:
+        case JitsiConferenceErrors.MEMBERS_ONLY_ERROR:
+            membersOnly = conference;
+            break;
 
-    case JitsiConferenceErrors.PASSWORD_REQUIRED:
-        passwordRequired = conference;
-        break;
+        case JitsiConferenceErrors.PASSWORD_REQUIRED:
+            passwordRequired = conference;
+            break;
     }
 
     return assign(state, {
@@ -255,13 +253,13 @@ function _conferenceLeftOrWillLeave(state, { conference, type }) {
             nextState[p] = undefined;
 
             switch (p) {
-            case 'conference':
-            case 'passwordRequired':
-                // XXX Clear/unset locked & password for a conference which has
-                // been LOCKED_LOCALLY or LOCKED_REMOTELY.
-                delete nextState.locked;
-                delete nextState.password;
-                break;
+                case 'conference':
+                case 'passwordRequired':
+                    // XXX Clear/unset locked & password for a conference which has
+                    // been LOCKED_LOCALLY or LOCKED_REMOTELY.
+                    delete nextState.locked;
+                    delete nextState.password;
+                    break;
             }
         }
     }
@@ -346,37 +344,37 @@ function _p2pStatusChanged(state, action) {
  */
 function _setPassword(state, { conference, method, password }) {
     switch (method) {
-    case conference.join:
-        return assign(state, {
-            // 1. The JitsiConference which transitions away from
-            // passwordRequired MUST remain in the redux state
-            // features/base/conference until it transitions into
-            // conference; otherwise, there is a span of time during which
-            // the redux state does not even know that there is a
-            // JitsiConference whatsoever.
-            //
-            // 2. The redux action setPassword will attempt to join the
-            // JitsiConference so joining is an appropriate transitional
-            // redux state.
-            //
-            // 3. The redux action setPassword will perform the same check
-            // before it proceeds with the re-join.
-            joining: state.conference ? state.joining : conference,
-            locked: LOCKED_REMOTELY,
+        case conference.join:
+            return assign(state, {
+                // 1. The JitsiConference which transitions away from
+                // passwordRequired MUST remain in the redux state
+                // features/base/conference until it transitions into
+                // conference; otherwise, there is a span of time during which
+                // the redux state does not even know that there is a
+                // JitsiConference whatsoever.
+                //
+                // 2. The redux action setPassword will attempt to join the
+                // JitsiConference so joining is an appropriate transitional
+                // redux state.
+                //
+                // 3. The redux action setPassword will perform the same check
+                // before it proceeds with the re-join.
+                joining: state.conference ? state.joining : conference,
+                locked: LOCKED_REMOTELY,
 
-            /**
-             * The password with which the conference is to be joined.
-             *
-             * @type {string}
-             */
-            password
-        });
+                /**
+                 * The password with which the conference is to be joined.
+                 *
+                 * @type {string}
+                 */
+                password
+            });
 
-    case conference.lock:
-        return assign(state, {
-            locked: password ? LOCKED_LOCALLY : undefined,
-            password
-        });
+        case conference.lock:
+            return assign(state, {
+                locked: password ? LOCKED_LOCALLY : undefined,
+                password
+            });
     }
 
     return state;
@@ -411,4 +409,3 @@ function _setRoom(state, action) {
         room
     });
 }
-

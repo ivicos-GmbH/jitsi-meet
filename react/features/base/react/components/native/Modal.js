@@ -7,7 +7,6 @@ import { Modal as NativeModal } from 'react-native';
  * Type of the props of the component.
  */
 type Props = {
-
     /**
      * Children of the component.
      */
@@ -28,7 +27,6 @@ type Props = {
  * behaviour across modals in the app.
  */
 export default class Modal extends Component<Props> {
-
     /**
      * Implements {@code Component#render}.
      *
@@ -38,15 +36,8 @@ export default class Modal extends Component<Props> {
         const { children, ...props } = this.props;
 
         return (
-            <NativeModal
-                animationType = { 'slide' }
-                supportedOrientations = { [
-                    'landscape',
-                    'portrait'
-                ] }
-                transparent = { true }
-                { ...props } >
-                { children }
+            <NativeModal animationType={'slide'} supportedOrientations={['landscape', 'portrait']} transparent={true} {...props}>
+                {children}
             </NativeModal>
         );
     }

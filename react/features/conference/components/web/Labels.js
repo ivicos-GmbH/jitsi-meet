@@ -4,10 +4,7 @@ import React from 'react';
 
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import { connect } from '../../../base/redux';
-import AbstractLabels, {
-    _abstractMapStateToProps as _mapStateToProps,
-    type Props
-} from '../AbstractLabels';
+import AbstractLabels, { _abstractMapStateToProps as _mapStateToProps, type Props } from '../AbstractLabels';
 
 declare var interfaceConfig: Object;
 
@@ -15,7 +12,6 @@ declare var interfaceConfig: Object;
  * The type of the React {@code Component} state of {@link Labels}.
  */
 type State = {
-
     /**
      * Whether or not the filmstrip was not visible but has transitioned in the
      * latest component update to visible. This boolean is used  to set a class
@@ -69,36 +65,17 @@ class Labels extends AbstractLabels<Props, State> {
         const { _filmstripVisible } = this.props;
         const { filmstripBecomingVisible } = this.state;
         const { VIDEO_QUALITY_LABEL_DISABLED } = interfaceConfig;
-        const className = `large-video-labels ${
-            filmstripBecomingVisible ? 'opening' : ''} ${
-            _filmstripVisible ? 'with-filmstrip' : 'without-filmstrip'}`;
+        const className = `large-video-labels ${filmstripBecomingVisible ? 'opening' : ''} ${_filmstripVisible ? 'with-filmstrip' : 'without-filmstrip'}`;
 
         return (
-            <div className = { className } >
-                {
-                    this._renderE2EELabel()
-                }
-                {
-                    this._renderRecordingLabel(
-                        JitsiRecordingConstants.mode.FILE)
-                }
-                {
-                    this._renderRecordingLabel(
-                        JitsiRecordingConstants.mode.STREAM)
-                }
-                {
-                    this._renderLocalRecordingLabel()
-                }
-                {
-                    this._renderTranscribingLabel()
-                }
-                {
-                    this.props._showVideoQualityLabel && !VIDEO_QUALITY_LABEL_DISABLED
-                        && this._renderVideoQualityLabel()
-                }
-                {
-                    this._renderInsecureRoomNameLabel()
-                }
+            <div className={className}>
+                {this._renderE2EELabel()}
+                {this._renderRecordingLabel(JitsiRecordingConstants.mode.FILE)}
+                {this._renderRecordingLabel(JitsiRecordingConstants.mode.STREAM)}
+                {this._renderLocalRecordingLabel()}
+                {this._renderTranscribingLabel()}
+                {this.props._showVideoQualityLabel && !VIDEO_QUALITY_LABEL_DISABLED && this._renderVideoQualityLabel()}
+                {this._renderInsecureRoomNameLabel()}
             </div>
         );
     }
@@ -107,7 +84,7 @@ class Labels extends AbstractLabels<Props, State> {
 
     _renderLocalRecordingLabel: () => React$Element<*>;
 
-    _renderRecordingLabel: string => React$Element<*>;
+    _renderRecordingLabel: (string) => React$Element<*>;
 
     _renderTranscribingLabel: () => React$Element<*>;
 

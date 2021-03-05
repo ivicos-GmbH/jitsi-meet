@@ -13,7 +13,6 @@ import { toggleLobbyMode } from '../../actions';
 import styles from './styles';
 
 type Props = {
-
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -52,14 +51,9 @@ class EnableLobbyModeDialog extends PureComponent<Props> {
      */
     render() {
         return (
-            <CustomSubmitDialog
-                okKey = 'lobby.enableDialogSubmit'
-                onSubmit = { this._onEnableLobbyMode }
-                titleKey = 'lobby.dialogTitle'>
-                <View style = { styles.formWrapper }>
-                    <Text style = { this.props._dialogStyles.text } >
-                        { this.props.t('lobby.enableDialogText') }
-                    </Text>
+            <CustomSubmitDialog okKey="lobby.enableDialogSubmit" onSubmit={this._onEnableLobbyMode} titleKey="lobby.dialogTitle">
+                <View style={styles.formWrapper}>
+                    <Text style={this.props._dialogStyles.text}>{this.props.t('lobby.enableDialogText')}</Text>
                 </View>
             </CustomSubmitDialog>
         );

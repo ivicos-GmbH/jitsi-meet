@@ -7,7 +7,6 @@ import { NetInfoCellularGeneration, NetInfoStateType } from '@react-native-commu
  * conditions.
  */
 export type NetworkInfo = {
-
     /**
      * Tells whether or not the internet is reachable.
      */
@@ -24,16 +23,15 @@ export type NetworkInfo = {
      * the format is whatever comes out of the 'react-native-netinfo' library which is network type dependent.
      */
     details: ?{
-
         /**
          * If {@link networkType} is {@link NetInfoStateType.cellular} then it may provide the info about the type of
          * cellular network.
          */
-        cellularGeneration: ?NetInfoCellularGeneration;
+        cellularGeneration: ?NetInfoCellularGeneration,
 
         /**
          * Indicates whether or not the connection is expensive.
          */
-        isConnectionExpensive: ?boolean;
+        isConnectionExpensive: ?boolean
     }
-}
+};

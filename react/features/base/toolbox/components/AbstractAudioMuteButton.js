@@ -8,9 +8,7 @@ import type { Props } from './AbstractButton';
 /**
  * An abstract implementation of a button for toggling audio mute.
  */
-export default class AbstractAudioMuteButton<P: Props, S: *>
-    extends AbstractButton<P, S> {
-
+export default class AbstractAudioMuteButton<P: Props, S: *> extends AbstractButton<P, S> {
     icon = IconMicrophone;
     toggledIcon = IconMicDisabled;
 
@@ -56,7 +54,8 @@ export default class AbstractAudioMuteButton<P: Props, S: *>
      * @protected
      * @returns {void}
      */
-    _setAudioMuted(audioMuted: boolean) { // eslint-disable-line no-unused-vars
+    _setAudioMuted(audioMuted: boolean) {
+        // eslint-disable-line no-unused-vars
         // To be implemented by subclass.
     }
 }

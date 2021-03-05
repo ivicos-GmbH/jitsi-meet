@@ -2,7 +2,6 @@
 
 import { JitsiRecordingConstants } from '../base/lib-jitsi-meet';
 
-
 /**
  * The identifier of the sound to be played when a live streaming session is stopped.
  *
@@ -47,8 +46,4 @@ export const RECORDING_TYPES = {
  *
  * @type {Array<string>}
  */
-export const RECORDING_STATUS_PRIORITIES = [
-    JitsiRecordingConstants.status.OFF,
-    JitsiRecordingConstants.status.PENDING,
-    JitsiRecordingConstants.status.ON
-];
+export const RECORDING_STATUS_PRIORITIES = [JitsiRecordingConstants.status.OFF, JitsiRecordingConstants.status.PENDING, JitsiRecordingConstants.status.ON];

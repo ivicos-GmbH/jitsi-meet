@@ -6,10 +6,7 @@ import StarFilledIcon from '@atlaskit/icon/glyph/star-filled';
 import React, { Component } from 'react';
 import type { Dispatch } from 'redux';
 
-import {
-    createFeedbackOpenEvent,
-    sendAnalytics
-} from '../../analytics';
+import { createFeedbackOpenEvent, sendAnalytics } from '../../analytics';
 import { Dialog } from '../../base/dialog';
 import { translate } from '../../base/i18n';
 import { connect } from '../../base/redux';
@@ -18,8 +15,7 @@ import { cancelFeedback, submitFeedback } from '../actions';
 declare var APP: Object;
 declare var interfaceConfig: Object;
 
-const scoreAnimationClass
-    = interfaceConfig.ENABLE_FEEDBACK_ANIMATION ? 'shake-rotate' : '';
+const scoreAnimationClass = interfaceConfig.ENABLE_FEEDBACK_ANIMATION ? 'shake-rotate' : '';
 
 /**
  * The scores to display for selecting. The score is the index in the array and
@@ -27,19 +23,12 @@ const scoreAnimationClass
  *
  * @types {string[]}
  */
-const SCORES = [
-    'feedback.veryBad',
-    'feedback.bad',
-    'feedback.average',
-    'feedback.good',
-    'feedback.veryGood'
-];
+const SCORES = ['feedback.veryBad', 'feedback.bad', 'feedback.average', 'feedback.good', 'feedback.veryGood'];
 
 /**
  * The type of the React {@code Component} props of {@link FeedbackDialog}.
  */
 type Props = {
-
     /**
      * The cached feedback message, if any, that was set when closing a previous
      * instance of {@code FeedbackDialog}.
@@ -79,7 +68,6 @@ type Props = {
  * The type of the React {@code Component} state of {@link FeedbackDialog}.
  */
 type State = {
-
     /**
      * The currently entered feedback message.
      */
@@ -161,8 +149,7 @@ class FeedbackDialog extends Component<Props, State> {
         // Bind event handlers so they are only bound once for every instance.
         this._onCancel = this._onCancel.bind(this);
         this._onMessageChange = this._onMessageChange.bind(this);
-        this._onScoreContainerMouseLeave
-            = this._onScoreContainerMouseLeave.bind(this);
+        this._onScoreContainerMouseLeave = this._onScoreContainerMouseLeave.bind(this);
         this._onSubmit = this._onSubmit.bind(this);
     }
 
@@ -197,63 +184,43 @@ class FeedbackDialog extends Component<Props, State> {
      */
     render() {
         const { message, mousedOverScore, score } = this.state;
-        const scoreToDisplayAsSelected
-            = mousedOverScore > -1 ? mousedOverScore : score;
+        const scoreToDisplayAsSelected = mousedOverScore > -1 ? mousedOverScore : score;
 
-        const scoreIcons = this._scoreClickConfigurations.map(
-            (config, index) => {
-                const isFilled = index <= scoreToDisplayAsSelected;
-                const activeClass = isFilled ? 'active' : '';
-                const className
-                    = `star-btn ${scoreAnimationClass} ${activeClass}`;
+        const scoreIcons = this._scoreClickConfigurations.map((config, index) => {
+            const isFilled = index <= scoreToDisplayAsSelected;
+            const activeClass = isFilled ? 'active' : '';
+            const className = `star-btn ${scoreAnimationClass} ${activeClass}`;
 
-                return (
-                    <a
-                        className = { className }
-                        key = { index }
-                        onClick = { config._onClick }
-                        onMouseOver = { config._onMouseOver }>
-                        { isFilled
-                            ? <StarFilledIcon
-                                label = 'star-filled'
-                                size = 'xlarge' />
-                            : <StarIcon
-                                label = 'star'
-                                size = 'xlarge' /> }
-                    </a>
-                );
-            });
+            return (
+                <a className={className} key={index} onClick={config._onClick} onMouseOver={config._onMouseOver}>
+                    {isFilled ? <StarFilledIcon label="star-filled" size="xlarge" /> : <StarIcon label="star" size="xlarge" />}
+                </a>
+            );
+        });
 
         const { t } = this.props;
 
         return (
-            <Dialog
-                okKey = 'dialog.Submit'
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                titleKey = 'feedback.rateExperience'>
-                <div className = 'feedback-dialog'>
-                    <div className = 'rating'>
-                        <div className = 'star-label'>
-                            <p id = 'starLabel'>
-                                { t(SCORES[scoreToDisplayAsSelected]) }
-                            </p>
+            <Dialog okKey="dialog.Submit" onCancel={this._onCancel} onSubmit={this._onSubmit} titleKey="feedback.rateExperience">
+                <div className="feedback-dialog">
+                    <div className="rating">
+                        <div className="star-label">
+                            <p id="starLabel">{t(SCORES[scoreToDisplayAsSelected])}</p>
                         </div>
-                        <div
-                            className = 'stars'
-                            onMouseLeave = { this._onScoreContainerMouseLeave }>
-                            { scoreIcons }
+                        <div className="stars" onMouseLeave={this._onScoreContainerMouseLeave}>
+                            {scoreIcons}
                         </div>
                     </div>
-                    <div className = 'details'>
+                    <div className="details">
                         <FieldTextAreaStateless
-                            autoFocus = { true }
-                            className = 'input-control'
-                            id = 'feedbackTextArea'
-                            label = { t('feedback.detailsLabel') }
-                            onChange = { this._onMessageChange }
-                            shouldFitContainer = { true }
-                            value = { message } />
+                            autoFocus={true}
+                            className="input-control"
+                            id="feedbackTextArea"
+                            label={t('feedback.detailsLabel')}
+                            onChange={this._onMessageChange}
+                            shouldFitContainer={true}
+                            value={message}
+                        />
                     </div>
                 </div>
             </Dialog>

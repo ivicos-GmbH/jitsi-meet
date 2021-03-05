@@ -54,7 +54,6 @@ const whiteToolbarButtonIcon = {
  * The Toolbox and toolbar related styles.
  */
 const styles = {
-
     expandMenuContainer: {
         alignItems: 'center',
         borderTopLeftRadius: 16,

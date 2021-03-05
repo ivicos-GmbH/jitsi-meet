@@ -1,11 +1,6 @@
 import { ReducerRegistry } from '../base/redux';
 
-import {
-    CLEAR_RECORDING_SESSIONS,
-    RECORDING_SESSION_UPDATED,
-    SET_PENDING_RECORDING_NOTIFICATION_UID,
-    SET_STREAM_KEY
-} from './actionTypes';
+import { CLEAR_RECORDING_SESSIONS, RECORDING_SESSION_UPDATED, SET_PENDING_RECORDING_NOTIFICATION_UID, SET_STREAM_KEY } from './actionTypes';
 
 const DEFAULT_STATE = {
     pendingNotificationUids: {},
@@ -20,10 +15,8 @@ const STORE_NAME = 'features/recording';
 /**
  * Reduces the Redux actions of the feature features/recording.
  */
-ReducerRegistry.register(STORE_NAME,
-    (state = DEFAULT_STATE, action) => {
-        switch (action.type) {
-
+ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
+    switch (action.type) {
         case CLEAR_RECORDING_SESSIONS:
             return {
                 ...state,
@@ -33,8 +26,7 @@ ReducerRegistry.register(STORE_NAME,
         case RECORDING_SESSION_UPDATED:
             return {
                 ...state,
-                sessionDatas:
-                    _updateSessionDatas(state.sessionDatas, action.sessionData)
+                sessionDatas: _updateSessionDatas(state.sessionDatas, action.sessionData)
             };
 
         case SET_PENDING_RECORDING_NOTIFICATION_UID: {
@@ -58,8 +50,8 @@ ReducerRegistry.register(STORE_NAME,
 
         default:
             return state;
-        }
-    });
+    }
+});
 
 /**
  * Updates the known information on recording sessions.
@@ -70,12 +62,11 @@ ReducerRegistry.register(STORE_NAME,
  * @returns {Array} The session datas with the updated session data added.
  */
 function _updateSessionDatas(sessionDatas, newSessionData) {
-    const hasExistingSessionData = sessionDatas.find(
-        sessionData => sessionData.id === newSessionData.id);
+    const hasExistingSessionData = sessionDatas.find((sessionData) => sessionData.id === newSessionData.id);
     let newSessionDatas;
 
     if (hasExistingSessionData) {
-        newSessionDatas = sessionDatas.map(sessionData => {
+        newSessionDatas = sessionDatas.map((sessionData) => {
             if (sessionData.id === newSessionData.id) {
                 return {
                     ...newSessionData
@@ -88,10 +79,7 @@ function _updateSessionDatas(sessionDatas, newSessionData) {
     } else {
         // If the session data is not present, then there is nothing to update
         // and instead it needs to be added to the known session datas.
-        newSessionDatas = [
-            ...sessionDatas,
-            { ...newSessionData }
-        ];
+        newSessionDatas = [...sessionDatas, { ...newSessionData }];
     }
 
     return newSessionDatas;

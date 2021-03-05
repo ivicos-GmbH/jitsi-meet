@@ -47,11 +47,9 @@ export function setAspectRatio(width: number, height: number): Function {
         // Don't change the aspect ratio if width and height are the same, that
         // is, if we transition to a 1:1 aspect ratio.
         if (width !== height) {
-            const aspectRatio
-                = width < height ? ASPECT_RATIO_NARROW : ASPECT_RATIO_WIDE;
+            const aspectRatio = width < height ? ASPECT_RATIO_NARROW : ASPECT_RATIO_WIDE;
 
-            if (aspectRatio
-                    !== getState()['features/base/responsive-ui'].aspectRatio) {
+            if (aspectRatio !== getState()['features/base/responsive-ui'].aspectRatio) {
                 return dispatch({
                     type: SET_ASPECT_RATIO,
                     aspectRatio

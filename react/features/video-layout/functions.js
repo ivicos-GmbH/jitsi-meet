@@ -3,13 +3,7 @@
 import { getFeatureFlag, TILE_VIEW_ENABLED } from '../base/flags';
 import { getPinnedParticipant, getParticipantCount } from '../base/participants';
 import { CHAT_SIZE } from '../chat/constants';
-import {
-    ASPECT_RATIO_BREAKPOINT,
-    DEFAULT_MAX_COLUMNS,
-    ABSOLUTE_MAX_COLUMNS,
-    SINGLE_COLUMN_BREAKPOINT,
-    TWO_COLUMN_BREAKPOINT
-} from '../filmstrip/constants';
+import { ASPECT_RATIO_BREAKPOINT, DEFAULT_MAX_COLUMNS, ABSOLUTE_MAX_COLUMNS, SINGLE_COLUMN_BREAKPOINT, TWO_COLUMN_BREAKPOINT } from '../filmstrip/constants';
 import { isYoutubeVideoPlaying } from '../youtube-player/functions';
 
 import { LAYOUTS } from './constants';
@@ -141,23 +135,18 @@ export function shouldDisplayTileView(state: Object = {}) {
     // None tile view mode is easier to calculate (no need for many negations), so we do
     // that and negate it only once.
     const shouldDisplayNormalMode = Boolean(
-
         // Reasons for normal mode:
 
         // Editing etherpad
-        state['features/etherpad']?.editing
-
-        // We pinned a participant
-        || getPinnedParticipant(state)
-
-        // It's a 1-on-1 meeting
-        || participantCount < 3
-
-        // There is a shared YouTube video in the meeting
-        || isYoutubeVideoPlaying(state)
-
-        // We want jibri to use stage view by default
-        || iAmRecorder
+        state['features/etherpad']?.editing ||
+            // We pinned a participant
+            getPinnedParticipant(state) ||
+            // It's a 1-on-1 meeting
+            participantCount < 3 ||
+            // There is a shared YouTube video in the meeting
+            isYoutubeVideoPlaying(state) ||
+            // We want jibri to use stage view by default
+            iAmRecorder
     );
 
     return !shouldDisplayNormalMode;
