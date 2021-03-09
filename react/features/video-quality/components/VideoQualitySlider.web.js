@@ -139,7 +139,7 @@ class VideoQualitySlider extends Component<Props> {
         return (
             <div className = { 'video-quality-dialog' }>
                 <h3 className = 'video-quality-dialog-title'>
-                    { t('videoStatus.callQuality') }
+                    {t('videoStatus.callQuality')}
                 </h3>
                 <div className = 'video-quality-dialog-contents'>
                     <div className = 'video-quality-dialog-slider-container'>
@@ -160,7 +160,7 @@ class VideoQualitySlider extends Component<Props> {
 
                     </div>
                     <div className = 'video-quality-dialog-labels'>
-                        { this._createLabels(activeSliderOption) }
+                        {this._createLabels(activeSliderOption)}
                     </div>
                 </div>
             </div>
@@ -195,7 +195,7 @@ class VideoQualitySlider extends Component<Props> {
                     key = { index }
                     style = { style }>
                     <div className = 'video-quality-dialog-label'>
-                        { this.props.t(sliderOption.textKey) }
+                        {this.props.t(sliderOption.textKey)}
                     </div>
                 </div>
             );

@@ -301,13 +301,13 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
 
         return (
             <>
-                { screenState === SCREEN_STATES.VIEW && this._renderParticipantInfo() }
-                { screenState === SCREEN_STATES.EDIT && this._renderParticipantForm() }
-                { screenState === SCREEN_STATES.PASSWORD && this._renderPasswordForm() }
+                { screenState === SCREEN_STATES.VIEW && this._renderParticipantInfo()}
+                { screenState === SCREEN_STATES.EDIT && this._renderParticipantForm()}
+                { screenState === SCREEN_STATES.PASSWORD && this._renderPasswordForm()}
 
                 { (screenState === SCREEN_STATES.VIEW || screenState === SCREEN_STATES.EDIT)
-                    && this._renderStandardButtons() }
-                { screenState === SCREEN_STATES.PASSWORD && this._renderPasswordJoinButtons() }
+                    && this._renderStandardButtons()}
+                { screenState === SCREEN_STATES.PASSWORD && this._renderPasswordJoinButtons()}
             </>
         );
     }

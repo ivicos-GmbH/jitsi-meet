@@ -70,7 +70,7 @@ export default class VideoMenuButton extends Component<Props> {
                         { icon && <Icon src = { icon } /> }
                     </span>
                     <span className = 'popupmenu__text'>
-                        { buttonText }
+                        {buttonText}
                     </span>
                 </a>
             </li>

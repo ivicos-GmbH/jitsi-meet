@@ -18,7 +18,7 @@ import { FOLLOW_ME_COMMAND } from './constants';
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/conference'].followMeEnabled,
-    /* listener */ (newSelectedValue, store) => _sendFollowMeCommand(newSelectedValue || 'off', store));
+    /* listener */(newSelectedValue, store) => _sendFollowMeCommand(newSelectedValue || 'off', store));
 
 /**
  * Subscribes to changes to the currently pinned participant in the user

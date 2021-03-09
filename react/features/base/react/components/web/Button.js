@@ -34,7 +34,7 @@ export default class ButtonImpl extends Component<Props> {
                 appearance = 'primary'
                 onClick = { onValueChange }
                 type = 'button'>
-                { this.props.children }
+                { this.props.children}
             </Button>
         );
     }

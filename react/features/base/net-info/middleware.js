@@ -30,19 +30,19 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
             };
 
             networkInfoService.addListener(
-                ONLINE_STATE_CHANGED_EVENT,
-                ({ isOnline, networkType, details }: NetworkInfo) => {
-                    logger.info('Network changed', JSON.stringify({
-                        isOnline,
-                        details,
-                        networkType
-                    }));
-                    dispatch(setNetworkInfo({
-                        isOnline,
-                        networkType,
-                        details
-                    }));
-                });
+                    ONLINE_STATE_CHANGED_EVENT,
+                    ({ isOnline, networkType, details }: NetworkInfo) => {
+                        logger.info('Network changed', JSON.stringify({
+                            isOnline,
+                            details,
+                            networkType
+                        }));
+                        dispatch(setNetworkInfo({
+                            isOnline,
+                            networkType,
+                            details
+                        }));
+                    });
 
             dispatch(_storeNetworkInfoCleanup(stop));
 

@@ -62,9 +62,9 @@ MiddlewareRegistry.register(store => next => action => {
         const { conference } = action;
 
         conference.addCommandListener(
-            FOLLOW_ME_COMMAND, ({ attributes }, id) => {
-                _onFollowMeCommand(attributes, id, store);
-            });
+                FOLLOW_ME_COMMAND, ({ attributes }, id) => {
+                    _onFollowMeCommand(attributes, id, store);
+                });
         break;
     }
     case PARTICIPANT_LEFT:
@@ -147,7 +147,7 @@ function _onFollowMeCommand(attributes = {}, id, store) {
         const documentManager = APP.UI.getSharedDocumentManager();
 
         if (documentManager
-                && isEtherpadVisible !== state['features/etherpad'].editing) {
+            && isEtherpadVisible !== state['features/etherpad'].editing) {
             documentManager.toggleEtherpad();
         }
     }
@@ -156,8 +156,8 @@ function _onFollowMeCommand(attributes = {}, id, store) {
     const idOfParticipantToPin = attributes.nextOnStage;
 
     if (typeof idOfParticipantToPin !== 'undefined'
-            && (!pinnedParticipant || idOfParticipantToPin !== pinnedParticipant.id)
-            && oldState.nextOnStage !== attributes.nextOnStage) {
+        && (!pinnedParticipant || idOfParticipantToPin !== pinnedParticipant.id)
+        && oldState.nextOnStage !== attributes.nextOnStage) {
         _pinVideoThumbnailById(store, idOfParticipantToPin);
     } else if (typeof idOfParticipantToPin === 'undefined' && pinnedParticipant) {
         store.dispatch(pinParticipant(null));

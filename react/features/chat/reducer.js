@@ -45,7 +45,7 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
         return {
             ...state,
             lastReadMessage:
-                action.hasRead ? newMessage : state.lastReadMessage,
+                    action.hasRead ? newMessage : state.lastReadMessage,
             messages
         };
     }
@@ -75,7 +75,7 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
             ...state,
             isOpen: false,
             lastReadMessage: state.messages[
-                navigator.product === 'ReactNative' ? 0 : state.messages.length - 1],
+                    navigator.product === 'ReactNative' ? 0 : state.messages.length - 1],
             privateMessageRecipient: action.participant
         };
     }

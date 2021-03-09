@@ -78,7 +78,7 @@ class DesktopSourcePreview extends Component<Props> {
                         src = { this.props.source.thumbnail.toDataURL() } />
                 </div>
                 <div className = 'desktop-source-preview-label'>
-                    { this.props.source.name }
+                    {this.props.source.name}
                 </div>
             </div>
         );

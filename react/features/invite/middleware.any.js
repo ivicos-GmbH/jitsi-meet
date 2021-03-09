@@ -115,17 +115,17 @@ MiddlewareRegistry.register(store => next => action => {
         _maybeHideCalleeInfo(action, store);
 
         const newParticipantPresence
-            = getParticipantPresenceStatus(state, action.participant.id);
+                = getParticipantPresenceStatus(state, action.participant.id);
 
         if (oldParticipantPresence === newParticipantPresence) {
             break;
         }
 
         const oldSoundId
-            = oldParticipantPresence
+                = oldParticipantPresence
                 && statusToRingtone[oldParticipantPresence];
         const newSoundId
-            = newParticipantPresence
+                = newParticipantPresence
                 && statusToRingtone[newParticipantPresence];
 
 
@@ -145,8 +145,8 @@ MiddlewareRegistry.register(store => next => action => {
     }
     case UPDATE_DIAL_IN_NUMBERS_FAILED:
         logger.error(
-            'Error encountered while fetching dial-in numbers:',
-            action.error);
+                'Error encountered while fetching dial-in numbers:',
+                action.error);
         break;
     }
 

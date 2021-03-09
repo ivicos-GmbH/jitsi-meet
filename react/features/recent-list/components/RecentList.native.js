@@ -50,13 +50,13 @@ type Props = {
  */
 class RecentList extends AbstractRecentList<Props> {
     _getRenderListEmptyComponent: () => React$Node;
-    _onPress: string => {};
+    _onPress: string => { };
 
     /**
-     * Initializes a new {@code RecentList} instance.
-     *
-     * @inheritdoc
-     */
+ * Initializes a new {@code RecentList} instance.
+ *
+ * @inheritdoc
+ */
     constructor(props: Props) {
         super(props);
 
@@ -65,10 +65,10 @@ class RecentList extends AbstractRecentList<Props> {
     }
 
     /**
-     * Implements the React Components's render method.
-     *
-     * @inheritdoc
-     */
+ * Implements the React Components's render method.
+ *
+ * @inheritdoc
+ */
     render() {
         if (!isRecentListEnabled()) {
             return null;
@@ -92,18 +92,18 @@ class RecentList extends AbstractRecentList<Props> {
         );
     }
 
-    _onLongPress: (Object) => void;
+_onLongPress: (Object) => void;
 
-    /**
-     * Handles the list's navigate action.
-     *
-     * @private
-     * @param {Object} item - The item which was long pressed.
-     * @returns {void}
-     */
-    _onLongPress(item) {
-        this.props.dispatch(openDialog(RecentListItemMenu, { item }));
-    }
+/**
+ * Handles the list's navigate action.
+ *
+ * @private
+ * @param {Object} item - The item which was long pressed.
+ * @returns {void}
+ */
+_onLongPress(item) {
+    this.props.dispatch(openDialog(RecentListItemMenu, { item }));
+}
 }
 
 /**

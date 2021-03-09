@@ -73,7 +73,7 @@ export default class MessageContainer extends AbstractMessageContainer<Props> {
                 id = 'chatconversation'
                 onScroll = { this._onChatScroll }
                 ref = { this._messageListRef }>
-                { messages }
+                { messages}
                 <div ref = { this._messagesListEndRef } />
             </div>
         );

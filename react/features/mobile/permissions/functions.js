@@ -15,11 +15,11 @@ export function openSettings() {
     case 'android':
         NativeModules.AndroidSettings.open().catch(() => {
             Alert.alert(
-                'Error opening settings',
-                'Please open settings and grant the required permissions',
-                [
-                    { text: 'OK' }
-                ]
+                    'Error opening settings',
+                    'Please open settings and grant the required permissions',
+                    [
+                        { text: 'OK' }
+                    ]
             );
         });
         break;

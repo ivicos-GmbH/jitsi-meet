@@ -97,9 +97,9 @@ class ToolbarButton extends AbstractToolbarButton<Props> {
                     ? <Tooltip
                         content = { this.props.tooltip }
                         position = { this.props.tooltipPosition }>
-                        { children }
+                        {children}
                     </Tooltip>
-                    : children }
+                    : children}
             </div>
         );
     }

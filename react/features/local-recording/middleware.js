@@ -23,9 +23,9 @@ MiddlewareRegistry.register(({ getState, dispatch }) => next => action => {
     case CONFERENCE_JOINED: {
         const { localRecording } = getState()['features/base/config'];
         const isLocalRecordingEnabled = Boolean(
-            localRecording
-            && localRecording.enabled
-            && typeof APP === 'object'
+                localRecording
+                && localRecording.enabled
+                && typeof APP === 'object'
         );
 
         if (!isLocalRecordingEnabled) {
@@ -59,10 +59,10 @@ MiddlewareRegistry.register(({ getState, dispatch }) => next => action => {
         };
 
         typeof APP === 'object' && typeof APP.keyboardshortcut === 'object'
-            && APP.keyboardshortcut.registerShortcut('L', null, () => {
-                sendAnalytics(createShortcutEvent('local.recording'));
-                dispatch(toggleDialog(LocalRecordingInfoDialog));
-            }, 'keyboardShortcuts.localRecording');
+                && APP.keyboardshortcut.registerShortcut('L', null, () => {
+                    sendAnalytics(createShortcutEvent('local.recording'));
+                    dispatch(toggleDialog(LocalRecordingInfoDialog));
+                }, 'keyboardShortcuts.localRecording');
 
         if (localRecording.format) {
             recordingController.switchFormat(localRecording.format);

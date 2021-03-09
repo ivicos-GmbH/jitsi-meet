@@ -51,31 +51,31 @@ const NavigationBar = (props: Props) => {
 
     return (
         <View
-            pointerEvents = 'box-none'
-            style = { styles.navBarWrapper }>
+            pointerEvents='box-none'
+            style={styles.navBarWrapper}>
             <PictureInPictureButton
-                styles = { styles.navBarButton } />
+                styles={styles.navBarButton} />
             <View
-                pointerEvents = 'box-none'
-                style = { styles.roomNameContainer }>
+                pointerEvents='box-none'
+                style={styles.roomNameContainer}>
                 <View
-                    pointerEvents = 'box-none'
-                    style = { styles.roomNameWrapper }>
+                    pointerEvents='box-none'
+                    style={styles.roomNameWrapper}>
                     {
                         props._meetingNameEnabled
-                        && <View style = { styles.roomNameView }>
+                        && <View style={styles.roomNameView}>
                             <Text
-                                numberOfLines = { 1 }
-                                style = { styles.roomName }>
-                                { props._meetingName }
+                                numberOfLines={1}
+                                style={styles.roomName}>
+                                {props._meetingName}
                             </Text>
                         </View>
                     }
                     {
                         props._conferenceTimerEnabled
-                            && <View style = { styles.roomTimerView }>
-                                <ConferenceTimer textStyle = { styles.roomTimer } />
-                            </View>
+                        && <View style={styles.roomTimerView}>
+                            <ConferenceTimer textStyle={styles.roomTimer} />
+                        </View>
                     }
                 </View>
                 <Labels />

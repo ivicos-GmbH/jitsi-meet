@@ -191,7 +191,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                         className = { indicatorContainerClassNames }
                         style = {{ fontSize: this.props.iconSize }}>
                         <div className = 'connection indicatoricon'>
-                            { this._renderIcon() }
+                            {this._renderIcon()}
                         </div>
                     </div>
                 </div>

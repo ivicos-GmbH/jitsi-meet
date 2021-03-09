@@ -29,7 +29,7 @@ export default class NavigateSectionListSectionHeader extends Component<Props> {
     render() {
         return (
             <Text className = 'navigate-section-section-header'>
-                { this.props.section.title }
+                { this.props.section.title}
             </Text>
         );
     }

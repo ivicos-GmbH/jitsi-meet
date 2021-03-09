@@ -79,8 +79,8 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
     const { json } = action;
 
     if (!(json
-            && (json.type === JSON_TYPE_TRANSCRIPTION_RESULT
-                || json.type === JSON_TYPE_TRANSLATION_RESULT))) {
+        && (json.type === JSON_TYPE_TRANSCRIPTION_RESULT
+            || json.type === JSON_TYPE_TRANSLATION_RESULT))) {
         return next(action);
     }
 
@@ -94,7 +94,7 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
         const participantName = json.participant.name;
 
         if (json.type === JSON_TYPE_TRANSLATION_RESULT
-                && json.language === translationLanguage) {
+            && json.language === translationLanguage) {
             // Displays final results in the target language if translation is
             // enabled.
 
@@ -110,7 +110,7 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
                 newTranscriptMessage));
 
         } else if (json.type === JSON_TYPE_TRANSCRIPTION_RESULT
-                && !translationLanguage) {
+            && !translationLanguage) {
             // Displays interim and final results without any translation if
             // translations are disabled.
 
@@ -121,8 +121,8 @@ function _endpointMessageReceived({ dispatch, getState }, next, action) {
             // exist in the map.
             const newTranscriptMessage = {
                 ...state['features/subtitles']._transcriptMessages
-                        .get(transcriptMessageID)
-                    || { participantName }
+                    .get(transcriptMessageID)
+                || { participantName }
             };
 
             _setClearerOnTranscriptMessage(dispatch,

@@ -146,8 +146,8 @@ function PasswordSection({
         if (passwordEditEnabled) {
             return (
                 <>
-                    <a onClick = { onTogglePasswordEditState }>{ t('dialog.Cancel') }</a>
-                    <a onClick = { onPasswordSave }>{ t('dialog.add') }</a>
+                    <a onClick = { onTogglePasswordEditState }>{t('dialog.Cancel')}</a>
+                    <a onClick = { onPasswordSave }>{t('dialog.add')}</a>
                 </>
             );
         }
@@ -157,14 +157,14 @@ function PasswordSection({
                 <>
                     <a
                         className = 'remove-password'
-                        onClick = { onPasswordRemove }>{ t('dialog.Remove') }</a>
+                        onClick = { onPasswordRemove }>{t('dialog.Remove')}</a>
                     {
 
                         // There are cases like lobby and grant moderator when password is not available
                         password ? <>
                             <a
                                 className = 'copy-password'
-                                onClick = { onPasswordCopy }>{ t('dialog.copy') }</a>
+                                onClick = { onPasswordCopy }>{t('dialog.copy')}</a>
                         </> : null
                     }
                 </>
@@ -174,14 +174,14 @@ function PasswordSection({
         return (
             <a
                 className = 'add-password'
-                onClick = { onTogglePasswordEditState }>{ t('info.addPassword') }</a>
+                onClick = { onTogglePasswordEditState }>{t('info.addPassword')}</a>
         );
     }
 
     return (
         <div className = 'security-dialog password-section'>
             <p className = 'description'>
-                { t(canEditPassword ? 'security.about' : 'security.aboutReadOnly') }
+                {t(canEditPassword ? 'security.about' : 'security.aboutReadOnly')}
             </p>
             <div className = 'security-dialog password'>
                 <div
@@ -195,7 +195,7 @@ function PasswordSection({
                         passwordNumberOfDigits = { passwordNumberOfDigits } />
                 </div>
                 <div className = 'security-dialog password-actions'>
-                    { renderPasswordActions() }
+                    {renderPasswordActions()}
                 </div>
             </div>
         </div>

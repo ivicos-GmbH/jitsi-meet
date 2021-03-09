@@ -187,7 +187,7 @@ class MultiSelectAutocomplete extends Component<Props, State> {
                     selectedItems = { this.state.selectedItems }
                     shouldFitContainer = { shouldFitContainer }
                     shouldFocus = { shouldFocus } />
-                { this._renderError() }
+                { this._renderError()}
             </div>
         );
     }

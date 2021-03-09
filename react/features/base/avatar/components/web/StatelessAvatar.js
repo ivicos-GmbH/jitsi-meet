@@ -93,7 +93,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                             textAnchor = 'middle'
                             x = '50'
                             y = '50'>
-                            { initials }
+                            {initials}
                         </text>
                     </svg>
                 </div>

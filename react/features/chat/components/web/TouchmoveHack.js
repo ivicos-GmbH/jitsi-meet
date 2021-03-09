@@ -9,7 +9,7 @@ type Props = {
     /**
      * The component(s) that need to be scrollable on mobile.
      */
-   children: React$Node,
+    children: React$Node,
 
     /**
      * Whether the component is rendered within a modal.

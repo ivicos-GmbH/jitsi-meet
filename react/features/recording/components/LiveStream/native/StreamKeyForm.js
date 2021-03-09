@@ -83,7 +83,7 @@ class StreamKeyForm extends AbstractStreamKeyForm<Props> {
                                         _dialogStyles.text,
                                         styles.warningText
                                     ] }>
-                                    { t('liveStreaming.invalidStreamKey') }
+                                    {t('liveStreaming.invalidStreamKey')}
                                 </Text>
                             </View>
                             : null

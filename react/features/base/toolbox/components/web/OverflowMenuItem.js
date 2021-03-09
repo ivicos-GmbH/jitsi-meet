@@ -97,7 +97,7 @@ class OverflowMenuItem extends Component<Props> {
                         id = { iconId }
                         src = { icon } />
                 </span>
-                { this._renderText() }
+                { this._renderText()}
                 {
                     elementAfter || null
                 }
@@ -114,7 +114,7 @@ class OverflowMenuItem extends Component<Props> {
     _renderText() {
         const textElement = (
             <span className = 'overflow-menu-item-text'>
-                { this.props.text }
+                { this.props.text}
             </span>
         );
 
@@ -123,7 +123,7 @@ class OverflowMenuItem extends Component<Props> {
                 <Tooltip
                     content = { this.props.tooltip }
                     position = { this.props.tooltipPosition }>
-                    { textElement }
+                    { textElement}
                 </Tooltip>
             );
         }

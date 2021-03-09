@@ -94,8 +94,8 @@ class Filmstrip extends Component<Props> {
             <SafeAreaView style = { filmstripStyle }>
                 {
                     this._separateLocalThumbnail
-                        && !isNarrowAspectRatio
-                        && <LocalThumbnail />
+                    && !isNarrowAspectRatio
+                    && <LocalThumbnail />
                 }
                 <ScrollView
                     horizontal = { isNarrowAspectRatio }
@@ -104,7 +104,7 @@ class Filmstrip extends Component<Props> {
                     style = { styles.scrollView } >
                     {
                         !this._separateLocalThumbnail && !isNarrowAspectRatio
-                            && <LocalThumbnail />
+                        && <LocalThumbnail />
                     }
                     {
 
@@ -117,12 +117,12 @@ class Filmstrip extends Component<Props> {
                     }
                     {
                         !this._separateLocalThumbnail && isNarrowAspectRatio
-                            && <LocalThumbnail />
+                        && <LocalThumbnail />
                     }
                 </ScrollView>
                 {
                     this._separateLocalThumbnail && isNarrowAspectRatio
-                        && <LocalThumbnail />
+                    && <LocalThumbnail />
                 }
             </SafeAreaView>
         );

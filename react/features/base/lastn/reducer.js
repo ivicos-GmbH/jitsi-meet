@@ -5,7 +5,7 @@ import { ReducerRegistry, set } from '../redux';
 
 import { validateLastNLimits } from './functions';
 
-ReducerRegistry.register('features/base/lastn', (state = { }, action) => {
+ReducerRegistry.register('features/base/lastn', (state = {}, action) => {
     switch (action.type) {
     case SET_CONFIG:
         return _setConfig(state, action);

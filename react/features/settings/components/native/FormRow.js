@@ -84,11 +84,11 @@ class FormRow extends Component<Props> {
                             styles.fieldLabelText,
                             layout === 'column' ? styles.fieldLabelTextColumn : undefined
                         ] } >
-                        { t(this.props.label) }
+                        {t(this.props.label)}
                     </Text>
                 </View>
                 <View style = { styles.fieldValueContainer } >
-                    { newChild }
+                    {newChild}
                 </View>
             </View>
         );

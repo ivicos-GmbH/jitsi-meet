@@ -68,7 +68,7 @@ class LoadConfigOverlay extends Component<Props> {
                                 styles.loadingOverlayText,
                                 _styles.loadingOverlayText
                             ] }>
-                            { this.props.t('connectingOverlay.joiningRoom') }
+                            {this.props.t('connectingOverlay.joiningRoom')}
                         </Text>
                     </SafeAreaView>
                 </View>

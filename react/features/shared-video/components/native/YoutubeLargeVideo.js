@@ -87,11 +87,11 @@ type Props = {
      */
     _seek: number,
 
-     /**
-     * The status of the player.
-     *
-     * @private
-     */
+    /**
+    * The status of the player.
+    *
+    * @private
+    */
     _status: string,
 
     /**

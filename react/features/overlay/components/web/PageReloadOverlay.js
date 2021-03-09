@@ -32,13 +32,13 @@ class PageReloadOverlay extends AbstractPageReloadOverlay<Props> {
                 <div className = 'inlay'>
                     <span
                         className = 'reload_overlay_title'>
-                        { t(title) }
+                        {t(title)}
                     </span>
                     <span className = 'reload_overlay_text'>
-                        { t(message, { seconds: timeLeft }) }
+                        {t(message, { seconds: timeLeft })}
                     </span>
-                    { this._renderProgressBar() }
-                    { this._renderButton() }
+                    {this._renderProgressBar()}
+                    {this._renderButton()}
                 </div>
             </OverlayFrame>
         );

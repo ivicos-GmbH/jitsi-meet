@@ -117,7 +117,7 @@ class RecentListItemMenu extends PureComponent<Props> {
                     ellipsizeMode = { 'middle' }
                     numberOfLines = { 1 }
                     style = { styles.entryNameLabel }>
-                    { item.title }
+                    {item.title}
                 </Text>
             </View>
         );

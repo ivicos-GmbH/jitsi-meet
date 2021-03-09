@@ -57,15 +57,15 @@ class StreamKeyForm extends AbstractStreamKeyForm<Props> {
                         {
                             this.state.showValidationError
                                 ? <span className = 'warning-text'>
-                                    { t('liveStreaming.invalidStreamKey') }
+                                    {t('liveStreaming.invalidStreamKey')}
                                 </span>
                                 : null
                         }
-                        { this.helpURL
+                        {this.helpURL
                             ? <a
                                 className = 'helper-link'
                                 onClick = { this._onOpenHelp }>
-                                { t('liveStreaming.streamIdHelp') }
+                                {t('liveStreaming.streamIdHelp')}
                             </a>
                             : null
                         }
@@ -75,14 +75,14 @@ class StreamKeyForm extends AbstractStreamKeyForm<Props> {
                         href = { YOUTUBE_TERMS_URL }
                         rel = 'noopener noreferrer'
                         target = '_blank'>
-                        { t('liveStreaming.youtubeTerms') }
+                        {t('liveStreaming.youtubeTerms')}
                     </a>
                     <a
                         className = 'helper-link'
                         href = { GOOGLE_PRIVACY_POLICY }
                         rel = 'noopener noreferrer'
                         target = '_blank'>
-                        { t('liveStreaming.googlePrivacyPolicy') }
+                        {t('liveStreaming.googlePrivacyPolicy')}
                     </a>
                 </div>
             </div>

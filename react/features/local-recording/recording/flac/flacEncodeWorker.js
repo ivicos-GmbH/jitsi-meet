@@ -383,10 +383,10 @@ self.onmessage = function(e) {
             const data = encoder.getBlob();
 
             self.postMessage(
-                {
-                    command: WORKER_BLOB_READY,
-                    buf: data
-                }
+                    {
+                        command: WORKER_BLOB_READY,
+                        buf: data
+                    }
             );
             encoder = null;
         }

@@ -141,7 +141,7 @@ export default class AbstractRecordingLabel
                 setTimeout(() => {
                     // Only if it's still OFF.
                     if (this.props._status
-                            === JitsiRecordingConstants.status.OFF) {
+                        === JitsiRecordingConstants.status.OFF) {
                         this.setState({
                             staleLabel: true
                         });

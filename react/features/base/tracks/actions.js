@@ -75,8 +75,8 @@ export function createDesiredLocalTracks(...desiredTypes) {
 
         const availableTypes
             = getLocalTracks(
-                    state['features/base/tracks'],
-                    /* includePending */ true)
+                state['features/base/tracks'],
+                /* includePending */ true)
                 .map(t => t.mediaType);
 
         // We need to create the desired tracks which are not already available.
@@ -116,9 +116,9 @@ export function createLocalTracksA(options = {}) {
         // device separately.
         for (const device of devices) {
             if (getLocalTrack(
-                    getState()['features/base/tracks'],
-                    device,
-                    /* includePending */ true)) {
+                getState()['features/base/tracks'],
+                device,
+                /* includePending */ true)) {
                 throw new Error(`Local track for ${device} already exists`);
             }
 
@@ -132,33 +132,32 @@ export function createLocalTracksA(options = {}) {
                         micDeviceId: options.micDeviceId
                     },
                     store)
-                .then(
-                    localTracks => {
-                        // Because GUM is called for 1 device (which is actually
-                        // a media type 'audio', 'video', 'screen', etc.) we
-                        // should not get more than one JitsiTrack.
-                        if (localTracks.length !== 1) {
-                            throw new Error(
-                                `Expected exactly 1 track, but was given ${
-                                    localTracks.length} tracks for device: ${
-                                    device}.`);
-                        }
+                    .then(
+                        localTracks => {
+                            // Because GUM is called for 1 device (which is actually
+                            // a media type 'audio', 'video', 'screen', etc.) we
+                            // should not get more than one JitsiTrack.
+                            if (localTracks.length !== 1) {
+                                throw new Error(
+                                    `Expected exactly 1 track, but was given
+                                    ${localTracks.length} tracks for device: ${device}.`);
+                            }
 
-                        if (gumProcess.canceled) {
-                            return _disposeTracks(localTracks)
-                                .then(() =>
-                                    dispatch(_trackCreateCanceled(device)));
-                        }
+                            if (gumProcess.canceled) {
+                                return _disposeTracks(localTracks)
+                                    .then(() =>
+                                        dispatch(_trackCreateCanceled(device)));
+                            }
 
-                        return dispatch(trackAdded(localTracks[0]));
-                    },
-                    reason =>
-                        dispatch(
-                            gumProcess.canceled
-                                ? _trackCreateCanceled(device)
-                                : _onCreateLocalTracksRejected(
-                                    reason,
-                                    device)));
+                            return dispatch(trackAdded(localTracks[0]));
+                        },
+                        reason =>
+                            dispatch(
+                                gumProcess.canceled
+                                    ? _trackCreateCanceled(device)
+                                    : _onCreateLocalTracksRejected(
+                                        reason,
+                                        device)));
 
             /**
              * Cancels the {@code getUserMedia} process represented by this
@@ -308,9 +307,9 @@ function replaceStoredTracks(oldTrack, newTrack) {
         // after means the JitsiLocalTrack.conference is already
         // cleared, so it won't try and do the o/a.
         const disposePromise
-              = oldTrack
-                  ? dispatch(_disposeAndRemoveTracks([ oldTrack ]))
-                  : Promise.resolve();
+            = oldTrack
+                ? dispatch(_disposeAndRemoveTracks([ oldTrack ]))
+                : Promise.resolve();
 
         return disposePromise
             .then(() => {
@@ -325,17 +324,16 @@ function replaceStoredTracks(oldTrack, newTrack) {
                     // current mute state of the app will be reflected
                     // on the track, not vice-versa.
                     const setMuted
-                          = newTrack.isVideoTrack()
-                              ? setVideoMuted
-                              : setAudioMuted;
+                        = newTrack.isVideoTrack()
+                            ? setVideoMuted
+                            : setAudioMuted;
                     const isMuted = newTrack.isMuted();
 
                     sendAnalytics(createTrackMutedEvent(
                         newTrack.getType(),
                         'track.replaced',
                         isMuted));
-                    logger.log(`Replace ${newTrack.getType()} track - ${
-                        isMuted ? 'muted' : 'unmuted'}`);
+                    logger.log(`Replace ${newTrack.getType()} track - ${isMuted ? 'muted' : 'unmuted'}`);
 
                     return dispatch(setMuted(isMuted));
                 }
@@ -645,16 +643,16 @@ function _onCreateLocalTracksRejected(error, device) {
 function _shouldMirror(track) {
     return (
         track
-            && track.isLocal()
-            && track.isVideoTrack()
+        && track.isLocal()
+        && track.isVideoTrack()
 
-            // XXX The type of the return value of JitsiLocalTrack's
-            // getCameraFacingMode happens to be named CAMERA_FACING_MODE as
-            // well, it's defined by lib-jitsi-meet. Note though that the type
-            // of the value on the right side of the equality check is defined
-            // by jitsi-meet. The type definitions are surely compatible today
-            // but that may not be the case tomorrow.
-            && track.getCameraFacingMode() === CAMERA_FACING_MODE.USER);
+        // XXX The type of the return value of JitsiLocalTrack's
+        // getCameraFacingMode happens to be named CAMERA_FACING_MODE as
+        // well, it's defined by lib-jitsi-meet. Note though that the type
+        // of the value on the right side of the equality check is defined
+        // by jitsi-meet. The type definitions are surely compatible today
+        // but that may not be the case tomorrow.
+        && track.getCameraFacingMode() === CAMERA_FACING_MODE.USER);
 }
 
 /**

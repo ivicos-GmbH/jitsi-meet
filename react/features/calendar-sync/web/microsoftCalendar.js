@@ -171,9 +171,7 @@ export const microsoftCalendarApi = {
             popupAuthWindow = window.open(
                 authUrl,
                 'Auth M$',
-                `width=${w}, height=${h}, top=${
-                    (screen.height / 2) - (h / 2)}, left=${
-                    (screen.width / 2) - (w / 2)}`);
+                `width=${w}, height=${h}, top=${(screen.height / 2) - (h / 2)}, left=${(screen.width / 2) - (w / 2)}`);
 
             const windowCloseCheck = setInterval(() => {
                 if (popupAuthWindow && popupAuthWindow.closed) {
@@ -350,8 +348,7 @@ function generateGuid() {
 
     window.crypto.getRandomValues(buf);
 
-    return `${s4(buf[0])}${s4(buf[1])}-${s4(buf[2])}-${s4(buf[3])}-${
-        s4(buf[4])}-${s4(buf[5])}${s4(buf[6])}${s4(buf[7])}`;
+    return `${s4(buf[0])}${s4(buf[1])}-${s4(buf[2])}-${s4(buf[3])}-${s4(buf[4])}-${s4(buf[5])}${s4(buf[6])}${s4(buf[7])}`; // eslint-disable-line max-len
 }
 
 /**
@@ -461,7 +458,7 @@ function getValidatedTokenParts(tokenInfo, guids, appId) {
     if (payload.nonce !== guids.authNonce
         || payload.aud !== appId
         || payload.iss
-            !== `https://login.microsoftonline.com/${payload.tid}/v2.0`) {
+        !== `https://login.microsoftonline.com/${payload.tid}/v2.0`) {
         return null;
     }
 
@@ -560,9 +557,7 @@ function requestCalendarEvents( // eslint-disable-line max-params
     startDate.setDate(startDate.getDate() + fetchStartDays);
     endDate.setDate(endDate.getDate() + fetchEndDays);
 
-    const filter = `Start/DateTime ge '${
-        startDate.toISOString()}' and End/DateTime lt '${
-        endDate.toISOString()}'`;
+    const filter = `Start/DateTime ge '${startDate.toISOString()}' and End/DateTime lt '${endDate.toISOString()}'`;
 
     const ianaTimeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
     const windowsTimeZone = findWindows(ianaTimeZone);

@@ -35,7 +35,7 @@ class NavigateSectionListEmptyComponent extends Component<Props> {
         return (
             <View style = { styles.pullToRefresh }>
                 <Text style = { styles.pullToRefreshText }>
-                    { t('sectionList.pullToRefresh') }
+                    {t('sectionList.pullToRefresh')}
                 </Text>
                 <Icon
                     src = { IconMenuDown }

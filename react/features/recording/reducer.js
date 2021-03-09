@@ -34,7 +34,7 @@ ReducerRegistry.register(STORE_NAME,
             return {
                 ...state,
                 sessionDatas:
-                    _updateSessionDatas(state.sessionDatas, action.sessionData)
+                        _updateSessionDatas(state.sessionDatas, action.sessionData)
             };
 
         case SET_PENDING_RECORDING_NOTIFICATION_UID: {

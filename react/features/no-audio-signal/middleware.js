@@ -98,10 +98,10 @@ async function _handleNoAudioSignalNotification({ dispatch, getState }, action) 
             customActionHandler = () => {
                 // Select device callback
                 dispatch(
-                        updateSettings({
-                            userSelectedMicDeviceId: activeDevice.deviceId,
-                            userSelectedMicDeviceLabel: activeDevice.deviceLabel
-                        })
+                    updateSettings({
+                        userSelectedMicDeviceId: activeDevice.deviceId,
+                        userSelectedMicDeviceLabel: activeDevice.deviceLabel
+                    })
                 );
 
                 dispatch(setAudioInputDevice(activeDevice.deviceId));

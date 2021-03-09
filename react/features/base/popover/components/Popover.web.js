@@ -191,12 +191,12 @@ class Popover extends Component<Props, State> {
                     className = { className }
                     id = { id }
                     ref = { this._drawerContainerRef }>
-                    { children }
+                    { children}
                     <DrawerPortal>
                         <Drawer
                             isOpen = { this.state.showDialog }
                             onClose = { this._onHideDialog }>
-                            { content }
+                            {content}
                         </Drawer>
                     </DrawerPortal>
                 </div>
@@ -213,7 +213,7 @@ class Popover extends Component<Props, State> {
                     content = { this._renderContent() }
                     isOpen = { this.state.showDialog }
                     placement = { position }>
-                    { children }
+                    {children}
                 </InlineDialog>
             </div>
         );
@@ -265,7 +265,7 @@ class Popover extends Component<Props, State> {
 
         return (
             <div className = 'popover'>
-                { content }
+                { content}
                 <div className = 'popover-mouse-padding-top' />
                 <div className = { _mapPositionToPaddingClass(position) } />
             </div>

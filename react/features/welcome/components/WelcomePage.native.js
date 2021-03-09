@@ -136,7 +136,7 @@ class WelcomePage extends AbstractWelcomePage {
                     src = { IconWarning }
                     style = { styles.insecureRoomNameWarningIcon } />
                 <Text style = { styles.insecureRoomNameWarningText }>
-                    { this.props.t('security.insecureRoomNameWarning') }
+                    {this.props.t('security.insecureRoomNameWarning')}
                 </Text>
             </View>
         );
@@ -187,10 +187,10 @@ class WelcomePage extends AbstractWelcomePage {
             })
             .start(animationState =>
                 animationState.finished
-                    && !focused
-                    && this.setState({
-                        _fieldFocused: false
-                    }));
+                && !focused
+                && this.setState({
+                    _fieldFocused: false
+                }));
     }
 
     /**
@@ -218,11 +218,11 @@ class WelcomePage extends AbstractWelcomePage {
                 <Animated.View style = { this._getHintBoxStyle() }>
                     <View style = { styles.hintTextContainer } >
                         <Text style = { styles.hintText }>
-                            { t('welcomepage.roomnameHint') }
+                            {t('welcomepage.roomnameHint')}
                         </Text>
                     </View>
                     <View style = { styles.hintButtonContainer } >
-                        { this._renderJoinButton() }
+                        {this._renderJoinButton()}
                     </View>
                 </Animated.View>
             );
@@ -256,7 +256,7 @@ class WelcomePage extends AbstractWelcomePage {
         } else {
             children = (
                 <Text style = { styles.buttonText }>
-                    { this.props.t('welcomepage.join') }
+                    { this.props.t('welcomepage.join')}
                 </Text>
             );
         }
@@ -268,7 +268,7 @@ class WelcomePage extends AbstractWelcomePage {
                 onPress = { this._onJoin }
                 style = { styles.button }
                 underlayColor = { ColorPalette.white }>
-                { children }
+                { children}
             </TouchableHighlight>
         );
     }
@@ -296,7 +296,7 @@ class WelcomePage extends AbstractWelcomePage {
                     <SafeAreaView style = { styles.roomContainer } >
                         <View style = { styles.joinControls } >
                             <Text style = { styles.enterRoomText }>
-                                { t('welcomepage.roomname') }
+                                {t('welcomepage.roomname')}
                             </Text>
                             <TextInput
                                 accessibilityLabel = { t(roomnameAccLabel) }
@@ -325,7 +325,7 @@ class WelcomePage extends AbstractWelcomePage {
                     <WelcomePageLists disabled = { this.state._fieldFocused } />
                 </View>
                 <WelcomePageSideBar />
-                { this._renderWelcomePageModals() }
+                { this._renderWelcomePageModals()}
             </LocalVideoTrackUnderlay>
         );
     }
@@ -341,7 +341,7 @@ class WelcomePage extends AbstractWelcomePage {
         return (
             <View style = { styles.reducedUIContainer }>
                 <Text style = { styles.reducedUIText }>
-                    { t('welcomepage.reducedUIText', { app: getName() }) }
+                    {t('welcomepage.reducedUIText', { app: getName() })}
                 </Text>
             </View>
         );

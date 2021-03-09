@@ -23,7 +23,7 @@ type Props = BaseProps & {
 /**
  * Abstract dialog to submit something. E.g. a confirmation or a form.
  */
-class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
+class BaseSubmitDialog<P: Props, S: *> extends BaseDialog < P, S > {
     /**
      * Returns the title key of the submit button.
      *
@@ -58,10 +58,10 @@ class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
         return (
             <View>
                 <View style = { brandedDialog.mainWrapper }>
-                    { this._renderSubmittable() }
+                    {this._renderSubmittable()}
                 </View>
                 <View style = { brandedDialog.buttonWrapper }>
-                    { additionalButtons }
+                    {additionalButtons}
                     <TouchableOpacity
                         disabled = { this.props.okDisabled }
                         onPress = { this._onSubmit }
@@ -72,7 +72,7 @@ class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
                             brandedDialog.buttonFarRight
                         ] }>
                         <Text style = { _dialogStyles.buttonLabel }>
-                            { t(this._getSubmitButtonKey()) }
+                            {t(this._getSubmitButtonKey())}
                         </Text>
                     </TouchableOpacity>
                 </View>

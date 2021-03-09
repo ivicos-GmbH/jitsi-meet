@@ -131,8 +131,8 @@ class DesktopPickerPane extends Component<Props> {
 
         return (
             <div className = { classNames }>
-                { previews }
-                { checkBox }
+                { previews}
+                { checkBox}
             </div>
         );
     }

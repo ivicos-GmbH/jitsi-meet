@@ -48,7 +48,7 @@ class SmileysPanel extends PureComponent<Props> {
 
         return (
             <div id = 'smileysContainer'>
-                { smileyItems }
+                { smileyItems}
             </div>
         );
     }

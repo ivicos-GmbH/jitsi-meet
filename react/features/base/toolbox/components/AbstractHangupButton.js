@@ -9,7 +9,7 @@ import type { Props } from './AbstractButton';
  * An abstract implementation of a button for disconnecting a conference.
  */
 export default class AbstractHangupButton<P : Props, S: *>
-    extends AbstractButton<P, S> {
+    extends AbstractButton < P, S > {
 
     icon = IconHangup;
 

@@ -43,59 +43,59 @@ type Props = {
  */
 class RecentList extends AbstractRecentList<Props> {
     _getRenderListEmptyComponent: () => React$Node;
-    _onPress: string => {};
+    _onPress: string => { };
 
     /**
-     * Initializes a new {@code RecentList} instance.
-     *
-     * @inheritdoc
-     */
+ * Initializes a new {@code RecentList} instance.
+ *
+ * @inheritdoc
+ */
     constructor(props: Props) {
         super(props);
 
         this._getRenderListEmptyComponent
-            = this._getRenderListEmptyComponent.bind(this);
+        = this._getRenderListEmptyComponent.bind(this);
         this._onPress = this._onPress.bind(this);
         this._onItemDelete = this._onItemDelete.bind(this);
     }
 
-    _onItemDelete: Object => void;
+_onItemDelete: Object => void;
 
-    /**
-     * Deletes a recent entry.
-     *
-     * @param {Object} entry - The entry to be deleted.
-     * @inheritdoc
-     */
-    _onItemDelete(entry) {
-        this.props.dispatch(deleteRecentListEntry(entry));
+/**
+ * Deletes a recent entry.
+ *
+ * @param {Object} entry - The entry to be deleted.
+ * @inheritdoc
+ */
+_onItemDelete(entry) {
+    this.props.dispatch(deleteRecentListEntry(entry));
+}
+
+/**
+ * Implements the React Components's render method.
+ *
+ * @inheritdoc
+ */
+render() {
+    if (!isRecentListEnabled()) {
+        return null;
     }
+    const {
+        disabled,
+        _recentList
+    } = this.props;
+    const recentList = toDisplayableList(_recentList);
 
-    /**
-     * Implements the React Components's render method.
-     *
-     * @inheritdoc
-     */
-    render() {
-        if (!isRecentListEnabled()) {
-            return null;
-        }
-        const {
-            disabled,
-            _recentList
-        } = this.props;
-        const recentList = toDisplayableList(_recentList);
-
-        return (
-            <MeetingsList
-                disabled = { disabled }
-                hideURL = { true }
-                listEmptyComponent = { this._getRenderListEmptyComponent() }
-                meetings = { recentList }
-                onItemDelete = { this._onItemDelete }
-                onPress = { this._onPress } />
-        );
-    }
+    return (
+        <MeetingsList
+            disabled = { disabled }
+            hideURL = { true }
+            listEmptyComponent = { this._getRenderListEmptyComponent() }
+            meetings = { recentList }
+            onItemDelete = { this._onItemDelete }
+            onPress = { this._onPress } />
+    );
+}
 }
 
 /**

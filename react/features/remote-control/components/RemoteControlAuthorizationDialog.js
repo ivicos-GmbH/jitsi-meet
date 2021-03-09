@@ -101,7 +101,7 @@ class RemoteControlAuthorizationDialog extends Component<Props> {
         return (
             <div>
                 <br />
-                { this.props.t('dialog.remoteControlShareScreenWarning') }
+                { this.props.t('dialog.remoteControlShareScreenWarning')}
             </div>
         );
     }

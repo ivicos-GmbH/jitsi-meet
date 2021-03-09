@@ -82,8 +82,8 @@ const googleApi = {
                         discoveryDocs: DISCOVERY_DOCS,
                         scope
                     })
-                    .then(resolve)
-                    .catch(reject);
+                        .then(resolve)
+                        .catch(reject);
                 }, 500);
             }));
     },
@@ -246,7 +246,7 @@ const googleApi = {
         try {
             // check conference data coming from calendar addons
             if (conferenceData.parameters.addOnParameters.parameters
-                    .conferenceSolutionType === 'jitsi') {
+                .conferenceSolutionType === 'jitsi') {
                 const videoEntry = conferenceData.entryPoints.find(
                     e => e.entryPointType === 'video');
 
@@ -361,8 +361,7 @@ const googleApi = {
                         let newDescription = text;
 
                         if (event.result.description) {
-                            newDescription = `${event.result.description}\n\n${
-                                text}`;
+                            newDescription = `${event.result.description}\n\n${text}`;
                         }
 
                         return this._getGoogleApiClient()

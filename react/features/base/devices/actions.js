@@ -89,7 +89,7 @@ export function configureInitialDevices() {
                                 label: deviceLabels[key]
                             },
                             // eslint-disable-next-line no-empty-function
-                            responseCallback() {}
+                            responseCallback() { }
                         }));
                     });
 
@@ -139,7 +139,7 @@ export function getAvailableDevices() {
         const { mediaDevices } = JitsiMeetJS;
 
         if (mediaDevices.isDeviceListAvailable()
-                && mediaDevices.isDeviceChangeAvailable()) {
+            && mediaDevices.isDeviceChangeAvailable()) {
             mediaDevices.enumerateDevices(devices => {
                 dispatch(updateDeviceList(devices));
 

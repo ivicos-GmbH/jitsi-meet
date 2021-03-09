@@ -34,7 +34,7 @@ export default class NavigateSectionListSectionHeader extends Component<Props> {
         return (
             <Container style = { styles.listSection }>
                 <Text style = { styles.listSectionText }>
-                    { section.title }
+                    {section.title}
                 </Text>
             </Container>
         );

@@ -149,7 +149,7 @@ function _participant(state: Object = {}, action) {
             for (const key in participant) {
                 if (participant.hasOwnProperty(key)
                         && PARTICIPANT_PROPS_TO_OMIT_WHEN_UPDATE.indexOf(key)
-                            === -1) {
+                        === -1) {
                     newState[key] = participant[key];
                 }
             }

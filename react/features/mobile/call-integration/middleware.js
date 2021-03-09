@@ -65,12 +65,12 @@ CallIntegration && MiddlewareRegistry.register(store => next => action => {
     case CONFERENCE_JOINED:
         return _conferenceJoined(store, next, action);
 
-    // If a conference is being left in a graceful manner then
-    // the CONFERENCE_WILL_LEAVE fires as soon as the conference starts
-    // disconnecting. We need to destroy the call on the native side as soon
-    // as possible, because the disconnection process is asynchronous and
-    // Android not always supports two simultaneous calls at the same time
-    // (even though it should according to the spec).
+        // If a conference is being left in a graceful manner then
+        // the CONFERENCE_WILL_LEAVE fires as soon as the conference starts
+        // disconnecting. We need to destroy the call on the native side as soon
+        // as possible, because the disconnection process is asynchronous and
+        // Android not always supports two simultaneous calls at the same time
+        // (even though it should according to the spec).
     case CONFERENCE_LEFT:
     case CONFERENCE_WILL_LEAVE:
         return _conferenceLeft(store, next, action);
@@ -301,7 +301,7 @@ function _conferenceWillJoin({ dispatch, getState }, next, action) {
                 Alert.alert(
                     'Call aborted',
                     'There\'s already another call in progress.'
-                        + ' Please end it first and try again.',
+                    + ' Please end it first and try again.',
                     [
                         { text: 'OK' }
                     ],
@@ -483,8 +483,8 @@ function _syncTrackState({ getState }, next, action) {
         }
         case 'video': {
             CallIntegration.updateCall(
-                conference.callUUID,
-                { hasVideo: !isVideoMutedByAudioOnly(state) });
+                    conference.callUUID,
+                    { hasVideo: !isVideoMutedByAudioOnly(state) });
             break;
         }
 

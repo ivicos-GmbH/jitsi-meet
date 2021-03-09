@@ -102,23 +102,23 @@ class E2EESection extends Component<Props, State> {
         return (
             <div id = 'e2ee-section'>
                 <p className = 'description'>
-                    { expand && description }
-                    { !expand && description.substring(0, 100) }
-                    { !expand && <span
+                    {expand && description}
+                    {!expand && description.substring(0, 100)}
+                    {!expand && <span
                         className = 'read-more'
                         onClick = { this._onExpand }>
-                            ... { t('dialog.readMore') }
-                    </span> }
+                        ... {t('dialog.readMore')}
+                    </span>}
                 </p>
                 {
                     !_everyoneSupportsE2EE
-                        && <span className = 'warning'>
-                            { t('dialog.e2eeWarning') }
-                        </span>
+                    && <span className = 'warning'>
+                        {t('dialog.e2eeWarning')}
+                    </span>
                 }
                 <div className = 'control-row'>
                     <label htmlFor = 'e2ee-section-switch'>
-                        { t('dialog.e2eeLabel') }
+                        {t('dialog.e2eeLabel')}
                     </label>
                     <Switch
                         id = 'e2ee-section-switch'

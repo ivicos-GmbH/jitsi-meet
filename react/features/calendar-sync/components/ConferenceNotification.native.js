@@ -140,7 +140,7 @@ class ConferenceNotification extends Component<Props, State> {
                                         styles.notificationTextContainer
                                     }>
                                     <Text style = { styles.notificationText }>
-                                        { t(label) }
+                                        {t(label)}
                                     </Text>
                                     <Text style = { styles.notificationText }>
                                         {
@@ -237,13 +237,13 @@ class ConferenceNotification extends Component<Props, State> {
             for (const event of _eventList) {
                 const eventUrl
                     = event.url
-                        && getURLWithoutParamsNormalized(new URL(event.url));
+                    && getURLWithoutParamsNormalized(new URL(event.url));
 
                 if (eventUrl && eventUrl !== _currentConferenceURL) {
                     if ((!eventToShow
-                                && event.startDate > now
-                                && event.startDate < now + ALERT_MILLISECONDS)
-                            || (event.startDate < now && event.endDate > now)) {
+                        && event.startDate > now
+                        && event.startDate < now + ALERT_MILLISECONDS)
+                        || (event.startDate < now && event.endDate > now)) {
                         eventToShow = event;
                     }
                 }

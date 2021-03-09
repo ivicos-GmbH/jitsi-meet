@@ -95,7 +95,7 @@ class MessageContainer extends AbstractMessageContainer<Props> {
         return (
             <View style = { styles.emptyComponentWrapper }>
                 <Text style = { _styles.emptyComponentText }>
-                    { t('chat.noMessagesMessage') }
+                    {t('chat.noMessagesMessage')}
                 </Text>
             </View>
         );

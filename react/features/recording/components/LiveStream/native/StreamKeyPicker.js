@@ -43,10 +43,10 @@ type Props = {
 
 type State = {
 
-     /**
-      * The key of the currently selected stream.
-      */
-     streamKey: ?string
+    /**
+     * The key of the currently selected stream.
+     */
+    streamKey: ?string
 }
 
 /**
@@ -97,8 +97,8 @@ class StreamKeyPicker extends Component<Props, State> {
                                 _dialogStyles.text,
                                 styles.warningText
                             ] }>
-                            { this.props.t(
-                                'liveStreaming.getStreamKeyManually') }
+                            {this.props.t(
+                                'liveStreaming.getStreamKeyManually')}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -113,11 +113,11 @@ class StreamKeyPicker extends Component<Props, State> {
                             _dialogStyles.text,
                             styles.text
                         ] }>
-                        { this.props.t('liveStreaming.choose') }
+                        {this.props.t('liveStreaming.choose')}
                     </Text>
                 </View>
                 <View style = { styles.streamKeyPickerWrapper } >
-                    { broadcasts.map((broadcast, index) =>
+                    {broadcasts.map((broadcast, index) =>
                         (<TouchableHighlight
                             activeOpacity = { ACTIVE_OPACITY }
                             key = { index }
@@ -133,7 +133,7 @@ class StreamKeyPicker extends Component<Props, State> {
                                     _dialogStyles.text,
                                     styles.text
                                 ] }>
-                                { broadcast.title }
+                                {broadcast.title}
                             </Text>
                         </TouchableHighlight>))
                     }

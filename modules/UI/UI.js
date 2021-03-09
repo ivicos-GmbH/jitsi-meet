@@ -161,8 +161,8 @@ UI.bindEvents = () => {
 
     // Resize and reposition videos in full screen mode.
     $(document).on(
-            'webkitfullscreenchange mozfullscreenchange fullscreenchange',
-            onResize);
+        'webkitfullscreenchange mozfullscreenchange fullscreenchange',
+        onResize);
 
     $(window).resize(onResize);
 };
@@ -172,7 +172,7 @@ UI.bindEvents = () => {
  */
 UI.unbindEvents = () => {
     $(document).off(
-            'webkitfullscreenchange mozfullscreenchange fullscreenchange');
+        'webkitfullscreenchange mozfullscreenchange fullscreenchange');
 
     $(window).off('resize');
 };
@@ -402,8 +402,10 @@ UI.notifyFocusDisconnected = function(focus, retrySec) {
     messageHandler.participantNotification(
         null, 'notify.focus',
         'disconnected', 'notify.focusFail',
-        { component: focus,
-            ms: retrySec }
+        {
+            component: focus,
+            ms: retrySec
+        }
     );
 };
 

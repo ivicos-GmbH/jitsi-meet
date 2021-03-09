@@ -82,7 +82,7 @@ class PresenceLabel extends Component<Props> {
             <Text
                 className = { className }
                 { ...style }>
-                { text }
+                { text}
             </Text>);
     }
 

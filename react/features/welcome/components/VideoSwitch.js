@@ -69,7 +69,7 @@ class VideoSwitch extends Component<Props> {
                     onPress = { this._onStartAudioOnlyFalse }>
                     <View style = { styles.switchLabel }>
                         <Text style = { _headerStyles.headerText }>
-                            { t('welcomepage.audioVideoSwitch.video') }
+                            {t('welcomepage.audioVideoSwitch.video')}
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -83,7 +83,7 @@ class VideoSwitch extends Component<Props> {
                     onPress = { this._onStartAudioOnlyTrue }>
                     <View style = { styles.switchLabel }>
                         <Text style = { _headerStyles.headerText }>
-                            { t('welcomepage.audioVideoSwitch.audio') }
+                            {t('welcomepage.audioVideoSwitch.audio')}
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>

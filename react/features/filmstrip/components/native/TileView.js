@@ -117,7 +117,7 @@ class TileView extends Component<Props> {
                             minHeight: _height,
                             minWidth: _width
                         }}>
-                        { rowElements }
+                        {rowElements}
                     </View>
                 </TouchableWithoutFeedback>
             </ScrollView>
@@ -220,7 +220,7 @@ class TileView extends Component<Props> {
                     <View
                         key = { rowElements.length }
                         style = { styles.tileViewRow }>
-                        { thumbnailsInRow }
+                        {thumbnailsInRow}
                     </View>
                 );
             }

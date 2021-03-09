@@ -201,8 +201,8 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
     _query: (?string) => Promise<Array<Object>>;
 
     /**
-     * Performs a people and phone number search request.
-     *
+    * Performs a people and phone number search request.
+    *
      * @param {string} query - The search text.
      * @private
      * @returns {Promise}
@@ -236,12 +236,12 @@ export default class AbstractAddPeopleDialog<P: Props, S: State>
  * @param {Object} state - The Redux state.
  * @private
  * @returns {{
- *     _addPeopleEnabled: boolean,
- *     _dialOutAuthUrl: string,
- *     _dialOutEnabled: boolean,
- *     _jwt: string,
- *     _peopleSearchQueryTypes: Array<string>,
- *     _peopleSearchUrl: string
+            *     _addPeopleEnabled: boolean,
+            *     _dialOutAuthUrl: string,
+            *     _dialOutEnabled: boolean,
+            *     _jwt: string,
+            *     _peopleSearchQueryTypes: Array<string>,
+            *     _peopleSearchUrl: string
  * }}
  */
 export function _mapStateToProps(state: Object) {

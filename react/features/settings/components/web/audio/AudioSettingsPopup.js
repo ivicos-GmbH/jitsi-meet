@@ -22,19 +22,19 @@ import AudioSettingsContent, { type Props as AudioSettingsContentProps } from '.
 
 type Props = AudioSettingsContentProps & {
 
-   /**
-    * Component's children (the audio button).
-    */
+    /**
+     * Component's children (the audio button).
+     */
     children: React$Node,
 
-   /**
-    * Flag controlling the visibility of the popup.
-    */
+    /**
+     * Flag controlling the visibility of the popup.
+     */
     isOpen: boolean,
 
-   /**
-    * Callback executed when the popup closes.
-    */
+    /**
+     * Callback executed when the popup closes.
+     */
     onClose: Function,
 }
 

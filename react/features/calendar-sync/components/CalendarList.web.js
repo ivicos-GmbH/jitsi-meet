@@ -119,21 +119,21 @@ class CalendarList extends AbstractPage<Props> {
         return (
             <div className = 'meetings-list-empty'>
                 <p className = 'description'>
-                    { t(errorMessageKey) }
+                    {t(errorMessageKey)}
                 </p>
                 <div className = 'calendar-action-buttons'>
-                    { showSettingsButton
+                    {showSettingsButton
                         && <div
                             className = 'button'
                             onClick = { this._onOpenSettings }>
-                            { t('calendarSync.permissionButton') }
+                            {t('calendarSync.permissionButton')}
                         </div>
                     }
-                    { showRefreshButton
+                    {showRefreshButton
                         && <div
                             className = 'button'
                             onClick = { this._onRefreshEvents }>
-                            { t('calendarSync.refresh') }
+                            {t('calendarSync.refresh')}
                         </div>
                     }
                 </div>
@@ -164,12 +164,12 @@ class CalendarList extends AbstractPage<Props> {
             return (
                 <div className = 'meetings-list-empty'>
                     <p className = 'description'>
-                        { t('calendarSync.noEvents') }
+                        {t('calendarSync.noEvents')}
                     </p>
                     <div
                         className = 'button'
                         onClick = { this._onRefreshEvents }>
-                        { t('calendarSync.refresh') }
+                        {t('calendarSync.refresh')}
                     </div>
                 </div>
             );
@@ -190,10 +190,10 @@ class CalendarList extends AbstractPage<Props> {
                     <img src = './images/calendar.svg' />
                 </div>
                 <div className = 'description'>
-                    { t('welcomepage.connectCalendarText', {
+                    {t('welcomepage.connectCalendarText', {
                         app: interfaceConfig.APP_NAME,
                         provider: interfaceConfig.PROVIDER_NAME
-                    }) }
+                    })}
                 </div>
                 <div
                     className = 'meetings-list-empty-button'
@@ -201,7 +201,7 @@ class CalendarList extends AbstractPage<Props> {
                     <Icon
                         className = 'meetings-list-empty-icon'
                         src = { IconPlusCalendar } />
-                    <span>{ t('welcomepage.connectCalendarButton') }</span>
+                    <span>{t('welcomepage.connectCalendarButton')}</span>
                 </div>
             </div>
         );

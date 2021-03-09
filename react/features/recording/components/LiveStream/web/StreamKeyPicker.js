@@ -103,7 +103,7 @@ class StreamKeyPicker extends PureComponent<Props, State> {
                     href = { YOUTUBE_LIVE_DASHBOARD_URL }
                     rel = 'noopener noreferrer'
                     target = '_blank'>
-                    { t('liveStreaming.getStreamKeyManually') }
+                    { t('liveStreaming.getStreamKeyManually')}
                 </a>
             );
         }
@@ -120,7 +120,7 @@ class StreamKeyPicker extends PureComponent<Props, State> {
                             this._onSelect(broadcast.boundStreamID);
                         }
                     }>
-                    { broadcast.title }
+                    { broadcast.title}
                 </DropdownItem>));
         const selected
             = this.props.broadcasts.find(
@@ -142,7 +142,7 @@ class StreamKeyPicker extends PureComponent<Props, State> {
                     }}
                     triggerType = 'button'>
                     <DropdownItemGroup>
-                        { dropdownItems }
+                        {dropdownItems}
                     </DropdownItemGroup>
                 </DropdownMenuStateless>
             </div>

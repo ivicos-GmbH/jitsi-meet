@@ -51,7 +51,7 @@ class KeyboardShortcutsDialog extends Component<Props> {
                     <ul
                         className = 'shortcuts-list'
                         id = 'keyboard-shortcuts-list'>
-                        { shortcuts }
+                        {shortcuts}
                     </ul>
                 </div>
             </Dialog>
@@ -72,11 +72,11 @@ class KeyboardShortcutsDialog extends Component<Props> {
                 className = 'shortcuts-list__item'
                 key = { keyboardKey }>
                 <span className = 'shortcuts-list__description'>
-                    { this.props.t(translationKey) }
+                    {this.props.t(translationKey)}
                 </span>
                 <span className = 'item-action'>
                     <Lozenge isBold = { true }>
-                        { keyboardKey }
+                        {keyboardKey}
                     </Lozenge>
                 </span>
             </li>

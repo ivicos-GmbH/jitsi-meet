@@ -12,7 +12,7 @@ declare var APP: Object;
 StateListenerRegistry.register(
     /* selector */ state =>
         state['features/base/tracks'].filter(tr => tr.videoType === 'desktop').map(t => t.participantId),
-    /* listener */ (participantIDs, store, previousParticipantIDs) => {
+    /* listener */(participantIDs, store, previousParticipantIDs) => {
         if (typeof APP !== 'object') {
             return;
         }

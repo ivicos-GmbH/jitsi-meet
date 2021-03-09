@@ -14,7 +14,7 @@ import {
  *
  * FIXME: these pieces of state should probably be in a different place.
  */
-ReducerRegistry.register('features/overlay', (state = { }, action) => {
+ReducerRegistry.register('features/overlay', (state = {}, action) => {
     switch (action.type) {
     case CONFIG_WILL_LOAD:
         return _setShowLoadConfigOverlay(state, Boolean(action.room));

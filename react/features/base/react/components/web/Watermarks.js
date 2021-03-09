@@ -139,7 +139,7 @@ class Watermarks extends Component<Props, State> {
                     <a
                         href = { brandWatermarkLink }
                         target = '_new'>
-                        { reactElement }
+                        { reactElement}
                     </a>
                 );
             }
@@ -178,7 +178,7 @@ class Watermarks extends Component<Props, State> {
                     <a
                         href = { _logoLink }
                         target = '_new'>
-                        { reactElement }
+                        { reactElement}
                     </a>
                 );
             }
@@ -202,7 +202,7 @@ class Watermarks extends Component<Props, State> {
                     className = 'poweredby'
                     href = 'http://jitsi.org'
                     target = '_new'>
-                    <span>{ t('poweredby') } jitsi.org</span>
+                    <span>{t('poweredby')} jitsi.org</span>
                 </a>
             );
         }
@@ -236,7 +236,7 @@ function _mapStateToProps(state, ownProps) {
     let _showJitsiWatermark = (
         customizationReady && !customizationFailed
         && SHOW_JITSI_WATERMARK)
-    || !isValidRoom;
+        || !isValidRoom;
     let _logoUrl = logoImageUrl;
     let _logoLink = logoClickUrl;
 

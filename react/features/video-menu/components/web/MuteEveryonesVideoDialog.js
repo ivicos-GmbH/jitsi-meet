@@ -29,7 +29,7 @@ class MuteEveryonesVideoDialog extends AbstractMuteEveryonesVideoDialog<Props> {
                 titleString = { this.props.title }
                 width = 'small'>
                 <div>
-                    { this.props.content }
+                    {this.props.content}
                 </div>
             </Dialog>
         );

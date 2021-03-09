@@ -18,7 +18,7 @@ declare var interfaceConfig: Object;
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/video-layout'].tileViewEnabled,
-    /* listener */ (tileViewEnabled, store) => {
+    /* listener */(tileViewEnabled, store) => {
         const { dispatch } = store;
 
         dispatch(selectParticipant());
@@ -54,7 +54,7 @@ StateListenerRegistry.register(
         // by looping through the known sharing participants and removing any
         // participant IDs which are no longer sharing.
         const newScreenSharesOrder = oldScreenSharesOrder.filter(
-            participantId => knownSharingParticipantIds.includes(participantId));
+        participantId => knownSharingParticipantIds.includes(participantId));
 
         // Make sure all new sharing participant get added to the end of the
         // known screen shares.
@@ -66,7 +66,7 @@ StateListenerRegistry.register(
 
         if (!equals(oldScreenSharesOrder, newScreenSharesOrder)) {
             store.dispatch(
-                setRemoteParticipantsWithScreenShare(newScreenSharesOrder));
+            setRemoteParticipantsWithScreenShare(newScreenSharesOrder));
 
             _updateAutoPinnedParticipant(store);
         }

@@ -36,7 +36,7 @@ export default {
             }
         }
 
-        found = found.map<string>(normalizeLanguage);
+        found = found.map < string >(normalizeLanguage);
 
         return found.length > 0 ? found : undefined;
     },

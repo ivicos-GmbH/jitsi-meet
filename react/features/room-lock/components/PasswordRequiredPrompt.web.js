@@ -83,7 +83,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.passwordRequired'
                 width = 'small'>
-                { this._renderBody() }
+                { this._renderBody()}
             </Dialog>
         );
     }
@@ -110,7 +110,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         );
     }
 
-    _onPasswordChanged: ({ target: { value: * }}) => void;
+    _onPasswordChanged: ({ target: { value: * } }) => void;
 
     /**
      * Notifies this dialog that password has changed.

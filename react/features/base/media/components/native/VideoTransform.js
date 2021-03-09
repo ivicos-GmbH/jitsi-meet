@@ -230,7 +230,7 @@ class VideoTransform extends Component<Props, State> {
                         styles.videoTranformedView,
                         this._getTransformStyle()
                     ] }>
-                    { children }
+                    {children}
                 </View>
             </View>
         );
@@ -282,7 +282,7 @@ class VideoTransform extends Component<Props, State> {
      */
     _didMove({ dx, dy }) {
         return Math.abs(dx) > this.moveThreshold
-                || Math.abs(dy) > this.moveThreshold;
+            || Math.abs(dy) > this.moveThreshold;
     }
 
     /**
@@ -600,8 +600,8 @@ class VideoTransform extends Component<Props, State> {
                 this._onGesture('scale', scale);
             }
         } else if (gestureState.numberActiveTouches === 1
-                && isNaN(this.initialDistance)
-                && this._didMove(gestureState)) {
+            && isNaN(this.initialDistance)
+            && this._didMove(gestureState)) {
             // this is a move event
             const position = this._getTouchPosition(evt);
             const move = {

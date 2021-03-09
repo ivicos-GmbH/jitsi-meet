@@ -35,7 +35,8 @@ export function beginRoomLockRequest(conference: ?Object) {
 
             dispatch(openDialog(RoomLockPrompt, {
                 conference,
-                passwordNumberOfDigits }));
+                passwordNumberOfDigits
+            }));
         }
     };
 }
@@ -67,8 +68,8 @@ export function _cancelPasswordRequiredPrompt(conference: Object) {
         const state = getState();
 
         if (conference === state['features/base/conference'].passwordRequired
-                && conference[JITSI_CONFERENCE_URL_KEY]
-                    === state['features/base/connection'].locationURL) {
+            && conference[JITSI_CONFERENCE_URL_KEY]
+            === state['features/base/connection'].locationURL) {
             // XXX The error associated with CONFERENCE_FAILED was marked as
             // recoverable by the feature room-lock and, consequently,
             // recoverable-aware features such as mobile's external-api did not

@@ -56,7 +56,7 @@ function _overwriteLocalParticipant(
     let localParticipant;
 
     if ((avatarURL || email || name)
-            && (localParticipant = getLocalParticipant(getState))) {
+        && (localParticipant = getLocalParticipant(getState))) {
         const newProperties: Object = {
             id: localParticipant.id,
             local: true
@@ -148,8 +148,10 @@ function _setJWT(store, next, action) {
                     action.user = user;
 
                     user && _overwriteLocalParticipant(
-                        store, { ...user,
-                            features: context.features });
+                        store, {
+                            ...user,
+                            features: context.features
+                        });
                 }
             }
         } else if (typeof APP === 'undefined') {
@@ -186,7 +188,7 @@ function _undoOverwriteLocalParticipant(
     let localParticipant;
 
     if ((avatarURL || name || email)
-            && (localParticipant = getLocalParticipant(getState))) {
+        && (localParticipant = getLocalParticipant(getState))) {
         const newProperties: Object = {
             id: localParticipant.id,
             local: true

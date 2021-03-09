@@ -51,7 +51,7 @@ export default class AbstractMuteEveryoneDialog<P: Props> extends AbstractMuteRe
                 titleString = { title }
                 width = 'small'>
                 <div>
-                    { content }
+                    {content}
                 </div>
             </Dialog>
         );

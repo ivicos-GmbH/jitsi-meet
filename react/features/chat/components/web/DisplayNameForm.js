@@ -87,7 +87,7 @@ class DisplayNameForm extends Component<Props, State> {
                 <div
                     className = { `enter-chat${this.state.displayName.trim() ? '' : ' disabled'}` }
                     onClick = { this._onSubmit }>
-                    { t('chat.enter') }
+                    {t('chat.enter')}
                 </div>
                 <KeyboardAvoider />
             </div>
