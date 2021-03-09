@@ -379,8 +379,7 @@ function _maybePlaySounds({ getState, dispatch }, action) {
  */
 function _participantJoinedOrUpdated(store, next, action) {
     const { dispatch, getState } = store;
-    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand, backgroundColor,
-        backgroundImageUrl, backgroundLastUpdate } } = action;
+    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand, backgroundData } } = action;
 
     // Send an external update of the local participant's raised hand state
     // if a new raised hand state is defined in the action.
@@ -397,19 +396,11 @@ function _participantJoinedOrUpdated(store, next, action) {
 
     // Send an external update of the local participant's background color/image state
     // if a new background color/image state is defined in the action.
-    if (typeof backgroundLastUpdate !== 'undefined') {
+    if (typeof backgroundData !== 'undefined') {
         if (local) {
             const { conference } = getState()['features/base/conference'];
 
-            conference.setLocalParticipantProperty('backgroundLastUpdate', backgroundLastUpdate);
-
-            if (conference && backgroundColor !== getLocalParticipant(getState()).backgroundColor) {
-                conference.setLocalParticipantProperty('backgroundColor', backgroundColor);
-            }
-
-            if (conference && backgroundImageUrl !== getLocalParticipant(getState()).backgroundImageUrl) {
-                conference.setLocalParticipantProperty('backgroundImageUrl', backgroundImageUrl);
-            }
+            conference.setLocalParticipantProperty('backgroundData', backgroundData);
         }
     }
 
