@@ -77,10 +77,10 @@ class VideoSettingsButton extends Component<Props> {
         return visible ? (
             <VideoSettingsPopup>
                 <ToolboxButtonWithIcon
-                    icon = { IconArrowUp }
-                    iconDisabled = { this._isIconDisabled() }
-                    iconTooltip = { t('toolbar.videoSettings') }
-                    onIconClick = { onVideoOptionsClick }>
+                    icon={IconArrowUp}
+                    iconDisabled={this._isIconDisabled()}
+                    iconTooltip={t('toolbar.videoSettings')}
+                    onIconClick={onVideoOptionsClick}>
                     <VideoMuteButton />
                 </ToolboxButtonWithIcon>
             </VideoSettingsPopup>

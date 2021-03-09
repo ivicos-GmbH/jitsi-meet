@@ -10,7 +10,7 @@ import { Icon, IconPhone } from '../../../../base/icons';
 import { getLocalParticipant } from '../../../../base/participants';
 import { MultiSelectAutocomplete } from '../../../../base/react';
 import { connect } from '../../../../base/redux';
-import { isVpaasMeeting } from '../../../../billing-counter/functions';
+import { isVpaasMeeting } from '../s../../../billing-counter/functions';
 import { hideAddPeopleDialog } from '../../../actions';
 import AbstractAddPeopleDialog, {
     type Props as AbstractProps,
