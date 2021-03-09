@@ -3,6 +3,7 @@
 import UIEvents from '../../../../service/UI/UIEvents';
 import { NOTIFICATION_TIMEOUT, showNotification } from '../../notifications';
 import { CALLING, INVITED } from '../../presence-status';
+import { updateBackgroundData } from '../../room-background';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../app';
 import {
     CONFERENCE_WILL_JOIN,
@@ -11,6 +12,7 @@ import {
 } from '../conference';
 import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
+import { updateSettings } from '../settings';
 import { playSound, registerSound, unregisterSound } from '../sounds';
 
 import {
@@ -207,6 +209,8 @@ StateListenerRegistry.register(
     (conference, store) => {
         if (conference) {
             const propertyHandlers = {
+                'backgroundData': (participant, value) =>
+                    _backgroundDataUpdated(store, conference, getLocalParticipant(store.getState()), value),
                 'e2eeEnabled': (participant, value) => _e2eeUpdated(store, conference, participant.getId(), value),
                 'features_e2ee': (participant, value) =>
                     store.dispatch(participantUpdated({
@@ -260,7 +264,6 @@ StateListenerRegistry.register(
             // We left the conference, the local participant must be updated.
             _e2eeUpdated(store, conference, localParticipantId, false);
             _raiseHandUpdated(store, conference, localParticipantId, false);
-
         }
     }
 );
@@ -282,6 +285,37 @@ function _e2eeUpdated({ dispatch }, conference, participantId, newValue) {
         id: participantId,
         e2eeEnabled
     }));
+}
+
+/**
+ * Handles a background update.
+ *
+ * @param {Function} dispatch - The Redux dispatch function.
+ * @param {Object} conference - The conference for which we got an update.
+ * @param {Object} localParticipant - The redux state of the local participant.
+ * @param {boolean} newValue - The new value of the serialized background properties.
+ * @returns {void}
+ */
+function _backgroundDataUpdated({ dispatch }, conference, localParticipant, newValue) {
+
+
+    if (localParticipant.backgroundData === newValue) {
+        return;
+    }
+
+    // Update the local participant information
+    dispatch(participantUpdated({
+        conference,
+        id: localParticipant.id,
+        backgroundData: newValue
+    }));
+
+    dispatch(updateSettings({
+        backgroundData: newValue
+    }));
+
+    // Update the room-background feature
+    dispatch(updateBackgroundData(newValue));
 }
 
 /**

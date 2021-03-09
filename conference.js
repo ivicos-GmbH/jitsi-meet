@@ -125,6 +125,9 @@ import {
     makePrecallTest
 } from './react/features/prejoin';
 import { disableReceiver, stopReceiver } from './react/features/remote-control';
+import {
+    updateBackgroundData
+} from './react/features/room-background';
 import { toggleScreenshotCaptureEffect } from './react/features/screenshot-capture';
 import { setSharedVideoStatus } from './react/features/shared-video/actions';
 import { AudioMixerEffect } from './react/features/stream-effects/audio-mixer/AudioMixerEffect';
@@ -2950,18 +2953,29 @@ export default {
     removeListener(eventName, listener) {
         eventEmitter.removeListener(eventName, listener);
     },
+
+    /**
+     * Set background image/color for the room.
+     * @param {String} backgroundImageUrl optional image URL for the background
+     * @param {String} backgroundColor optional color for the background
+     * @param {Function} listener the listener.
+     */
     setBackgroundImage(backgroundImageUrl, backgroundColor) {
         const id = getLocalParticipant(APP.store.getState());
         const updateDate = Date.now();
+        const backgroundData = `${updateDate}|${backgroundColor}|${backgroundImageUrl}`;
 
+        // Update local participants background information
         APP.store.dispatch(participantUpdated({
             id,
-            local: true,
-            backgroundData: `${updateDate}|${backgroundColor}|${backgroundImageUrl}`
+            backgroundData
         }));
         APP.store.dispatch(updateSettings({
-            backgroundData: `${updateDate}|${backgroundColor}|${backgroundImageUrl}`
+            backgroundData
         }));
+
+        // Update the room-background feature to update the background properties
+        APP.store.dispatch(updateBackgroundData(backgroundData));
     },
 
     /**

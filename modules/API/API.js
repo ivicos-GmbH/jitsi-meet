@@ -11,9 +11,7 @@ import {
 } from '../../react/features/base/conference';
 import { overwriteConfig, getWhitelistedJSON } from '../../react/features/base/config';
 import { parseJWTFromURLParams } from '../../react/features/base/jwt';
-import JitsiMeetJS, {
-    JitsiRecordingConstants
-} from '../../react/features/base/lib-jitsi-meet';
+import JitsiMeetJS, { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
 import { MEDIA_TYPE } from '../../react/features/base/media';
 import {
     getLocalParticipant,
@@ -88,9 +86,7 @@ function initCommands() {
             const muteMediaType = mediaType ? mediaType : MEDIA_TYPE.AUDIO;
 
             sendAnalytics(createApiEvent('muted-everyone'));
-            const participants = APP.store.getState()[
-                'features/base/participants'
-            ];
+            const participants = APP.store.getState()['features/base/participants'];
             const localIds = participants
                 .filter(participant => participant.local)
                 .filter(participant => participant.role === 'moderator')
@@ -102,20 +98,17 @@ function initCommands() {
             APP.store.dispatch(toggleLobbyMode(isLobbyEnabled));
         },
         'password': password => {
-            const { conference, passwordRequired } = APP.store.getState()[
-                'features/base/conference'
-            ];
+            const { conference, passwordRequired }
+                = APP.store.getState()['features/base/conference'];
 
             if (passwordRequired) {
                 sendAnalytics(createApiEvent('submit.password'));
 
-                APP.store.dispatch(
-                    setPassword(
-                        passwordRequired,
-                        passwordRequired.join,
-                        password
-                    )
-                );
+                APP.store.dispatch(setPassword(
+                    passwordRequired,
+                    passwordRequired.join,
+                    password
+                ));
             } else {
                 sendAnalytics(createApiEvent('password.changed'));
 
@@ -141,22 +134,7 @@ function initCommands() {
             APP.store.dispatch(sendTones(tones, duration, pause));
         },
         'set-background-image': (backgroundImageUrl, backgroundColor) => {
-            const state = APP.store.getState();
-
-            console.log('general state : ');
-            console.log(state);
-            const participants = APP.store.getState()[
-                'features/base/participants'
-            ];
-
-            console.log('Participants state : ');
-            console.log(participants);
-            const conference = APP.store.getState()[
-                'features/base/conference'
-            ];
-
-            console.log('Conference state : ');
-            console.log(conference);
+            logger.debug('Set background image command received');
             APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
         },
         'set-large-video-participant': participantId => {
@@ -299,20 +277,13 @@ function initCommands() {
             }
 
             if (dropboxToken && !isDropboxEnabled(state)) {
-                logger.error(
-                    'Failed starting recording: dropbox is not enabled on this deployment'
-                );
+                logger.error('Failed starting recording: dropbox is not enabled on this deployment');
 
                 return;
             }
 
-            if (
-                mode === JitsiRecordingConstants.mode.STREAM
-                && !(youtubeStreamKey || rtmpStreamKey)
-            ) {
-                logger.error(
-                    'Failed starting recording: missing youtube or RTMP stream key'
-                );
+            if (mode === JitsiRecordingConstants.mode.STREAM && !(youtubeStreamKey || rtmpStreamKey)) {
+                logger.error('Failed starting recording: missing youtube or RTMP stream key');
 
                 return;
             }
@@ -327,7 +298,7 @@ function initCommands() {
                             'file_recording_metadata': {
                                 'upload_credentials': {
                                     'service_name': RECORDING_TYPES.DROPBOX,
-                                    token: dropboxToken
+                                    'token': dropboxToken
                                 }
                             }
                         })
@@ -337,7 +308,7 @@ function initCommands() {
                         mode: JitsiRecordingConstants.mode.FILE,
                         appData: JSON.stringify({
                             'file_recording_metadata': {
-                                share: shouldShare
+                                'share': shouldShare
                             }
                         })
                     };
@@ -373,12 +344,7 @@ function initCommands() {
                 return;
             }
 
-            if (
-                ![
-                    JitsiRecordingConstants.mode.FILE,
-                    JitsiRecordingConstants.mode.STREAM
-                ].includes(mode)
-            ) {
+            if (![JitsiRecordingConstants.mode.FILE, JitsiRecordingConstants.mode.STREAM].includes(mode)) {
                 logger.error('Invalid recording mode provided!');
 
                 return;
@@ -404,9 +370,7 @@ function initCommands() {
                 }
                 APP.store.dispatch(openChat(participant));
             } else {
-                logger.error(
-                    'No participant found for the given participantId'
-                );
+                logger.error('No participant found for the given participantId');
             }
         },
         'cancel-private-chat': () => {
@@ -441,8 +405,7 @@ function initCommands() {
 
         switch (name) {
             case 'capture-largevideo-screenshot':
-                APP.store
-                    .dispatch(captureLargeVideoScreenshot())
+                APP.store.dispatch(captureLargeVideoScreenshot())
                     .then(dataURL => {
                         let error;
 
@@ -505,9 +468,7 @@ function initCommands() {
                 break;
             case 'get-content-sharing-participants': {
                 const tracks = getState()['features/base/tracks'];
-                const sharingParticipantIds = tracks
-                    .filter(tr => tr.videoType === 'desktop')
-                    .map(t => t.participantId);
+                const sharingParticipantIds = tracks.filter(tr => tr.videoType === 'desktop').map(t => t.participantId);
 
                 callback({
                     sharingParticipantIds
@@ -520,10 +481,7 @@ function initCommands() {
                 let livestreamUrl;
 
                 if (conference) {
-                    const activeSession = getActiveSession(
-                        state,
-                        JitsiRecordingConstants.mode.STREAM
-                    );
+                    const activeSession = getActiveSession(state, JitsiRecordingConstants.mode.STREAM);
 
                     livestreamUrl = activeSession?.liveStreamViewURL;
                 } else {
@@ -700,19 +658,10 @@ class API {
      * @param {Object} options - Object with the message properties.
      * @returns {void}
      */
-    notifyReceivedChatMessage({
-        body,
-        id,
-        nick,
-        privateMessage,
-        ts
-    }: {
-        body: *,
-        id: string,
-        nick: string,
-        privateMessage: boolean,
-        ts: *
-    } = {}) {
+    notifyReceivedChatMessage(
+        { body, id, nick, privateMessage, ts }: {
+            body: *, id: string, nick: string, privateMessage: boolean, ts: *
+        } = {}) {
         if (APP.conference.isLocalId(id)) {
             return;
         }

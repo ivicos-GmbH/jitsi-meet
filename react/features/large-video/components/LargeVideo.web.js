@@ -7,6 +7,7 @@ import { connect } from '../../base/redux';
 import { setColorAlpha } from '../../base/util';
 import { Subject } from '../../conference';
 import { fetchCustomBrandingData } from '../../dynamic-branding';
+import { fetchExistingBackgroundData } from '../../room-background';
 import { Captions } from '../../subtitles/';
 
 declare var interfaceConfig: Object;
@@ -34,6 +35,11 @@ type Props = {
     _fetchCustomBrandingData: Function,
 
     /**
+     * Fetches the existing room background data.
+     */
+    _fetchExistingBackgroundData: Function,
+
+    /**
      * Prop that indicates whether the chat is open.
      */
     _isChatOpen: boolean,
@@ -59,6 +65,7 @@ class LargeVideo extends Component<Props> {
      */
     componentDidMount() {
         this.props._fetchCustomBrandingData();
+        this.props._fetchExistingBackgroundData();
     }
 
     /**
@@ -143,80 +150,15 @@ class LargeVideo extends Component<Props> {
 }
 
 /**
- * Extract background-relevant information if existing from serialized background properties.
- *
- * @param {Object} serializedBackgroundProperties - Serialized background properties.
- * @private
- * @returns {Object}
- */
-function _extractBackgroundProperties(serializedBackgroundProperties) {
-    if (!serializedBackgroundProperties) {
-        return {
-            backgroundLastUpdate: undefined,
-            backgroundColor: undefined,
-            backgroundImageUrl: undefined
-        };
-    }
-    const unparsedBackgroundData = serializedBackgroundProperties.split('|');
-
-    return {
-        backgroundLastUpdate: unparsedBackgroundData[0],
-        backgroundColor: unparsedBackgroundData[1],
-        backgroundImageUrl: unparsedBackgroundData[2]
-    };
-}
-
-/**
- * The function synchronizes the information between local and remote participants to get the latest
- * background defined.
- *
- * @param {Object} participantsState - Participants redux state.
- * @param {Object} conferenceState - Conference redux state.
- * @private
- * @returns {Object}
- */
-function _getLatestBackground(participantsState, conferenceState) {
-
-    const localParticipant = participantsState
-        .filter(participant => participant.local)
-        .map(p => _extractBackgroundProperties(p?.backgroundData));
-
-    const remoteParticipants = participantsState
-        .filter(participant => !participant.local)
-        .map(p => (conferenceState?.participants || {})[p.id])
-        .map(p => _extractBackgroundProperties(p?._properties?.backgroundData));
-
-    const participants = localParticipant
-        .concat(remoteParticipants)
-        .filter(participant => participant.backgroundLastUpdate !== undefined);
-
-    console.log('Background participants list : ');
-    console.log(participants);
-    const reference = participants
-        .sort((a, b) => parseInt(b.backgroundLastUpdate, 10) - parseInt(a.backgroundLastUpdate, 10))[0];
-
-    console.log('Background reference chosen : ');
-    console.log(reference);
-
-    return {
-        backgroundColor: reference?.backgroundColor,
-        backgroundImageUrl: reference?.backgroundImageUrl
-    };
-}
-
-/**
- * Returns background properties depending on the states of participants, conference and dynamic branding.
+ * Returns background properties depending on the states of room-background and dynamic branding.
  *
  * @param {Object} state - The Redux state.
  * @private
  * @returns {Object}
  */
 function _resolveBackground(state) {
-    const participantsState = state['features/base/participants'];
-    const conferenceState = state['features/base/conference'].conference;
     const dynamicBrandingState = state['features/dynamic-branding'];
-
-    const { backgroundColor, backgroundImageUrl } = _getLatestBackground(participantsState, conferenceState);
+    const { backgroundColor, backgroundImageUrl } = state['features/room-background'];
 
     if (backgroundColor || backgroundImageUrl) {
         return {
@@ -253,7 +195,8 @@ function _mapStateToProps(state) {
 }
 
 const _mapDispatchToProps = {
-    _fetchCustomBrandingData: fetchCustomBrandingData
+    _fetchCustomBrandingData: fetchCustomBrandingData,
+    _fetchExistingBackgroundData: fetchExistingBackgroundData
 };
 
 export default connect(_mapStateToProps, _mapDispatchToProps)(LargeVideo);
