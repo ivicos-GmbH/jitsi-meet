@@ -143,43 +143,26 @@ class LargeVideo extends Component<Props> {
 }
 
 /**
- * For a local participant, extract the background-related information from the participant state.
+ * Extract background-relevant information if existing from serialized background properties.
  *
- * @param {Object} participant - The Redux state for participants feature.
+ * @param {Object} serializedBackgroundProperties - Serialized background properties.
  * @private
  * @returns {Object}
  */
-function _extractBackgroundInfo(participant) {
-    const { backgroundColor, backgroundImageUrl, backgroundLastUpdate } = participant;
-
-    return {
-        backgroundColor,
-        backgroundImageUrl,
-        backgroundLastUpdate
-    };
-}
-
-/**
- * For a remote participant, extract the background-related information from the conference state.
- *
- * @param {Object} participant - Participant related information in the conference state.
- * @private
- * @returns {Object}
- */
-function _extractBackgroundInfoRemote(participant) {
-    if (!participant?._properties) {
+function _extractBackgroundProperties(serializedBackgroundProperties) {
+    if (!serializedBackgroundProperties) {
         return {
+            backgroundLastUpdate: undefined,
             backgroundColor: undefined,
-            backgroundImageUrl: undefined,
-            backgroundLastUpdate: undefined
+            backgroundImageUrl: undefined
         };
     }
-    const properties = participant?._properties;
+    const unparsedBackgroundData = serializedBackgroundProperties.split('|');
 
     return {
-        backgroundColor: properties.backgroundColor,
-        backgroundImageUrl: properties.backgroundImageUrl,
-        backgroundLastUpdate: properties.backgroundLastUpdate
+        backgroundLastUpdate: unparsedBackgroundData[0],
+        backgroundColor: unparsedBackgroundData[1],
+        backgroundImageUrl: unparsedBackgroundData[2]
     };
 }
 
@@ -196,12 +179,12 @@ function _getLatestBackground(participantsState, conferenceState) {
 
     const localParticipant = participantsState
         .filter(participant => participant.local)
-        .map(p => _extractBackgroundInfo(p));
+        .map(p => _extractBackgroundProperties(p?.backgroundData));
 
     const remoteParticipants = participantsState
         .filter(participant => !participant.local)
         .map(p => (conferenceState?.participants || {})[p.id])
-        .map(p => _extractBackgroundInfoRemote(p));
+        .map(p => _extractBackgroundProperties(p?._properties?.backgroundData));
 
     const participants = localParticipant
         .concat(remoteParticipants)

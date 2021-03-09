@@ -2957,14 +2957,10 @@ export default {
         APP.store.dispatch(participantUpdated({
             id,
             local: true,
-            backgroundImageUrl,
-            backgroundColor,
-            backgroundLastUpdate: updateDate
+            backgroundData: `${updateDate}|${backgroundColor}|${backgroundImageUrl}`
         }));
         APP.store.dispatch(updateSettings({
-            backgroundImageUrl,
-            backgroundColor,
-            backgroundLastUpdate: updateDate
+            backgroundData: `${updateDate}|${backgroundColor}|${backgroundImageUrl}`
         }));
     },
 
