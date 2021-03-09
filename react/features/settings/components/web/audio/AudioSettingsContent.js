@@ -133,12 +133,12 @@ class AudioSettingsContent extends Component<Props, State> {
 
         return (
             <MicrophoneEntry
-                deviceId = { deviceId }
-                hasError = { hasError }
-                isSelected = { isSelected }
-                jitsiTrack = { jitsiTrack }
-                key = { `me-${index}` }
-                onClick = { this._onMicrophoneEntryClick }>
+                deviceId={deviceId}
+                hasError={hasError}
+                isSelected={isSelected}
+                jitsiTrack={jitsiTrack}
+                key={`me-${index}`}
+                onClick={this._onMicrophoneEntryClick}>
                 {label}
             </MicrophoneEntry>
         );
@@ -157,10 +157,10 @@ class AudioSettingsContent extends Component<Props, State> {
 
         return (
             <SpeakerEntry
-                deviceId = { deviceId }
-                isSelected = { deviceId === this.props.currentOutputDeviceId }
-                key = { key }
-                onClick = { this._onSpeakerEntryClick }>
+                deviceId={deviceId}
+                isSelected={deviceId === this.props.currentOutputDeviceId}
+                key={key}
+                onClick={this._onSpeakerEntryClick}>
                 {label}
             </SpeakerEntry>
         );
@@ -246,19 +246,19 @@ class AudioSettingsContent extends Component<Props, State> {
 
         return (
             <div>
-                <div className = 'audio-preview-content'>
+                <div className='audio-preview-content'>
                     <AudioSettingsHeader
-                        IconComponent = { IconMicrophoneEmpty }
-                        text = { t('settings.microphones') } />
+                        IconComponent={IconMicrophoneEmpty}
+                        text={t('settings.microphones')} />
                     {this.state.audioTracks.map((data, i) =>
                         this._renderMicrophoneEntry(data, i)
                     )}
                     {outputDevices.length > 0 && (
                         <>
-                            <hr className = 'audio-preview-hr' />
+                            <hr className='audio-preview-hr' />
                             <AudioSettingsHeader
-                                IconComponent = { IconVolumeEmpty }
-                                text = { t('settings.speakers') } />
+                                IconComponent={IconVolumeEmpty}
+                                text={t('settings.speakers')} />
                         </>
                     )
                     }

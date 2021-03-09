@@ -27,13 +27,13 @@ type Props = {
  */
 export default function AudioSettingsHeader({ IconComponent, text }: Props) {
     return (
-        <div className = 'audio-preview-header'>
-            <div className = 'audio-preview-header-icon'>
+        <div className='audio-preview-header'>
+            <div className='audio-preview-header-icon'>
                 {<Icon
-                    size = { 20 }
-                    src = { IconComponent } />}
+                    size={20}
+                    src={IconComponent} />}
             </div>
-            <div className = 'audio-preview-header-text'>{text}</div>
+            <div className='audio-preview-header-text'>{text}</div>
         </div>
     );
 }
