@@ -129,8 +129,8 @@ ReducerRegistry.register('features/base/tracks', (state = [], action) => {
 
         if (action.track.local) {
             withoutTrackStub
-                = state.filter(
-                    t => !t.local || t.mediaType !== action.track.mediaType);
+                    = state.filter(
+                        t => !t.local || t.mediaType !== action.track.mediaType);
         }
 
         return [ ...withoutTrackStub, action.track ];

@@ -63,7 +63,7 @@ export const defaultDisabledButtonStyles = {
 /**
  * An abstract implementation of a button.
  */
-export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
+export default class AbstractButton<P: Props, S: *> extends Component < P, S > {
     static defaultProps = {
         afterClick: undefined,
         disabledStyles: defaultDisabledButtonStyles,
@@ -114,7 +114,7 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
      *
      * @abstract
      */
-    tooltip: ?string;
+    tooltip: ? string;
 
     /**
      * Initializes a new {@code AbstractButton} instance.

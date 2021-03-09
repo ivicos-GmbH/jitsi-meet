@@ -75,7 +75,7 @@ export default class AlwaysOnTop extends Component<*, State> {
      */
     _avatarChangedListener({ avatarURL, id }) {
         if (api._getOnStageParticipant() === id
-                && avatarURL !== this.state.avatarURL) {
+            && avatarURL !== this.state.avatarURL) {
             this.setState({ avatarURL });
         }
     }
@@ -89,8 +89,8 @@ export default class AlwaysOnTop extends Component<*, State> {
      */
     _displayNameChangedListener({ displayname, formattedDisplayName, id }) {
         if (api._getOnStageParticipant() === id
-                && (formattedDisplayName !== this.state.formattedDisplayName
-                    || displayname !== this.state.displayName)) {
+            && (formattedDisplayName !== this.state.formattedDisplayName
+                || displayname !== this.state.displayName)) {
             // I think the API has a typo using lowercase n for the displayname
             this.setState({
                 displayName: displayname,
@@ -196,7 +196,7 @@ export default class AlwaysOnTop extends Component<*, State> {
                 <div
                     className = 'displayname'
                     id = 'displayname'>
-                    { formattedDisplayName }
+                    {formattedDisplayName}
                 </div>
             </div>
         );
@@ -263,7 +263,7 @@ export default class AlwaysOnTop extends Component<*, State> {
                     className = { this.state.visible ? 'fadeIn' : 'fadeOut' }
                     onMouseOut = { this._onMouseOut }
                     onMouseOver = { this._onMouseOver } />
-                { this._renderVideoNotAvailableScreen() }
+                { this._renderVideoNotAvailableScreen()}
             </div>
         );
     }

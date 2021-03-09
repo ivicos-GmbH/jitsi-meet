@@ -70,7 +70,7 @@ export default class RemoteVideoMenuButton extends Component<Props> {
                         <Icon src = { icon } />
                     </span>
                     <span className = 'popupmenu__text'>
-                        { buttonText }
+                        {buttonText}
                     </span>
                 </a>
             </li>

@@ -103,11 +103,11 @@ class PasswordForm extends Component<Props, State> {
         return (
             <div className = 'info-password'>
                 <span className = 'info-label'>
-                    { t('info.password') }
+                    {t('info.password')}
                 </span>
                 <span className = 'spacer'>&nbsp;</span>
                 <span className = 'info-password-field info-value'>
-                    { this._renderPasswordField() }
+                    {this._renderPasswordField()}
                 </span>
             </div>
         );
@@ -126,7 +126,8 @@ class PasswordForm extends Component<Props, State> {
 
             if (this.props.passwordNumberOfDigits) {
                 placeHolderText = this.props.t('passwordDigitsOnly', {
-                    number: this.props.passwordNumberOfDigits });
+                    number: this.props.passwordNumberOfDigits
+                });
                 digitPattern = '\\d*';
             }
 
@@ -150,20 +151,20 @@ class PasswordForm extends Component<Props, State> {
         } else if (this.props.locked === LOCKED_LOCALLY) {
             return (
                 <div className = 'info-password-local'>
-                    { this.props.password }
+                    { this.props.password}
                 </div>
             );
         } else if (this.props.locked) {
             return (
                 <div className = 'info-password-remote'>
-                    { this.props.t('passwordSetRemotely') }
+                    { this.props.t('passwordSetRemotely')}
                 </div>
             );
         }
 
         return (
             <div className = 'info-password-none'>
-                { this.props.t('info.noPassword') }
+                { this.props.t('info.noPassword')}
             </div>
         );
     }

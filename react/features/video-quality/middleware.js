@@ -75,7 +75,7 @@ StateListenerRegistry.register(
             thumbnailHeight: thumbnailSize?.height
         };
     },
-    /* listener */ ({ displayTileView, participantCount, reducedUI, thumbnailHeight }, { dispatch, getState }) => {
+    /* listener */({ displayTileView, participantCount, reducedUI, thumbnailHeight }, { dispatch, getState }) => {
         const state = getState();
         const { maxReceiverVideoQuality } = state['features/video-quality'];
         const { maxFullResolutionParticipants = 2 } = state['features/base/config'];
@@ -91,7 +91,7 @@ StateListenerRegistry.register(
             if (maxReceiverVideoQuality !== newMaxRecvVideoQuality && maxFullResolutionParticipants !== -1) {
                 const override
                     = participantCount > maxFullResolutionParticipants
-                        && newMaxRecvVideoQuality > VIDEO_QUALITY_LEVELS.STANDARD;
+                    && newMaxRecvVideoQuality > VIDEO_QUALITY_LEVELS.STANDARD;
 
                 logger.info(`Video quality level for thumbnail height: ${thumbnailHeight}, `
                     + `is: ${newMaxRecvVideoQuality}, `
@@ -198,7 +198,7 @@ StateListenerRegistry.register(
             preferredVideoQuality
         };
     },
-    /* listener */ (currentState, store, previousState = {}) => {
+    /* listener */(currentState, store, previousState = {}) => {
         const {
             conference,
             maxReceiverVideoQuality,

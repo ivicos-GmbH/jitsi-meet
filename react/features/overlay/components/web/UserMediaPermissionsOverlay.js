@@ -44,7 +44,7 @@ class UserMediaPermissionsOverlay extends AbstractUserMediaPermissionsOverlay {
                 </div>
                 <div className = 'policy overlay__policy'>
                     <p className = 'policy__text'>
-                        { translateToHTML(t, 'startupoverlay.policyText') }
+                        {translateToHTML(t, 'startupoverlay.policyText')}
                     </p>
                     {
                         this._renderPolicyLogo()

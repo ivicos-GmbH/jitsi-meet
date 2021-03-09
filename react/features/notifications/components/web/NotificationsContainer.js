@@ -16,7 +16,7 @@ type Props = AbstractProps & {
     /**
      * Whther we are a SIP gateway or not.
      */
-     _iAmSipGateway: boolean
+    _iAmSipGateway: boolean
 };
 
 /**
@@ -43,7 +43,7 @@ class NotificationsContainer extends AbstractNotificationsContainer<Props> {
             <FlagGroup
                 id = 'notifications-container'
                 onDismissed = { this._onDismissed }>
-                { this._renderFlags() }
+                { this._renderFlags()}
             </FlagGroup>
         );
     }

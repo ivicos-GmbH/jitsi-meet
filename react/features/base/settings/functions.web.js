@@ -41,9 +41,9 @@ export function getCurrentOutputDeviceId(state: Object) {
  */
 function getDeviceIdByType(state: Object, isType: string) {
     const [ deviceId ] = state['features/base/tracks']
-          .map(t => t.jitsiTrack)
-          .filter(t => t && t.isLocal() && t[isType]())
-          .map(t => t.getDeviceId());
+        .map(t => t.jitsiTrack)
+        .filter(t => t && t.isLocal() && t[isType]())
+        .map(t => t.getDeviceId());
 
     return deviceId || '';
 }

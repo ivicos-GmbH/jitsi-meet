@@ -26,7 +26,7 @@ type Props = BaseProps & {
      * translated using the provided params. See i18n function
      * {@code translate(string, Object)} for more details.
      */
-    contentKey: string | { key: string, params: Object},
+    contentKey: string | { key: string, params: Object },
 
     t: Function
 }
@@ -66,7 +66,7 @@ class ConfirmDialog extends BaseSubmitDialog<Props, *> {
                     _dialogStyles.buttonSeparator
                 ] }>
                 <Text style = { _dialogStyles.buttonLabel }>
-                    { t(cancelKey || 'dialog.confirmNo') }
+                    {t(cancelKey || 'dialog.confirmNo')}
                 </Text>
             </TouchableOpacity>
         );
@@ -90,7 +90,7 @@ class ConfirmDialog extends BaseSubmitDialog<Props, *> {
 
         return (
             <Text style = { _dialogStyles.text }>
-                { content }
+                { content}
             </Text>
         );
     }

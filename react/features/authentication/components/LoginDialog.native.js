@@ -182,7 +182,7 @@ class LoginDialog extends Component<Props, State> {
                         ] }
                         underlineColorAndroid = { FIELD_UNDERLINE }
                         value = { this.state.password } />
-                    { this._renderMessage() }
+                    {this._renderMessage()}
                 </View>
             </CustomSubmitDialog>
         );
@@ -219,11 +219,11 @@ class LoginDialog extends Component<Props, State> {
                 const { credentials } = error;
 
                 if (credentials
-                        && credentials.jid
-                            === toJid(
-                                this.state.username,
-                                this.props._configHosts)
-                        && credentials.password === this.state.password) {
+                    && credentials.jid
+                    === toJid(
+                        this.state.username,
+                        this.props._configHosts)
+                    && credentials.password === this.state.password) {
                     messageKey = 'dialog.incorrectPassword';
                     messageIsError = true;
                 }
@@ -245,7 +245,7 @@ class LoginDialog extends Component<Props, State> {
 
             return (
                 <Text style = { messageStyles }>
-                    { message }
+                    { message}
                 </Text>
             );
         }

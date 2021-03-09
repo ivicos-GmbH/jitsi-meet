@@ -120,11 +120,11 @@ export default class AvatarListItem extends Component<Props> {
                             styles.listItemTitle,
                             this.props.titleStyle
                         ] }>
-                        { title }
+                        {title}
                     </Text>
                     {this._renderItemLines(lines)}
                 </Container>}
-                { this.props.children }
+                { this.props.children}
             </Container>
         );
     }

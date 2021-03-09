@@ -30,7 +30,7 @@ class Captions
     _renderParagraph(id: string, text: string): React$Element<*> {
         return (
             <p key = { id }>
-                <span>{ text }</span>
+                <span>{text}</span>
             </p>
         );
     }
@@ -47,7 +47,7 @@ class Captions
             paragraphs: Array<React$Element<*>>): React$Element<*> {
         return (
             <div className = 'transcription-subtitles' >
-                { paragraphs }
+                { paragraphs}
             </div>
         );
     }

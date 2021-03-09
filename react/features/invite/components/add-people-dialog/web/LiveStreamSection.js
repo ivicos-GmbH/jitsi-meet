@@ -103,7 +103,7 @@ function LiveStreamSection({ liveStreamViewURL, t }: Props) {
                 onClick = { onClick }
                 onMouseOut = { onHoverOut }
                 onMouseOver = { onHoverIn }>
-                { renderLinkContent() }
+                {renderLinkContent()}
             </div>
             <div className = 'invite-more-dialog separator' />
         </>

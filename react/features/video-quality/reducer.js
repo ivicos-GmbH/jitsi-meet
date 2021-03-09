@@ -41,9 +41,9 @@ ReducerRegistry.register('features/video-quality', (state = DEFAULT_STATE, actio
         return _setConfig(state, action);
     case SET_MAX_RECEIVER_VIDEO_QUALITY:
         return set(
-            state,
-            'maxReceiverVideoQuality',
-            action.maxReceiverVideoQuality);
+                state,
+                'maxReceiverVideoQuality',
+                action.maxReceiverVideoQuality);
     case SET_PREFERRED_VIDEO_QUALITY: {
         const { preferredVideoQuality } = action;
 

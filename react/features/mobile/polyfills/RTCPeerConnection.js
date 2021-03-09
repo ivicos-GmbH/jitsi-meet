@@ -43,8 +43,8 @@ export default function _RTCPeerConnection(...args: any[]) {
 
     this.onaddstream = (...args) => // eslint-disable-line no-shadow
         (this._onaddstreamQueue
-                ? this._queueOnaddstream
-                : this._invokeOnaddstream)
+            ? this._queueOnaddstream
+            : this._invokeOnaddstream)
             .apply(this, args);
 
     // Shadow RTCPeerConnection's onaddstream but after _RTCPeerConnection has
@@ -163,7 +163,7 @@ function _setRemoteDescription(description) {
  * be treated as inability to synthesize an IPv6 address from the specified
  * {@code ipv4}.
  */
-const _synthesizeIPv6FromIPv4Address: string => Promise<?string> = (function() {
+const _synthesizeIPv6FromIPv4Address: string => Promise<? string> = (function() {
     // POSIX.getaddrinfo
     const { POSIX } = NativeModules;
 
@@ -192,7 +192,7 @@ const _synthesizeIPv6FromIPv4Address: string => Promise<?string> = (function() {
     return () =>
         Promise.reject(
             'The impossible just happened! No POSIX.getaddrinfo or'
-                + ' NAT64AddrInfo.getIPv6Address!');
+            + ' NAT64AddrInfo.getIPv6Address!');
 })();
 
 /**
@@ -271,8 +271,8 @@ function _synthesizeIPv6Addresses0(sessionDescription) {
                                     _synthesizeIPv6FromIPv4Address(ip).then(
                                         value => {
                                             if (!value
-                                                    || value.indexOf(':') === -1
-                                                    || value === ips.get(ip)) {
+                                                || value.indexOf(':') === -1
+                                                || value === ips.get(ip)) {
                                                 ips.delete(ip);
                                             } else {
                                                 ips.set(ip, value);

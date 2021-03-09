@@ -9,7 +9,7 @@ import type { Props } from './AbstractButton';
  * An abstract implementation of a button for toggling video mute.
  */
 export default class AbstractVideoMuteButton<P : Props, S : *>
-    extends AbstractButton<P, S> {
+    extends AbstractButton < P, S > {
 
     icon = IconCameraEmpty;
     toggledIcon = IconCameraEmptyDisabled;

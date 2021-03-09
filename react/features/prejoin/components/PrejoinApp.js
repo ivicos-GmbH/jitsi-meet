@@ -88,7 +88,7 @@ export default class PrejoinApp extends BaseApp<Props> {
     _createMainElement(component, props) {
         return (
             <AtlasKitThemeProvider mode = 'dark'>
-                { super._createMainElement(component, props) }
+                { super._createMainElement(component, props)}
             </AtlasKitThemeProvider>
         );
     }

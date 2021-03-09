@@ -32,14 +32,14 @@ export class OldElectronAPPNotificationDescription extends Component<Props> {
 
         return (
             <div>
-                { t('notify.oldElectronClientDescription1') }
+                { t('notify.oldElectronClientDescription1')}
                 <a
                     href = 'https://github.com/jitsi/jitsi-meet-electron/releases/latest'
                     rel = 'noopener noreferrer'
                     target = '_blank'>
-                    { t('notify.oldElectronClientDescription2') }
+                    {t('notify.oldElectronClientDescription2')}
                 </a>
-                { t('notify.oldElectronClientDescription3') }
+                { t('notify.oldElectronClientDescription3')}
             </div>);
     }
 

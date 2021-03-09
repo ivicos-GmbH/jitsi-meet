@@ -86,7 +86,7 @@ class OverflowMenuVideoQualityItem extends Component<Props> {
                     <Icon src = { icon } />
                 </span>
                 <span className = 'profile-text'>
-                    { this.props.t('toolbar.callQuality') }
+                    {this.props.t('toolbar.callQuality')}
                 </span>
             </li>
         );

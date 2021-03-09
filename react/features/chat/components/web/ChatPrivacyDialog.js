@@ -27,7 +27,7 @@ class ChatPrivacyDialog extends AbstractChatPrivacyDialog {
                 titleKey = 'dialog.sendPrivateMessageTitle'
                 width = 'small'>
                 <div>
-                    { this.props.t('dialog.sendPrivateMessage') }
+                    {this.props.t('dialog.sendPrivateMessage')}
                 </div>
             </Dialog>
         );

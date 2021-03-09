@@ -43,9 +43,9 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
         return (
             <View style = { _styles.messageRecipientContainer }>
                 <Text style = { _styles.messageRecipientText }>
-                    { t('chat.messageTo', {
+                    {t('chat.messageTo', {
                         recipient: _privateMessageRecipient
-                    }) }
+                    })}
                 </Text>
                 <TouchableHighlight onPress = { this.props._onRemovePrivateMessageRecipient }>
                     <Icon

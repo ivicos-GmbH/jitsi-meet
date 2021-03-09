@@ -17,7 +17,7 @@ export default function renderConferenceTimer(timerValue: string) {
         <Text
             numberOfLines = { 4 }
             style = { styles.roomTimer }>
-            { timerValue }
+            { timerValue}
         </Text>
     );
 }

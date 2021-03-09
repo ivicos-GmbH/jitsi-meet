@@ -23,21 +23,21 @@ const watchOSEnabled = Platform.OS === 'ios';
 // Handles the recent URLs state sent to the watch
 watchOSEnabled && StateListenerRegistry.register(
     /* selector */ state => state['features/recent-list'],
-    /* listener */ (recentListState, { getState }) => {
+    /* listener */(recentListState, { getState }) => {
         _updateApplicationContext(getState);
     });
 
 // Handles the mic muted state sent to the watch
 watchOSEnabled && StateListenerRegistry.register(
     /* selector */ state => _isAudioMuted(state),
-    /* listener */ (isAudioMuted, { getState }) => {
+    /* listener */(isAudioMuted, { getState }) => {
         _updateApplicationContext(getState);
     });
 
 // Handles the conference URL state sent to the watch
 watchOSEnabled && StateListenerRegistry.register(
     /* selector */ state => getCurrentConferenceUrl(state),
-    /* listener */ (currentUrl, { dispatch, getState }) => {
+    /* listener */(currentUrl, { dispatch, getState }) => {
         dispatch(setSessionId());
         _updateApplicationContext(getState);
     });
@@ -91,7 +91,7 @@ function _appWillMount({ dispatch, getState }) {
         if (!sessionID || sessionID !== currentSessionID) {
             logger.warn(
                 `Ignoring outdated watch command: ${message.command}`
-                    + ` sessionID: ${sessionID} current session ID: ${currentSessionID}`);
+                + ` sessionID: ${sessionID} current session ID: ${currentSessionID}`);
 
             return;
         }
@@ -113,9 +113,9 @@ function _appWillMount({ dispatch, getState }) {
         }
         case CMD_SET_MUTED:
             dispatch(
-                setAudioMuted(
-                    message.muted === 'true',
-                    /* ensureTrack */ true));
+                    setAudioMuted(
+                        message.muted === 'true',
+                        /* ensureTrack */ true));
             break;
         }
     });

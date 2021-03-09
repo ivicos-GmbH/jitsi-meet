@@ -129,10 +129,10 @@ export default class BaseApp extends Component<*, State> {
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
                         <Fragment>
-                            { this._createMainElement(component, props) }
+                            {this._createMainElement(component, props)}
                             <SoundCollection />
-                            { this._createExtraElement() }
-                            { this._renderDialogContainer() }
+                            {this._createExtraElement()}
+                            {this._renderDialogContainer()}
                         </Fragment>
                     </Provider>
                 </I18nextProvider>
@@ -193,7 +193,7 @@ export default class BaseApp extends Component<*, State> {
         let devToolsExtension;
 
         if (typeof window === 'object'
-                && (devToolsExtension = window.devToolsExtension)) {
+            && (devToolsExtension = window.devToolsExtension)) {
             middleware = compose(middleware, devToolsExtension());
         }
 

@@ -116,9 +116,9 @@ class JitsiModal extends PureComponent<Props> {
                         { ...headerProps }
                         onPressBack = { this._onRequestClose } />
                     <SafeAreaView style = { styles.safeArea }>
-                        { children }
+                        {children}
                     </SafeAreaView>
-                    { footerComponent && footerComponent() }
+                    {footerComponent && footerComponent()}
                 </KeyboardAvoidingView>
             </SlidingView>
         );

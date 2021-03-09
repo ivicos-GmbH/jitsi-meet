@@ -79,7 +79,7 @@ export default class AbstractRecentList<P: Props> extends AbstractPage<P> {
                 <Text
                     className = 'description'
                     style = { styles.emptyListText }>
-                    { t('welcomepage.recentListEmpty') }
+                    {t('welcomepage.recentListEmpty')}
                 </Text>
             </Container>
         );

@@ -54,9 +54,9 @@ function _connectionEstablished(store, next, action) {
     const { history, location } = window;
 
     if (history
-            && location
-            && history.length
-            && typeof history.replaceState === 'function') {
+        && location
+        && history.length
+        && typeof history.replaceState === 'function') {
         const replacement = getURLWithoutParams(location);
 
         if (location !== replacement) {

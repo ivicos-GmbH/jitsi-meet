@@ -81,11 +81,11 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
         const useTooltip = this.tooltip && this.tooltip.length > 0;
         let children = (
             <Fragment>
-                { this._renderIcon() }
+                { this._renderIcon()}
                 { showLabel && <span>
-                    { this.label }
-                </span> }
-                { elementAfter }
+                    {this.label}
+                </span>}
+                { elementAfter}
             </Fragment>
         );
 
@@ -94,7 +94,7 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
                 <Tooltip
                     content = { this.tooltip }
                     position = { tooltipPosition }>
-                    { children }
+                    { children}
                 </Tooltip>
             );
         }
@@ -112,8 +112,7 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
         const { customClass, disabled, icon, showLabel, toggled } = this.props;
         const iconComponent = <Icon src = { icon } />;
         const elementType = showLabel ? 'span' : 'div';
-        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${
-            toggled ? 'toggled' : ''} ${disabled ? 'disabled' : ''} ${customClass ?? ''}`;
+        const className = `${showLabel ? 'overflow-menu-item-icon' : 'toolbox-icon'} ${toggled ? 'toggled' : ''} ${disabled ? 'disabled' : ''} ${customClass ?? ''}`; // eslint-disable-line max-len
 
         return React.createElement(elementType, { className }, iconComponent);
     }

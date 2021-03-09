@@ -114,6 +114,6 @@ export function shouldRenderVideoTrack(
         waitForVideoStarted: boolean) {
     return (
         videoTrack
-            && !videoTrack.muted
-            && (!waitForVideoStarted || videoTrack.videoStarted));
+        && !videoTrack.muted
+        && (!waitForVideoStarted || videoTrack.videoStarted));
 }

@@ -31,14 +31,14 @@ MiddlewareRegistry.register(store => next => action => {
             const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
 
             store.dispatch(
-                setTileViewDimensions(
-                    gridDimensions,
-                    {
-                        clientHeight,
-                        clientWidth
-                    },
-                    store
-                )
+                        setTileViewDimensions(
+                            gridDimensions,
+                            {
+                                clientHeight,
+                                clientWidth
+                            },
+                            store
+                        )
             );
             break;
         }

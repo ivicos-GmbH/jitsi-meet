@@ -262,7 +262,7 @@ class PagedList extends Component<Props, State> {
                             styles.pageIndicatorText,
                             this._getIndicatorStyle(index)
                         ] }>
-                        { page.title }
+                        {page.title}
                     </Text>
                 </View>
             </TouchableOpacity>

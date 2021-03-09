@@ -30,7 +30,7 @@ class StopLiveStreamDialog extends AbstractStopLiveStreamDialog {
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.liveStreaming'
                 width = 'small'>
-                { this.props.t('dialog.stopStreamingWarning') }
+                { this.props.t('dialog.stopStreamingWarning')}
             </Dialog>
         );
     }

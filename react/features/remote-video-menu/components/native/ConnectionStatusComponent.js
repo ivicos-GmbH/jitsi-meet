@@ -125,15 +125,15 @@ class ConnectionStatusComponent extends Component<Props, State> {
                 <View style = { styles.statsWrapper }>
                     <View style = { styles.statsInfoCell }>
                         <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.status')} ` }
+                            {`${t('connectionindicator.status')} `}
                         </Text>
                         <Text style = { styles.statsInfoText }>
-                            { this.state.connectionString }
+                            {this.state.connectionString}
                         </Text>
                     </View>
                     <View style = { styles.statsInfoCell }>
                         <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.bitrate')}` }
+                            {`${t('connectionindicator.bitrate')}`}
                         </Text>
                         <BaseIndicator
                             icon = { IconArrowDownLarge }
@@ -141,7 +141,7 @@ class ConnectionStatusComponent extends Component<Props, State> {
                                 color: ColorPalette.darkGrey
                             }} />
                         <Text style = { styles.statsInfoText }>
-                            { this.state.downloadString }
+                            {this.state.downloadString}
                         </Text>
                         <BaseIndicator
                             icon = { IconArrowUpLarge }
@@ -149,12 +149,12 @@ class ConnectionStatusComponent extends Component<Props, State> {
                                 color: ColorPalette.darkGrey
                             }} />
                         <Text style = { styles.statsInfoText }>
-                            { `${this.state.uploadString} Kbps` }
+                            {`${this.state.uploadString} Kbps`}
                         </Text>
                     </View>
                     <View style = { styles.statsInfoCell }>
                         <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.packetloss')}` }
+                            {`${t('connectionindicator.packetloss')}`}
                         </Text>
                         <BaseIndicator
                             icon = { IconArrowDownLarge }
@@ -162,7 +162,7 @@ class ConnectionStatusComponent extends Component<Props, State> {
                                 color: ColorPalette.darkGrey
                             }} />
                         <Text style = { styles.statsInfoText }>
-                            { this.state.packetLostDownloadString }
+                            {this.state.packetLostDownloadString}
                         </Text>
                         <BaseIndicator
                             icon = { IconArrowUpLarge }
@@ -170,23 +170,23 @@ class ConnectionStatusComponent extends Component<Props, State> {
                                 color: ColorPalette.darkGrey
                             }} />
                         <Text style = { styles.statsInfoText }>
-                            { this.state.packetLostUploadString }
+                            {this.state.packetLostUploadString}
                         </Text>
                     </View>
                     <View style = { styles.statsInfoCell }>
                         <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.resolution')} ` }
+                            {`${t('connectionindicator.resolution')} `}
                         </Text>
                         <Text style = { styles.statsInfoText }>
-                            { this.state.resolutionString }
+                            {this.state.resolutionString}
                         </Text>
                     </View>
                     <View style = { styles.statsInfoCell }>
                         <Text style = { styles.statsTitleText }>
-                            { `${t('connectionindicator.codecs')}` }
+                            {`${t('connectionindicator.codecs')}`}
                         </Text>
                         <Text style = { styles.statsInfoText }>
-                            { this.state.codecString }
+                            {this.state.codecString}
                         </Text>
                     </View>
                 </View>
@@ -274,12 +274,12 @@ class ConnectionStatusComponent extends Component<Props, State> {
         const { framerate, resolution } = stats;
 
         const resolutionString = Object.keys(resolution || {})
-        .map(ssrc => {
-            const { width, height } = resolution[ssrc];
+            .map(ssrc => {
+                const { width, height } = resolution[ssrc];
 
-            return `${width}x${height}`;
-        })
-        .join(', ') || null;
+                return `${width}x${height}`;
+            })
+            .join(', ') || null;
 
         const frameRateString = Object.keys(framerate || {})
             .map(ssrc => framerate[ssrc])
@@ -401,7 +401,7 @@ class ConnectionStatusComponent extends Component<Props, State> {
                     participantId = { participantID }
                     size = { AVATAR_SIZE } />
                 <Text style = { styles.participantNameLabel }>
-                    { this.props._participantDisplayName }
+                    {this.props._participantDisplayName}
                 </Text>
             </View>
         );

@@ -66,10 +66,10 @@ export function isFatalJitsiConferenceError(error: Object | string) {
 
     return (
         error === JitsiConferenceErrors.FOCUS_DISCONNECTED
-            || error === JitsiConferenceErrors.FOCUS_LEFT
-            || error === JitsiConferenceErrors.ICE_FAILED
-            || error === JitsiConferenceErrors.OFFER_ANSWER_FAILED
-            || error === JitsiConferenceErrors.VIDEOBRIDGE_NOT_AVAILABLE);
+        || error === JitsiConferenceErrors.FOCUS_LEFT
+        || error === JitsiConferenceErrors.ICE_FAILED
+        || error === JitsiConferenceErrors.OFFER_ANSWER_FAILED
+        || error === JitsiConferenceErrors.VIDEOBRIDGE_NOT_AVAILABLE);
 }
 
 /**
@@ -93,6 +93,6 @@ export function isFatalJitsiConnectionError(error: Object | string) {
 
     return (
         error === JitsiConnectionErrors.CONNECTION_DROPPED_ERROR
-            || error === JitsiConnectionErrors.OTHER_ERROR
-            || error === JitsiConnectionErrors.SERVER_ERROR);
+        || error === JitsiConnectionErrors.OTHER_ERROR
+        || error === JitsiConnectionErrors.SERVER_ERROR);
 }

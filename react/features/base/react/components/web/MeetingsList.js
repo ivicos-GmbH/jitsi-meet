@@ -179,8 +179,7 @@ export default class MeetingsList extends Component<Props> {
         const { hideURL = false, onItemDelete } = this.props;
         const onPress = this._onPress(url);
         const rootClassName
-            = `item ${
-                onPress ? 'with-click-handler' : 'without-click-handler'}`;
+            = `item ${onPress ? 'with-click-handler' : 'without-click-handler'}`;
 
         return (
             <Container
@@ -189,33 +188,33 @@ export default class MeetingsList extends Component<Props> {
                 onClick = { onPress }>
                 <Container className = 'left-column'>
                     <Text className = 'title'>
-                        { _toDateString(date) }
+                        {_toDateString(date)}
                     </Text>
                     <Text className = 'subtitle'>
-                        { _toTimeString(time) }
+                        {_toTimeString(time)}
                     </Text>
                 </Container>
                 <Container className = 'right-column'>
                     <Text className = 'title'>
-                        { title }
+                        {title}
                     </Text>
                     {
                         hideURL || !url ? null : (
                             <Text>
-                                { url }
+                                { url}
                             </Text>)
                     }
                     {
                         typeof duration === 'number' ? (
                             <Text className = 'subtitle'>
-                                { getLocalizedDurationFormatter(duration) }
+                                { getLocalizedDurationFormatter(duration)}
                             </Text>) : null
                     }
                 </Container>
                 <Container className = 'actions'>
-                    { elementAfter || null }
+                    {elementAfter || null}
 
-                    { onItemDelete && <Icon
+                    {onItemDelete && <Icon
                         className = 'delete-meeting'
                         onClick = { this._onDelete(meeting) }
                         src = { IconTrash } />}

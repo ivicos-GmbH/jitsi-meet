@@ -88,7 +88,7 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
                 // else clause bellow already.
                 render = true;
             } else if (shouldRenderVideoTrack(videoTrack, false)
-                    && !videoTrack.videoStarted) {
+                && !videoTrack.videoStarted) {
                 // XXX Unfortunately, onPlaying has not come for videoTrack yet.
                 // We have to render in order to give onPlaying a chance to
                 // come.
@@ -107,9 +107,9 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
         // stream.
         const zoomEnabled
             = this.props.zoomEnabled
-                && stream
-                && videoTrack
-                && videoTrack.videoType === 'desktop';
+            && stream
+            && videoTrack
+            && videoTrack.videoType === 'desktop';
 
         return (
             <Video

@@ -247,7 +247,7 @@ export function updateCalendarEvent(id: string, calendarId: string): Function {
         const roomURL = `${href}${newRoomName}`;
 
         return dispatch(integration.updateCalendarEvent(
-                id, calendarId, roomURL))
+            id, calendarId, roomURL))
             .then(() => {
                 // make a copy of the array
                 const events

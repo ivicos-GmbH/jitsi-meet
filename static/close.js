@@ -3,10 +3,10 @@
 const hints = [
     'You can pin participants by clicking on their thumbnails.',
     'You can tell others you have something to say by using the "Raise Hand" '
-        + 'feature',
+    + 'feature',
     'You can learn about key shortcuts by pressing Shift+?',
     'You can learn more about the state of everyone\'s connection by hovering '
-        + 'on the bars in their thumbnail',
+    + 'on the bars in their thumbnail',
     'You can hide all thumbnails by using the button in the bottom right corner'
 ];
 

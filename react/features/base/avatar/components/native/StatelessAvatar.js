@@ -56,9 +56,9 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                         styles.avatarContainer(size),
                         style
                     ] }>
-                    { avatar }
+                    {avatar}
                 </View>
-                { this._renderAvatarStatus() }
+                { this._renderAvatarStatus()}
             </View>
         );
     }
@@ -142,7 +142,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                         backgroundColor: color
                     }
                 ] }>
-                <Text style = { styles.initialsText(size) }> { initials } </Text>
+                <Text style = { styles.initialsText(size) }> {initials} </Text>
             </View>
         );
     }

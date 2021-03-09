@@ -48,7 +48,7 @@ class VideoInputPreview extends Component<Props> {
                     playsinline = { true }
                     videoTrack = {{ jitsiTrack: this.props.track }} />
                 <div className = 'video-input-preview-error'>
-                    { error || '' }
+                    {error || ''}
                 </div>
             </div>
         );

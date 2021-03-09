@@ -155,8 +155,7 @@ export function getRGBAFormat(color: string, alpha: number): string {
 
     match = color.match(HEX_SHORT_COLOR_FORMAT);
     if (match) {
-        return `#${match[1]}${match[1]}${match[2]}${match[2]}${match[3]}${
-            match[3]}${_getAlphaInHex(alpha)}`;
+        return `#${match[1]}${match[1]}${match[2]}${match[2]}${match[3]}${match[3]}${_getAlphaInHex(alpha)}`;
     }
 
     match = color.match(RGB_COLOR_FORMAT);
@@ -180,8 +179,8 @@ export function isDarkColor(color: string): boolean {
     const rgb = _getRGBObjectFormat(color);
 
     return ((_getColorLuminance(rgb.r) * 0.2126)
-    + (_getColorLuminance(rgb.g) * 0.7152)
-    + (_getColorLuminance(rgb.b) * 0.0722)) <= 0.179;
+        + (_getColorLuminance(rgb.g) * 0.7152)
+        + (_getColorLuminance(rgb.b) * 0.0722)) <= 0.179;
 }
 
 /**
@@ -220,7 +219,7 @@ function _getColorLuminance(c: number): number {
  *     b: number
  * }}
  */
-function _getRGBObjectFormat(color: string): {r: number, g: number, b: number} {
+function _getRGBObjectFormat(color: string): { r: number, g: number, b: number } {
     let match = color.match(HEX_LONG_COLOR_FORMAT);
 
     if (match) {

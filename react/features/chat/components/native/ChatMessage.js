@@ -73,19 +73,19 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         return (
             <View style = { styles.messageWrapper } >
-                { this._renderAvatar() }
+                { this._renderAvatar()}
                 <View style = { detailsWrapperStyle }>
                     <View style = { messageBubbleStyle }>
                         <View style = { styles.textWrapper } >
-                            { this._renderDisplayName() }
+                            {this._renderDisplayName()}
                             <Linkify linkStyle = { styles.chatLink }>
-                                { replaceNonUnicodeEmojis(this._getMessageText()) }
+                                {replaceNonUnicodeEmojis(this._getMessageText())}
                             </Linkify>
-                            { this._renderPrivateNotice() }
+                            {this._renderPrivateNotice()}
                         </View>
-                        { this._renderPrivateReplyButton() }
+                        {this._renderPrivateReplyButton()}
                     </View>
-                    { this._renderTimestamp() }
+                    {this._renderTimestamp()}
                 </View>
             </View>
         );
@@ -130,7 +130,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         return (
             <Text style = { _styles.displayName }>
-                { message.displayName }
+                { message.displayName}
             </Text>
         );
     }
@@ -149,7 +149,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         return (
             <Text style = { _styles.privateNotice }>
-                { this._getPrivateNoticeMessage() }
+                { this._getPrivateNoticeMessage()}
             </Text>
         );
     }
@@ -190,7 +190,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         return (
             <Text style = { styles.timeText }>
-                { this._getFormattedTimestamp() }
+                { this._getFormattedTimestamp()}
             </Text>
         );
     }

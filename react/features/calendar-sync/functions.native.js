@@ -44,7 +44,7 @@ export function addLinkToCalendarEntry(
                 };
 
                 RNCalendarEvents.saveEvent(event.title, updateObject)
-                .then(resolve, reject);
+                    .then(resolve, reject);
             }, reject);
         }, reject);
     });
@@ -91,7 +91,7 @@ export function _fetchCalendarEntries(
     const { dispatch, getState } = store;
     const promptForPermission
         = (maybePromptForPermission
-        && !getState()['features/calendar-sync'].authorization)
+            && !getState()['features/calendar-sync'].authorization)
         || forcePermission;
 
     _ensureCalendarAccess(promptForPermission, dispatch)

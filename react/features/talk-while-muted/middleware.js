@@ -30,31 +30,31 @@ MiddlewareRegistry.register(store => next => action => {
 
     case CONFERENCE_JOINED: {
         conference.on(
-            JitsiConferenceEvents.TRACK_MUTE_CHANGED,
-            track => {
-                const { currentNotificationUid } = getState()['features/talk-while-muted'];
+                JitsiConferenceEvents.TRACK_MUTE_CHANGED,
+                track => {
+                    const { currentNotificationUid } = getState()['features/talk-while-muted'];
 
-                if (currentNotificationUid && track.isAudioTrack() && track.isLocal() && !track.isMuted()) {
-                    dispatch(hideNotification(currentNotificationUid));
-                    dispatch(setCurrentNotificationUid());
-                }
-            });
+                    if (currentNotificationUid && track.isAudioTrack() && track.isLocal() && !track.isMuted()) {
+                        dispatch(hideNotification(currentNotificationUid));
+                        dispatch(setCurrentNotificationUid());
+                    }
+                });
         conference.on(
-            JitsiConferenceEvents.TALK_WHILE_MUTED, async () => {
-                const notification = await dispatch(showNotification({
-                    titleKey: 'toolbar.talkWhileMutedPopup',
-                    customActionNameKey: 'notify.unmute',
-                    customActionHandler: () => dispatch(setAudioMuted(false))
-                }));
+                JitsiConferenceEvents.TALK_WHILE_MUTED, async () => {
+                    const notification = await dispatch(showNotification({
+                        titleKey: 'toolbar.talkWhileMutedPopup',
+                        customActionNameKey: 'notify.unmute',
+                        customActionHandler: () => dispatch(setAudioMuted(false))
+                    }));
 
-                dispatch(playSound(TALK_WHILE_MUTED_SOUND_ID));
+                    dispatch(playSound(TALK_WHILE_MUTED_SOUND_ID));
 
-                if (notification) {
-                    // we store the last start muted notification id that we showed,
-                    // so we can hide it when unmuted mic is detected
-                    dispatch(setCurrentNotificationUid(notification.uid));
-                }
-            });
+                    if (notification) {
+                        // we store the last start muted notification id that we showed,
+                        // so we can hide it when unmuted mic is detected
+                        dispatch(setCurrentNotificationUid(notification.uid));
+                    }
+                });
         break;
     }
     }

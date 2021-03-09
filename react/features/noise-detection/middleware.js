@@ -26,30 +26,30 @@ MiddlewareRegistry.register(store => next => action => {
         const { conference } = action;
 
         conference.on(
-            JitsiConferenceEvents.TRACK_MUTE_CHANGED,
-            track => {
-                const { noisyAudioInputNotificationUid } = getState()['features/noise-detection'];
+                JitsiConferenceEvents.TRACK_MUTE_CHANGED,
+                track => {
+                    const { noisyAudioInputNotificationUid } = getState()['features/noise-detection'];
 
-                // Hide the notification in case the user mutes the microphone
-                if (noisyAudioInputNotificationUid && track.isAudioTrack() && track.isLocal() && track.isMuted()) {
-                    dispatch(hideNotification(noisyAudioInputNotificationUid));
-                    dispatch(setNoisyAudioInputNotificationUid());
-                }
-            });
+                    // Hide the notification in case the user mutes the microphone
+                    if (noisyAudioInputNotificationUid && track.isAudioTrack() && track.isLocal() && track.isMuted()) {
+                        dispatch(hideNotification(noisyAudioInputNotificationUid));
+                        dispatch(setNoisyAudioInputNotificationUid());
+                    }
+                });
         conference.on(
-            JitsiConferenceEvents.NOISY_MIC, async () => {
-                const notification = await dispatch(showNotification({
-                    titleKey: 'toolbar.noisyAudioInputTitle',
-                    descriptionKey: 'toolbar.noisyAudioInputDesc'
-                }));
+                JitsiConferenceEvents.NOISY_MIC, async () => {
+                    const notification = await dispatch(showNotification({
+                        titleKey: 'toolbar.noisyAudioInputTitle',
+                        descriptionKey: 'toolbar.noisyAudioInputDesc'
+                    }));
 
-                dispatch(playSound(NOISY_AUDIO_INPUT_SOUND_ID));
+                    dispatch(playSound(NOISY_AUDIO_INPUT_SOUND_ID));
 
-                if (notification) {
-                    // we store the last notification id so we can hide it if the mic is muted
-                    dispatch(setNoisyAudioInputNotificationUid(notification.uid));
-                }
-            });
+                    if (notification) {
+                        // we store the last notification id so we can hide it if the mic is muted
+                        dispatch(setNoisyAudioInputNotificationUid(notification.uid));
+                    }
+                });
         break;
     }
     }

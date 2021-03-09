@@ -101,8 +101,8 @@ class Filmstrip extends Component<Props> {
                 visible = { _visible }>
                 {
                     this._separateLocalThumbnail
-                        && !isNarrowAspectRatio
-                        && <LocalThumbnail />
+                    && !isNarrowAspectRatio
+                    && <LocalThumbnail />
                 }
                 <ScrollView
                     horizontal = { isNarrowAspectRatio }
@@ -111,7 +111,7 @@ class Filmstrip extends Component<Props> {
                     style = { styles.scrollView } >
                     {
                         !this._separateLocalThumbnail && !isNarrowAspectRatio
-                            && <LocalThumbnail />
+                        && <LocalThumbnail />
                     }
                     {
 
@@ -124,12 +124,12 @@ class Filmstrip extends Component<Props> {
                     }
                     {
                         !this._separateLocalThumbnail && isNarrowAspectRatio
-                            && <LocalThumbnail />
+                        && <LocalThumbnail />
                     }
                 </ScrollView>
                 {
                     this._separateLocalThumbnail && isNarrowAspectRatio
-                        && <LocalThumbnail />
+                    && <LocalThumbnail />
                 }
             </Container>
         );

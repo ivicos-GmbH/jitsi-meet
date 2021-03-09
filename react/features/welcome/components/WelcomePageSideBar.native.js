@@ -91,7 +91,7 @@ class WelcomePageSideBar extends Component<Props> {
                         participantId = { this.props._localParticipantId }
                         size = { SIDEBAR_AVATAR_SIZE } />
                     <Text style = { styles.displayName }>
-                        { this.props._displayName }
+                        {this.props._displayName}
                     </Text>
                 </Header>
                 <SafeAreaView style = { styles.sideBarBody }>

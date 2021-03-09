@@ -20,7 +20,7 @@ import {
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/participants'].length,
-    /* listener */ (numberOfParticipants, store) => {
+    /* listener */(numberOfParticipants, store) => {
         const state = store.getState();
 
         if (shouldDisplayTileView(state)) {
@@ -49,7 +49,7 @@ StateListenerRegistry.register(
  */
 StateListenerRegistry.register(
     /* selector */ state => getCurrentLayout(state),
-    /* listener */ (layout, store) => {
+    /* listener */(layout, store) => {
         const state = store.getState();
 
         switch (layout) {
@@ -57,14 +57,14 @@ StateListenerRegistry.register(
             const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
 
             store.dispatch(
-                setTileViewDimensions(
-                    getTileViewGridDimensions(state),
-                    {
-                        clientHeight,
-                        clientWidth
-                    },
-                    store
-                )
+                    setTileViewDimensions(
+                        getTileViewGridDimensions(state),
+                        {
+                            clientHeight,
+                            clientWidth
+                        },
+                        store
+                    )
             );
             break;
         }
@@ -83,7 +83,7 @@ StateListenerRegistry.register(
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/large-video'].participantId,
-    /* listener */ (participantId, store, oldParticipantId) => {
+    /* listener */(participantId, store, oldParticipantId) => {
         const newThumbnail = VideoLayout.getSmallVideo(participantId);
         const oldThumbnail = VideoLayout.getSmallVideo(oldParticipantId);
 
@@ -102,7 +102,7 @@ StateListenerRegistry.register(
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/chat'].isOpen,
-    /* listener */ (isChatOpen, store) => {
+    /* listener */(isChatOpen, store) => {
         const state = store.getState();
 
         if (isChatOpen) {
@@ -135,7 +135,7 @@ StateListenerRegistry.register(
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/responsive-ui'].clientWidth < DISPLAY_DRAWER_THRESHOLD,
-    /* listener */ (widthBelowThreshold, store) => {
+    /* listener */(widthBelowThreshold, store) => {
         store.dispatch(setOverflowDrawer(widthBelowThreshold));
     });
 
@@ -144,7 +144,7 @@ StateListenerRegistry.register(
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/responsive-ui'].clientWidth < ASPECT_RATIO_BREAKPOINT,
-    /* listener */ (widthBelowThreshold, store) => {
+    /* listener */(widthBelowThreshold, store) => {
         store.dispatch(setFilmstripVisible(!widthBelowThreshold));
     });
 
@@ -182,7 +182,7 @@ StateListenerRegistry.register(
         // Forcing the recomputation of tiles when screen switches above TWO_COLUMN_BREAKPOINT.
         return responsiveColumnMapping.multipleColumns;
     },
-    /* listener */ (_, store) => {
+    /* listener */(_, store) => {
         const state = store.getState();
 
         if (shouldDisplayTileView(state)) {

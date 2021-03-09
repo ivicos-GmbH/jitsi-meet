@@ -68,7 +68,7 @@ class TimeElapsed extends Component<Props> {
 
         return (
             <div>
-                { timeElapsed }
+                { timeElapsed}
             </div>
         );
     }
@@ -89,7 +89,7 @@ class TimeElapsed extends Component<Props> {
 
         return (
             <span key = { countType } >
-                { t(countNounKey, { count }) }
+                { t(countNounKey, { count })}
             </span>
         );
     }

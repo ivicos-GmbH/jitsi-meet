@@ -41,7 +41,7 @@ class GoogleSignInButton extends AbstractGoogleSignInButton {
                     onPress = { onClick }
                     style = { styles.signOutButton } >
                     <Text style = { styles.signOutButtonText }>
-                        { t('liveStreaming.signOut') }
+                        {t('liveStreaming.signOut')}
                     </Text>
                 </TouchableOpacity>
             );

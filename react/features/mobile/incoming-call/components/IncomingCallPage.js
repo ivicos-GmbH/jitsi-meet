@@ -70,18 +70,18 @@ class IncomingCallPage extends Component<Props> {
                     colors = { BACKGROUND_OVERLAY_GRADIENT }
                     style = { styles.backgroundOverlayGradient } />
                 <Text style = { styles.title }>
-                    { callTitle }
+                    {callTitle}
                 </Text>
                 <Text
                     numberOfLines = { 6 }
                     style = { styles.callerName } >
-                    { _callerName }
+                    {_callerName}
                 </Text>
                 <Text style = { styles.productLabel }>
-                    { t('incomingCall.productLabel') }
+                    {t('incomingCall.productLabel')}
                 </Text>
-                { this._renderCallerAvatar() }
-                { this._renderButtons() }
+                { this._renderCallerAvatar()}
+                { this._renderButtons()}
             </View>
         );
     }
@@ -101,14 +101,14 @@ class IncomingCallPage extends Component<Props> {
                     <DeclineButton
                         styles = { styles.declineButtonStyles } />
                     <Text style = { styles.buttonText }>
-                        { t('incomingCall.decline') }
+                        {t('incomingCall.decline')}
                     </Text>
                 </View>
                 <View style = { styles.buttonWrapper }>
                     <AnswerButton
                         styles = { styles.answerButtonStyles } />
                     <Text style = { styles.buttonText }>
-                        { t('incomingCall.answer') }
+                        {t('incomingCall.answer')}
                     </Text>
                 </View>
             </View>

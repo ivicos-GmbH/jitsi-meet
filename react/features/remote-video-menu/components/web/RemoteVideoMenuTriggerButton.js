@@ -231,7 +231,7 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
         if (buttons.length > 0) {
             return (
                 <RemoteVideoMenu id = { participantID }>
-                    { buttons }
+                    { buttons}
                 </RemoteVideoMenu>
             );
         }
@@ -263,7 +263,7 @@ function _mapStateToProps(state, ownProps) {
     const { overflowDrawer } = state['features/toolbox'];
 
     if (_supportsRemoteControl
-            && ((!active && !_isRemoteControlSessionActive) || activeParticipant === participantID)) {
+        && ((!active && !_isRemoteControlSessionActive) || activeParticipant === participantID)) {
         if (requestedParticipant === participantID) {
             _remoteControlState = REMOTE_CONTROL_MENU_STATES.REQUESTING;
         } else if (controlled) {

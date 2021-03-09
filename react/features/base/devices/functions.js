@@ -107,7 +107,7 @@ export function getDeviceLabelById(state: Object, id: string, kind: string) {
 
     const device
         = (state['features/base/devices'].availableDevices[kindToSearch] || [])
-        .find(d => d.deviceId === id);
+            .find(d => d.deviceId === id);
 
     if (device) {
         return device.label;

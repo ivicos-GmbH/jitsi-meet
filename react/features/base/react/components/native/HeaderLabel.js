@@ -49,7 +49,7 @@ class HeaderLabel extends Component<Props> {
                     style = { [
                         _headerStyles.headerText
                     ] }>
-                    { this.props.t(this.props.labelKey) }
+                    {this.props.t(this.props.labelKey)}
                 </Text>
             </View>
         );

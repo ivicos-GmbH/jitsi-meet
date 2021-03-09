@@ -30,7 +30,7 @@ export default class OverlayFrame extends Component<Props> {
         return (
             <View style = { styles.container }>
                 <SafeAreaView style = { styles.safeContainer } >
-                    { this.props.children }
+                    {this.props.children}
                 </SafeAreaView>
             </View>
         );

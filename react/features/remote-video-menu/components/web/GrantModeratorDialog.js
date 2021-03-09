@@ -26,7 +26,7 @@ class GrantModeratorDialog extends AbstractGrantModeratorDialog {
                 titleKey = 'dialog.grantModeratorTitle'
                 width = 'small'>
                 <div>
-                    { this.props.t('dialog.grantModeratorDialog') }
+                    {this.props.t('dialog.grantModeratorDialog')}
                 </div>
             </Dialog>
         );

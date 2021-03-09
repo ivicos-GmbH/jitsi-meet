@@ -101,8 +101,8 @@ class StateListenerRegistry {
      * @returns {void}
      */
     _listener({ prevSelections, store }: {
-            prevSelections: Map<SelectorListener, any>,
-            store: Store<*, *>
+        prevSelections: Map<SelectorListener, any>,
+        store: Store<*, *>
     }) {
         for (const selectorListener of this._selectorListeners) {
             const prevSelection = prevSelections.get(selectorListener);
@@ -115,7 +115,7 @@ class StateListenerRegistry {
                 const useDeepEquals = selectorListener?.options?.deepEquals;
 
                 if ((useDeepEquals && !equals(prevSelection, selection))
-                        || (!useDeepEquals && prevSelection !== selection)) {
+                    || (!useDeepEquals && prevSelection !== selection)) {
                     prevSelections.set(selectorListener, selection);
                     selectorListener.listener(selection, store, prevSelection);
                 }

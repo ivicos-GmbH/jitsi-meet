@@ -52,7 +52,7 @@ export function authenticateAndUpgradeRole(
 
         dispatch(_upgradeRoleStarted(process));
         process.then(
-            /* onFulfilled */ () => dispatch(_upgradeRoleFinished(process, 1)),
+            /* onFulfilled */() => dispatch(_upgradeRoleFinished(process, 1)),
             /* onRejected */ error => {
                 // The lack of an error signals a cancellation.
                 if (error.authenticationError || error.connectionError) {

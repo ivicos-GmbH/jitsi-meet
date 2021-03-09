@@ -26,7 +26,7 @@ class DialogContainer extends AbstractDialogContainer {
 
         return (
             <ModalTransition>
-                { this._renderDialogContent() }
+                { this._renderDialogContent()}
             </ModalTransition>
         );
     }

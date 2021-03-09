@@ -17,19 +17,19 @@ import VideoSettingsContent, { type Props as VideoSettingsProps } from './VideoS
 
 type Props = VideoSettingsProps & {
 
-   /**
-    * Component children (the Video button).
-    */
+    /**
+     * Component children (the Video button).
+     */
     children: React$Node,
 
-   /**
-    * Flag controlling the visibility of the popup.
-    */
+    /**
+     * Flag controlling the visibility of the popup.
+     */
     isOpen: boolean,
 
-   /**
-    * Callback executed when the popup closes.
-    */
+    /**
+     * Callback executed when the popup closes.
+     */
     onClose: Function,
 }
 
@@ -57,7 +57,7 @@ function VideoSettingsPopup({
                 isOpen = { isOpen }
                 onClose = { onClose }
                 placement = 'top-end'>
-                { children }
+                {children}
             </InlineDialog>
         </div>
     );

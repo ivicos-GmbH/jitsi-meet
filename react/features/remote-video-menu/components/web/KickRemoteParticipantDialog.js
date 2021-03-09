@@ -26,7 +26,7 @@ class KickRemoteParticipantDialog extends AbstractKickRemoteParticipantDialog {
                 titleKey = 'dialog.kickParticipantTitle'
                 width = 'small'>
                 <div>
-                    { this.props.t('dialog.kickParticipantDialog') }
+                    {this.props.t('dialog.kickParticipantDialog')}
                 </div>
             </Dialog>
         );

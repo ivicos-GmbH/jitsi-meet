@@ -84,7 +84,7 @@ export default class JitsiMeetLogStorage {
             // NOTE console is intentional here
             console.error(
                 `Failed to store the logs, msg length: ${logMessage.length}`
-                    + `error: ${JSON.stringify(error)}`);
+                + `error: ${JSON.stringify(error)}`);
         }
     }
 }

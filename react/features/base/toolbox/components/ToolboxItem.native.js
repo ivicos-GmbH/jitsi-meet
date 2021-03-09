@@ -57,11 +57,11 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
             // wrapped in a View.
             children = (
                 <View style = { style }>
-                    { children }
+                    { children}
                     <Text style = { styles && styles.labelStyle }>
-                        { this.label }
+                        {this.label}
                     </Text>
-                    { elementAfter }
+                    { elementAfter}
                 </View>
             );
 
@@ -79,7 +79,7 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
                 onPress = { onClick }
                 style = { style }
                 underlayColor = { styles && styles.underlayColor } >
-                { children }
+                { children}
             </TouchableHighlight>
         );
     }

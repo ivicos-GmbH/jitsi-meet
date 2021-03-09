@@ -149,9 +149,9 @@ class StartRecordingDialogContent extends Component<Props> {
             <Container
                 className = 'recording-dialog'
                 style = { styles.container }>
-                { this._renderNoIntegrationsContent() }
-                { this._renderIntegrationsContent() }
-                { this._renderFileSharingContent() }
+                { this._renderNoIntegrationsContent()}
+                { this._renderIntegrationsContent()}
+                { this._renderFileSharingContent()}
             </Container>
         );
     }
@@ -206,7 +206,7 @@ class StartRecordingDialogContent extends Component<Props> {
                         ..._dialogStyles.text,
                         ...styles.title
                     }}>
-                    { t('recording.fileSharingdescription') }
+                    {t('recording.fileSharingdescription')}
                 </Text>
                 <Switch
                     className = 'recording-switch'
@@ -268,9 +268,9 @@ class StartRecordingDialogContent extends Component<Props> {
                         ..._dialogStyles.text,
                         ...styles.title
                     }}>
-                    { label }
+                    {label}
                 </Text>
-                { switchContent }
+                { switchContent}
             </Container>
         );
     }
@@ -301,7 +301,7 @@ class StartRecordingDialogContent extends Component<Props> {
                     <Button
                         onValueChange = { this._onSignOut }
                         style = { styles.signButton }>
-                        { t('recording.signOut') }
+                        {t('recording.signOut')}
                     </Button>
                 </Container>
             );
@@ -312,7 +312,7 @@ class StartRecordingDialogContent extends Component<Props> {
                     <Button
                         onValueChange = { this._onSignIn }
                         style = { styles.signButton }>
-                        { t('recording.signIn') }
+                        {t('recording.signIn')}
                     </Button>
                 </Container>
             );
@@ -349,13 +349,13 @@ class StartRecordingDialogContent extends Component<Props> {
                             ..._dialogStyles.text,
                             ...styles.title
                         }}>
-                        { t('recording.authDropboxText') }
+                        {t('recording.authDropboxText')}
                     </Text>
-                    { switchContent }
+                    {switchContent}
                 </Container>
                 <Container
                     className = 'authorization-panel'>
-                    { content }
+                    {content}
                 </Container>
             </Container>
         );
@@ -378,7 +378,7 @@ class StartRecordingDialogContent extends Component<Props> {
 
         // act like group, cannot toggle off
         if (selectedRecordingService
-                === RECORDING_TYPES.JITSI_REC_SERVICE) {
+            === RECORDING_TYPES.JITSI_REC_SERVICE) {
             return;
         }
 
@@ -403,7 +403,7 @@ class StartRecordingDialogContent extends Component<Props> {
 
         // act like group, cannot toggle off
         if (selectedRecordingService
-                === RECORDING_TYPES.DROPBOX) {
+            === RECORDING_TYPES.DROPBOX) {
             return;
         }
 
@@ -443,7 +443,7 @@ class StartRecordingDialogContent extends Component<Props> {
                     style = { styles.loggedIn }>
                     <Container>
                         <Text style = { styles.text }>
-                            { t('recording.loggedIn', { userName }) }
+                            {t('recording.loggedIn', { userName })}
                         </Text>
                     </Container>
                     <Container>

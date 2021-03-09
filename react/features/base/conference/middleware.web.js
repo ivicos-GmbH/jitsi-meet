@@ -25,8 +25,8 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
     }
     case CONFERENCE_FAILED: {
         enableForcedReload
-            && action.error?.name === JitsiConferenceErrors.CONFERENCE_RESTARTED
-            && dispatch(setSkipPrejoinOnReload(true));
+                && action.error?.name === JitsiConferenceErrors.CONFERENCE_RESTARTED
+                && dispatch(setSkipPrejoinOnReload(true));
 
         break;
     }

@@ -42,7 +42,7 @@ class Captions
                 key = { id }
                 onPress = { this.props.onPress }
                 style = { styles.subtitle } >
-                { text }
+                { text}
             </Text>
         );
     }
@@ -59,7 +59,7 @@ class Captions
             paragraphs: Array<React$Element<*>>): React$Element<*> {
         return (
             <Container style = { styles.subtitlesContainer } >
-                { paragraphs }
+                { paragraphs}
             </Container>
         );
     }

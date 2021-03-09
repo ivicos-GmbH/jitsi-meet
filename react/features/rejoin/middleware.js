@@ -9,7 +9,7 @@ StateListenerRegistry.register(
         return recentList && recentList.length && recentList[recentList.length - 1];
     },
     // eslint-disable-next-line no-empty-pattern
-    /* listener */ (newMostRecent, { }, prevMostRecent) => {
+    /* listener */(newMostRecent, { }, prevMostRecent) => {
         if (prevMostRecent && newMostRecent) {
 
             // Send the rejoined event just before the duration is reset on the most recent entry

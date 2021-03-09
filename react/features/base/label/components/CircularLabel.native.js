@@ -113,7 +113,7 @@ export default class CircularLabel extends AbstractCircularLabel<Props, State> {
                     style = { styles.indicatorIcon } />
             ) : (
                 <Text style = { styles.indicatorText }>
-                    { label }
+                    { label}
                 </Text>
             );
 
@@ -123,7 +123,7 @@ export default class CircularLabel extends AbstractCircularLabel<Props, State> {
                     combineStyles(styles.indicatorContainer, style),
                     extraStyle
                 ] }>
-                { labelComponent }
+                { labelComponent}
             </Animated.View>
         );
     }
@@ -142,7 +142,7 @@ export default class CircularLabel extends AbstractCircularLabel<Props, State> {
         const { pulseAnimation } = this.state;
 
         if (newStatus === STATUS_IN_PROGRESS
-                && oldStatus !== STATUS_IN_PROGRESS) {
+            && oldStatus !== STATUS_IN_PROGRESS) {
             // Animation must be started
             this.animationReference = Animated.loop(Animated.sequence([
                 Animated.timing(pulseAnimation, {
@@ -158,8 +158,8 @@ export default class CircularLabel extends AbstractCircularLabel<Props, State> {
 
             this.animationReference.start();
         } else if (this.animationReference
-                && newStatus !== STATUS_IN_PROGRESS
-                && oldStatus === STATUS_IN_PROGRESS) {
+            && newStatus !== STATUS_IN_PROGRESS
+            && oldStatus === STATUS_IN_PROGRESS) {
             // Animation must be stopped
             this.animationReference.stop();
         }

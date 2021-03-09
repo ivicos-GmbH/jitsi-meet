@@ -195,9 +195,9 @@ class CopyMeetingUrl extends Component<Props, State> {
                     className = { `url ${showLinkCopied ? 'done' : ''}` }
                     onClick = { _copyUrl } >
                     <div className = 'copy-meeting-text'>
-                        { !showCopyLink && !showLinkCopied && getDecodedURI(url) }
-                        { showCopyLink && t('prejoin.copyAndShare') }
-                        { showLinkCopied && t('prejoin.linkCopied') }
+                        {!showCopyLink && !showLinkCopied && getDecodedURI(url)}
+                        {showCopyLink && t('prejoin.copyAndShare')}
+                        {showLinkCopied && t('prejoin.linkCopied')}
                     </div>
                     <Icon
                         onClick = { _copyUrl }

@@ -103,7 +103,7 @@ export default class ExpandedLabel<P: Props> extends Component<P, State> {
                         }
                     ] }>
                     <Text style = { styles.expandedLabelText }>
-                        { this._getLabel() }
+                        {this._getLabel()}
                     </Text>
                 </View>
             </Animated.View>

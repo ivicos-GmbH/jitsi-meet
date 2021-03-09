@@ -59,8 +59,7 @@ export default class NavigateSectionListItem<P: Props>
             duration = lines[1];
         }
 
-        const rootClassName = `navigate-section-list-tile ${
-            onPress ? 'with-click-handler' : 'without-click-handler'}`;
+        const rootClassName = `navigate-section-list-tile ${onPress ? 'with-click-handler' : 'without-click-handler'}`;
 
         return (
             <Container
@@ -69,19 +68,19 @@ export default class NavigateSectionListItem<P: Props>
                 <Container className = 'navigate-section-list-tile-info'>
                     <Text
                         className = 'navigate-section-tile-title'>
-                        { title }
+                        {title}
                     </Text>
                     <Text
                         className = 'navigate-section-tile-body'>
-                        { date }
+                        {date}
                     </Text>
                     <Text
                         className = 'navigate-section-tile-body'>
-                        { duration }
+                        {duration}
                     </Text>
                 </Container>
                 <Container className = { 'element-after' }>
-                    { elementAfter || null }
+                    {elementAfter || null}
                 </Container>
             </Container>
         );
