@@ -2924,7 +2924,17 @@ export default {
      * @param {Function} listener the listener.
      */
     setBackgroundImage(backgroundImageUrl, backgroundColor) {
-        const id = getLocalParticipant(APP.store.getState());
+        const state = APP.store.getState();
+        const id = getLocalParticipant(state);
+        const oldBackgroundState = state['features/room-background'];
+
+        if (
+            backgroundColor === oldBackgroundState.backgroundColor
+            && backgroundImageUrl === oldBackgroundState.backgroundImageUrl
+        ) {
+            return;
+        }
+
         const updateDate = Date.now();
         const backgroundData = `${updateDate}|${backgroundColor}|${backgroundImageUrl}`;
 
