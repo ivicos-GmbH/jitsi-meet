@@ -434,7 +434,9 @@ function _participantJoinedOrUpdated(store, next, action) {
         if (local) {
             const { conference } = getState()['features/base/conference'];
 
-            conference.setLocalParticipantProperty('backgroundData', backgroundData);
+            if (conference) {
+                conference.setLocalParticipantProperty('backgroundData', backgroundData);
+            }
         }
     }
 
