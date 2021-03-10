@@ -2925,7 +2925,7 @@ export default {
      */
     setBackgroundImage(backgroundImageUrl, backgroundColor) {
         const state = APP.store.getState();
-        const id = getLocalParticipant(state);
+        const localParticipant = getLocalParticipant(state);
         const oldBackgroundState = state['features/room-background'];
 
         if (
@@ -2940,7 +2940,7 @@ export default {
 
         // Update local participants background information
         APP.store.dispatch(participantUpdated({
-            id,
+            localParticipant,
             backgroundData
         }));
         APP.store.dispatch(updateSettings({
@@ -2949,6 +2949,15 @@ export default {
 
         // Update the room-background feature to update the background properties
         APP.store.dispatch(updateBackgroundData(backgroundData));
+
+        // Send a notification mentioning that the backgroundData is being set to the desired value
+        APP.API.notifyBackgroundChanged(
+            localParticipant.id,
+            localParticipant.id,
+            {
+                backgroundImageUrl,
+                backgroundColor
+            });
     },
 
     /**
