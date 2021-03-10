@@ -3,7 +3,7 @@
 import UIEvents from '../../../../service/UI/UIEvents';
 import { NOTIFICATION_TIMEOUT, showNotification } from '../../notifications';
 import { CALLING, INVITED } from '../../presence-status';
-import { updateBackgroundData } from '../../room-background';
+import { updateBackgroundData, extractBackgroundProperties } from '../../room-background';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../app';
 import {
     CONFERENCE_WILL_JOIN,
@@ -58,35 +58,35 @@ declare var APP: Object;
  */
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
-    case APP_WILL_MOUNT:
-        _registerSounds(store);
+        case APP_WILL_MOUNT:
+            _registerSounds(store);
 
-        return _localParticipantJoined(store, next, action);
+            return _localParticipantJoined(store, next, action);
 
-    case APP_WILL_UNMOUNT:
-        _unregisterSounds(store);
+        case APP_WILL_UNMOUNT:
+            _unregisterSounds(store);
 
-        return _localParticipantLeft(store, next, action);
+            return _localParticipantLeft(store, next, action);
 
-    case CONFERENCE_WILL_JOIN:
-        store.dispatch(localParticipantIdChanged(action.conference.myUserId()));
-        break;
-
-    case DOMINANT_SPEAKER_CHANGED: {
-        // Ensure the raised hand state is cleared for the dominant speaker
-        // and only if it was set when this is the local participant
-
-        const { conference, id } = action.participant;
-        const participant = getLocalParticipant(store.getState());
-        const isLocal = participant && participant.id === id;
-
-        if (isLocal && participant.raisedHand === undefined) {
-            // if local was undefined, let's leave it like that
-            // avoids sending unnecessary presence updates
+        case CONFERENCE_WILL_JOIN:
+            store.dispatch(localParticipantIdChanged(action.conference.myUserId()));
             break;
-        }
 
-        participant
+        case DOMINANT_SPEAKER_CHANGED: {
+            // Ensure the raised hand state is cleared for the dominant speaker
+            // and only if it was set when this is the local participant
+
+            const { conference, id } = action.participant;
+            const participant = getLocalParticipant(store.getState());
+            const isLocal = participant && participant.id === id;
+
+            if (isLocal && participant.raisedHand === undefined) {
+                // if local was undefined, let's leave it like that
+                // avoids sending unnecessary presence updates
+                break;
+            }
+
+            participant
                 && store.dispatch(participantUpdated({
                     conference,
                     id,
@@ -94,56 +94,56 @@ MiddlewareRegistry.register(store => next => action => {
                     raisedHand: false
                 }));
 
-        break;
-    }
-
-    case GRANT_MODERATOR: {
-        const { conference } = store.getState()['features/base/conference'];
-
-        conference.grantOwner(action.id);
-        break;
-    }
-
-    case KICK_PARTICIPANT: {
-        const { conference } = store.getState()['features/base/conference'];
-
-        conference.kickParticipant(action.id);
-        break;
-    }
-
-    case MUTE_REMOTE_PARTICIPANT: {
-        const { conference } = store.getState()['features/base/conference'];
-
-        conference.muteParticipant(action.id, action.mediaType);
-        break;
-    }
-
-    // TODO Remove this middleware when the local display name update flow is
-    // fully brought into redux.
-    case PARTICIPANT_DISPLAY_NAME_CHANGED: {
-        if (typeof APP !== 'undefined') {
-            const participant = getLocalParticipant(store.getState());
-
-            if (participant && participant.id === action.id) {
-                APP.UI.emitEvent(UIEvents.NICKNAME_CHANGED, action.name);
-            }
+            break;
         }
 
-        break;
-    }
+        case GRANT_MODERATOR: {
+            const { conference } = store.getState()['features/base/conference'];
 
-    case PARTICIPANT_JOINED: {
-        _maybePlaySounds(store, action);
+            conference.grantOwner(action.id);
+            break;
+        }
 
-        return _participantJoinedOrUpdated(store, next, action);
-    }
+        case KICK_PARTICIPANT: {
+            const { conference } = store.getState()['features/base/conference'];
 
-    case PARTICIPANT_LEFT:
-        _maybePlaySounds(store, action);
-        break;
+            conference.kickParticipant(action.id);
+            break;
+        }
 
-    case PARTICIPANT_UPDATED:
-        return _participantJoinedOrUpdated(store, next, action);
+        case MUTE_REMOTE_PARTICIPANT: {
+            const { conference } = store.getState()['features/base/conference'];
+
+            conference.muteParticipant(action.id, action.mediaType);
+            break;
+        }
+
+        // TODO Remove this middleware when the local display name update flow is
+        // fully brought into redux.
+        case PARTICIPANT_DISPLAY_NAME_CHANGED: {
+            if (typeof APP !== 'undefined') {
+                const participant = getLocalParticipant(store.getState());
+
+                if (participant && participant.id === action.id) {
+                    APP.UI.emitEvent(UIEvents.NICKNAME_CHANGED, action.name);
+                }
+            }
+
+            break;
+        }
+
+        case PARTICIPANT_JOINED: {
+            _maybePlaySounds(store, action);
+
+            return _participantJoinedOrUpdated(store, next, action);
+        }
+
+        case PARTICIPANT_LEFT:
+            _maybePlaySounds(store, action);
+            break;
+
+        case PARTICIPANT_UPDATED:
+            return _participantJoinedOrUpdated(store, next, action);
 
     }
 
@@ -210,7 +210,14 @@ StateListenerRegistry.register(
         if (conference) {
             const propertyHandlers = {
                 'backgroundData': (participant, value) =>
-                    _backgroundDataUpdated(store, conference, getLocalParticipant(store.getState()), value),
+                    _backgroundDataUpdated(
+                        store,
+                        conference,
+                        {
+                            'updaterParticipant': participant,
+                            'localParticipant': getLocalParticipant(store.getState())
+                        },
+                        value),
                 'e2eeEnabled': (participant, value) => _e2eeUpdated(store, conference, participant.getId(), value),
                 'features_e2ee': (participant, value) =>
                     store.dispatch(participantUpdated({
@@ -292,14 +299,16 @@ function _e2eeUpdated({ dispatch }, conference, participantId, newValue) {
  *
  * @param {Function} dispatch - The Redux dispatch function.
  * @param {Object} conference - The conference for which we got an update.
- * @param {Object} localParticipant - The redux state of the local participant.
+ * @param {Object} participants - Object containing a reference to both updater participant and local participant.
  * @param {boolean} newValue - The new value of the serialized background properties.
  * @returns {void}
  */
-function _backgroundDataUpdated({ dispatch }, conference, localParticipant, newValue) {
+function _backgroundDataUpdated({ dispatch }, conference, participants, newValue) {
 
+    const updaterId = participants.updaterParticipant.getId();
+    const localParticipant = participants.localParticipant;
 
-    if (localParticipant.backgroundData === newValue) {
+    if (localParticipant?.backgroundData === newValue) {
         return;
     }
 
@@ -316,6 +325,19 @@ function _backgroundDataUpdated({ dispatch }, conference, localParticipant, newV
 
     // Update the room-background feature
     dispatch(updateBackgroundData(newValue));
+
+    // Sending an event to the client to communicate the background change
+    if (typeof APP !== 'undefined') {
+        const backgroundProperties = extractBackgroundProperties(newValue);
+
+        APP.API.notifyBackgroundChanged(
+            updaterId,
+            localParticipant.id,
+            {
+                backgroundImageUrl: backgroundProperties.backgroundImageUrl,
+                backgroundColor: backgroundProperties.backgroundColor
+            });
+    }
 }
 
 /**
