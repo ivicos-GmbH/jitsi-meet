@@ -2923,11 +2923,11 @@ export default {
     setBackgroundImage(backgroundImageUrl, backgroundColor) {
         const state = APP.store.getState();
         const localParticipant = getLocalParticipant(state);
-
         const backgroundData = `${backgroundColor}|${backgroundImageUrl}`;
 
         if (
-            backgroundData === localParticipant.backgroundData
+            !state['features/base/conference']?.conference
+            || backgroundData === localParticipant?.backgroundData
         ) {
             return;
         }
