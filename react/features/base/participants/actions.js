@@ -2,6 +2,9 @@ import { NOTIFICATION_TIMEOUT, showNotification } from '../../notifications';
 import { set } from '../redux';
 
 import {
+    updateSettings
+} from './../settings';
+import {
     DOMINANT_SPEAKER_CHANGED,
     HIDDEN_PARTICIPANT_JOINED,
     HIDDEN_PARTICIPANT_LEFT,
@@ -548,4 +551,19 @@ export function setLoadableAvatarUrl(participantId, url) {
         }
     };
 }
+export function setLocalParticipantBackground(backgroundData) {
+    return (dispatch, getState) => {
 
+        const localParticipant = getLocalParticipant(getState());
+
+        // Update local participants background information
+        dispatch(participantUpdated({
+            localParticipant,
+            backgroundData
+        }));
+
+        dispatch(updateSettings({
+            backgroundData
+        }));
+    };
+}
