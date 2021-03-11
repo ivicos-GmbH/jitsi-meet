@@ -2940,10 +2940,8 @@ export default {
 
         // Update local participants background information
         APP.store.dispatch(participantUpdated({
-            localParticipant,
-            backgroundData
-        }));
-        APP.store.dispatch(updateSettings({
+            id: localParticipant.id,
+            local: localParticipant.local,
             backgroundData
         }));
 

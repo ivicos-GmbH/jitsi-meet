@@ -69,6 +69,10 @@ ReducerRegistry.register('features/base/participants', (state = [], action) => {
     case PARTICIPANT_ID_CHANGED:
     case PARTICIPANT_UPDATED:
     case PIN_PARTICIPANT:
+        console.log('Action received');
+        console.log(action);
+        console.log(state);
+
         return state.map(p => _participant(p, action));
 
     case PARTICIPANT_JOINED:

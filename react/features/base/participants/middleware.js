@@ -12,7 +12,6 @@ import {
 } from '../conference';
 import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
-import { updateSettings } from '../settings';
 import { playSound, registerSound, unregisterSound } from '../sounds';
 
 import {
@@ -314,12 +313,8 @@ function _backgroundDataUpdated({ dispatch }, conference, participants, newValue
 
     // Update the local participant information
     dispatch(participantUpdated({
-        conference,
         id: localParticipant.id,
-        backgroundData: newValue
-    }));
-
-    dispatch(updateSettings({
+        local: localParticipant.local,
         backgroundData: newValue
     }));
 
