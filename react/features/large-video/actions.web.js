@@ -89,6 +89,27 @@ export function resizeLargeVideo(width: number, height: number) {
 }
 
 /**
+ * Resizes the large video elements (adjusted based on the presence of backgrounds).
+ *
+ * @param {boolean} animate - If resize process should be animated.
+ * @returns {Function}
+ */
+export function refreshResizingLargeVideo(animate: boolean) {
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const state = getState();
+        const largeVideo = state['features/large-video'];
+
+        if (largeVideo) {
+            const largeVideoContainer = VideoLayout.getLargeVideo();
+
+            if (largeVideoContainer) {
+                largeVideoContainer.resize(animate);
+            }
+        }
+    };
+}
+
+/**
  * Updates the last media event received for the large video.
  *
  * @param {string} name - The current media event name for the video.
