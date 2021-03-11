@@ -20,12 +20,10 @@ export function updateBackgroundData(serializedBackgroundData) {
 
         const backgroundDataObject = extractBackgroundProperties(serializedBackgroundData);
 
-        if (backgroundDataObject.backgroundColor || backgroundDataObject.backgroundImageUrl) {
-            return dispatch(setBackgroundData({
-                backgroundColor: backgroundDataObject.backgroundColor,
-                backgroundImageUrl: backgroundDataObject.backgroundImageUrl
-            }));
-        }
+        return dispatch(setBackgroundData({
+            backgroundColor: backgroundDataObject.backgroundColor,
+            backgroundImageUrl: backgroundDataObject.backgroundImageUrl
+        }));
     };
 }
 

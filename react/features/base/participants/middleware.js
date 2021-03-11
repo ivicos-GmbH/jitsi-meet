@@ -3,7 +3,6 @@
 import UIEvents from '../../../../service/UI/UIEvents';
 import { NOTIFICATION_TIMEOUT, showNotification } from '../../notifications';
 import { CALLING, INVITED } from '../../presence-status';
-import { updateBackgroundData, extractBackgroundProperties } from '../../room-background';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../app';
 import {
     CONFERENCE_WILL_JOIN,
@@ -211,11 +210,7 @@ StateListenerRegistry.register(
                 'backgroundData': (participant, value) =>
                     _backgroundDataUpdated(
                         store,
-                        conference,
-                        {
-                            'updaterParticipant': participant,
-                            'localParticipant': getLocalParticipant(store.getState())
-                        },
+                        getLocalParticipant(store.getState()),
                         value),
                 'e2eeEnabled': (participant, value) => _e2eeUpdated(store, conference, participant.getId(), value),
                 'features_e2ee': (participant, value) =>
@@ -297,15 +292,11 @@ function _e2eeUpdated({ dispatch }, conference, participantId, newValue) {
  * Handles a background update.
  *
  * @param {Function} dispatch - The Redux dispatch function.
- * @param {Object} conference - The conference for which we got an update.
- * @param {Object} participants - Object containing a reference to both updater participant and local participant.
+ * @param {Object} localParticipant - Redux state of the local participant.
  * @param {boolean} newValue - The new value of the serialized background properties.
  * @returns {void}
  */
-function _backgroundDataUpdated({ dispatch }, conference, participants, newValue) {
-
-    const updaterId = participants.updaterParticipant.getId();
-    const localParticipant = participants.localParticipant;
+function _backgroundDataUpdated({ dispatch }, localParticipant, newValue) {
 
     if (localParticipant?.backgroundData === newValue) {
         return;
@@ -317,22 +308,6 @@ function _backgroundDataUpdated({ dispatch }, conference, participants, newValue
         local: localParticipant.local,
         backgroundData: newValue
     }));
-
-    // Update the room-background feature
-    dispatch(updateBackgroundData(newValue));
-
-    // Sending an event to the client to communicate the background change
-    if (typeof APP !== 'undefined') {
-        const backgroundProperties = extractBackgroundProperties(newValue);
-
-        APP.API.notifyBackgroundChanged(
-            updaterId,
-            localParticipant.id,
-            {
-                backgroundImageUrl: backgroundProperties.backgroundImageUrl,
-                backgroundColor: backgroundProperties.backgroundColor
-            });
-    }
 }
 
 /**
