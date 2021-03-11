@@ -16,7 +16,7 @@ import {
  * @returns {Function}
  */
 export function updateBackgroundData(serializedBackgroundData) {
-    return dispatch => {
+    return (dispatch: Dispatch<any>) => {
 
         const backgroundDataObject = extractBackgroundProperties(serializedBackgroundData);
 

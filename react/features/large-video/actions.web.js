@@ -80,8 +80,10 @@ export function resizeLargeVideo(width: number, height: number) {
         if (largeVideo) {
             const largeVideoContainer = VideoLayout.getLargeVideo();
 
-            largeVideoContainer.updateContainerSize(width, height);
-            largeVideoContainer.resize();
+            if (largeVideoContainer) {
+                largeVideoContainer.updateContainerSize(width, height);
+                largeVideoContainer.resize();
+            }
         }
     };
 }
