@@ -7,7 +7,6 @@ import { connect } from '../../base/redux';
 import { setColorAlpha } from '../../base/util';
 import { Subject } from '../../conference';
 import { fetchCustomBrandingData } from '../../dynamic-branding';
-import { fetchExistingBackgroundData } from '../../room-background';
 import { Captions } from '../../subtitles/';
 
 declare var interfaceConfig: Object;
@@ -35,11 +34,6 @@ type Props = {
     _fetchCustomBrandingData: Function,
 
     /**
-     * Fetches the existing room background data.
-     */
-    _fetchExistingBackgroundData: Function,
-
-    /**
      * Prop that indicates whether the chat is open.
      */
     _isChatOpen: boolean,
@@ -65,7 +59,6 @@ class LargeVideo extends Component<Props> {
      */
     componentDidMount() {
         this.props._fetchCustomBrandingData();
-        this.props._fetchExistingBackgroundData();
     }
 
     /**
@@ -195,8 +188,7 @@ function _mapStateToProps(state) {
 }
 
 const _mapDispatchToProps = {
-    _fetchCustomBrandingData: fetchCustomBrandingData,
-    _fetchExistingBackgroundData: fetchExistingBackgroundData
+    _fetchCustomBrandingData: fetchCustomBrandingData
 };
 
 export default connect(_mapStateToProps, _mapDispatchToProps)(LargeVideo);
