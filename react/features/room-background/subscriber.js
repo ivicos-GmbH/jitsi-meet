@@ -4,7 +4,7 @@ import { getLocalParticipant } from '../base/participants';
 import { StateListenerRegistry } from '../base/redux';
 
 import {
-    resizeLargeVideo
+    refreshResizingLargeVideo
 } from './../large-video';
 import { updateBackgroundData } from './actions';
 import { extractBackgroundProperties } from './functions';
@@ -52,6 +52,6 @@ StateListenerRegistry.register(
 StateListenerRegistry.register(
     /* selector */ state => state['features/room-background'],
     /* listener */(state, { dispatch }) => {
-        dispatch(resizeLargeVideo());
+        dispatch(refreshResizingLargeVideo(true));
     }
 );
