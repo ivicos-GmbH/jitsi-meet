@@ -1121,17 +1121,15 @@ class API {
     /**
      * Notify external application (if API is enabled) that user updated its background information.
      *
-     * @param {string} updaterId - Updater ID.
      * @param {string} localId - Local participant ID.
      * @param {Object} backgroundData - Background image/color object.
      * @returns {void}
      */
-    notifyBackgroundChanged(updaterId: string, localId: string, backgroundData: Object) {
+    notifyBackgroundChanged(localId: string, backgroundData: Object) {
         this._sendEvent({
             name: 'room-background-updated',
             backgroundData,
-            localId,
-            updaterId
+            localId
         });
     }
 
