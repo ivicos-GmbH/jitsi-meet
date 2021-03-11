@@ -10,7 +10,6 @@
 export function extractBackgroundProperties(serializedBackgroundProperties) {
     if (!serializedBackgroundProperties) {
         return {
-            backgroundLastUpdate: undefined,
             backgroundColor: undefined,
             backgroundImageUrl: undefined
         };
@@ -18,8 +17,7 @@ export function extractBackgroundProperties(serializedBackgroundProperties) {
     const unparsedBackgroundData = serializedBackgroundProperties.split('|');
 
     return {
-        backgroundLastUpdate: unparsedBackgroundData[0],
-        backgroundColor: unparsedBackgroundData[1],
-        backgroundImageUrl: unparsedBackgroundData[2]
+        backgroundColor: unparsedBackgroundData[0],
+        backgroundImageUrl: unparsedBackgroundData[1]
     };
 }
