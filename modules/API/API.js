@@ -131,9 +131,10 @@ function initCommands() {
             logger.debug('Set background image command received');
             APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
         },
-        'set-foreground-shape': (transparentOverlayImageUrl) => {
+        'set-foreground-shape': transparentOverlayImageUrl => {
             logger.debug('Set foreground image command received');
-            //TODO
+
+            // TODO
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');

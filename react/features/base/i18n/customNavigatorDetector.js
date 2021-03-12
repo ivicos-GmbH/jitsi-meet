@@ -36,7 +36,7 @@ export default {
             }
         }
 
-        found = found.map < string > (normalizeLanguage);
+        found = found.map < string >(normalizeLanguage);
 
         return found.length > 0 ? found : undefined;
     },
@@ -58,7 +58,7 @@ export default {
  * @returns {string} The normalized language.
  */
 function normalizeLanguage(language) {
-    const [lang, variant] = language.replace('_', '-').split('-');
+    const [ lang, variant ] = language.replace('_', '-').split('-');
 
     if (!variant || lang === variant) {
         return lang;

@@ -23,8 +23,8 @@ declare var interfaceConfig: Object;
  * @returns {Promise} - The promise created by the request.
  */
 export function checkDialNumber(
-    dialNumber: string,
-    dialOutAuthUrl: string
+        dialNumber: string,
+        dialOutAuthUrl: string
 ): Promise<Object> {
     const fullUrl = `${dialOutAuthUrl}?phone=${dialNumber}`;
 
@@ -47,9 +47,9 @@ export function checkDialNumber(
  * @returns {Promise} - The promise created by the request.
  */
 export function getDialInConferenceID(
-    baseUrl: string,
-    roomName: string,
-    mucURL: string
+        baseUrl: string,
+        roomName: string,
+        mucURL: string
 ): Promise<Object> {
 
     const conferenceIDURL = `${baseUrl}?conference=${roomName}@${mucURL}`;
@@ -70,9 +70,9 @@ export function getDialInConferenceID(
  * phone number strings, as the second one should not be used and is deprecated.
  */
 export function getDialInNumbers(
-    url: string,
-    roomName: string,
-    mucURL: string
+        url: string,
+        roomName: string,
+        mucURL: string
 ): Promise<*> {
 
     const fullUrl = `${url}?conference=${roomName}@${mucURL}`;
@@ -137,8 +137,8 @@ export type GetInviteResultsOptions = {
  * @returns {Promise<*>}
  */
 export function getInviteResultsForQuery(
-    query: string,
-    options: GetInviteResultsOptions
+        query: string,
+        options: GetInviteResultsOptions
 ): Promise<*> {
 
     const text = query.trim();
@@ -206,8 +206,8 @@ export function getInviteResultsForQuery(
         phoneNumberPromise = Promise.resolve({});
     }
 
-    return Promise.all([peopleSearchPromise, phoneNumberPromise])
-        .then(([peopleResults, phoneResults]) => {
+    return Promise.all([ peopleSearchPromise, phoneNumberPromise ])
+        .then(([ peopleResults, phoneResults ]) => {
             const results = [
                 ...peopleResults
             ];
@@ -324,10 +324,10 @@ export function getInviteTypeCounts(inviteItems: Array<Object> = []) {
  * @returns {Promise} - The promise created by the request.
  */
 export function invitePeopleAndChatRooms( // eslint-disable-line max-params
-    inviteServiceUrl: string,
-    inviteUrl: string,
-    jwt: string,
-    inviteItems: Array<Object>
+        inviteServiceUrl: string,
+        inviteUrl: string,
+        jwt: string,
+        inviteItems: Array<Object>
 ): Promise<void> {
 
     if (!inviteItems || inviteItems.length === 0) {
@@ -418,10 +418,10 @@ function isPhoneNumberRegex(): RegExp {
  * @returns {Promise} - The promise created by the request.
  */
 export function searchDirectory( // eslint-disable-line max-params
-    serviceUrl: string,
-    jwt: string,
-    text: string,
-    queryTypes: Array<string> = ['conferenceRooms', 'user', 'room']
+        serviceUrl: string,
+        jwt: string,
+        text: string,
+        queryTypes: Array<string> = [ 'conferenceRooms', 'user', 'room' ]
 ): Promise<Array<Object>> {
 
     const query = encodeURIComponent(text);
@@ -457,7 +457,7 @@ export function searchDirectory( // eslint-disable-line max-params
  * descriptive text that can be used to invite participants to a meeting.
  */
 export function getShareInfoText(
-    state: Object, inviteUrl: string, useHtml: ?boolean): Promise<string> {
+        state: Object, inviteUrl: string, useHtml: ?boolean): Promise<string> {
     let roomUrl = _decodeRoomURI(inviteUrl);
     const includeDialInfo = state['features/base/config'] !== undefined;
 
@@ -491,8 +491,8 @@ export function getShareInfoText(
             numbersPromise = Promise.all([
                 getDialInNumbers(dialInNumbersUrl, room, mucURL),
                 getDialInConferenceID(dialInConfCodeUrl, room, mucURL)
-            ]).then(([numbers, {
-                conference, id, message }]) => {
+            ]).then(([ numbers, {
+                conference, id, message } ]) => {
 
                 if (!conference || !id) {
                     return Promise.reject(message);
@@ -558,7 +558,7 @@ export function getDialInfoPageURL(state: Object) {
  * @returns {string}
  */
 export function getDialInfoPageURLForURIString(
-    uri: ?string) {
+        uri: ?string) {
     if (!uri) {
         return undefined;
     }
@@ -618,7 +618,7 @@ export function hasMultipleNumbers(dialInNumbers: ?Object) {
  * @returns {string|null}
  */
 export function _getDefaultPhoneNumber(
-    dialInNumbers: ?Object): ?string {
+        dialInNumbers: ?Object): ?string {
 
     if (!dialInNumbers) {
         return null;

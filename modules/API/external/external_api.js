@@ -1126,7 +1126,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     /**
      * Sets a shape in the foreground of the user
      *
-     * @param {string} transparentOverlayImageUrl - URL image of the transparent overlay
+     * @param {string} transparentOverlayImageUrl - URL image of the transparent overlay.
      * @returns {void}
      */
     setForegroundShape(transparentOverlayImageUrl) {

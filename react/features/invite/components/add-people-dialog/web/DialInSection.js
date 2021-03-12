@@ -54,15 +54,15 @@ function DialInSection({
     t
 }: Props) {
     return (
-        <div className='invite-more-dialog dial-in-display'>
+        <div className = 'invite-more-dialog dial-in-display'>
             <DialInNumber
-                conferenceID={_conferenceID}
-                phoneNumber={phoneNumber} />
+                conferenceID = { _conferenceID }
+                phoneNumber = { phoneNumber } />
             {_hasMultipleNumbers ? <a
-                className='more-numbers'
-                href={_dialInfoPageUrl}
-                rel='noopener noreferrer'
-                target='_blank'>
+                className = 'more-numbers'
+                href = { _dialInfoPageUrl }
+                rel = 'noopener noreferrer'
+                target = '_blank'>
                 {t('info.moreNumbers')}
             </a> : null}
         </div>

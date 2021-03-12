@@ -29,74 +29,74 @@ declare var APP: Object;
  */
 MiddlewareRegistry.register(store => next => async action => {
     switch (action.type) {
-        case PREJOIN_START_CONFERENCE: {
-            const { getState, dispatch } = store;
-            const state = getState();
-            const { userSelectedSkipPrejoin } = state['features/prejoin'];
-            const localTracks = getLocalTracks(state['features/base/tracks']);
-            const { options } = action;
+    case PREJOIN_START_CONFERENCE: {
+        const { getState, dispatch } = store;
+        const state = getState();
+        const { userSelectedSkipPrejoin } = state['features/prejoin'];
+        const localTracks = getLocalTracks(state['features/base/tracks']);
+        const { options } = action;
 
-            options && store.dispatch(updateConfig(options));
+        options && store.dispatch(updateConfig(options));
 
-            userSelectedSkipPrejoin && dispatch(updateSettings({
-                userSelectedSkipPrejoin
+        userSelectedSkipPrejoin && dispatch(updateSettings({
+            userSelectedSkipPrejoin
+        }));
+
+        // Do not signal audio/video tracks if the user joins muted.
+        for (const track of localTracks) {
+            if (track.muted) {
+                await dispatch(replaceLocalTrack(track.jitsiTrack, null));
+            }
+        }
+        const jitsiTracks = localTracks.map(t => t.jitsiTrack);
+
+        dispatch(setPrejoinPageVisibility(false));
+        APP.conference.prejoinStart(jitsiTracks);
+
+        break;
+    }
+
+    case SET_AUDIO_MUTED: {
+        if (isPrejoinPageVisible(store.getState())) {
+            store.dispatch(updateSettings({
+                startWithAudioMuted: Boolean(action.muted)
             }));
-
-            // Do not signal audio/video tracks if the user joins muted.
-            for (const track of localTracks) {
-                if (track.muted) {
-                    await dispatch(replaceLocalTrack(track.jitsiTrack, null));
-                }
-            }
-            const jitsiTracks = localTracks.map(t => t.jitsiTrack);
-
-            dispatch(setPrejoinPageVisibility(false));
-            APP.conference.prejoinStart(jitsiTracks);
-
-            break;
         }
+        break;
+    }
 
-        case SET_AUDIO_MUTED: {
-            if (isPrejoinPageVisible(store.getState())) {
-                store.dispatch(updateSettings({
-                    startWithAudioMuted: Boolean(action.muted)
-                }));
-            }
-            break;
+    case SET_VIDEO_MUTED: {
+        if (isPrejoinPageVisible(store.getState())) {
+            store.dispatch(updateSettings({
+                startWithVideoMuted: Boolean(action.muted)
+            }));
         }
+        break;
+    }
 
-        case SET_VIDEO_MUTED: {
-            if (isPrejoinPageVisible(store.getState())) {
-                store.dispatch(updateSettings({
-                    startWithVideoMuted: Boolean(action.muted)
-                }));
+    case TRACK_ADDED:
+    case TRACK_NO_DATA_FROM_SOURCE: {
+        const state = store.getState();
+
+        if (isPrejoinPageVisible(state)) {
+            const { track: { jitsiTrack: track } } = action;
+            const { deviceStatusType, deviceStatusText } = state['features/prejoin'];
+
+            if (!track.isAudioTrack()) {
+                break;
             }
-            break;
-        }
 
-        case TRACK_ADDED:
-        case TRACK_NO_DATA_FROM_SOURCE: {
-            const state = store.getState();
-
-            if (isPrejoinPageVisible(state)) {
-                const { track: { jitsiTrack: track } } = action;
-                const { deviceStatusType, deviceStatusText } = state['features/prejoin'];
-
-                if (!track.isAudioTrack()) {
-                    break;
-                }
-
-                if (track.isReceivingData()) {
-                    if (deviceStatusType === 'warning'
+            if (track.isReceivingData()) {
+                if (deviceStatusType === 'warning'
                         && deviceStatusText === 'prejoin.audioDeviceProblem') {
-                        store.dispatch(setDeviceStatusOk('prejoin.lookGood'));
-                    }
-                } else if (deviceStatusType === 'ok') {
-                    store.dispatch(setDeviceStatusWarning('prejoin.audioDeviceProblem'));
+                    store.dispatch(setDeviceStatusOk('prejoin.lookGood'));
                 }
+            } else if (deviceStatusType === 'ok') {
+                store.dispatch(setDeviceStatusWarning('prejoin.audioDeviceProblem'));
             }
-            break;
         }
+        break;
+    }
 
     }
 

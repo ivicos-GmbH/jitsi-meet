@@ -441,14 +441,14 @@ export function createConference() {
             = connection.initJitsiConference(
 
                 getBackendSafeRoomName(room), {
-                ...config,
-                applicationName: getName(),
-                getWiFiStatsMethod: getJitsiMeetGlobalNS().getWiFiStats,
-                confID: `${locationURL.host}${getBackendSafePath(locationURL.pathname)}`,
-                siteID: tenant,
-                statisticsDisplayName: config.enableDisplayNameInStats ? nick : undefined,
-                statisticsId: config.enableEmailInStats ? email : undefined
-            });
+                    ...config,
+                    applicationName: getName(),
+                    getWiFiStatsMethod: getJitsiMeetGlobalNS().getWiFiStats,
+                    confID: `${locationURL.host}${getBackendSafePath(locationURL.pathname)}`,
+                    siteID: tenant,
+                    statisticsDisplayName: config.enableDisplayNameInStats ? nick : undefined,
+                    statisticsId: config.enableEmailInStats ? email : undefined
+                });
 
         connection[JITSI_CONNECTION_CONFERENCE_KEY] = conference;
 
@@ -551,7 +551,7 @@ export function lockStateChanged(conference: Object, locked: boolean) {
  * }}
  */
 export function onStartMutedPolicyChanged(
-    audioMuted: boolean, videoMuted: boolean) {
+        audioMuted: boolean, videoMuted: boolean) {
     return {
         type: SET_START_MUTED_POLICY,
         startAudioMutedPolicy: audioMuted,
@@ -625,41 +625,41 @@ export function setFollowMe(enabled: boolean) {
  * @returns {Function}
  */
 export function setPassword(
-    conference: Object,
-    method: Function,
-    password: string) {
+        conference: Object,
+        method: Function,
+        password: string) {
     return (dispatch: Dispatch<any>, getState: Function): ?Promise<void> => {
         switch (method) {
-            case conference.join: {
-                let state = getState()['features/base/conference'];
+        case conference.join: {
+            let state = getState()['features/base/conference'];
 
-                dispatch({
-                    type: SET_PASSWORD,
-                    conference,
-                    method,
-                    password
-                });
+            dispatch({
+                type: SET_PASSWORD,
+                conference,
+                method,
+                password
+            });
 
-                // Join the conference with the newly-set password.
+            // Join the conference with the newly-set password.
 
-                // Make sure that the action did set the password.
-                state = getState()['features/base/conference'];
-                if (state.password === password
+            // Make sure that the action did set the password.
+            state = getState()['features/base/conference'];
+            if (state.password === password
 
                     // Make sure that the application still wants the
                     // conference joined.
                     && !state.conference) {
-                    method.call(conference, password);
-                }
-                break;
+                method.call(conference, password);
             }
+            break;
+        }
 
-            case conference.lock: {
-                const state = getState()['features/base/conference'];
+        case conference.lock: {
+            const state = getState()['features/base/conference'];
 
-                if (state.conference === conference) {
-                    return (
-                        method.call(conference, password)
+            if (state.conference === conference) {
+                return (
+                    method.call(conference, password)
                             .then(() => dispatch({
                                 type: SET_PASSWORD,
                                 conference,
@@ -670,11 +670,11 @@ export function setPassword(
                                 type: SET_PASSWORD_FAILED,
                                 error
                             }))
-                    );
-                }
-
-                return Promise.reject();
+                );
             }
+
+            return Promise.reject();
+        }
         }
     };
 }
@@ -706,7 +706,7 @@ export function setRoom(room: ?string) {
  * @returns {Function}
  */
 export function setStartMutedPolicy(
-    startAudioMuted: boolean, startVideoMuted: boolean) {
+        startAudioMuted: boolean, startVideoMuted: boolean) {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const conference = getCurrentConference(getState());
 
