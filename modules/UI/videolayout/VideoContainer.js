@@ -418,9 +418,9 @@ export class VideoContainer extends LargeContainer {
         const [ videoWidth, videoHeight ] = this._getVideoSize(containerWidth, containerHeight, backgroundRoomDefined);
 
         // If a background is defined for the room, we resize the video so that the background is visible
-        const width = backgroundRoomDefined ? videoWidth * BACKGROUND_RESIZING_RATIO : videoWidth;
-        const height = backgroundRoomDefined ? videoHeight * BACKGROUND_RESIZING_RATIO : videoHeight;
-
+        const shouldResizeVideo = backgroundRoomDefined && !this.isScreenSharing();
+        const width = shouldResizeVideo ? videoWidth * BACKGROUND_RESIZING_RATIO : videoWidth;
+        const height = shouldResizeVideo ? videoHeight * BACKGROUND_RESIZING_RATIO : videoHeight;
 
         if (width === 0 || height === 0) {
             // We don't need to set 0 for width or height since the visibility is controled by the visibility css prop
