@@ -70,7 +70,7 @@ export default class Tab extends Component<Props> {
                 className = { className }
                 key = { index }
                 onClick = { this._onSelect }>
-                { label }
+                { label}
             </div>);
     }
 }

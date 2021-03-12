@@ -54,7 +54,7 @@ class LocalVideoTrackUnderlay extends Component<Props> {
                 ] }>
                 <VideoTrack videoTrack = { this.props._localVideoTrack } />
                 <TintedView>
-                    { this.props.children }
+                    {this.props.children}
                 </TintedView>
             </View>
         );

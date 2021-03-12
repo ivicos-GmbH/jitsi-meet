@@ -62,7 +62,7 @@ export default class Tabs extends Component<Props> {
                     </div>) : null
                 }
                 <div className = 'tab-content'>
-                    { content }
+                    {content}
                 </div>
             </div>
         );

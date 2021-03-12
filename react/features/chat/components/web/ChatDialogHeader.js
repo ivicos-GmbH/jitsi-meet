@@ -34,7 +34,7 @@ function Header({ onCancel, className, t }: Props) {
     return (
         <div
             className = { className || 'chat-dialog-header' }>
-            { t('chat.title') }
+            { t('chat.title')}
             <Icon
                 onClick = { onCancel }
                 src = { IconClose } />

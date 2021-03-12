@@ -157,13 +157,13 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
                         {`${t('localRecording.moderator')}:`}
                     </span>
                     <span className = 'info-value'>
-                        { isModerator
+                        {isModerator
                             ? t('localRecording.yes')
-                            : t('localRecording.no') }
+                            : t('localRecording.no')}
                     </span>
                 </div>
-                { this._renderModeratorControls() }
-                { this._renderDurationAndFormat() }
+                { this._renderModeratorControls()}
+                { this._renderDurationAndFormat()}
             </Dialog>
         );
     }
@@ -190,9 +190,9 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
                         {`${t('localRecording.duration')}:`}
                     </span>
                     <span className = 'info-value'>
-                        { durationString === ''
+                        {durationString === ''
                             ? t('localRecording.durationNA')
-                            : durationString }
+                            : durationString}
                     </span>
                 </div>
                 <div>
@@ -200,7 +200,7 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
                         {`${t('localRecording.encoding')}:`}
                     </span>
                     <span className = 'info-value'>
-                        { encodingFormat }
+                        {encodingFormat}
                     </span>
                 </div>
             </div>
@@ -224,8 +224,8 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
 
         return (
             <div className = 'localrec-participant-stats' >
-                { this._renderStatsHeader() }
-                { ids.map((id, i) => this._renderStatsLine(i, id)) }
+                { this._renderStatsHeader()}
+                { ids.map((id, i) => this._renderStatsLine(i, id))}
             </div>
         );
     }
@@ -256,10 +256,10 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
                     <span className = { statusClass } />
                 </div>
                 <div className = 'localrec-participant-stats-item__name'>
-                    { stats[id].displayName || id }
+                    {stats[id].displayName || id}
                 </div>
                 <div className = 'localrec-participant-stats-item__sessionid'>
-                    { stats[id].recordingStats.currentSessionToken }
+                    {stats[id].recordingStats.currentSessionToken}
                 </div>
             </div>
         );
@@ -278,10 +278,10 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
             <div className = 'localrec-participant-stats-item'>
                 <div className = 'localrec-participant-stats-item__status' />
                 <div className = 'localrec-participant-stats-item__name'>
-                    { t('localRecording.participant') }
+                    {t('localRecording.participant')}
                 </div>
                 <div className = 'localrec-participant-stats-item__sessionid'>
-                    { t('localRecording.sessionToken') }
+                    {t('localRecording.sessionToken')}
                 </div>
             </div>
         );
@@ -305,13 +305,13 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
             <div>
                 <div className = 'localrec-control-action-links'>
                     <div className = 'localrec-control-action-link'>
-                        { isEngaged ? <a
+                        {isEngaged ? <a
                             onClick = { this._onStop }>
-                            { t('localRecording.stop') }
+                            {t('localRecording.stop')}
                         </a>
                             : <a
                                 onClick = { this._onStart }>
-                                { t('localRecording.start') }
+                                {t('localRecording.start')}
                             </a>
                         }
                     </div>
@@ -321,7 +321,7 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
                         {`${t('localRecording.participantStats')}:`}
                     </span>
                 </div>
-                { this._renderStats() }
+                { this._renderStats()}
             </div>
         );
     }

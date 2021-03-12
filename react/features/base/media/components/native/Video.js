@@ -108,7 +108,7 @@ export default class Video extends Component<Props> {
                         onPress = { onPress }
                         streamId = { stream.id }
                         style = { style }>
-                        { rtcView }
+                        { rtcView}
                     </VideoTransform>
                 );
             }
@@ -121,7 +121,7 @@ export default class Video extends Component<Props> {
             // "pinch to zoom" is not enabled.
             return (
                 <Pressable onPress = { onPress }>
-                    { rtcView }
+                    { rtcView}
                 </Pressable>
             );
         }

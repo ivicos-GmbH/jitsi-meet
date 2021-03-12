@@ -41,7 +41,7 @@ MiddlewareRegistry.register(store => next => action => {
     case PARTICIPANT_JOINED:
         if (!action.participant.local) {
             VideoLayout.addRemoteParticipantContainer(
-                getParticipantById(store.getState(), action.participant.id));
+                    getParticipantById(store.getState(), action.participant.id));
         }
         break;
 
@@ -55,8 +55,8 @@ MiddlewareRegistry.register(store => next => action => {
         // explicit in order to minimize changes to other code.
         if (typeof action.participant.connectionStatus !== 'undefined') {
             VideoLayout.onParticipantConnectionStatusChanged(
-                action.participant.id,
-                action.participant.connectionStatus);
+                    action.participant.id,
+                    action.participant.connectionStatus);
         }
         break;
     }

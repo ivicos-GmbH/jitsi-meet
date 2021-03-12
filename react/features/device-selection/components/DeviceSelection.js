@@ -158,8 +158,8 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
             this._createAudioInputTrack(this.props.selectedAudioInputId),
             this._createVideoInputTrack(this.props.selectedVideoInputId)
         ])
-        .catch(err => logger.warn('Failed to initialize preview tracks', err))
-        .then(() => this.props.mountCallback && this.props.mountCallback());
+            .catch(err => logger.warn('Failed to initialize preview tracks', err))
+            .then(() => this.props.mountCallback && this.props.mountCallback());
     }
 
     /**
@@ -212,17 +212,17 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                             error = { this.state.previewVideoTrackError }
                             track = { this.state.previewVideoTrack } />
                     </div>
-                    { !hideAudioInputPreview
+                    {!hideAudioInputPreview
                         && <AudioInputPreview
-                            track = { this.state.previewAudioTrack } /> }
+                            track = { this.state.previewAudioTrack } />}
                 </div>
                 <div className = 'device-selection-column column-selectors'>
                     <div className = 'device-selectors'>
-                        { this._renderSelectors() }
+                        {this._renderSelectors()}
                     </div>
-                    { !hideAudioOutputSelect
+                    {!hideAudioOutputSelect
                         && <AudioOutputPreview
-                            deviceId = { selectedAudioOutputId } /> }
+                            deviceId = { selectedAudioOutputId } />}
                 </div>
             </div>
         );
@@ -324,7 +324,7 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
         return (
             <div key = { deviceSelectorProps.label }>
                 <div className = 'device-selector-label'>
-                    { this.props.t(deviceSelectorProps.label) }
+                    {this.props.t(deviceSelectorProps.label)}
                 </div>
                 <DeviceSelector { ...deviceSelectorProps } />
             </div>

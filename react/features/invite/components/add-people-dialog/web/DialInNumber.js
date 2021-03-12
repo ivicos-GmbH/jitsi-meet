@@ -82,21 +82,21 @@ class DialInNumber extends Component<Props> {
                 <div>
                     <span className = 'phone-number'>
                         <span className = 'info-label'>
-                            { t('info.dialInNumber') }
+                            {t('info.dialInNumber')}
                         </span>
                         <span className = 'spacer'>&nbsp;</span>
                         <span className = 'info-value'>
-                            { phoneNumber }
+                            {phoneNumber}
                         </span>
                     </span>
                     <span className = 'spacer'>&nbsp;</span>
                     <span className = 'conference-id'>
                         <span className = 'info-label'>
-                            { t('info.dialInConferenceID') }
+                            {t('info.dialInConferenceID')}
                         </span>
                         <span className = 'spacer'>&nbsp;</span>
                         <span className = 'info-value'>
-                            { `${_formatConferenceIDPin(conferenceID)}#` }
+                            {`${_formatConferenceIDPin(conferenceID)}#`}
                         </span>
                     </span>
                 </div>

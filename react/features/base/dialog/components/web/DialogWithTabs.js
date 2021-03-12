@@ -114,7 +114,7 @@ class DialogWithTabs extends Component<Props, State> {
                 onSubmit = { this._onSubmit }
                 titleKey = { this.props.titleKey } >
                 <div className = { this.props.cssClassName } >
-                    { this._renderTabs() }
+                    {this._renderTabs()}
                 </div>
             </StatelessDialog>
         );

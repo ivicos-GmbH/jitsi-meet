@@ -25,7 +25,7 @@ MiddlewareRegistry.register(store => next => action => {
         const newValue = getState()['features/base/known-domains'];
 
         equals(oldValue, newValue)
-            || _fetchCalendarEntries(store, false, false);
+                || _fetchCalendarEntries(store, false, false);
 
         return result;
     }
@@ -50,7 +50,7 @@ MiddlewareRegistry.register(store => next => action => {
         const result = next(action);
 
         _fetchCalendarEntries(
-            store, action.isInteractive, action.forcePermission);
+                store, action.isInteractive, action.forcePermission);
 
         return result;
     }

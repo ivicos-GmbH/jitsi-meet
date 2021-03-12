@@ -92,7 +92,7 @@ type Props = {
  *
  * @extends Component
  */
-class Filmstrip extends Component <Props> {
+class Filmstrip extends Component<Props> {
 
     /**
      * Initializes a new {@code Filmstrip} instance.
@@ -145,7 +145,7 @@ class Filmstrip extends Component <Props> {
         // will get updated without replacing the DOM. If the known DOM gets
         // modified, then the views will get blown away.
 
-        const filmstripStyle = { };
+        const filmstripStyle = {};
         const filmstripRemoteVideosContainerStyle = {};
         let remoteVideoContainerClassName = 'remote-videos-container';
 
@@ -184,7 +184,7 @@ class Filmstrip extends Component <Props> {
             <div
                 className = { `filmstrip ${this.props._className}` }
                 style = { filmstripStyle }>
-                { toolbar }
+                { toolbar}
                 <div
                     className = { this.props._videosClassName }
                     id = 'remoteVideos'>
@@ -300,8 +300,7 @@ function _mapStateToProps(state) {
         = state['features/toolbox'].visible && toolbarButtons.length;
     const remoteVideosVisible = shouldRemoteVideosBeVisible(state);
     const { isOpen: shiftRight } = state['features/chat'];
-    const className = `${remoteVideosVisible ? '' : 'hide-videos'} ${
-        reduceHeight ? 'reduce-height' : ''
+    const className = `${remoteVideosVisible ? '' : 'hide-videos'} ${reduceHeight ? 'reduce-height' : ''
     } ${shiftRight ? 'shift-right' : ''}`.trim();
     const videosClassName = `filmstrip__videos${visible ? '' : ' hidden'}`;
     const { gridDimensions = {}, filmstripWidth } = state['features/filmstrip'].tileViewDimensions;

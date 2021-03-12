@@ -193,13 +193,13 @@ class Conference extends AbstractConference<Props, *> {
                     <LargeVideo />
                     <KnockingParticipantList />
                     <Filmstrip />
-                    { hideLabels || <Labels /> }
+                    {hideLabels || <Labels />}
                 </div>
 
-                { _showPrejoin || _isLobbyScreenVisible || <Toolbox /> }
+                { _showPrejoin || _isLobbyScreenVisible || <Toolbox />}
                 <Chat />
 
-                { this.renderNotificationsContainer() }
+                { this.renderNotificationsContainer()}
 
                 <CalleeInfoContainer />
 

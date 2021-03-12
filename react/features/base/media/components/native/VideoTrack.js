@@ -24,7 +24,7 @@ class VideoTrack extends AbstractVideoTrack<Props> {
     render() {
         return (
             <View style = { styles.video } >
-                { super.render() }
+                { super.render()}
             </View>
         );
     }

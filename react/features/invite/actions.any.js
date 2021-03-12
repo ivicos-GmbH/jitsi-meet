@@ -73,10 +73,10 @@ export function invite(
         const { calleeInfoVisible } = state['features/invite'];
 
         if (showCalleeInfo
-                && !calleeInfoVisible
-                && invitees.length === 1
-                && invitees[0].type === 'user'
-                && participants.length === 1) {
+            && !calleeInfoVisible
+            && invitees.length === 1
+            && invitees[0].type === 'user'
+            && participants.length === 1) {
             dispatch(setCalleeInfoVisible(true, invitees[0]));
         }
 
@@ -139,15 +139,15 @@ export function invite(
                     inviteUrl,
                     jwt,
                     usersAndRooms)
-                .then(() => {
-                    invitesLeftToSend
-                        = invitesLeftToSend.filter(
-                            ({ type }) => type !== 'user' && type !== 'room');
-                })
-                .catch(error => {
-                    dispatch(setCalleeInfoVisible(false));
-                    logger.error('Error inviting people:', error);
-                });
+                    .then(() => {
+                        invitesLeftToSend
+                            = invitesLeftToSend.filter(
+                                ({ type }) => type !== 'user' && type !== 'room');
+                    })
+                    .catch(error => {
+                        dispatch(setCalleeInfoVisible(false));
+                        logger.error('Error inviting people:', error);
+                    });
 
             allInvitePromises.push(peopleInvitePromise);
         }

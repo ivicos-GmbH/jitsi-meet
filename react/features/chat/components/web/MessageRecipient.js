@@ -32,9 +32,9 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
         return (
             <div id = 'chat-recipient'>
                 <span>
-                    { t('chat.messageTo', {
+                    {t('chat.messageTo', {
                         recipient: _privateMessageRecipient
-                    }) }
+                    })}
                 </span>
                 <div onClick = { this.props._onRemovePrivateMessageRecipient }>
                     <Icon

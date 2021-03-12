@@ -252,7 +252,7 @@ export function getInviteText({
     const currentLiveStreamingSession = getActiveSession(state, JitsiRecordingConstants.mode.STREAM);
     const liveStreamViewURL
         = currentLiveStreamingSession
-            && currentLiveStreamingSession.liveStreamViewURL;
+        && currentLiveStreamingSession.liveStreamViewURL;
     const localParticipant = getLocalParticipant(state);
     const localParticipantName = localParticipant?.name;
 
@@ -335,17 +335,17 @@ export function invitePeopleAndChatRooms( // eslint-disable-line max-params
     }
 
     return fetch(
-           `${inviteServiceUrl}?token=${jwt}`,
-           {
-               body: JSON.stringify({
-                   'invited': inviteItems,
-                   'url': inviteUrl
-               }),
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/json'
-               }
-           }
+        `${inviteServiceUrl}?token=${jwt}`,
+        {
+            body: JSON.stringify({
+                'invited': inviteItems,
+                'url': inviteUrl
+            }),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
     );
 }
 
@@ -427,24 +427,23 @@ export function searchDirectory( // eslint-disable-line max-params
     const query = encodeURIComponent(text);
     const queryTypesString = encodeURIComponent(JSON.stringify(queryTypes));
 
-    return fetch(`${serviceUrl}?query=${query}&queryTypes=${
-        queryTypesString}&jwt=${jwt}`)
-            .then(response => {
-                const jsonify = response.json();
+    return fetch(`${serviceUrl}?query=${query}&queryTypes=${queryTypesString}&jwt=${jwt}`)
+        .then(response => {
+            const jsonify = response.json();
 
-                if (response.ok) {
-                    return jsonify;
-                }
+            if (response.ok) {
+                return jsonify;
+            }
 
-                return jsonify
-                    .then(result => Promise.reject(result));
-            })
-            .catch(error => {
-                logger.error(
-                    'Error searching directory:', error);
+            return jsonify
+                .then(result => Promise.reject(result));
+        })
+        .catch(error => {
+            logger.error(
+                'Error searching directory:', error);
 
-                return Promise.reject(error);
-            });
+            return Promise.reject(error);
+        });
 }
 
 /**
@@ -510,11 +509,7 @@ export function getShareInfoText(
             ({ conferenceID, numbers }) => {
                 const phoneNumber = _getDefaultPhoneNumber(numbers) || '';
 
-                return `${
-                    i18next.t('info.dialInNumber')} ${
-                    phoneNumber} ${
-                    i18next.t('info.dialInConferenceID')} ${
-                    conferenceID}#\n\n`;
+                return `${i18next.t('info.dialInNumber')} ${phoneNumber} ${i18next.t('info.dialInConferenceID')} ${conferenceID}#\n\n`; // eslint-disable-line max-len
             })
             .catch(error =>
                 logger.error('Error fetching numbers or conferenceID', error))
@@ -528,7 +523,8 @@ export function getShareInfoText(
 
                 infoText += i18next.t('share.dialInfoText', {
                     defaultDialInNumber,
-                    dialInfoPageUrl });
+                    dialInfoPageUrl
+                });
 
                 return infoText;
             });
@@ -582,10 +578,10 @@ export function shouldDisplayDialIn(dialIn: Object) {
     const phoneNumber = _getDefaultPhoneNumber(numbers);
 
     return Boolean(
-            conferenceID
-            && numbers
-            && numbersEnabled
-            && phoneNumber);
+        conferenceID
+        && numbers
+        && numbersEnabled
+        && phoneNumber);
 }
 
 /**

@@ -133,7 +133,7 @@ function _video(state = _VIDEO_INITIAL_MEDIA_STATE, action) {
         let cameraFacingMode = state.facingMode;
 
         cameraFacingMode
-            = cameraFacingMode === CAMERA_FACING_MODE.USER
+                = cameraFacingMode === CAMERA_FACING_MODE.USER
                 ? CAMERA_FACING_MODE.ENVIRONMENT
                 : CAMERA_FACING_MODE.USER;
 

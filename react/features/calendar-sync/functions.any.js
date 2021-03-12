@@ -23,8 +23,8 @@ function _isDisplayableCalendarEntry(entry) {
     //     are usually placeholder events that don't need to be shown.)
     return entry.endDate > Date.now()
         && !((entry.allDay
-                || entry.endDate - entry.startDate > ALLDAY_EVENT_LENGTH)
-                    && (!entry.attendees || entry.attendees.length < 2));
+            || entry.endDate - entry.startDate > ALLDAY_EVENT_LENGTH)
+            && (!entry.attendees || entry.attendees.length < 2));
 }
 
 /**
@@ -142,8 +142,8 @@ function _parseCalendarEntry(event, knownDomains) {
         if (isNaN(startDate)
             || isNaN(endDate)
             || (navigator.product !== 'ReactNative'
-                    && !url
-                    && !event.calendarId)) {
+                && !url
+                && !event.calendarId)) {
             // Ignore the event.
         } else {
             return {

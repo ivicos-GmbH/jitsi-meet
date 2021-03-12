@@ -56,7 +56,7 @@ export function normalizeUserInputURL(url: string) {
         const urlComponents = urlRegExp.exec(url);
 
         if (urlComponents && (!urlComponents[1]
-                || !urlComponents[1].startsWith('http'))) {
+            || !urlComponents[1].startsWith('http'))) {
             url = `https://${urlComponents[2]}`;
         }
 
@@ -108,8 +108,8 @@ export function getMoreTabProps(stateful: Object | Function) {
     // The settings sections to display.
     const showModeratorSettings = Boolean(
         conference
-            && configuredTabs.includes('moderator')
-            && isLocalParticipantModerator(state));
+        && configuredTabs.includes('moderator')
+        && isLocalParticipantModerator(state));
 
     return {
         currentLanguage: language,
@@ -162,19 +162,19 @@ export function getProfileTabProps(stateful: Object | Function) {
  */
 export function createLocalVideoTracks(ids: string[], timeout: ?number) {
     return Promise.all(ids.map(deviceId => createLocalTrack('video', deviceId, timeout)
-                   .then(jitsiTrack => {
-                       return {
-                           jitsiTrack,
-                           deviceId
-                       };
-                   })
-                   .catch(() => {
-                       return {
-                           jitsiTrack: null,
-                           deviceId,
-                           error: 'deviceSelection.previewUnavailable'
-                       };
-                   })));
+        .then(jitsiTrack => {
+            return {
+                jitsiTrack,
+                deviceId
+            };
+        })
+        .catch(() => {
+            return {
+                jitsiTrack: null,
+                deviceId,
+                error: 'deviceSelection.previewUnavailable'
+            };
+        })));
 }
 
 

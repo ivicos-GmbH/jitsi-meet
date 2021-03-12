@@ -84,9 +84,9 @@ export function hideToolbox(force: boolean = false): Function {
         dispatch(clearToolboxTimeout());
 
         if (!force
-                && (hovered
-                    || state['features/invite'].calleeInfoVisible
-                    || state['features/chat'].isOpen)) {
+            && (hovered
+                || state['features/invite'].calleeInfoVisible
+                || state['features/chat'].isOpen)) {
             dispatch(
                 setToolboxTimeout(
                     () => dispatch(hideToolbox()),

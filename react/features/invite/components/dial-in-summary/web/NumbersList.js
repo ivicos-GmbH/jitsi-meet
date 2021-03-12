@@ -103,13 +103,13 @@ class NumbersList extends Component<Props> {
                 <tr
                     className = 'number-group'
                     key = { countryName }>
-                    { this._renderFlag(numbersArray[0].countryCode) }
-                    <td className = 'country' >{ countryName }</td>
+                    {this._renderFlag(numbersArray[0].countryCode)}
+                    <td className = 'country' >{countryName}</td>
                     <td className = 'numbers-list-column'>
-                        { this._renderNumbersList(numbersArray) }
+                        {this._renderNumbersList(numbersArray)}
                     </td>
                     <td className = 'toll-free-list-column' >
-                        { this._renderNumbersTollFreeList(numbersArray) }
+                        {this._renderNumbersTollFreeList(numbersArray)}
                     </td>
                 </tr>
             );
@@ -119,14 +119,14 @@ class NumbersList extends Component<Props> {
             <table className = 'dial-in-numbers-list'>
                 <thead>
                     <tr>
-                        { hasFlags ? <th /> : null}
-                        <th>{ t('info.country') }</th>
-                        <th>{ t('info.numbers') }</th>
+                        {hasFlags ? <th /> : null}
+                        <th>{t('info.country')}</th>
+                        <th>{t('info.numbers')}</th>
                         <th />
                     </tr>
                 </thead>
                 <tbody className = 'dial-in-numbers-body'>
-                    { rows }
+                    {rows}
                 </tbody>
             </table>
         );
@@ -162,12 +162,12 @@ class NumbersList extends Component<Props> {
             (<li
                 className = 'dial-in-number'
                 key = { number.formattedNumber }>
-                { this._renderNumberLink(number.formattedNumber) }
+                { this._renderNumberLink(number.formattedNumber)}
             </li>));
 
         return (
             <ul className = 'numbers-list'>
-                { numbersListItems }
+                { numbersListItems}
             </ul>
         );
     }
@@ -187,12 +187,12 @@ class NumbersList extends Component<Props> {
             (<li
                 className = 'toll-free'
                 key = { number.formattedNumber }>
-                { number.tollFree ? t('info.dialInTollFree') : '' }
+                { number.tollFree ? t('info.dialInTollFree') : ''}
             </li>));
 
         return (
             <ul className = 'toll-free-list'>
-                { tollNumbersListItems }
+                { tollNumbersListItems}
             </ul>
         );
     }
@@ -215,7 +215,7 @@ class NumbersList extends Component<Props> {
                 <a
                     href = { `tel:${number},${this.props.conferenceID}%23` }
                     key = { number } >
-                    { number }
+                    { number}
                 </a>
             );
         }

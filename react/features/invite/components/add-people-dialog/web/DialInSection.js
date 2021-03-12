@@ -63,7 +63,7 @@ function DialInSection({
                 href = { _dialInfoPageUrl }
                 rel = 'noopener noreferrer'
                 target = '_blank'>
-                { t('info.moreNumbers') }
+                {t('info.moreNumbers')}
             </a> : null}
         </div>
     );

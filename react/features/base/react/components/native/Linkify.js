@@ -47,7 +47,7 @@ export default class Linkify extends Component<Props> {
             <ReactLinkify
                 componentDecorator = { this._componentDecorator }>
                 <Text selectable = { true }>
-                    { this.props.children }
+                    {this.props.children}
                 </Text>
             </ReactLinkify>
         );
@@ -69,7 +69,7 @@ export default class Linkify extends Component<Props> {
                 key = { key }
                 style = { this.props.linkStyle }
                 url = { decoratedHref }>
-                { punycode.toASCII(decoratedText) }
+                { punycode.toASCII(decoratedText)}
             </Link>
         );
     }

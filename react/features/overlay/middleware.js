@@ -29,7 +29,7 @@ StateListenerRegistry.register(
 
         return configError || connectionError || conferenceError;
     },
-    /* listener */ (error, { dispatch }) => {
+    /* listener */(error, { dispatch }) => {
         error
             && NON_OVERLAY_ERRORS.indexOf(error.name) === -1
             && typeof error.recoverable === 'undefined'

@@ -104,7 +104,7 @@ export function setToolboxEnabled(enabled: boolean): Object {
  * }}
  */
 export function setToolboxTimeout(handler: Function, timeoutMS: number)
-      : Object {
+    : Object {
     return {
         type: SET_TOOLBOX_TIMEOUT,
         handler,

@@ -31,7 +31,7 @@ export type Props = {
  * Implements an abstract class for {@code DisplayNamePrompt}.
  */
 export default class AbstractDisplayNamePrompt<S: *>
-    extends Component<Props, S> {
+    extends Component < Props, S > {
     /**
      * Instantiates a new component.
      *

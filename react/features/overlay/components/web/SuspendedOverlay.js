@@ -29,7 +29,7 @@ class SuspendedOverlay extends AbstractSuspendedOverlay {
                     <span className = 'inlay__icon icon-camera' />
                     <h3
                         className = 'inlay__title'>
-                        { t('suspendedoverlay.title') }
+                        {t('suspendedoverlay.title')}
                     </h3>
                     <ReloadButton textKey = 'suspendedoverlay.rejoinKeyTitle' />
                 </div>

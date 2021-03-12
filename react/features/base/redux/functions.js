@@ -36,7 +36,7 @@ export function assign(target: Object, source: Object) {
  */
 export function connect(
         mapStateToProps?: Function, mapDispatchToProps?: Function) {
-    return reduxConnect<*, *, *, *, *, *>(mapStateToProps, mapDispatchToProps);
+    return reduxConnect <*, *, *, *, *, *>(mapStateToProps, mapDispatchToProps);
 }
 
 /**
@@ -101,7 +101,7 @@ function _set(
     // Delete state properties that are to be set to undefined. (It is a matter
     // of personal preference, mostly.)
     if (typeof value === 'undefined'
-            && Object.prototype.hasOwnProperty.call(state, property)) {
+        && Object.prototype.hasOwnProperty.call(state, property)) {
         const newState = copyOnWrite ? { ...state } : state;
 
         if (delete newState[property]) {

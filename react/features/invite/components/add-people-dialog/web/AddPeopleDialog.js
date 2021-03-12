@@ -147,7 +147,7 @@ function AddPeopleDialog({
             titleKey = 'addPeople.inviteMorePrompt'
             width = { 'small' }>
             <div className = 'invite-more-dialog'>
-                { _inviteContactsVisible && <InviteContactsSection /> }
+                {_inviteContactsVisible && <InviteContactsSection />}
                 {_urlSharingVisible ? <CopyMeetingLinkSection url = { _inviteUrl } /> : null}
                 {
                     _emailSharingVisible
@@ -156,16 +156,16 @@ function AddPeopleDialog({
                             inviteText = { _invitationText } />
                         : null
                 }
-                { _embedMeetingVisible && <EmbedMeetingTrigger /> }
+                {_embedMeetingVisible && <EmbedMeetingTrigger />}
                 <div className = 'invite-more-dialog separator' />
                 {
                     _liveStreamViewURL
-                        && <LiveStreamSection liveStreamViewURL = { _liveStreamViewURL } />
+                    && <LiveStreamSection liveStreamViewURL = { _liveStreamViewURL } />
                 }
                 {
                     _phoneNumber
-                        && _dialInVisible
-                        && <DialInSection phoneNumber = { _phoneNumber } />
+                    && _dialInVisible
+                    && <DialInSection phoneNumber = { _phoneNumber } />
                 }
             </div>
         </Dialog>
@@ -197,14 +197,16 @@ function mapStateToProps(state, ownProps) {
         _dialInVisible: isSharingEnabled(sharingFeatures.dialIn),
         _urlSharingVisible: isSharingEnabled(sharingFeatures.url),
         _emailSharingVisible: isSharingEnabled(sharingFeatures.email),
-        _invitationText: getInviteText({ state,
+        _invitationText: getInviteText({
+            state,
             phoneNumber,
-            t: ownProps.t }),
+            t: ownProps.t
+        }),
         _inviteContactsVisible: interfaceConfig.ENABLE_DIAL_OUT && !hideInviteContacts,
         _inviteUrl: getInviteURL(state),
         _liveStreamViewURL:
             currentLiveStreamingSession
-                && currentLiveStreamingSession.liveStreamViewURL,
+            && currentLiveStreamingSession.liveStreamViewURL,
         _phoneNumber: phoneNumber
     };
 }

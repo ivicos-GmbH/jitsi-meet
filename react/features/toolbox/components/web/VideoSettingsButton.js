@@ -111,5 +111,5 @@ const mapDispatchToProps = {
 
 export default translate(connect(
     mapStateToProps,
-    mapDispatchToProps,
+    mapDispatchToProps
 )(VideoSettingsButton));

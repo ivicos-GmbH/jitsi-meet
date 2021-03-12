@@ -51,7 +51,7 @@ MiddlewareRegistry.register(store => next => action => {
         // Don't sync track mute state with the redux store for screenshare
         // since video mute state represents local camera mute state only.
         track.local && track.videoType !== 'desktop'
-            && _syncTrackMutedState(store, track);
+                && _syncTrackMutedState(store, track);
 
         return result;
     }
@@ -141,8 +141,7 @@ function _setRoom({ dispatch, getState }, next, action) {
     sendAnalytics(
         createStartMutedConfigurationEvent('local', audioMuted, videoMuted));
     logger.log(
-        `Start muted: ${audioMuted ? 'audio, ' : ''}${
-            videoMuted ? 'video' : ''}`);
+        `Start muted: ${audioMuted ? 'audio, ' : ''}${videoMuted ? 'video' : ''}`);
 
     // Unconditionally express the desires/expectations/intents of the app and
     // the user i.e. the state of base/media. Eventually, practice/reality i.e.
@@ -219,8 +218,7 @@ function _syncTrackMutedState({ getState }, track) {
     if (track.muted !== muted) {
         sendAnalytics(createSyncTrackStateEvent(track.mediaType, muted));
         logger.log(
-            `Sync ${track.mediaType} track muted state to ${
-                muted ? 'muted' : 'unmuted'}`);
+            `Sync ${track.mediaType} track muted state to ${muted ? 'muted' : 'unmuted'}`);
 
         track.muted = muted;
         setTrackMuted(track.jitsiTrack, muted);

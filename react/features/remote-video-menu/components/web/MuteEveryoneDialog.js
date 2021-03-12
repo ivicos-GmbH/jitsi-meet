@@ -28,7 +28,7 @@ class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
                 titleString = { this.props.title }
                 width = 'small'>
                 <div>
-                    { this.props.content }
+                    {this.props.content}
                 </div>
             </Dialog>
         );

@@ -169,7 +169,7 @@ class Labels extends AbstractLabels<Props, State> {
                     style = { [
                         styles.indicatorContainer,
                         wide && _filmstripVisible
-                            && styles.indicatorContainerWide
+                        && styles.indicatorContainerWide
                     ] }>
                     <TouchableOpacity
                         onLayout = { this._createOnLayout(LABEL_ID_RECORDING) }
@@ -214,14 +214,14 @@ class Labels extends AbstractLabels<Props, State> {
                             this._createOnLayout(LABEL_ID_QUALITY) }
                         onPress = {
                             this._createOnPress(LABEL_ID_QUALITY) } >
-                        { this._renderVideoQualityLabel() }
+                        {this._renderVideoQualityLabel()}
                     </TouchableOpacity>
                 </View>
                 <View
                     style = { [
                         styles.indicatorContainer,
                         wide && _filmstripVisible
-                            && styles.indicatorContainerWide
+                        && styles.indicatorContainerWide
                     ] }>
                     {
                         this._renderExpandedLabel()

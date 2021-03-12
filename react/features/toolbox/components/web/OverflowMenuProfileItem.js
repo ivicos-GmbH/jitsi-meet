@@ -65,8 +65,7 @@ class OverflowMenuProfileItem extends Component<Props> {
      */
     render() {
         const { _localParticipant, _unclickable, t } = this.props;
-        const classNames = `overflow-menu-item ${
-            _unclickable ? 'unclickable' : ''}`;
+        const classNames = `overflow-menu-item ${_unclickable ? 'unclickable' : ''}`;
         let displayName;
 
         if (_localParticipant && _localParticipant.name) {
@@ -86,7 +85,7 @@ class OverflowMenuProfileItem extends Component<Props> {
                         size = { 20 } />
                 </span>
                 <span className = 'profile-text'>
-                    { displayName }
+                    {displayName}
                 </span>
             </li>
         );

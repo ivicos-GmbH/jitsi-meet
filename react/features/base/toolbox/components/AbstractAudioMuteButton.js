@@ -9,7 +9,7 @@ import type { Props } from './AbstractButton';
  * An abstract implementation of a button for toggling audio mute.
  */
 export default class AbstractAudioMuteButton<P: Props, S: *>
-    extends AbstractButton<P, S> {
+    extends AbstractButton < P, S > {
 
     icon = IconMicrophoneEmpty;
     toggledIcon = IconMicrophoneEmptySlash;

@@ -59,7 +59,7 @@ export default class Link extends Component<Props> {
             <Text
                 onPress = { this._onPress }
                 style = { this.props.style }>
-                { this.props.children }
+                { this.props.children}
             </Text>
         );
     }

@@ -229,7 +229,7 @@ export class FlacAdapter extends AbstractAudioContextAdapter {
             break;
         default:
             logger.error(
-                `Unknown event
+                    `Unknown event
                 from encoder (WebWorker): "${e.data.command}"!`);
             break;
         }

@@ -29,7 +29,7 @@ class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
                 titleKey = 'dialog.muteParticipantTitle'
                 width = 'small'>
                 <div>
-                    { this.props.t('dialog.muteParticipantBody') }
+                    {this.props.t('dialog.muteParticipantBody')}
                 </div>
             </Dialog>
         );

@@ -115,7 +115,7 @@ class DeviceSelector extends Component<Props> {
         return (
             <div className = 'device-selector-trigger'>
                 <span className = 'device-selector-trigger-text'>
-                    { triggerText }
+                    {triggerText}
                 </span>
             </div>
         );
@@ -142,7 +142,7 @@ class DeviceSelector extends Component<Props> {
                         this._onSelect(device.deviceId);
                     }
                 }>
-                { device.label || device.deviceId }
+                { device.label || device.deviceId}
             </DropdownItem>
         );
     }
@@ -166,13 +166,13 @@ class DeviceSelector extends Component<Props> {
     _createDropdown(options) {
         const triggerText
             = (options.defaultSelected && (options.defaultSelected.label || options.defaultSelected.deviceId))
-                || options.placeholder;
+            || options.placeholder;
         const trigger = this._createDropdownTrigger(triggerText);
 
         if (options.isDisabled || !options.items.length) {
             return (
                 <div className = 'device-selector-trigger-disabled'>
-                    { trigger }
+                    { trigger}
                 </div>
             );
         }
@@ -187,7 +187,7 @@ class DeviceSelector extends Component<Props> {
                     }}
                     triggerType = 'button'>
                     <DropdownItemGroup>
-                        { options.items }
+                        {options.items}
                     </DropdownItemGroup>
                 </DropdownMenu>
             </div>

@@ -48,7 +48,7 @@ class ReloadButton extends Component<Props> {
             <button
                 className = { className }
                 onClick = { this.props._reloadNow }>
-                { this.props.t(this.props.textKey) }
+                { this.props.t(this.props.textKey)}
             </button>
         );
 

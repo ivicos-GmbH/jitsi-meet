@@ -99,9 +99,9 @@ export default class AbstractNotificationsContainer<P: Props>
                 this._clearNotificationDismissTimeout();
 
                 if (notification
-                        && (notification.timeout
-                            || typeof autoDismissTimeout === 'number')
-                        && notification.props.isDismissAllowed !== false) {
+                    && (notification.timeout
+                        || typeof autoDismissTimeout === 'number')
+                    && notification.props.isDismissAllowed !== false) {
                     const {
                         timeout = autoDismissTimeout,
                         uid

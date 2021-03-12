@@ -46,7 +46,7 @@ export default class Modal extends Component<Props> {
                 ] }
                 transparent = { true }
                 { ...props } >
-                { children }
+                { children}
             </NativeModal>
         );
     }

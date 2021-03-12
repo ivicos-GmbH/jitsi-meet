@@ -157,7 +157,7 @@ class DialInSummary extends Component<Props, State> {
 
         return (
             <div className = { `${this.props.className} ${className}` }>
-                { contents }
+                { contents}
             </div>
         );
     }

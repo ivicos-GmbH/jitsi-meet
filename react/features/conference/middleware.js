@@ -37,11 +37,11 @@ MiddlewareRegistry.register(store => next => action => {
         const { dispatch } = store;
 
         dispatch(notifyKickedOut(
-            action.participant,
-            () => {
-                dispatch(conferenceLeft(action.conference));
-                dispatch(appNavigate(undefined));
-            }
+                action.participant,
+                () => {
+                    dispatch(conferenceLeft(action.conference));
+                    dispatch(appNavigate(undefined));
+                }
         ));
 
         break;
@@ -71,9 +71,9 @@ StateListenerRegistry.register(
             // we want to hide is a lot longer. Thus we take a bit of a shortcut
             // and explicitly check.
             if (typeof authRequired === 'undefined'
-                    && typeof passwordRequired === 'undefined'
-                    && typeof membersOnly === 'undefined'
-                    && !isDialogOpen(getState(), FeedbackDialog)) {
+                && typeof passwordRequired === 'undefined'
+                && typeof membersOnly === 'undefined'
+                && !isDialogOpen(getState(), FeedbackDialog)) {
                 // Conference changed, left or failed... and there is no
                 // pending authentication, nor feedback request, so close any
                 // dialog we might have open.

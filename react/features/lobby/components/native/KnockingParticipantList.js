@@ -42,13 +42,13 @@ class KnockingParticipantList extends AbstractKnockingParticipantList {
                             url = { p.loadableAvatarUrl } />
                         <View style = { styles.knockingParticipantListDetails }>
                             <Text style = { styles.knockingParticipantListText }>
-                                { p.name }
+                                {p.name}
                             </Text>
-                            { p.email && (
+                            {p.email && (
                                 <Text style = { styles.knockingParticipantListText }>
-                                    { p.email }
+                                    { p.email}
                                 </Text>
-                            ) }
+                            )}
                         </View>
                         <TouchableOpacity
                             onPress = { this._onRespondToParticipant(p.id, true) }
@@ -57,7 +57,7 @@ class KnockingParticipantList extends AbstractKnockingParticipantList {
                                 styles.knockingParticipantListPrimaryButton
                             ] }>
                             <Text style = { styles.knockingParticipantListText }>
-                                { t('lobby.allow') }
+                                {t('lobby.allow')}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -67,11 +67,11 @@ class KnockingParticipantList extends AbstractKnockingParticipantList {
                                 styles.knockingParticipantListSecondaryButton
                             ] }>
                             <Text style = { styles.knockingParticipantListText }>
-                                { t('lobby.reject') }
+                                {t('lobby.reject')}
                             </Text>
                         </TouchableOpacity>
                     </View>
-                )) }
+                ))}
             </ScrollView>
         );
     }

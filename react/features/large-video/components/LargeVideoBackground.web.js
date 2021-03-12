@@ -24,12 +24,12 @@ export const ORIENTATION = {
  */
 type Props = {
 
-   /**
-     * Whether or not the layout should change to support tile view mode.
-     *
-     * @protected
-     * @type {boolean}
-     */
+    /**
+      * Whether or not the layout should change to support tile view mode.
+      *
+      * @protected
+      * @type {boolean}
+      */
     _shouldDisplayTileView: boolean,
 
     /**
@@ -220,7 +220,7 @@ export class LargeVideoBackground extends Component<Props> {
         // All other cases when the canvas is not visible are handled trough the component props
         // (hidden, _shouldDisplayTileView).
         if (!this._canvasEl || this._canvasEl.offsetParent === null
-                || window.innerHeight === 0 || window.innerWidth === 0) {
+            || window.innerHeight === 0 || window.innerWidth === 0) {
             return;
         }
 

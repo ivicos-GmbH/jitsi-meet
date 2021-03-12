@@ -161,7 +161,7 @@ function Thumbnail(props: Props) {
 
             { renderDisplayName && <Container style = { styles.displayNameContainer }>
                 <DisplayNameLabel participantId = { participantId } />
-            </Container> }
+            </Container>}
 
             { renderModeratorIndicator
                 && <View style = { styles.moderatorIndicatorContainer }>
@@ -174,8 +174,8 @@ function Thumbnail(props: Props) {
                     styles.thumbnailTopLeftIndicatorContainer
                 ] }>
                 <RaisedHandIndicator participantId = { participant.id } />
-                { renderDominantSpeakerIndicator && <DominantSpeakerIndicator /> }
-            </View> }
+                {renderDominantSpeakerIndicator && <DominantSpeakerIndicator />}
+            </View>}
 
             { !participant.isFakeParticipant && <View
                 style = { [
@@ -183,16 +183,16 @@ function Thumbnail(props: Props) {
                     styles.thumbnailTopRightIndicatorContainer
                 ] }>
                 <ConnectionIndicator participantId = { participant.id } />
-            </View> }
+            </View>}
 
             { !participant.isFakeParticipant && <Container style = { styles.thumbnailIndicatorContainer }>
-                { audioMuted
-                    && <AudioMutedIndicator /> }
-                { videoMuted
-                    && <VideoMutedIndicator /> }
-                { isScreenShare
-                    && <ScreenShareIndicator /> }
-            </Container> }
+                {audioMuted
+                    && <AudioMutedIndicator />}
+                {videoMuted
+                    && <VideoMutedIndicator />}
+                {isScreenShare
+                    && <ScreenShareIndicator />}
+            </Container>}
 
         </Container>
     );

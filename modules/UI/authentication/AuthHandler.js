@@ -1,4 +1,4 @@
-/* global APP, config, JitsiMeetJS, Promise */
+/* global APP, config, JitsiMeetJS */
 
 import Logger from 'jitsi-meet-logger';
 
@@ -112,31 +112,31 @@ function initJWTTokenListener(room) {
                 // to upgrade current connection's user role
 
                 newRoom.room.moderator.authenticate()
-                .then(() => {
-                    connection.disconnect();
+                    .then(() => {
+                        connection.disconnect();
 
-                    // At this point we'll have session-ID stored in
-                    // the settings. It wil be used in the call below
-                    // to upgrade user's role
-                    room.room.moderator.authenticate()
-                        .then(() => {
-                            logger.info('User role upgrade done !');
-                            // eslint-disable-line no-use-before-define
-                            unregister();
-                        })
-                        .catch((err, errCode) => {
-                            logger.error('Authentication failed: ',
-                                err, errCode);
-                            unregister();
-                        });
-                })
-                .catch((error, code) => {
-                    unregister();
-                    connection.disconnect();
-                    logger.error(
-                        'Authentication failed on the new connection',
-                        error, code);
-                });
+                        // At this point we'll have session-ID stored in
+                        // the settings. It wil be used in the call below
+                        // to upgrade user's role
+                        room.room.moderator.authenticate()
+                            .then(() => {
+                                logger.info('User role upgrade done !');
+                                // eslint-disable-line no-use-before-define
+                                unregister();
+                            })
+                            .catch((err, errCode) => {
+                                logger.error('Authentication failed: ',
+                                    err, errCode);
+                                unregister();
+                            });
+                    })
+                    .catch((error, code) => {
+                        unregister();
+                        connection.disconnect();
+                        logger.error(
+                            'Authentication failed on the new connection',
+                            error, code);
+                    });
             }, err => {
                 unregister();
                 logger.error('Failed to open new connection', err);
@@ -163,7 +163,7 @@ function initJWTTokenListener(room) {
  */
 function doXmppAuth(room, lockPassword) {
     const loginDialog = LoginDialog.showAuthDialog(
-        /* successCallback */ (id, password) => {
+        /* successCallback */(id, password) => {
             room.authenticateAndUpgradeRole({
                 id,
                 password,
@@ -175,27 +175,27 @@ function doXmppAuth(room, lockPassword) {
                         'connection.FETCH_SESSION_ID');
                 }
             })
-            .then(
-                /* onFulfilled */ () => {
-                    loginDialog.displayConnectionStatus(
-                        'connection.GOT_SESSION_ID');
-                    loginDialog.close();
-                },
-                /* onRejected */ error => {
-                    logger.error('authenticateAndUpgradeRole failed', error);
+                .then(
+                /* onFulfilled */() => {
+                        loginDialog.displayConnectionStatus(
+                            'connection.GOT_SESSION_ID');
+                        loginDialog.close();
+                    },
+                    /* onRejected */ error => {
+                        logger.error('authenticateAndUpgradeRole failed', error);
 
-                    const { authenticationError, connectionError } = error;
+                        const { authenticationError, connectionError } = error;
 
-                    if (authenticationError) {
-                        loginDialog.displayError(
-                            'connection.GET_SESSION_ID_ERROR',
-                            { msg: authenticationError });
-                    } else if (connectionError) {
-                        loginDialog.displayError(connectionError);
-                    }
-                });
+                        if (authenticationError) {
+                            loginDialog.displayError(
+                                'connection.GET_SESSION_ID_ERROR',
+                                { msg: authenticationError });
+                        } else if (connectionError) {
+                            loginDialog.displayError(connectionError);
+                        }
+                    });
         },
-        /* cancelCallback */ () => loginDialog.close());
+        /* cancelCallback */() => loginDialog.close());
 }
 
 /**

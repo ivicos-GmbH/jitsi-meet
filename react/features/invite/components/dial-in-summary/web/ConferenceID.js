@@ -44,13 +44,13 @@ class ConferenceID extends Component<Props> {
         return (
             <div className = 'dial-in-conference-id'>
                 <div className = 'dial-in-conference-name'>
-                    { conferenceName }
+                    {conferenceName}
                 </div>
                 <div className = 'dial-in-conference-description'>
-                    { t('info.dialANumber') }
+                    {t('info.dialANumber')}
                 </div>
                 <div className = 'dial-in-conference-pin'>
-                    { `${t('info.dialInConferenceID')} ${_formatConferenceIDPin(conferenceID)}` }
+                    {`${t('info.dialInConferenceID')} ${_formatConferenceIDPin(conferenceID)}`}
                 </div>
             </div>
         );

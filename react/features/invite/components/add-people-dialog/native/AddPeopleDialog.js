@@ -180,7 +180,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
                 <View
                     style = { styles.searchFieldWrapper }>
                     <View style = { styles.searchIconWrapper }>
-                        { this.state.searchInprogress
+                        {this.state.searchInprogress
                             ? <ActivityIndicator
                                 color = { DARK_GREY }
                                 size = 'small' />
@@ -200,7 +200,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
                         ref = { this._setFieldRef }
                         style = { styles.searchField }
                         value = { this.state.fieldValue } />
-                    { this._renderClearButton() }
+                    {this._renderClearButton()}
                 </View>
                 { Boolean(inviteItems.length) && <View style = { styles.invitedList }>
                     <FlatList
@@ -209,7 +209,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
                         keyExtractor = { this._keyExtractor }
                         keyboardShouldPersistTaps = 'always'
                         renderItem = { this._renderInvitedItem } />
-                </View> }
+                </View>}
                 <View style = { styles.resultList }>
                     <FlatList
                         ItemSeparatorComponent = { this._renderSeparator }
@@ -266,8 +266,8 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
     _keyExtractor: Object => string
 
     /**
-     * Key extractor for the flatlist.
-     *
+    * Key extractor for the flatlist.
+    *
      * @param {Object} item - The flatlist item that we need the key to be
      * generated for.
      * @returns {string}
@@ -317,16 +317,16 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
      */
     _onInvite() {
         this._invite(this.state.inviteItems)
-            .then(invitesLeftToSend => {
-                if (invitesLeftToSend.length) {
-                    this.setState({
-                        inviteItems: invitesLeftToSend
-                    });
-                    this._showFailedInviteAlert();
-                } else {
-                    this.props.dispatch(setActiveModalId());
-                }
-            });
+                .then(invitesLeftToSend => {
+                    if (invitesLeftToSend.length) {
+                        this.setState({
+                            inviteItems: invitesLeftToSend
+                        });
+                        this._showFailedInviteAlert();
+                    } else {
+                        this.props.dispatch(setActiveModalId());
+                    }
+                });
     }
 
     _onPressItem: Item => Function
@@ -344,10 +344,10 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
 
             if (inviteItems.find(
                     _.matchesProperty(finderKey, item[finderKey]))) {
-                // Item is already selected, need to unselect it.
+            // Item is already selected, need to unselect it.
                 this.setState({
                     inviteItems: inviteItems.filter(
-                        element => item[finderKey] !== element[finderKey])
+                    element => item[finderKey] !== element[finderKey])
                 });
             } else {
                 // Item is not selected yet, need to add to the list.
@@ -412,13 +412,13 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
                 selectableItems: _.sortBy(results, [ 'name', 'number' ])
             });
         })
-        .finally(() => {
-            this.setState({
-                searchInprogress: false
-            }, () => {
-                this.inputFieldRef && this.inputFieldRef.focus();
-            });
-        });
+                    .finally(() => {
+                        this.setState({
+                            searchInprogress: false
+                        }, () => {
+                            this.inputFieldRef && this.inputFieldRef.focus();
+                        });
+                    });
     }
 
     _query: (string) => Promise<Array<Object>>;
@@ -454,7 +454,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
      * @param {Object} flatListItem - An item of the data array of the
      * {@code FlatList}.
      * @param {number} index - The index of the currently rendered item.
-     * @returns {?React$Element<any>}
+     * @returns {? React$Element < any >}
      */
     _renderInvitedItem(flatListItem, index): React$Element<any> | null {
         const { item } = flatListItem;
@@ -491,7 +491,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
      * @param {Object} flatListItem - An item of the data array of the
      * {@code FlatList}.
      * @param {number} index - The index of the currently rendered item.
-     * @returns {?React$Element<*>}
+     * @returns {? React$Element <*>}
      */
     _renderItem(flatListItem, index): React$Element<any> | null {
         const { item } = flatListItem;
@@ -530,9 +530,9 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
                         key = { index }
                         linesStyle = { styles.itemLinesStyle }
                         titleStyle = { styles.itemText } />
-                    { selected && <Icon
+                    {selected && <Icon
                         src = { IconCheck }
-                        style = { styles.selectedIcon } /> }
+                        style = { styles.selectedIcon } />}
                 </View>
             </TouchableOpacity>
         );
@@ -543,7 +543,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
     /**
      * Renders the item separator.
      *
-     * @returns {?React$Element<*>}
+     * @returns {? React$Element <*>}
      */
     _renderSeparator() {
         return (
@@ -554,8 +554,8 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
     _renderShareMeetingButton: () => React$Element<any>;
 
     /**
-     * Renders a button to share the meeting info.
-     *
+                            * Renders a button to share the meeting info.
+                            *
      * @returns {React#Element<*>}
      */
     _renderShareMeetingButton() {
@@ -583,7 +583,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
     /**
      * Sets a reference to the input field for later use.
      *
-     * @param {?TextInput} input - The reference to the input field.
+     * @param {? TextInput} input - The reference to the input field.
      * @returns {void}
      */
     _setFieldRef(input) {
@@ -613,7 +613,7 @@ class AddPeopleDialog extends AbstractAddPeopleDialog<Props, State> {
  *
  * @param {Object} state - The Redux state.
  * @returns {{
- *     _isVisible: boolean
+                                    *     _isVisible: boolean
  * }}
  */
 function _mapStateToProps(state: Object) {

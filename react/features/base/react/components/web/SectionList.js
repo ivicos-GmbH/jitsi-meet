@@ -75,7 +75,7 @@ export default class SectionList extends Component<Props> {
                             : sections.map((section, sectionIndex) => (
                                 <Container
                                     key = { sectionIndex }>
-                                    { renderSectionHeader(section) }
+                                    { renderSectionHeader(section)}
                                     { section.data
                                         .map((item, listIndex) => {
                                             const listItem = {
@@ -85,7 +85,7 @@ export default class SectionList extends Component<Props> {
                                             return renderItem(listItem,
                                                 keyExtractor(section,
                                                     listIndex));
-                                        }) }
+                                        })}
                                 </Container>
                             )
                             )

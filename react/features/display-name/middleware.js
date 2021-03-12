@@ -16,7 +16,7 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
     switch (action.type) {
     case SETTINGS_UPDATED: {
         if (action.settings.displayName
-            && isDialogOpen(getState, DisplayNamePrompt)) {
+                && isDialogOpen(getState, DisplayNamePrompt)) {
             dispatch(hideDialog(DisplayNamePrompt));
         }
     }

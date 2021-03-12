@@ -39,8 +39,8 @@ MiddlewareRegistry.register(store => next => action => {
     case SET_LOADABLE_AVATAR_URL: {
         const { id, loadableAvatarUrl } = action.participant;
         const participant = getParticipantById(
-            store.getState(),
-            id
+                store.getState(),
+                id
         );
 
         const result = next(action);
@@ -48,8 +48,8 @@ MiddlewareRegistry.register(store => next => action => {
         if (participant) {
             if (loadableAvatarUrl) {
                 participant.loadableAvatarUrl !== loadableAvatarUrl && APP.API.notifyAvatarChanged(
-                    id,
-                    loadableAvatarUrl
+                        id,
+                        loadableAvatarUrl
                 );
             } else {
                 // There is no loadable explicit URL. In this case the Avatar component would
@@ -61,8 +61,8 @@ MiddlewareRegistry.register(store => next => action => {
                 // NOTE: we may implement a special URL format later to signal that the avatar is based
                 // on initials, that API consumers can handle as they want, e.g. initials://jm
                 APP.API.notifyAvatarChanged(
-                    id,
-                    participant.name ? undefined : _getDefaultAvatarUrl()
+                        id,
+                        participant.name ? undefined : _getDefaultAvatarUrl()
                 );
             }
         }
@@ -77,7 +77,7 @@ MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
     case CONFERENCE_FAILED: {
         if (action.conference
-            && action.error.name === JitsiConferenceErrors.PASSWORD_REQUIRED) {
+                && action.error.name === JitsiConferenceErrors.PASSWORD_REQUIRED) {
             APP.API.notifyOnPasswordRequired();
         }
         break;
@@ -89,16 +89,16 @@ MiddlewareRegistry.register(store => next => action => {
         const { loadableAvatarUrl, name, id } = getLocalParticipant(state);
 
         APP.API.notifyConferenceJoined(
-            room,
-            id,
-            {
-                displayName: name,
-                formattedDisplayName: appendSuffix(
-                    name,
-                    interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME
-                ),
-                avatarURL: loadableAvatarUrl
-            }
+                room,
+                id,
+                {
+                    displayName: name,
+                    formattedDisplayName: appendSuffix(
+                        name,
+                        interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME
+                    ),
+                    avatarURL: loadableAvatarUrl
+                }
         );
         break;
     }
@@ -109,18 +109,18 @@ MiddlewareRegistry.register(store => next => action => {
 
     case KICKED_OUT:
         APP.API.notifyKickedOut(
-            {
-                id: getLocalParticipant(store.getState()).id,
-                local: true
-            },
-            { id: action.participant.getId() }
+                {
+                    id: getLocalParticipant(store.getState()).id,
+                    local: true
+                },
+                { id: action.participant.getId() }
         );
         break;
 
     case NOTIFY_CAMERA_ERROR:
         if (action.error) {
             APP.API.notifyOnCameraError(
-              action.error.name, action.error.message);
+                    action.error.name, action.error.message);
         }
         break;
 
@@ -132,11 +132,11 @@ MiddlewareRegistry.register(store => next => action => {
 
     case PARTICIPANT_KICKED:
         APP.API.notifyKickedOut(
-            {
-                id: action.kicked,
-                local: false
-            },
-            { id: action.kicker });
+                {
+                    id: action.kicked,
+                    local: false
+                },
+                { id: action.kicker });
         break;
 
     case PARTICIPANT_LEFT:
@@ -153,7 +153,7 @@ MiddlewareRegistry.register(store => next => action => {
             APP.API.notifyUserJoined(id, {
                 displayName: name,
                 formattedDisplayName: appendSuffix(
-                    name || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME)
+                        name || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME)
             });
         }
 

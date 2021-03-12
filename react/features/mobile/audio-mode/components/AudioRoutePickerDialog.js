@@ -272,7 +272,7 @@ class AudioRoutePickerDialog extends Component<Props, State> {
                         src = { icon }
                         style = { [ styles.deviceIcon, _bottomSheetStyles.buttons.iconStyle, selectedStyle ] } />
                     <Text style = { [ styles.deviceText, _bottomSheetStyles.buttons.labelStyle, selectedStyle ] } >
-                        { text }
+                        {text}
                     </Text>
                 </View>
             </TouchableHighlight>
@@ -294,7 +294,7 @@ class AudioRoutePickerDialog extends Component<Props, State> {
                     src = { deviceInfoMap.SPEAKER.icon }
                     style = { [ styles.deviceIcon, _bottomSheetStyles.buttons.iconStyle ] } />
                 <Text style = { [ styles.deviceText, _bottomSheetStyles.buttons.labelStyle ] } >
-                    { t('audioDevices.none') }
+                    {t('audioDevices.none')}
                 </Text>
             </View>
         );
@@ -318,7 +318,7 @@ class AudioRoutePickerDialog extends Component<Props, State> {
 
         return (
             <BottomSheet onCancel = { this._onCancel }>
-                { content }
+                { content}
             </BottomSheet>
         );
     }

@@ -271,7 +271,7 @@ export function participantJoined(participant) {
             = getState()['features/base/conference'];
 
         if (conference === stateFeaturesBaseConference.conference
-                || conference === stateFeaturesBaseConference.joining) {
+            || conference === stateFeaturesBaseConference.joining) {
             return dispatch({
                 type: PARTICIPANT_JOINED,
                 participant

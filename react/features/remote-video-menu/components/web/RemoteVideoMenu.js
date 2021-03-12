@@ -37,7 +37,7 @@ export default class RemoteVideoMenu extends Component<Props> {
             <ul
                 className = 'popupmenu'
                 id = { this.props.id }>
-                { this.props.children }
+                { this.props.children}
             </ul>
         );
     }

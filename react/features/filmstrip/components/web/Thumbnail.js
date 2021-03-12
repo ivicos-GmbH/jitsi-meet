@@ -113,9 +113,9 @@ type Props = {
      */
     _startSilent: Boolean,
 
-     /**
-     * The video track that will be displayed in the thumbnail.
-     */
+    /**
+    * The video track that will be displayed in the thumbnail.
+    */
     _videoTrack: ?Object,
 
     /**
@@ -345,7 +345,7 @@ class Thumbnail extends Component<Props, State> {
         return (
             <div>
                 <AtlasKitThemeProvider mode = 'dark'>
-                    { !_connectionIndicatorDisabled
+                    {!_connectionIndicatorDisabled
                         && <ConnectionIndicator
                             alwaysVisible = { showConnectionIndicator }
                             enableStatsDisplay = { true }
@@ -358,7 +358,7 @@ class Thumbnail extends Component<Props, State> {
                         iconSize = { iconSize }
                         participantId = { id }
                         tooltipPosition = { tooltipPosition } />
-                    { showDominantSpeaker && _participantCount > 2
+                    {showDominantSpeaker && _participantCount > 2
                         && <DominantSpeakerIndicator
                             iconSize = { iconSize }
                             tooltipPosition = { tooltipPosition } />
@@ -416,7 +416,7 @@ class Thumbnail extends Component<Props, State> {
                     <StatusIndicators participantID = { id } />
                 </div>
                 <div className = 'videocontainer__toptoolbar'>
-                    { this._renderTopIndicators() }
+                    {this._renderTopIndicators()}
                 </div>
                 <div className = 'videocontainer__hoverOverlay' />
                 <div className = 'displayNameContainer'>
@@ -426,7 +426,7 @@ class Thumbnail extends Component<Props, State> {
                         elementID = 'localDisplayName'
                         participantID = { id } />
                 </div>
-                { this._renderAvatar() }
+                { this._renderAvatar()}
                 <span className = 'audioindicator-container'>
                     <AudioLevelIndicator audioLevel = { audioLevel } />
                 </span>
@@ -469,7 +469,7 @@ class Thumbnail extends Component<Props, State> {
                 }
                 <div className = 'videocontainer__background' />
                 <div className = 'videocontainer__toptoolbar'>
-                    { this._renderTopIndicators() }
+                    {this._renderTopIndicators()}
                 </div>
                 <div className = 'videocontainer__toolbar'>
                     <StatusIndicators participantID = { id } />
@@ -480,7 +480,7 @@ class Thumbnail extends Component<Props, State> {
                         elementID = { `participant_${id}_name` }
                         participantID = { id } />
                 </div>
-                { this._renderAvatar() }
+                { this._renderAvatar()}
                 <div className = 'presence-label-container'>
                     <PresenceLabel
                         className = 'presence-label'

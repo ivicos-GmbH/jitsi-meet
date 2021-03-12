@@ -34,7 +34,7 @@ class ChatCounter extends Component<Props> {
         return (
             <span className = 'badge-round'>
                 <span>
-                    { this.props._count || null }
+                    {this.props._count || null}
                 </span>
             </span>
         );

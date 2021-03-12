@@ -133,7 +133,7 @@ class MoreTab extends AbstractDialogTab<Props, State> {
             content.push(this._renderLangaugeSelect());
         }
 
-        return <div className = 'more-tab'>{ content }</div>;
+        return <div className = 'more-tab'>{content}</div>;
     }
 
     _onLanguageDropdownOpenChange: (Object) => void;
@@ -174,7 +174,7 @@ class MoreTab extends AbstractDialogTab<Props, State> {
                             super._onChange({ currentLanguage: language });
                         }
                     }>
-                    { t(`languages:${language}`) }
+                    { t(`languages:${language}`)}
                 </DropdownItem>));
 
         return (
@@ -182,7 +182,7 @@ class MoreTab extends AbstractDialogTab<Props, State> {
                 className = 'settings-sub-pane language-settings'
                 key = 'language'>
                 <div className = 'mock-atlaskit-label'>
-                    { t('settings.language') }
+                    {t('settings.language')}
                 </div>
                 <div className = 'dropdown-menu'>
                     <DropdownMenu
@@ -197,7 +197,7 @@ class MoreTab extends AbstractDialogTab<Props, State> {
                         }}
                         triggerType = 'button'>
                         <DropdownItemGroup>
-                            { languageItems }
+                            {languageItems}
                         </DropdownItemGroup>
                     </DropdownMenu>
                 </div>
@@ -225,7 +225,7 @@ class MoreTab extends AbstractDialogTab<Props, State> {
                 className = 'settings-sub-pane'
                 key = 'moderator'>
                 <div className = 'mock-atlaskit-label'>
-                    { t('settings.moderator') }
+                    {t('settings.moderator')}
                 </div>
                 <Checkbox
                     isChecked = { startAudioMuted }
@@ -273,7 +273,7 @@ class MoreTab extends AbstractDialogTab<Props, State> {
                 className = 'settings-sub-pane'
                 key = 'prejoin-screen'>
                 <div className = 'mock-atlaskit-label'>
-                    { t('prejoin.premeeting') }
+                    {t('prejoin.premeeting')}
                 </div>
                 <Checkbox
                     isChecked = { showPrejoinPage }

@@ -126,7 +126,7 @@ class CalendarTab extends Component<Props, State> {
 
         return (
             <div className = 'calendar-tab'>
-                { view }
+                { view}
             </div>
         );
     }
@@ -217,21 +217,21 @@ class CalendarTab extends Component<Props, State> {
         return (
             <div>
                 <p>
-                    { t('settings.calendar.about',
-                        { appName: _appName || '' }) }
+                    {t('settings.calendar.about',
+                        { appName: _appName || '' })}
                 </p>
                 { _enableGoogleIntegration
                     && <div className = 'calendar-tab-sign-in'>
                         <GoogleSignInButton
                             onClick = { this._onClickGoogle }
                             text = { t('liveStreaming.signIn') } />
-                    </div> }
+                    </div>}
                 { _enableMicrosoftIntegration
                     && <div className = 'calendar-tab-sign-in'>
                         <MicrosoftSignInButton
                             onClick = { this._onClickMicrosoft }
                             text = { t('settings.calendar.microsoftSignIn') } />
-                    </div> }
+                    </div>}
             </div>
         );
     }
@@ -249,15 +249,15 @@ class CalendarTab extends Component<Props, State> {
         return (
             <div>
                 <div className = 'sign-out-cta'>
-                    { t('settings.calendar.signedIn',
-                        { email: _profileEmail }) }
+                    {t('settings.calendar.signedIn',
+                        { email: _profileEmail })}
                 </div>
                 <Button
                     appearance = 'primary'
                     id = 'calendar_logout'
                     onClick = { this._onClickDisconnect }
                     type = 'button'>
-                    { t('settings.calendar.disconnect') }
+                    {t('settings.calendar.disconnect')}
                 </Button>
             </div>
         );

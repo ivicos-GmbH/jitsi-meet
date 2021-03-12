@@ -137,7 +137,7 @@ export function forEachConference(
             // alternative is necessary then to recognize JitsiConference
             // instances and myUserId is as good as any other property.
             if ((url || typeof v.myUserId === 'function')
-                    && !predicate(v, url)) {
+                && !predicate(v, url)) {
                 return false;
             }
         }
@@ -312,9 +312,10 @@ function _reportError(msg, err) {
 export function sendLocalParticipant(
         stateful: Function | Object,
         conference: {
-            sendCommand: Function,
-            setDisplayName: Function,
-            setLocalParticipantProperty: Function }) {
+        sendCommand: Function,
+        setDisplayName: Function,
+        setLocalParticipantProperty: Function
+    }) {
     const {
         avatarURL,
         email,

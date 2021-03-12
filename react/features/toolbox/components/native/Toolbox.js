@@ -52,7 +52,7 @@ class Toolbox extends PureComponent<Props> {
             <Container
                 style = { styles.toolbox }
                 visible = { this.props._visible }>
-                { this._renderToolbar() }
+                { this._renderToolbar()}
             </Container>
         );
     }

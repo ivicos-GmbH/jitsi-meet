@@ -92,7 +92,7 @@ MiddlewareRegistry.register(store => next => action => {
         if (localTrack
                 && (jitsiTrack = localTrack.jitsiTrack)
                 && jitsiTrack.getCameraFacingMode()
-                    !== action.cameraFacingMode) {
+                !== action.cameraFacingMode) {
             store.dispatch(toggleCameraFacingMode());
         }
         break;
@@ -120,7 +120,7 @@ MiddlewareRegistry.register(store => next => action => {
 
             // Don't mirror the video of the back/environment-facing camera.
             const mirror
-                = jitsiTrack.getCameraFacingMode() === CAMERA_FACING_MODE.USER;
+                    = jitsiTrack.getCameraFacingMode() === CAMERA_FACING_MODE.USER;
 
             store.dispatch({
                 type: TRACK_UPDATED,

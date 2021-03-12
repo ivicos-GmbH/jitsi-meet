@@ -31,12 +31,12 @@ export default class DialogContent extends Component<Props> {
         const { children, style } = this.props;
 
         const childrenComponent = typeof children === 'string'
-            ? <Text style = { style }>{ children }</Text>
+            ? <Text style = { style }>{children}</Text>
             : children;
 
         return (
             <Container style = { styles.dialogContainer }>
-                { childrenComponent }
+                { childrenComponent}
             </Container>
         );
     }

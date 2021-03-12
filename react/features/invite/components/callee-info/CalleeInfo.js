@@ -68,7 +68,7 @@ class CalleeInfo extends Component<Props> {
                     <Container { ...this._style('ringing__name') }>
                         <Text
                             { ...this._style('ringing__text') }>
-                            { name }
+                            {name}
                         </Text>
                     </Container>
                 </Container>

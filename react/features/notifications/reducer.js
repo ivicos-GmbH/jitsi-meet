@@ -40,7 +40,7 @@ ReducerRegistry.register('features/notifications',
             return {
                 ...state,
                 notifications: state.notifications.filter(
-                    notification => notification.uid !== action.uid)
+                        notification => notification.uid !== action.uid)
             };
 
         case SET_NOTIFICATIONS_ENABLED:
@@ -53,12 +53,12 @@ ReducerRegistry.register('features/notifications',
             return {
                 ...state,
                 notifications:
-                    _insertNotificationByPriority(state.notifications, {
-                        component: action.component,
-                        props: action.props,
-                        timeout: action.timeout,
-                        uid: action.uid
-                    })
+                        _insertNotificationByPriority(state.notifications, {
+                            component: action.component,
+                            props: action.props,
+                            timeout: action.timeout,
+                            uid: action.uid
+                        })
             };
         }
 
@@ -89,7 +89,7 @@ function _insertNotificationByPriority(notifications, notification) {
         const queuedNotification = notifications[i];
         const queuedNotificationPriority
             = NOTIFICATION_TYPE_PRIORITIES[queuedNotification.props.appearance]
-                || 0;
+            || 0;
 
         if (queuedNotificationPriority < newNotificationPriority) {
             insertAtLocation = i;

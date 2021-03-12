@@ -61,7 +61,7 @@ export function getDeviceSelectionDialogProps(stateful: Object | Function) {
         hideAudioInputPreview:
             !JitsiMeetJS.isCollectingLocalStats(),
         hideAudioOutputSelect: !JitsiMeetJS.mediaDevices
-                            .isDeviceChangeAvailable('output'),
+            .isDeviceChangeAvailable('output'),
         selectedAudioInputId,
         selectedAudioOutputId,
         selectedVideoInputId
@@ -97,8 +97,8 @@ export function processExternalDeviceRequest( // eslint-disable-line max-params
         break;
     case 'isDeviceChangeAvailable':
         responseCallback(
-            JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(
-                request.deviceType));
+                JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(
+                    request.deviceType));
         break;
     case 'isMultipleAudioInputSupported':
         responseCallback(JitsiMeetJS.isMultipleAudioInputSupported());

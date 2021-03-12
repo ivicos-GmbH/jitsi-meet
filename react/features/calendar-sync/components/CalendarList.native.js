@@ -105,13 +105,13 @@ class CalendarList extends AbstractPage<Props> {
         return (
             <View style = { styles.noPermissionMessageView }>
                 <Text style = { styles.noPermissionMessageText }>
-                    { t('calendarSync.permissionMessage') }
+                    {t('calendarSync.permissionMessage')}
                 </Text>
                 <TouchableOpacity
                     onPress = { openSettings }
                     style = { styles.noPermissionMessageButton } >
                     <Text style = { styles.noPermissionMessageButtonText }>
-                        { t('calendarSync.permissionButton') }
+                        {t('calendarSync.permissionButton')}
                     </Text>
                 </TouchableOpacity>
             </View>

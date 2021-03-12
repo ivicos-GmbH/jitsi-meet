@@ -95,21 +95,21 @@ MiddlewareRegistry.register(store => next => action => {
             mediaDevices.isDevicePermissionGranted('audio'),
             mediaDevices.isDevicePermissionGranted('video')
         ])
-        .then(results => {
-            _permissionsListener({
-                audio: results[0],
-                video: results[1]
-            });
-        })
-        .catch(() => {
-            // Ignore errors.
-        });
+                .then(results => {
+                    _permissionsListener({
+                        audio: results[0],
+                        video: results[1]
+                    });
+                })
+                .catch(() => {
+                    // Ignore errors.
+                });
         break;
     }
     case APP_WILL_UNMOUNT:
         if (typeof permissionsListener === 'function') {
             JitsiMeetJS.mediaDevices.removeEventListener(
-                JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
+                    JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
             permissionsListener = undefined;
         }
         break;
@@ -121,10 +121,10 @@ MiddlewareRegistry.register(store => next => action => {
         const { message, name } = action.error;
 
         const cameraJitsiTrackErrorMsg
-            = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
+                = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
         const cameraErrorMsg = cameraJitsiTrackErrorMsg
-            || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
-                .camera[JitsiTrackErrors.GENERAL];
+                || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
+                    .camera[JitsiTrackErrors.GENERAL];
         const additionalCameraErrorMsg = cameraJitsiTrackErrorMsg ? null : message;
         const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
             ? 'deviceError.cameraPermission' : 'deviceError.cameraError';
@@ -149,10 +149,10 @@ MiddlewareRegistry.register(store => next => action => {
         const { message, name } = action.error;
 
         const micJitsiTrackErrorMsg
-            = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[name];
+                = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[name];
         const micErrorMsg = micJitsiTrackErrorMsg
-            || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
-                .microphone[JitsiTrackErrors.GENERAL];
+                || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
+                    .microphone[JitsiTrackErrors.GENERAL];
         const additionalMicErrorMsg = micJitsiTrackErrorMsg ? null : message;
         const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
             ? 'deviceError.microphonePermission'
@@ -285,7 +285,7 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
             titleKey = 'notify.newDeviceCameraTitle';
             break;
         }
-        case 'audioinput' :
+        case 'audioinput':
         case 'audiooutput': {
             titleKey = 'notify.newDeviceAudioTitle';
             break;
@@ -333,18 +333,18 @@ function _useDevice({ dispatch }, devices) {
         }
         case 'audiooutput': {
             setAudioOutputDeviceId(
-                device.deviceId,
-                dispatch,
-                true,
-                device.label)
-                .then(() => logger.log('changed audio output device'))
-                .catch(err => {
-                    logger.warn(
-                        'Failed to change audio output device.',
-                        'Default or previously set audio output device will',
-                        ' be used instead.',
-                        err);
-                });
+                    device.deviceId,
+                    dispatch,
+                    true,
+                    device.label)
+                    .then(() => logger.log('changed audio output device'))
+                    .catch(err => {
+                        logger.warn(
+                            'Failed to change audio output device.',
+                            'Default or previously set audio output device will',
+                            ' be used instead.',
+                            err);
+                    });
             break;
         }
         }

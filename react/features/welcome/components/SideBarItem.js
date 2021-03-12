@@ -74,7 +74,7 @@ class SideBarItem extends Component<Props> {
                         src = { this.props.icon }
                         style = { styles.sideBarItemIcon } />
                     <Text style = { styles.sideBarItemText }>
-                        { t(label) }
+                        {t(label)}
                     </Text>
                 </View>
             </TouchableOpacity>

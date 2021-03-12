@@ -16,36 +16,36 @@ const browser = JitsiMeetJS.util.browser;
 
 export type Props = {
 
-   /**
-    * The deviceId of the microphone in use.
-    */
+    /**
+     * The deviceId of the microphone in use.
+     */
     currentMicDeviceId: string,
 
-   /**
-    * The deviceId of the output device in use.
-    */
+    /**
+     * The deviceId of the output device in use.
+     */
     currentOutputDeviceId: string,
 
-   /**
-    * Used to set a new microphone as the current one.
-    */
+    /**
+     * Used to set a new microphone as the current one.
+     */
     setAudioInputDevice: Function,
 
-   /**
-    * Used to set a new output device as the current one.
-    */
+    /**
+     * Used to set a new output device as the current one.
+     */
     setAudioOutputDevice: Function,
 
-   /**
-    * A list of objects containing the labels and deviceIds
-    * of all the output devices.
-    */
+    /**
+     * A list of objects containing the labels and deviceIds
+     * of all the output devices.
+     */
     outputDevices: Object[],
 
-   /**
-    * A list with objects containing the labels and deviceIds
-    * of all the input devices.
-    */
+    /**
+     * A list with objects containing the labels and deviceIds
+     * of all the input devices.
+     */
     microphoneDevices: Object[],
 
     /**
@@ -56,10 +56,10 @@ export type Props = {
 
 type State = {
 
-   /**
-    * An list of objects, each containing the microphone label, audio track, device id
-    * and track error if the case.
-    */
+    /**
+     * An list of objects, each containing the microphone label, audio track, device id
+     * and track error if the case.
+     */
     audioTracks: Object[]
 }
 
@@ -251,9 +251,9 @@ class AudioSettingsContent extends Component<Props, State> {
                         IconComponent = { IconMicrophoneEmpty }
                         text = { t('settings.microphones') } />
                     {this.state.audioTracks.map((data, i) =>
-                        this._renderMicrophoneEntry(data, i),
+                        this._renderMicrophoneEntry(data, i)
                     )}
-                    { outputDevices.length > 0 && (
+                    {outputDevices.length > 0 && (
                         <>
                             <hr className = 'audio-preview-hr' />
                             <AudioSettingsHeader
@@ -263,7 +263,7 @@ class AudioSettingsContent extends Component<Props, State> {
                     )
                     }
                     {outputDevices.map((data, i) =>
-                        this._renderSpeakerEntry(data, i),
+                        this._renderSpeakerEntry(data, i)
                     )}
                 </div>
             </div>

@@ -116,17 +116,17 @@ export class OggAdapter extends RecordingAdapter {
 
         return new Promise((resolve, error) => {
             this._getAudioStream(micDeviceId)
-            .then(stream => {
-                this._stream = stream;
-                this._mediaRecorder = new MediaRecorder(stream);
-                this._mediaRecorder.ondataavailable
-                    = e => this._saveMediaData(e.data);
-                resolve();
-            })
-            .catch(err => {
-                logger.error(`Error calling getUserMedia(): ${err}`);
-                error();
-            });
+                .then(stream => {
+                    this._stream = stream;
+                    this._mediaRecorder = new MediaRecorder(stream);
+                    this._mediaRecorder.ondataavailable
+                        = e => this._saveMediaData(e.data);
+                    resolve();
+                })
+                .catch(err => {
+                    logger.error(`Error calling getUserMedia(): ${err}`);
+                    error();
+                });
         });
     }
 

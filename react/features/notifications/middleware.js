@@ -36,7 +36,7 @@ MiddlewareRegistry.register(store => next => action => {
 
         if (!p.local && !joinLeaveNotificationsDisabled()) {
             dispatch(showParticipantJoinedNotification(
-                getParticipantDisplayName(getState, p.id)
+                    getParticipantDisplayName(getState, p.id)
             ));
         }
 
@@ -51,7 +51,7 @@ MiddlewareRegistry.register(store => next => action => {
                 titleKey: 'notify.somebody',
                 title: displayName
             },
-            NOTIFICATION_TIMEOUT));
+                    NOTIFICATION_TIMEOUT));
         }
 
         return result;
@@ -59,13 +59,13 @@ MiddlewareRegistry.register(store => next => action => {
     case PARTICIPANT_LEFT: {
         if (!joinLeaveNotificationsDisabled()) {
             const participant = getParticipantById(
-                store.getState(),
-                action.participant.id
+                    store.getState(),
+                    action.participant.id
             );
 
             if (typeof interfaceConfig === 'object'
-                && participant
-                && !participant.local) {
+                    && participant
+                    && !participant.local) {
                 store.dispatch(showNotification({
                     descriptionKey: 'notify.disconnected',
                     titleKey: 'notify.somebody',
@@ -96,7 +96,7 @@ MiddlewareRegistry.register(store => next => action => {
                 titleKey: 'notify.somebody',
                 title: displayName
             },
-            NOTIFICATION_TIMEOUT));
+                    NOTIFICATION_TIMEOUT));
         }
 
         return next(action);
@@ -112,7 +112,7 @@ MiddlewareRegistry.register(store => next => action => {
  */
 StateListenerRegistry.register(
     /* selector */ state => getCurrentConference(state),
-    /* listener */ (conference, { dispatch }) => {
+    /* listener */(conference, { dispatch }) => {
         if (!conference) {
             dispatch(clearNotifications());
         }

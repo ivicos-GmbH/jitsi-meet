@@ -69,13 +69,13 @@ MiddlewareRegistry.register(store => next => action => {
         if ('videoType' in action.track) {
             const state = store.getState();
             const track
-                = getTrackByJitsiTrack(
-                    state['features/base/tracks'],
-                    action.track.jitsiTrack);
+                    = getTrackByJitsiTrack(
+                        state['features/base/tracks'],
+                        action.track.jitsiTrack);
             const participantId = state['features/large-video'].participantId;
 
             (track.participantId === participantId)
-                && store.dispatch(selectParticipant());
+                    && store.dispatch(selectParticipant());
         }
         break;
     }

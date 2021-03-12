@@ -158,7 +158,7 @@ class Conference extends AbstractConference<Props, *> {
                     barStyle = 'light-content'
                     hidden = { _fullscreenEnabled }
                     translucent = { _fullscreenEnabled } />
-                { this._renderContent() }
+                { this._renderContent()}
             </Container>
         );
     }
@@ -275,16 +275,16 @@ class Conference extends AbstractConference<Props, *> {
                   * the toolbox/toolbars and the dialogs.
                   */
                     _connecting
-                        && <TintedView>
-                            <LoadingIndicator />
-                        </TintedView>
+                    && <TintedView>
+                        <LoadingIndicator />
+                    </TintedView>
                 }
 
                 <SafeAreaView
                     pointerEvents = 'box-none'
                     style = { styles.toolboxAndFilmstripContainer }>
 
-                    { showGradient && <LinearGradient
+                    {showGradient && <LinearGradient
                         colors = { NAVBAR_GRADIENT_COLORS }
                         end = {{
                             x: 0.0,
@@ -304,9 +304,9 @@ class Conference extends AbstractConference<Props, *> {
 
                     <Captions onPress = { this._onClick } />
 
-                    { _shouldDisplayTileView || <Container style = { styles.displayNameContainer }>
+                    {_shouldDisplayTileView || <Container style = { styles.displayNameContainer }>
                         <DisplayNameLabel participantId = { _largeVideoParticipantId } />
-                    </Container> }
+                    </Container>}
 
                     <LonelyMeetingExperience />
 
@@ -331,15 +331,15 @@ class Conference extends AbstractConference<Props, *> {
                     pointerEvents = 'box-none'
                     style = { styles.navBarSafeView }>
                     <NavigationBar />
-                    { this._renderNotificationsContainer() }
+                    {this._renderNotificationsContainer()}
                     <KnockingParticipantList />
                 </SafeAreaView>
 
                 <TestConnectionInfo />
 
-                { this._renderConferenceNotification() }
+                { this._renderConferenceNotification()}
 
-                { this._renderConferenceModals() }
+                { this._renderConferenceModals()}
             </>
         );
     }
@@ -359,9 +359,9 @@ class Conference extends AbstractConference<Props, *> {
 
                 {
                     _connecting
-                        && <TintedView>
-                            <LoadingIndicator />
-                        </TintedView>
+                    && <TintedView>
+                        <LoadingIndicator />
+                    </TintedView>
                 }
             </>
         );

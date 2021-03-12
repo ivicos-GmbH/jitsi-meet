@@ -19,7 +19,7 @@ type Props = AbstractProps & {
      * translated using the provided params. See i18n function
      * {@code translate(string, Object)} for more details.
      */
-    contentKey: string | { key: string, params: Object},
+    contentKey: string | { key: string, params: Object },
 };
 
 /**
@@ -40,7 +40,7 @@ class AlertDialog extends BaseSubmitDialog<Props, *> {
 
         return (
             <Text style = { _dialogStyles.text }>
-                { content }
+                { content}
             </Text>
         );
     }

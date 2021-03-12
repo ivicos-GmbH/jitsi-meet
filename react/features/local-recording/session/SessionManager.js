@@ -397,7 +397,7 @@ class SessionManager {
                 break;
             case SessionEventType.SEGMENT_STARTED:
                 if (currentSegment.start === undefined
-                    || currentSegment.start === null) {
+                        || currentSegment.start === null) {
                     currentSegment.start = currentEvent.timestamp;
                 } else {
                     commit();
@@ -407,7 +407,7 @@ class SessionManager {
 
             case SessionEventType.SEGMENT_ENDED:
                 if (currentSegment.start === undefined
-                    || currentSegment.start === null) {
+                        || currentSegment.start === null) {
                     logger.warn('Unexpected SEGMENT_ENDED event', currentEvent);
                 } else {
                     currentSegment.end = currentEvent.timestamp;
