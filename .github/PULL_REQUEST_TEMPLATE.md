@@ -13,6 +13,11 @@
 
 <!-- Screenshots -->
 
+## Checklist
+
+- [ ] : Changes have been tested with Firefox, Chrome and Microsoft Edge
+- [ ] : PR ready for reviews
+
 ## Issues to clarify before merge
 
 - [ ] : Issue
