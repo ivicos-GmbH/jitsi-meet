@@ -4,10 +4,10 @@
 
 ## Type of change
 
-* [ ]: Technical
-* [ ]: Feature
-* [ ]: Documentation
-* [ ]: Bugfix
+* [ ] : Technical
+* [ ] : Feature
+* [ ] : Documentation
+* [ ] : Bugfix
 
 ## Screenshots
 
