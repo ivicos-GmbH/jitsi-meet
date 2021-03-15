@@ -43,6 +43,7 @@ export function setForegroundImage(foregroundImageUrl: string) {
 /**
  * Signals the local participant that a new transparent foreground has been set.
  *
+ * @param {string} value - URL of the transparent foreground image ('' if none).
  * @returns {{
  *      type: SET_TRANSPARENT_FOREGROUND
  * }}

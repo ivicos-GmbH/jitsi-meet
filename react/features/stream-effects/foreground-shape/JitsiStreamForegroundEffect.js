@@ -18,7 +18,6 @@ export default class JitsiStreamForegroundEffect {
     _outputCanvasElement: HTMLCanvasElement;
     _outputCanvasCtx: Object;
     _foregroundImage: Image;
-    _foregroundImageUrl: String;
     _onForegroundFrameTimer: Function;
     _onForegroundFrameTimerWorker: Worker;
     startEffect: Function;
@@ -28,17 +27,17 @@ export default class JitsiStreamForegroundEffect {
      * Represents a modified video MediaStream track.
      *
      * @class
-     * @param {string} foregroundImageUrl - ForegroundImageUrl.
+     * @param {string} foregroundImageUrl - Image URL of the foreground.
      */
     constructor(foregroundImageUrl: string) {
 
-        this._foregroundImageUrl = foregroundImageUrl;
         this._foregroundImage = new Image();
         this._foregroundImageLoaded = false;
         this._foregroundImage.onload = function() {
             this._foregroundImageLoaded = true;
         };
-        this._foregroundImage.src = this._foregroundImageUrl;
+        this._foregroundImage.crossOrigin = 'anonymous';
+        this._foregroundImage.src = foregroundImageUrl;
 
         // Bind event handler so it is only bound once for every instance.
         this._onForegroundFrameTimer = this._onForegroundFrameTimer.bind(this);
@@ -50,6 +49,13 @@ export default class JitsiStreamForegroundEffect {
         this._inputVideoElement = document.createElement('video');
     }
 
+    /**
+     * EventHandler onmessage for the onForegroundFrameTimerWorker WebWorker.
+     *
+     * @private
+     * @param {EventHandler} response - The onmessage EventHandler parameter.
+     * @returns {void}
+     */
     async _onForegroundFrameTimer(response: Object) {
         if (response.data.id === TIMEOUT_TICK) {
             await this.runProcessing();
@@ -63,15 +69,25 @@ export default class JitsiStreamForegroundEffect {
      */
     runProcessing() {
 
+        this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
+
         if (this._foregroundImageLoaded || this._foregroundImage.complete) {
             try {
-                this._outputCanvasCtx.drawImage(this._foregroundImage, 0, 0, this._foregroundImage.width, this._foregroundImage.height, 0, 0, this._outputCanvasElement.width, this._outputCanvasElement.height);
+                this._outputCanvasCtx.drawImage(
+                    this._foregroundImage,
+                    0,
+                    0,
+                    this._foregroundImage.width,
+                    this._foregroundImage.height,
+                    0,
+                    0,
+                    this._outputCanvasElement.width,
+                    this._outputCanvasElement.height
+                );
             } catch (e) {
                 console.log(`Error : ${e}`);
             }
         }
-
-        this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
 
         this._onForegroundFrameTimerWorker.postMessage({
             id: SET_TIMEOUT,
@@ -121,6 +137,11 @@ export default class JitsiStreamForegroundEffect {
         return this._outputCanvasElement.captureStream(parseInt(frameRate, 10));
     }
 
+    /**
+     * Stops the capture and render loop.
+     *
+     * @returns {void}
+     */
     stopEffect() {
         this._onForegroundFrameTimerWorker.postMessage({
             id: CLEAR_TIMEOUT

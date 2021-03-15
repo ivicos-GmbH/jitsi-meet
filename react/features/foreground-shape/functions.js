@@ -3,8 +3,9 @@
 import { getJitsiMeetGlobalNS, loadScript } from '../base/util';
 
 /**
- * Returns promise that resolves with the blur effect instance.
+ * Returns promise that resolves with the set foreground effect instance.
  *
+ * @param {boolean} transparentImageUrl - URL of the transparent foreground image ('' if none).
  * @returns {Promise<JitsiStreamForegroundEffect>} - Resolves with the blur effect instance.
  */
 export function getForegroundImageEffect(transparentImageUrl) {
@@ -14,5 +15,6 @@ export function getForegroundImageEffect(transparentImageUrl) {
         return ns.effects.createForegroundImage(transparentImageUrl);
     }
 
-    return loadScript('libs/foreground-shape-effect.min.js').then(() => ns.effects.createForegroundImage(transparentImageUrl));
+    return loadScript('libs/foreground-shape-effect.min.js')
+        .then(() => ns.effects.createForegroundImage(transparentImageUrl));
 }
