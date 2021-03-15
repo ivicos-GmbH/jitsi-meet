@@ -1,6 +1,7 @@
 // @flow
 
 import { getBlurEffect } from '../../blur';
+import { getForegroundImageEffect } from '../../foreground-shape';
 import { createScreenshotCaptureEffect } from '../../stream-effects/screenshot-capture';
 
 import logger from './logger';
@@ -22,6 +23,14 @@ export default function loadEffects(store: Object): Promise<any> {
                 return Promise.resolve();
             })
         : Promise.resolve();
+    const foregroundImagePromise = state['features/foreground-shape']?.foregroundImageUrl
+        ? getForegroundImageEffect(state['features/foreground-shape']?.foregroundImageUrl)
+            .catch(error => {
+                logger.error('Failed to obtain the foreground image effect instance with error: ', error);
+
+                return Promise.resolve();
+            })
+        : Promise.resolve();
     const screenshotCapturePromise = state['features/screenshot-capture']?.capturesEnabled
         ? createScreenshotCaptureEffect(state)
             .catch(error => {
@@ -31,5 +40,5 @@ export default function loadEffects(store: Object): Promise<any> {
             })
         : Promise.resolve();
 
-    return Promise.all([ blurPromise, screenshotCapturePromise ]);
+    return Promise.all([ blurPromise, foregroundImagePromise, screenshotCapturePromise ]);
 }

@@ -262,6 +262,19 @@ module.exports = [
 
     Object.assign({}, config, {
         entry: {
+            'foreground-shape-effect': './react/features/stream-effects/foreground-shape/index.js'
+        },
+        output: Object.assign({}, config.output, {
+            library: [ 'JitsiMeetJS', 'app', 'effects' ],
+            libraryTarget: 'window',
+            filename: '[name].min.js',
+            sourceMapFilename: '[name].min.map'
+        }),
+        performance: getPerformanceHints(1 * 1024 * 1024)
+    }),
+
+    Object.assign({}, config, {
+        entry: {
             'rnnoise-processor': './react/features/stream-effects/rnnoise/index.js'
         },
         output: Object.assign({}, config.output, {

@@ -19,6 +19,9 @@ import { openChat } from '../../react/features/chat/actions.web';
 import { processExternalDeviceRequest } from '../../react/features/device-selection/functions';
 import { isEnabled as isDropboxEnabled } from '../../react/features/dropbox';
 import { toggleE2EE } from '../../react/features/e2ee/actions';
+import {
+    setForegroundImage
+} from '../../react/features/foreground-shape/actions';
 import { invite } from '../../react/features/invite';
 import {
     captureLargeVideoScreenshot,
@@ -134,7 +137,7 @@ function initCommands() {
         'set-foreground-shape': transparentOverlayImageUrl => {
             logger.debug('Set foreground image command received');
 
-            // TODO
+            APP.store.dispatch(setForegroundImage(transparentOverlayImageUrl));
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');
