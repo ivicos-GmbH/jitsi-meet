@@ -20,8 +20,8 @@ import { processExternalDeviceRequest } from '../../react/features/device-select
 import { isEnabled as isDropboxEnabled } from '../../react/features/dropbox';
 import { toggleE2EE } from '../../react/features/e2ee/actions';
 import {
-    setForegroundImage
-} from '../../react/features/foreground-shape/actions';
+    setForegroundOverlay
+} from '../../react/features/foreground-overlay/actions';
 import { invite } from '../../react/features/invite';
 import {
     captureLargeVideoScreenshot,
@@ -134,10 +134,10 @@ function initCommands() {
             logger.debug('Set background image command received');
             APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
         },
-        'set-foreground-shape': transparentOverlayImageUrl => {
-            logger.debug('Set foreground image command received');
+        'set-foreground-overlay': (overlayImageUrl, overlayColor, mode) => {
+            logger.debug('Set foreground overlay command received');
 
-            APP.store.dispatch(setForegroundImage(transparentOverlayImageUrl));
+            APP.store.dispatch(setForegroundOverlay(overlayImageUrl, overlayColor, mode));
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');

@@ -262,7 +262,7 @@ module.exports = [
 
     Object.assign({}, config, {
         entry: {
-            'foreground-shape-effect': './react/features/stream-effects/foreground-shape/index.js'
+            'foreground-overlay-effect': './react/features/stream-effects/foreground-overlay/index.js'
         },
         output: Object.assign({}, config.output, {
             library: [ 'JitsiMeetJS', 'app', 'effects' ],

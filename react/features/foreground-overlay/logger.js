@@ -2,4 +2,4 @@
 
 import { getLogger } from '../base/logging/functions';
 
-export default getLogger('features/foreground-shape');
+export default getLogger('features/foreground-overlay');

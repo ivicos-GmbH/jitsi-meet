@@ -11,7 +11,7 @@ import {
  * <tt>JitsiStreamForegroundEffect</tt> does the processing of the original
  * video stream.
  */
-export default class JitsiStreamForegroundEffect {
+export default class JitsiStreamForegroundOverlayEffect {
     _model: Object;
     _options: Object;
     _inputVideoElement: HTMLVideoElement;
@@ -27,9 +27,12 @@ export default class JitsiStreamForegroundEffect {
      * Represents a modified video MediaStream track.
      *
      * @class
-     * @param {string} foregroundImageUrl - Image URL of the foreground.
+     * @param {string} overlayImageUrl - URL of the foreground shape ('' if none).
+     * @param { string } overlayColor - Color of the overlay if no image is given.
+     * @param { string } mode - Mode chosen for the overlay : Example 'fusion' if given background transparent,
+     * 'circle' if a shape should be manually extracted from the overlay (default).
      */
-    constructor(foregroundImageUrl: string) {
+    constructor(overlayImageUrl: string, overlayColor: string, mode: string) {
 
         this._foregroundImage = new Image();
         this._foregroundImageLoaded = false;
@@ -37,7 +40,7 @@ export default class JitsiStreamForegroundEffect {
             this._foregroundImageLoaded = true;
         };
         this._foregroundImage.crossOrigin = 'anonymous';
-        this._foregroundImage.src = foregroundImageUrl;
+        this._foregroundImage.src = overlayImageUrl;
 
         // Bind event handler so it is only bound once for every instance.
         this._onForegroundFrameTimer = this._onForegroundFrameTimer.bind(this);
