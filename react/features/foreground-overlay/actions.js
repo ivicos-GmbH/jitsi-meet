@@ -32,18 +32,19 @@ export function setForegroundOverlay(overlayImageUrl: string, overlayColor: stri
                 .then(foregroundOverlayEffectInstance =>
                     jitsiTrack.setEffect(
                         overlayImageUrl === '' && overlayColor === '' ? undefined : foregroundOverlayEffectInstance
-                    ).then(() => {
-                        dispatch(newForegroundOverlaySet(overlayImageUrl, overlayColor, mode));
-                    })
-.catch(error => {
-    dispatch(newForegroundOverlaySet('', '', ''));
-    logger.error('setEffect failed with error:', error);
-})
+                    )
+                        .then(() => {
+                            dispatch(newForegroundOverlaySet(overlayImageUrl, overlayColor, mode));
+                        })
+                        .catch(error => {
+                            dispatch(newForegroundOverlaySet('', '', ''));
+                            logger.error('setEffect failed with error:', error);
+                        })
                 )
-.catch(error => {
-    dispatch(newForegroundOverlaySet('', '', ''));
-    logger.error('newForegroundOverlaySet failed with error:', error);
-});
+                .catch(error => {
+                    dispatch(newForegroundOverlaySet('', '', ''));
+                    logger.error('newForegroundOverlaySet failed with error:', error);
+                });
         }
 
         return Promise.resolve();

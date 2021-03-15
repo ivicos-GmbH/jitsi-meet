@@ -17,11 +17,15 @@ export default class JitsiStreamForegroundOverlayEffect {
     _inputVideoElement: HTMLVideoElement;
     _outputCanvasElement: HTMLCanvasElement;
     _outputCanvasCtx: Object;
-    _foregroundImage: Image;
+    _overlayImage: Image;
+    _overlayImageLoaded: Boolean;
     _onForegroundFrameTimer: Function;
     _onForegroundFrameTimerWorker: Worker;
     startEffect: Function;
     stopEffect: Function;
+    _overlayImageUrl: String;
+    _overlayColor: String;
+    _overlayMode: String;
 
     /**
      * Represents a modified video MediaStream track.
@@ -34,13 +38,11 @@ export default class JitsiStreamForegroundOverlayEffect {
      */
     constructor(overlayImageUrl: string, overlayColor: string, mode: string) {
 
-        this._foregroundImage = new Image();
-        this._foregroundImageLoaded = false;
-        this._foregroundImage.onload = function() {
-            this._foregroundImageLoaded = true;
-        };
-        this._foregroundImage.crossOrigin = 'anonymous';
-        this._foregroundImage.src = overlayImageUrl;
+        this._overlayImageUrl = overlayImageUrl;
+        this._overlayColor = overlayColor;
+        this._overlayMode = mode;
+
+        this._fetchOverlayImage();
 
         // Bind event handler so it is only bound once for every instance.
         this._onForegroundFrameTimer = this._onForegroundFrameTimer.bind(this);
@@ -53,6 +55,22 @@ export default class JitsiStreamForegroundOverlayEffect {
     }
 
     /**
+     * Fetch the overlay image.
+     */
+    _fetchOverlayImage() {
+        if (!this._overlayImageUrl) {
+            return;
+        }
+        this._overlayImage = new Image();
+        this._overlayImageLoaded = false;
+        this._overlayImage.onload = function() {
+            this._overlayImageLoaded = true;
+        };
+        this._overlayImage.crossOrigin = 'anonymous';
+        this._overlayImage.src = this._overlayImageUrl;
+    }
+
+    /**
      * EventHandler onmessage for the onForegroundFrameTimerWorker WebWorker.
      *
      * @private
@@ -61,36 +79,68 @@ export default class JitsiStreamForegroundOverlayEffect {
      */
     async _onForegroundFrameTimer(response: Object) {
         if (response.data.id === TIMEOUT_TICK) {
-            await this.runProcessing();
+            await this._runProcessing();
         }
+    }
+
+    _applyForegroundOverlay() {
+        if (this._overlayImageUrl) {
+            if (this._overlayImageLoaded || this._overlayImage.complete) {
+                try {
+                    this._outputCanvasCtx.drawImage(
+                        this._overlayImage,
+                        0,
+                        0,
+                        this._overlayImage.width,
+                        this._overlayImage.height,
+                        0,
+                        0,
+                        this._outputCanvasElement.width,
+                        this._outputCanvasElement.height
+                    );
+                } catch (e) {
+                    console.log(`Error : ${e}`);
+                }
+            }
+        } else if (this._overlayColor) {
+            this._outputCanvasCtx.fillStyle = this._overlayColor;
+            this._outputCanvasCtx.fillRect(0, 0, this._outputCanvasElement.width, this._outputCanvasElement.height);
+        }
+    }
+
+    _drawBackground() {
+        this._applyForegroundOverlay();
+        const RADIUS_RATIO = 0.7;
+        const radius = (Math.min(this._outputCanvasElement.width, this._outputCanvasElement.height) / 2) * RADIUS_RATIO;
+
+        this._outputCanvasCtx.arc(
+            this._outputCanvasElement.width / 2,
+            this._outputCanvasElement.height / 2,
+            radius,
+            0,
+            Math.PI * 2
+        );
+        this._outputCanvasCtx.globalCompositeOperation = 'xor';
+        this._outputCanvasCtx.fill();
     }
 
     /**
      * Represents the run post processing.
      *
+     * @private
      * @returns {void}
      */
-    runProcessing() {
+    _runProcessing() {
 
-        this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
-
-        if (this._foregroundImageLoaded || this._foregroundImage.complete) {
-            try {
-                this._outputCanvasCtx.drawImage(
-                    this._foregroundImage,
-                    0,
-                    0,
-                    this._foregroundImage.width,
-                    this._foregroundImage.height,
-                    0,
-                    0,
-                    this._outputCanvasElement.width,
-                    this._outputCanvasElement.height
-                );
-            } catch (e) {
-                console.log(`Error : ${e}`);
-            }
+        if (this._overlayMode === 'fusion') {
+            this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
+            this._applyForegroundOverlay();
+        } else {
+            this._drawBackground();
+            this._outputCanvasCtx.globalCompositeOperation = 'destination-over';
+            this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
         }
+
 
         this._onForegroundFrameTimerWorker.postMessage({
             id: SET_TIMEOUT,
