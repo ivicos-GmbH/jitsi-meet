@@ -17,8 +17,6 @@ export default class JitsiStreamForegroundOverlayEffect {
     _inputVideoElement: HTMLVideoElement;
     _outputCanvasElement: HTMLCanvasElement;
     _outputCanvasCtx: Object;
-    _overlayImage: Image;
-    _overlayImageLoaded: Boolean;
     _onForegroundFrameTimer: Function;
     _onForegroundFrameTimerWorker: Worker;
     startEffect: Function;
@@ -26,6 +24,9 @@ export default class JitsiStreamForegroundOverlayEffect {
     _overlayImageUrl: String;
     _overlayColor: String;
     _overlayMode: String;
+    _overlayImage: Image;
+    _wallpaperImageLoaded: Boolean;
+    _overlayLoaded: Boolean;
 
     /**
      * Represents a modified video MediaStream track.
@@ -42,6 +43,10 @@ export default class JitsiStreamForegroundOverlayEffect {
         this._overlayColor = overlayColor;
         this._overlayMode = mode;
 
+        this._wallpaperImageLoaded = false;
+        this._overlayLoaded = false;
+
+        // Load the overlay image
         this._fetchOverlayImage();
 
         // Bind event handler so it is only bound once for every instance.
@@ -51,20 +56,37 @@ export default class JitsiStreamForegroundOverlayEffect {
         this._outputCanvasElement = document.createElement('canvas');
         this._outputCanvasElement.getContext('2d');
 
+        // Overlay context : Keep track of static overlay elements on the video track
+        this._overlayCanvasElement = document.createElement('canvas');
+        this._overlayCanvasElement.getContext('2d');
+
         this._inputVideoElement = document.createElement('video');
     }
 
     /**
      * Fetch the overlay image.
+     *
+     * @private
+     * @returns {void}
      */
     _fetchOverlayImage() {
         if (!this._overlayImageUrl) {
             return;
         }
+        const self = this;
+
         this._overlayImage = new Image();
-        this._overlayImageLoaded = false;
         this._overlayImage.onload = function() {
-            this._overlayImageLoaded = true;
+            self._wallpaperImageLoaded = true;
+        };
+        this._overlayImage.onerror = function() {
+
+            // Image not loaded : Defaulting to color overlay
+            self._wallpaperImageLoaded = false;
+            self._overlayColor = self._overlayColor ? self._overlayColor : 'black';
+            self._overlayImageUrl = '';
+            self._overlayMode = self._overlayMode === 'fusion' ? 'circle' : self._overlayMode;
+
         };
         this._overlayImage.crossOrigin = 'anonymous';
         this._overlayImage.src = this._overlayImageUrl;
@@ -83,64 +105,116 @@ export default class JitsiStreamForegroundOverlayEffect {
         }
     }
 
-    _applyForegroundOverlay() {
-        if (this._overlayImageUrl) {
-            if (this._overlayImageLoaded || this._overlayImage.complete) {
-                try {
-                    this._outputCanvasCtx.drawImage(
-                        this._overlayImage,
-                        0,
-                        0,
-                        this._overlayImage.width,
-                        this._overlayImage.height,
-                        0,
-                        0,
-                        this._outputCanvasElement.width,
-                        this._outputCanvasElement.height
-                    );
-                } catch (e) {
-                    console.log(`Error : ${e}`);
-                }
-            }
-        } else if (this._overlayColor) {
-            this._outputCanvasCtx.fillStyle = this._overlayColor;
-            this._outputCanvasCtx.fillRect(0, 0, this._outputCanvasElement.width, this._outputCanvasElement.height);
+    /**
+     * Function enabling to build the complete overlay to apply on top of the video track.
+     *
+     * @private
+     * @returns {void}
+     */
+    _applyOverlay() {
+
+        // Clear the previous state of the output canvas
+        this._overlayCanvasCtx.clearRect(0, 0, this._overlayCanvasElement.width, this._overlayCanvasElement.height);
+
+        // Build the overlay in the overlay canvas
+        this._applyForegroundWallpaper();
+        if (this._overlayMode !== 'fusion') {
+            this._extractCircle();
         }
     }
 
-    _drawBackground() {
-        this._applyForegroundOverlay();
-        const RADIUS_RATIO = 0.7;
-        const radius = (Math.min(this._outputCanvasElement.width, this._outputCanvasElement.height) / 2) * RADIUS_RATIO;
+    /**
+     * Draw the foreground wallpaper on the overlay canvas.
+     *
+     * @private
+     * @returns {void}
+     */
+    _applyForegroundWallpaper() {
 
-        this._outputCanvasCtx.arc(
-            this._outputCanvasElement.width / 2,
-            this._outputCanvasElement.height / 2,
+        this._overlayCanvasCtx.beginPath();
+
+        this._overlayCanvasCtx.globalCompositeOperation = 'source-over';
+        if (this._overlayImageUrl) {
+            if (this._wallpaperImageLoaded) {
+                this._overlayLoaded = true;
+                this._overlayCanvasCtx.drawImage(
+                    this._overlayImage,
+                    0,
+                    0,
+                    this._overlayImage.width,
+                    this._overlayImage.height,
+                    0,
+                    0,
+                    this._overlayCanvasElement.width,
+                    this._overlayCanvasElement.height
+                );
+            }
+        } else if (this._overlayColor) {
+            this._overlayLoaded = true;
+            this._overlayCanvasCtx.fillStyle = this._overlayColor;
+            this._overlayCanvasCtx.fillRect(0, 0, this._overlayCanvasElement.width, this._overlayCanvasElement.height);
+        }
+
+        this._overlayCanvasCtx.closePath();
+    }
+
+    /**
+     * Extract a circle in the center of the wallpaper to make part of the video track visible.
+     *
+     * @private
+     * @returns {void}
+     */
+    _extractCircle() {
+        this._overlayCanvasCtx.beginPath();
+
+        // Create circle
+        const RADIUS_RATIO = 0.7;
+        const radius
+            = (Math.min(this._overlayCanvasElement.width, this._overlayCanvasElement.height) / 2) * RADIUS_RATIO;
+
+        this._overlayCanvasCtx.arc(
+            this._overlayCanvasElement.width / 2,
+            this._overlayCanvasElement.height / 2,
             radius,
             0,
             Math.PI * 2
         );
-        this._outputCanvasCtx.globalCompositeOperation = 'xor';
-        this._outputCanvasCtx.fill();
+
+        // Extract the circle from the wallpaper
+        this._overlayCanvasCtx.globalCompositeOperation = 'xor';
+        this._overlayCanvasCtx.fill();
+
+        this._overlayCanvasCtx.closePath();
     }
 
     /**
-     * Represents the run post processing.
+     * Run the processing : Combining the overlay with the video track.
      *
      * @private
      * @returns {void}
      */
     _runProcessing() {
 
-        if (this._overlayMode === 'fusion') {
-            this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
-            this._applyForegroundOverlay();
-        } else {
-            this._drawBackground();
-            this._outputCanvasCtx.globalCompositeOperation = 'destination-over';
-            this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
+        // If the overlay was still not loaded, try to load it now
+        if (!this._overlayLoaded) {
+            console.log('Overlay not loaded yet : Trying to load');
+            this._applyOverlay();
         }
 
+        this._outputCanvasCtx.beginPath();
+
+        // Clear the previous state of the output canvas
+        this._outputCanvasCtx.clearRect(0, 0, this._outputCanvasElement.width, this._outputCanvasElement.height);
+
+        // Copy the overlay over the current image
+        this._outputCanvasCtx.globalCompositeOperation = 'source-over';
+        this._outputCanvasCtx.drawImage(this._overlayCanvasCtx.canvas, 0, 0);
+
+        // Fill the transparent area with the video track of the user
+        this._outputCanvasCtx.globalCompositeOperation = 'destination-over';
+        this._outputCanvasCtx.drawImage(this._inputVideoElement, 0, 0);
+
+        this._outputCanvasCtx.closePath();
 
         this._onForegroundFrameTimerWorker.postMessage({
             id: SET_TIMEOUT,
@@ -160,7 +234,7 @@ export default class JitsiStreamForegroundOverlayEffect {
     }
 
     /**
-     * Starts loop to capture video frame and render the segmentation mask.
+     * Starts loop to capture video frame and render the overlay.
      *
      * @param {MediaStream} stream - Stream to be used for processing.
      * @returns {MediaStream} - The stream with the applied effect.
@@ -172,9 +246,18 @@ export default class JitsiStreamForegroundOverlayEffect {
         const { height, frameRate, width }
             = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
 
+        // Initialize the output canvas
         this._outputCanvasElement.width = parseInt(width, 10);
         this._outputCanvasElement.height = parseInt(height, 10);
         this._outputCanvasCtx = this._outputCanvasElement.getContext('2d');
+
+        // Initialize the overlay canvas
+        this._overlayCanvasElement.width = parseInt(width, 10);
+        this._overlayCanvasElement.height = parseInt(height, 10);
+        this._overlayCanvasCtx = this._overlayCanvasElement.getContext('2d');
+
+        // Attempt to apply the full overlay if everything needed is already loaded
+        this._applyOverlay();
 
         this._inputVideoElement.width = parseInt(width, 10);
         this._inputVideoElement.height = parseInt(height, 10);
