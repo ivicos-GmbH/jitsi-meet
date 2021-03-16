@@ -80,7 +80,7 @@ type State = {
     screenShareAudio: boolean,
 
     /**
-     * The currently higlighted DesktopCapturerSource.
+     * The currently highlighted DesktopCapturerSource.
      */
     selectedSource: Object,
 
@@ -195,13 +195,13 @@ class DesktopPicker extends PureComponent<Props, State> {
     render() {
         return (
             <Dialog
-                isModal = { false }
-                okDisabled = { Boolean(!this.state.selectedSource.id) }
-                okKey = 'dialog.Share'
-                onCancel = { this._onCloseModal }
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.shareYourScreen'
-                width = 'medium' >
+                isModal={false}
+                okDisabled={Boolean(!this.state.selectedSource.id)}
+                okKey='dialog.Share'
+                onCancel={this._onCloseModal}
+                onSubmit={this._onSubmit}
+                titleKey='dialog.shareYourScreen'
+                width='medium' >
                 { this._renderTabs()}
             </Dialog>
         );
@@ -250,22 +250,22 @@ class DesktopPicker extends PureComponent<Props, State> {
 
     _onCloseModal: (?string, string, ? boolean) => void;
 
-    /**
- * Dispatches an action to hide the DesktopPicker and invokes the passed in
- * callback with a selectedSource, if any.
- *
- * @param {string} [id] - The id of the DesktopCapturerSource to pass into
- * the onSourceChoose callback.
- * @param {string} type - The type of the DesktopCapturerSource to pass into
- * the onSourceChoose callback.
- * @param {boolean} screenShareAudio - Whether or not to add system audio to
- * screen sharing session.
- * @returns {void}
- */
-    _onCloseModal(id = '', type, screenShareAudio = false) {
-        this.props.onSourceChoose(id, type, screenShareAudio);
-        this.props.dispatch(hideDialog());
-    }
+/**
+* Dispatches an action to hide the DesktopPicker and invokes the passed in
+* callback with a selectedSource, if any.
+*
+* @param {string} [id] - The id of the DesktopCapturerSource to pass into
+* the onSourceChoose callback.
+* @param {string} type - The type of the DesktopCapturerSource to pass into
+* the onSourceChoose callback.
+* @param {boolean} screenShareAudio - Whether or not to add system audio to
+* screen sharing session.
+* @returns {void}
+*/
+_onCloseModal(id = '', type, screenShareAudio = false) {
+    this.props.onSourceChoose(id, type, screenShareAudio);
+    this.props.dispatch(hideDialog());
+}
 
 _onPreviewClick: (string, string) => void;
 
@@ -339,39 +339,7 @@ _onShareAudioChecked(checked) {
 }
 
 /**
- * Configures and renders the tabs for display.
- *
- * @private
- * @returns {ReactElement}
- */
-_renderTabs() {
-    const { selectedSource, sources, types } = this.state;
-    const { t } = this.props;
-    const tabs
-        = types.map(
-            type => {
-                return {
-                    content: <DesktopPickerPane
-                        key = { type }
-                        onClick = { this._onPreviewClick }
-                        onDoubleClick = { this._onSubmit }
-                        onShareAudioChecked = { this._onShareAudioChecked }
-                        selectedSourceId = { selectedSource.id }
-                        sources = { sources[type] }
-                        type = { type } />,
-                    label: t(TAB_LABELS[type])
-                };
-            });
-
-    return (
-        <Tabs
-            onSelect = { this._onTabSelected }
-            selected = { this.state.selectedTab }
-            tabs = { tabs } />);
-}
-
-/**
- * Create an interval to update knwon available DesktopCapturerSources.
+ * Create an interval to update known available DesktopCapturerSources.
  *
  * @private
  * @returns {void}
