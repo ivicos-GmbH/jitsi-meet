@@ -119,7 +119,17 @@ export default class JitsiStreamForegroundOverlayEffect {
         // Build the overlay in the overlay canvas
         this._applyForegroundWallpaper();
         if (this._overlayMode !== 'fusion') {
-            this._extractCircle();
+            switch (this._overlayMode) {
+            case 'circle':
+                this._extractCircle();
+                break;
+            case 'square':
+                this._extractSquare();
+                break;
+            default:
+                this._extractCircle();
+                break;
+            }
         }
     }
 
@@ -180,7 +190,35 @@ export default class JitsiStreamForegroundOverlayEffect {
             Math.PI * 2
         );
 
-        // Extract the circle from the wallpaper
+        // Extract the shape from the wallpaper
+        this._overlayCanvasCtx.globalCompositeOperation = 'xor';
+        this._overlayCanvasCtx.fill();
+
+        this._overlayCanvasCtx.closePath();
+    }
+
+    /**
+     * Extract a square in the center of the wallpaper to make part of the video track visible.
+     *
+     * @private
+     * @returns {void}
+     */
+    _extractSquare() {
+        this._overlayCanvasCtx.beginPath();
+
+        // Create square
+        const SIZE_RATIO = 0.7;
+        const halfSize
+            = (Math.min(this._overlayCanvasElement.width, this._overlayCanvasElement.height) / 2) * SIZE_RATIO;
+
+        this._overlayCanvasCtx.rect(
+            (this._overlayCanvasElement.width / 2) - halfSize,
+            (this._overlayCanvasElement.height / 2) - halfSize,
+            2 * halfSize,
+            2 * halfSize
+        );
+
+        // Extract the shape from the wallpaper
         this._overlayCanvasCtx.globalCompositeOperation = 'xor';
         this._overlayCanvasCtx.fill();
 
@@ -197,7 +235,6 @@ export default class JitsiStreamForegroundOverlayEffect {
 
         // If the overlay was still not loaded, try to load it now
         if (!this._overlayLoaded) {
-            console.log('Overlay not loaded yet : Trying to load');
             this._applyOverlay();
         }
 
