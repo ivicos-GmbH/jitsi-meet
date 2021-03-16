@@ -48,7 +48,7 @@ function computeDesktopVideoSize( // eslint-disable-line max-params
         videoSpaceWidth,
         videoSpaceHeight) {
     if (videoWidth === 0 || videoHeight === 0 || videoSpaceWidth === 0 || videoSpaceHeight === 0) {
-        // Avoid NaN values caused by devision by 0.
+        // Avoid NaN values caused by division by 0.
         return [ 0, 0 ];
     }
 
@@ -96,7 +96,7 @@ function computeCameraVideoSize( // eslint-disable-line max-params
         videoSpaceHeight,
         videoLayoutFit) {
     if (videoWidth === 0 || videoHeight === 0 || videoSpaceWidth === 0 || videoSpaceHeight === 0) {
-        // Avoid NaN values caused by devision by 0.
+        // Avoid NaN values caused by division by 0.
         return [ 0, 0 ];
     }
 
@@ -423,7 +423,7 @@ export class VideoContainer extends LargeContainer {
         const height = shouldResizeVideo ? videoHeight * BACKGROUND_RESIZING_RATIO : videoHeight;
 
         if (width === 0 || height === 0) {
-            // We don't need to set 0 for width or height since the visibility is controled by the visibility css prop
+            // We don't need to set 0 for width or height since the visibility is controlled by the visibility css prop
             // on the largeVideoElementsContainer. Also if the width/height of the video element is 0 the attached
             // stream won't be played. Normally if we attach a new stream we won't resize the video element until the
             // stream has been played. But setting width/height to 0 will prevent the video from playing.
