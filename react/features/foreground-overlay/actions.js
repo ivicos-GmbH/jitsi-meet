@@ -26,7 +26,13 @@ export function setForegroundOverlay(overlayImageUrl: string, overlayColor: stri
         };
 
         if (state['features/foreground-overlay'] !== overlayOptions) {
-            const { jitsiTrack } = getLocalVideoTrack(state['features/base/tracks']);
+
+            const tracksState = getLocalVideoTrack(state['features/base/tracks']);
+            const jitsiTrack = tracksState?.jitsiTrack;
+
+            if (!jitsiTrack) {
+                return;
+            }
 
             return getForegroundOverlayEffect(overlayImageUrl, overlayColor, mode)
                 .then(foregroundOverlayEffectInstance =>
