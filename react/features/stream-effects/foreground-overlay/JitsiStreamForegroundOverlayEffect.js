@@ -118,6 +118,9 @@ export default class JitsiStreamForegroundOverlayEffect {
 
         // Build the overlay in the overlay canvas
         this._applyForegroundWallpaper();
+        if (!this._overlayLoaded) {
+            return;
+        }
         if (this._overlayMode !== 'fusion') {
             switch (this._overlayMode) {
             case 'circle':
