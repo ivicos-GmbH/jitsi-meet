@@ -1,9 +1,9 @@
 // @flow
 
 import { getLocalVideoTrack } from '../base/tracks';
+import { createForegroundOverlay } from '../stream-effects/foreground-overlay';
 
 import { SET_FOREGROUND_OVERLAY } from './actionTypes';
-import { getForegroundOverlayEffect } from './functions';
 import logger from './logger';
 
 /**
@@ -34,7 +34,7 @@ export function setForegroundOverlay(overlayImageUrl: string, overlayColor: stri
                 return;
             }
 
-            return getForegroundOverlayEffect(overlayImageUrl, overlayColor, mode)
+            return createForegroundOverlay(overlayImageUrl, overlayColor, mode)
                 .then(foregroundOverlayEffectInstance =>
                     jitsiTrack.setEffect(
                         overlayImageUrl === '' && overlayColor === '' ? undefined : foregroundOverlayEffectInstance

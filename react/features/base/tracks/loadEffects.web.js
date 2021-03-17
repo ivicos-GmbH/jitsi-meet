@@ -1,7 +1,7 @@
 // @flow
 
 import { getBlurEffect } from '../../blur';
-import { getForegroundOverlayEffect } from '../../foreground-overlay';
+import { createForegroundOverlay } from '../../stream-effects/foreground-overlay';
 import { createScreenshotCaptureEffect } from '../../stream-effects/screenshot-capture';
 
 import logger from './logger';
@@ -14,6 +14,7 @@ import logger from './logger';
  */
 export default function loadEffects(store: Object): Promise<any> {
     const state = store.getState();
+    const foregroundOverlay = state['features/foreground-overlay'];
 
     const blurPromise = state['features/blur'].blurEnabled
         ? getBlurEffect()
@@ -23,8 +24,12 @@ export default function loadEffects(store: Object): Promise<any> {
                 return Promise.resolve();
             })
         : Promise.resolve();
-    const foregroundOverlayPromise = state['features/foreground-overlay']
-        ? getForegroundOverlayEffect(state['features/foreground-overlay'])
+    const foregroundOverlayPromise = foregroundOverlay
+        ? createForegroundOverlay(
+            foregroundOverlay?.overlayImageUrl,
+            foregroundOverlay?.overlayColor,
+            foregroundOverlay?.mode
+        )
             .catch(error => {
                 logger.error('Failed to obtain the foreground overlay effect instance with error: ', error);
 
