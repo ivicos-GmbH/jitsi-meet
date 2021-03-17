@@ -1,14 +1,18 @@
 // @flow
 import {
+    ShapeExtractor
+} from './ShapeExtractor';
+import {
     CLEAR_TIMEOUT,
     TIMEOUT_TICK,
     SET_TIMEOUT,
     timerWorkerScript
 } from './TimerWorker';
 
+
 /**
- * Represents a modified MediaStream that adds blur to video background.
- * <tt>JitsiStreamForegroundEffect</tt> does the processing of the original
+ * Represents a modified MediaStream that adds a foreground overlay to the video stream.
+ * <tt>JitsiStreamForegroundOverlayEffect</tt> does the processing of the original
  * video stream.
  */
 export default class JitsiStreamForegroundOverlayEffect {
@@ -122,17 +126,9 @@ export default class JitsiStreamForegroundOverlayEffect {
             return;
         }
         if (this._overlayMode !== 'fusion') {
-            switch (this._overlayMode) {
-            case 'circle':
-                this._extractCircle();
-                break;
-            case 'square':
-                this._extractSquare();
-                break;
-            default:
-                this._extractCircle();
-                break;
-            }
+            const shapeExtractor = new ShapeExtractor(this._overlayMode);
+
+            shapeExtractor?.extract(this._overlayCanvasCtx, this._overlayCanvasElement);
         }
     }
 
@@ -167,63 +163,6 @@ export default class JitsiStreamForegroundOverlayEffect {
             this._overlayCanvasCtx.fillStyle = this._overlayColor;
             this._overlayCanvasCtx.fillRect(0, 0, this._overlayCanvasElement.width, this._overlayCanvasElement.height);
         }
-
-        this._overlayCanvasCtx.closePath();
-    }
-
-    /**
-     * Extract a circle in the center of the wallpaper to make part of the video track visible.
-     *
-     * @private
-     * @returns {void}
-     */
-    _extractCircle() {
-        this._overlayCanvasCtx.beginPath();
-
-        // Create circle
-        const RADIUS_RATIO = 0.7;
-        const radius
-            = (Math.min(this._overlayCanvasElement.width, this._overlayCanvasElement.height) / 2) * RADIUS_RATIO;
-
-        this._overlayCanvasCtx.arc(
-            this._overlayCanvasElement.width / 2,
-            this._overlayCanvasElement.height / 2,
-            radius,
-            0,
-            Math.PI * 2
-        );
-
-        // Extract the shape from the wallpaper
-        this._overlayCanvasCtx.globalCompositeOperation = 'xor';
-        this._overlayCanvasCtx.fill();
-
-        this._overlayCanvasCtx.closePath();
-    }
-
-    /**
-     * Extract a square in the center of the wallpaper to make part of the video track visible.
-     *
-     * @private
-     * @returns {void}
-     */
-    _extractSquare() {
-        this._overlayCanvasCtx.beginPath();
-
-        // Create square
-        const SIZE_RATIO = 0.7;
-        const halfSize
-            = (Math.min(this._overlayCanvasElement.width, this._overlayCanvasElement.height) / 2) * SIZE_RATIO;
-
-        this._overlayCanvasCtx.rect(
-            (this._overlayCanvasElement.width / 2) - halfSize,
-            (this._overlayCanvasElement.height / 2) - halfSize,
-            2 * halfSize,
-            2 * halfSize
-        );
-
-        // Extract the shape from the wallpaper
-        this._overlayCanvasCtx.globalCompositeOperation = 'xor';
-        this._overlayCanvasCtx.fill();
 
         this._overlayCanvasCtx.closePath();
     }

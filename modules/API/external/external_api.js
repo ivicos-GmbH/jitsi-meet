@@ -1129,7 +1129,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * @param { string } overlayImageUrl - URL of the overlay image.
      * @param { string } overlayColor - Color of the overlay if no image is given.
      * @param { string } mode - Mode chosen for the overlay : Example 'fusion' if given background transparent, 'circle'
-     * if a shape should be manually extracted from the overlay (default).
+     * if a circular shape should be manually extracted from the overlay (default). It is possible to add a size ratio
+     * simply by adding it to the shape name, example 'square-0.8' for a square of size 80% from the maximum possible.
      * @returns {void}
      */
     setForegroundOverlay(overlayImageUrl, overlayColor, mode) {
