@@ -51,6 +51,6 @@
     },
     "license": "Apache-2.0",
     "scripts": {
-        "build": "sh ./../../node_modules/.bin/webpack -p"
+        "build": "webpack -p"
     }
 }

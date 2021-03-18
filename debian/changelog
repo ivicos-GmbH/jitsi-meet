@@ -1,5 +1,9 @@
-jitsi-meet-web (1.0.1-1) unstable; urgency=low
+jitsi-meet-web (1.0.0) stable; urgency=low
 
-  * Initial release. (Closes: #760485)
+  [ Added ]
+  * Adding CHANGELOG
+  * Adding Github actions for checks when new push on a branch and release management when merging with master
 
- -- Damian Minkov <damencho@jitsi.org>  Wed, 22 Oct 2014 10:30:00 +0200
+ -- Samuel Pierre <samuel.pierre@maibornwolff.de>  Fri, 19 Mar 2021 12:02:32 +0100
+
+

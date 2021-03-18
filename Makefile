@@ -19,7 +19,7 @@ WEBPACK_DEV_SERVER = ./node_modules/.bin/webpack-dev-server
 all: compile deploy clean
 
 compile: compile-load-test
-	sh $(WEBPACK) -p
+	$(WEBPACK) -p
 
 compile-load-test:
 	${NPM} install --prefix resources/load-test && ${NPM} run build --prefix resources/load-test
@@ -83,12 +83,12 @@ deploy-rnnoise-binary:
 deploy-tflite:
 	cp \
 		$(TFLITE_WASM)/*.wasm \
-		$(DEPLOY_DIR)		
+		$(DEPLOY_DIR)
 
 deploy-meet-models:
 	cp \
 		$(MEET_MODELS_DIR)/*.tflite \
-		$(DEPLOY_DIR)	
+		$(DEPLOY_DIR)
 
 deploy-css:
 	$(NODE_SASS) $(STYLES_MAIN) $(STYLES_BUNDLE) && \
