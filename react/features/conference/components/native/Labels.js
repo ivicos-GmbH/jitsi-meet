@@ -10,6 +10,7 @@ import {
     RecordingExpandedLabel
 } from '../../../recording';
 import { TranscribingExpandedLabel } from '../../../transcribing';
+import { shouldDisplayTileView } from '../../../video-layout';
 import { VideoQualityExpandedLabel } from '../../../video-quality';
 import { shouldDisplayNotifications } from '../../functions';
 import AbstractLabels, {
@@ -29,6 +30,11 @@ type Props = AbstractLabelsProps & {
      * Application's aspect ratio.
      */
     _aspectRatio: Symbol,
+
+    /**
+     * True if tile view is being diaplyed, false otherwise.
+     */
+    _shouldDisplayTileView: boolean,
 
     /**
      * True if the labels should be visible, false otherwise.
@@ -151,7 +157,7 @@ class Labels extends AbstractLabels<Props, State> {
      * @inheritdoc
      */
     render() {
-        const { _aspectRatio, _filmstripVisible, _visible } = this.props;
+        const { _aspectRatio, _filmstripVisible, _shouldDisplayTileView, _visible } = this.props;
 
         if (!_visible) {
             return null;
@@ -161,37 +167,37 @@ class Labels extends AbstractLabels<Props, State> {
 
         return (
             <View
-                pointerEvents = 'box-none'
-                style = { styles.labelWrapper }>
+                pointerEvents='box-none'
+                style={styles.labelWrapper}>
                 <View
-                    onLayout = { this._onTopViewLayout }
-                    pointerEvents = 'box-none'
-                    style = { [
+                    onLayout={this._onTopViewLayout}
+                    pointerEvents='box-none'
+                    style={[
                         styles.indicatorContainer,
-                        wide && _filmstripVisible
+                        wide && _filmstripVisible && !_shouldDisplayTileView
                         && styles.indicatorContainerWide
-                    ] }>
+                    ]}>
                     <TouchableOpacity
-                        onLayout = { this._createOnLayout(LABEL_ID_RECORDING) }
-                        onPress = { this._createOnPress(LABEL_ID_RECORDING) } >
+                        onLayout={this._createOnLayout(LABEL_ID_RECORDING)}
+                        onPress={this._createOnPress(LABEL_ID_RECORDING)} >
                         {
                             this._renderRecordingLabel(
                                 JitsiRecordingConstants.mode.FILE)
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = { this._createOnLayout(LABEL_ID_STREAMING) }
-                        onPress = { this._createOnPress(LABEL_ID_STREAMING) } >
+                        onLayout={this._createOnLayout(LABEL_ID_STREAMING)}
+                        onPress={this._createOnPress(LABEL_ID_STREAMING)} >
                         {
                             this._renderRecordingLabel(
                                 JitsiRecordingConstants.mode.STREAM)
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = {
+                        onLayout={
                             this._createOnLayout(LABEL_ID_TRANSCRIBING)
                         }
-                        onPress = {
+                        onPress={
                             this._createOnPress(LABEL_ID_TRANSCRIBING)
                         } >
                         {
@@ -199,10 +205,10 @@ class Labels extends AbstractLabels<Props, State> {
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = {
+                        onLayout={
                             this._createOnLayout(LABEL_ID_INSECURE_ROOM_NAME)
                         }
-                        onPress = {
+                        onPress={
                             this._createOnPress(LABEL_ID_INSECURE_ROOM_NAME)
                         } >
                         {
@@ -210,19 +216,19 @@ class Labels extends AbstractLabels<Props, State> {
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onLayout = {
-                            this._createOnLayout(LABEL_ID_QUALITY) }
-                        onPress = {
-                            this._createOnPress(LABEL_ID_QUALITY) } >
+                        onLayout={
+                            this._createOnLayout(LABEL_ID_QUALITY)}
+                        onPress={
+                            this._createOnPress(LABEL_ID_QUALITY)} >
                         {this._renderVideoQualityLabel()}
                     </TouchableOpacity>
                 </View>
                 <View
-                    style = { [
+                    style={[
                         styles.indicatorContainer,
-                        wide && _filmstripVisible
+                        wide && _filmstripVisible && !_shouldDisplayTileView
                         && styles.indicatorContainerWide
-                    ] }>
+                    ]}>
                     {
                         this._renderExpandedLabel()
                     }
@@ -358,6 +364,7 @@ function _mapStateToProps(state) {
     return {
         ..._abstractMapStateToProps(state),
         _aspectRatio: state['features/base/responsive-ui'].aspectRatio,
+        _shouldDisplayTileView: shouldDisplayTileView(state),
         _visible: !shouldDisplayNotifications(state)
     };
 }
