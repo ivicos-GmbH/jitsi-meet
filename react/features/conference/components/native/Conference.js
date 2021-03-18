@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { NativeModules, SafeAreaView, StatusBar } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { appNavigate } from '../../../app/actions';
 import { PIP_ENABLED, FULLSCREEN_ENABLED, getFeatureFlag } from '../../../base/flags';
@@ -37,7 +36,7 @@ import type { AbstractProps } from '../AbstractConference';
 import Labels from './Labels';
 import LonelyMeetingExperience from './LonelyMeetingExperience';
 import NavigationBar from './NavigationBar';
-import styles, { NAVBAR_GRADIENT_COLORS } from './styles';
+import styles from './styles';
 
 
 /**
@@ -153,11 +152,11 @@ class Conference extends AbstractConference<Props, *> {
         const { _fullscreenEnabled } = this.props;
 
         return (
-            <Container style = { styles.conference }>
+            <Container style={styles.conference}>
                 <StatusBar
-                    barStyle = 'light-content'
-                    hidden = { _fullscreenEnabled }
-                    translucent = { _fullscreenEnabled } />
+                    barStyle='light-content'
+                    hidden={_fullscreenEnabled}
+                    translucent={_fullscreenEnabled} />
                 { this._renderContent()}
             </Container>
         );
@@ -209,9 +208,9 @@ class Conference extends AbstractConference<Props, *> {
      */
     _renderConferenceModals() {
         return [
-            <AddPeopleDialog key = 'addPeopleDialog' />,
-            <Chat key = 'chat' />,
-            <SharedDocument key = 'sharedDocument' />
+            <AddPeopleDialog key='addPeopleDialog' />,
+            <Chat key='chat' />,
+            <SharedDocument key='sharedDocument' />
         ];
     }
 
@@ -238,17 +237,11 @@ class Conference extends AbstractConference<Props, *> {
      */
     _renderContent() {
         const {
-            _aspectRatio,
             _connecting,
-            _filmstripVisible,
             _largeVideoParticipantId,
             _reducedUI,
-            _shouldDisplayTileView,
-            _toolboxVisible
+            _shouldDisplayTileView
         } = this.props;
-        const showGradient = _toolboxVisible;
-        const applyGradientStretching
-            = _filmstripVisible && _aspectRatio === ASPECT_RATIO_NARROW && !_shouldDisplayTileView;
 
         if (_reducedUI) {
             return this._renderContentForReducedUi();
@@ -260,8 +253,8 @@ class Conference extends AbstractConference<Props, *> {
                   * The LargeVideo is the lowermost stacking layer.
                   */
                     _shouldDisplayTileView
-                        ? <TileView onClick = { this._onClick } />
-                        : <LargeVideo onClick = { this._onClick } />
+                        ? <TileView onClick={this._onClick} />
+                        : <LargeVideo onClick={this._onClick} />
                 }
 
                 {/*
@@ -281,44 +274,28 @@ class Conference extends AbstractConference<Props, *> {
                 }
 
                 <SafeAreaView
-                    pointerEvents = 'box-none'
-                    style = { styles.toolboxAndFilmstripContainer }>
-
-                    {showGradient && <LinearGradient
-                        colors = { NAVBAR_GRADIENT_COLORS }
-                        end = {{
-                            x: 0.0,
-                            y: 0.0
-                        }}
-                        pointerEvents = 'none'
-                        start = {{
-                            x: 0.0,
-                            y: 1.0
-                        }}
-                        style = { [
-                            styles.bottomGradient,
-                            applyGradientStretching ? styles.gradientStretchBottom : undefined
-                        ] } />}
+                    pointerEvents='box-none'
+                    style={styles.toolboxAndFilmstripContainer}>
 
                     <Labels />
 
-                    <Captions onPress = { this._onClick } />
+                    <Captions onPress={this._onClick} />
 
-                    {_shouldDisplayTileView || <Container style = { styles.displayNameContainer }>
-                        <DisplayNameLabel participantId = { _largeVideoParticipantId } />
+                    {_shouldDisplayTileView || <Container style={styles.displayNameContainer}>
+                        <DisplayNameLabel participantId={_largeVideoParticipantId} />
                     </Container>}
 
                     <LonelyMeetingExperience />
 
-                    { _shouldDisplayTileView ? undefined : <Filmstrip /> }
+                    {_shouldDisplayTileView ? undefined : <Filmstrip />}
 
                     <Toolbox />
 
                 </SafeAreaView>
 
                 <SafeAreaView
-                    pointerEvents = 'box-none'
-                    style = { styles.navBarSafeView }>
+                    pointerEvents='box-none'
+                    style={styles.navBarSafeView}>
                     <NavigationBar />
                     {this._renderNotificationsContainer()}
                     <KnockingParticipantList />
@@ -344,7 +321,7 @@ class Conference extends AbstractConference<Props, *> {
 
         return (
             <>
-                <LargeVideo onClick = { this._onClick } />
+                <LargeVideo onClick={this._onClick} />
 
                 {
                     _connecting
