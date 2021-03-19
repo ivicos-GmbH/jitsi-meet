@@ -6,7 +6,7 @@
  * @param {Object} serializedBackgroundProperties - Serialized background properties ('|' separated).
  * @returns {Object}
  */
-export function extractBackgroundProperties(serializedBackgroundProperties) {
+export function extractBackgroundProperties(serializedBackgroundProperties: String) {
     if (!serializedBackgroundProperties) {
         return {
             backgroundColor: undefined,

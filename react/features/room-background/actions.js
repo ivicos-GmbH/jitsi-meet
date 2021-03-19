@@ -1,5 +1,7 @@
 // @flow
 
+import type { Dispatch } from 'redux';
+
 import {
     SET_BACKGROUND_DATA
 } from './actionTypes';
@@ -15,7 +17,7 @@ import {
  * @private
  * @returns {Function}
  */
-export function updateBackgroundData(serializedBackgroundData) {
+export function updateBackgroundData(serializedBackgroundData: String) {
     return (dispatch: Dispatch<any>) => {
 
         const backgroundDataObject = extractBackgroundProperties(serializedBackgroundData);
