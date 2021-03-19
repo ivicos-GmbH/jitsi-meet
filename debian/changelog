@@ -1,9 +1,0 @@
-jitsi-meet-web (1.0.0) stable; urgency=low
-
-  [ Added ]
-  * Adding CHANGELOG
-  * Adding Github actions for checks when new push on a branch and release management when merging with master
-
- -- Samuel Pierre <samuel.pierre@maibornwolff.de>  Fri, 19 Mar 2021 11:31:57 +0100
-
-
