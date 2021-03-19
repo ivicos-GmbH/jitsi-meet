@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2021-03-19
+### Changed
+- Debian Changelog not regenerated for every version but just keeping the last version
+- Merge to master does not trigger a release/packaging anymore
+
+### Added
+- Merge to 'ivicos-release' triggers release/packaging
+
 ## [1.0.0] - 2021-03-18
 ### Added
 - Adding CHANGELOG
