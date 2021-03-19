@@ -29,6 +29,17 @@ jobs:
       - run: make
       - name: Generate Debian package
         run: bash ./scripts/generate-package.sh
+      - name: Create tag
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/ivicos_${{ steps.changelog_reader.outputs.version }}",
+              sha: context.sha
+            })
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
