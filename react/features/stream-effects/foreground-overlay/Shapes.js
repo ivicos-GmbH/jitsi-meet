@@ -5,7 +5,7 @@
  */
 export class Circle {
 
-    _sizeRatio: Number;
+    _sizeRatio: number;
 
     /**
      * Represents a circle shape class.
@@ -13,7 +13,7 @@ export class Circle {
      * @class
      * @param {string} sizeRatio - Size ratio between 0 and 1 of the shape (1 being the maximum possible).
      */
-    constructor(sizeRatio: Number) {
+    constructor(sizeRatio: number) {
         this._sizeRatio = sizeRatio;
     }
 
@@ -21,10 +21,10 @@ export class Circle {
      * Extract the shape from a canvasContext.
      *
      * @param {Object} canvasContext - Canvas overlay context to modify.
-     * @param {Object} canvasElement - Canvas overlay element.
+     * @param {HTMLCanvasElement} canvasElement - Canvas overlay element.
      * @returns {void}
      */
-    extract(canvasContext, canvasElement) {
+    extract(canvasContext: Object, canvasElement: HTMLCanvasElement) {
         canvasContext.beginPath();
 
         // Create circle
@@ -52,7 +52,7 @@ export class Circle {
  */
 export class Square {
 
-    _sizeRatio: Number;
+    _sizeRatio: number;
 
     /**
      * Represents a square shape class.
@@ -60,7 +60,7 @@ export class Square {
      * @class
      * @param {string} sizeRatio - Size ratio between 0 and 1 of the shape (1 being the maximum possible).
      */
-    constructor(sizeRatio: Number) {
+    constructor(sizeRatio: number) {
         this._sizeRatio = sizeRatio;
     }
 
@@ -68,10 +68,10 @@ export class Square {
      * Extract the shape from a canvasContext.
      *
      * @param {Object} canvasContext - Canvas overlay context to modify.
-     * @param {Object} canvasElement - Canvas overlay element.
+     * @param {HTMLCanvasElement} canvasElement - Canvas overlay element.
      * @returns {void}
      */
-    extract(canvasContext, canvasElement) {
+    extract(canvasContext: Object, canvasElement: HTMLCanvasElement) {
         canvasContext.beginPath();
 
         // Create square

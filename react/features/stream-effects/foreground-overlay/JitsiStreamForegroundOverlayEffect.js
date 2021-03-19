@@ -21,16 +21,18 @@ export default class JitsiStreamForegroundOverlayEffect {
     _inputVideoElement: HTMLVideoElement;
     _outputCanvasElement: HTMLCanvasElement;
     _outputCanvasCtx: Object;
+    _overlayCanvasElement: HTMLCanvasElement;
+    _overlayCanvasCtx: Object;
     _onForegroundFrameTimer: Function;
     _onForegroundFrameTimerWorker: Worker;
     startEffect: Function;
     stopEffect: Function;
-    _overlayImageUrl: String;
-    _overlayColor: String;
-    _overlayMode: String;
+    _overlayImageUrl: string;
+    _overlayColor: string;
+    _overlayMode: string;
     _overlayImage: Image;
-    _wallpaperImageLoaded: Boolean;
-    _overlayLoaded: Boolean;
+    _wallpaperImageLoaded: boolean;
+    _overlayLoaded: boolean;
 
     /**
      * Represents a modified video MediaStream track.

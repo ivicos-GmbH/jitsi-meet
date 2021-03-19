@@ -15,7 +15,7 @@ const DEFAULT_SIZE_RATIO = 0.8;
  * Shape extractor enabling to make part of a background corresponding to a certain shape transparent.
  */
 export class ShapeExtractor {
-    _sizeRatio: Number;
+    _sizeRatio: number;
     _shape: Object;
 
     /**
@@ -42,7 +42,7 @@ export class ShapeExtractor {
      * @param {number} sizeRatio - Size ratio between 0 and 1 excluded.
      * @returns {Object} - One of the possible shape object.
      */
-    _createShape(shapeName, sizeRatio) {
+    _createShape(shapeName: string, sizeRatio: number) {
         switch (shapeName) {
         case 'square':
             return new Square(sizeRatio);
@@ -58,7 +58,7 @@ export class ShapeExtractor {
      * @private
      * @returns {number} - Sanitized size ratio.
      */
-    _sanitizeSizeRatio(sizeRatio) {
+    _sanitizeSizeRatio(sizeRatio: number) {
         const sanitizedSizeRatio = isNaN(Number(sizeRatio)) ? DEFAULT_SIZE_RATIO : Number(sizeRatio);
 
         return sanitizedSizeRatio >= 1 || sanitizedSizeRatio <= 0 ? DEFAULT_SIZE_RATIO : sanitizedSizeRatio;
@@ -68,10 +68,10 @@ export class ShapeExtractor {
      * Extract the shape from a canvasContext.
      *
      * @param {Object} canvasContext - Canvas overlay context to modify.
-     * @param {Object} canvasElement - Canvas overlay element.
+     * @param {HTMLCanvasElement} canvasElement - Canvas overlay element.
      * @returns {void}
      */
-    extract(canvasContext, canvasElement) {
+    extract(canvasContext: Object, canvasElement: HTMLCanvasElement) {
         if (canvasElement && canvasContext) {
             this._shape.extract(canvasContext, canvasElement);
 

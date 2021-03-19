@@ -68,7 +68,7 @@ export function setForegroundOverlay(overlayImageUrl: string, overlayColor: stri
  *      type: SET_FOREGROUND_OVERLAY
  * }}
  */
-export function newForegroundOverlaySet(overlayImageUrl, overlayColor, mode) {
+export function newForegroundOverlaySet(overlayImageUrl: string, overlayColor: string, mode: string) {
     const value = {
         overlayImageUrl,
         overlayColor,
