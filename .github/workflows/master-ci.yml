@@ -44,12 +44,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: ivicos_${{ steps.changelog_reader.outputs.version }}
-          release_name: Release ivicos_${{ steps.changelog_reader.outputs.version }}
+          tag_name: ivicos_${{ steps.changelog_reader.outputs.version }}
           body: ${{ steps.changelog_reader.outputs.changes }}
           prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
-      - name: Create artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-artifacts
-          path: artifacts/
+          files: $(echo $(ls artifacts/))
