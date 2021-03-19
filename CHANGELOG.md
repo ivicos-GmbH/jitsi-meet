@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - ivicos-release does not trigger CI pipeline for PRs
 
+## Added
+- Adding an external endpoint to add a background image/color to the room
+
 ## [1.0.1] - 2021-03-19
 ### Changed
 - Debian Changelog not regenerated for every version but just keeping the last version
