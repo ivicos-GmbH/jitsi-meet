@@ -25,6 +25,7 @@ jobs:
         with:
           commit_message: Update Debian changelog
           file_pattern: debian/changelog
+      - run: npm install
       - run: make
       - name: Generate Debian package
         run: bash ./scripts/generate-package.sh
