@@ -1,9 +1,9 @@
-name: Standard Build CI for master branch
+name: Standard Build CI for release branch
 
 on:
     push:
         branches:
-            - 'master'
+            - 'ivicos-release'
 
 jobs:
   build:
@@ -21,10 +21,6 @@ jobs:
         run: bash ./scripts/generate-debian-changelog.sh "${{ steps.changelog_reader.outputs.version }}" "${{ github.event.head_commit.author.name }}" "${{ github.event.head_commit.author.email }}" "${{ steps.changelog_reader.outputs.changes }}"
       - name: Display generated Debian changelog
         run: less debian/changelog
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update Debian changelog
-          file_pattern: debian/changelog
       - run: npm install
       - run: make
       - name: Generate Debian package
