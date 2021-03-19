@@ -44,6 +44,9 @@ jobs:
           body: ${{ steps.changelog_reader.outputs.changes }}
           prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
-          files: $(echo $(ls artifacts/))
+          files: |
+            artifacts/jitsi-meet-*.deb
+            artifacts/jitsi-meet-*.buildinfo
+            artifacts/jitsi-meet-*.changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
