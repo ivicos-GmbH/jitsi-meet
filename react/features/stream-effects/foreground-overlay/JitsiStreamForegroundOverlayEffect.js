@@ -130,7 +130,7 @@ export default class JitsiStreamForegroundOverlayEffect {
         if (this._overlayMode !== 'fusion') {
             const shapeExtractor = new ShapeExtractor(this._overlayMode);
 
-            shapeExtractor?.extract(this._overlayCanvasCtx, this._overlayCanvasElement);
+            shapeExtractor.extract(this._overlayCanvasCtx, this._overlayCanvasElement);
         }
     }
 

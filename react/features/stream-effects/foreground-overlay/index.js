@@ -11,7 +11,7 @@ import JitsiStreamForegroundOverlayEffect from './JitsiStreamForegroundOverlayEf
  * 'circle' if a shape should be manually extracted from the overlay (default).
  * @returns {Promise<JitsiStreamForegroundOverlayEffect>}
  */
-export async function createForegroundOverlay(overlayImageUrl, overlayColor, mode) {
+export async function createForegroundOverlay(overlayImageUrl: string, overlayColor: string, mode: string) {
 
     return new JitsiStreamForegroundOverlayEffect(overlayImageUrl, overlayColor, mode);
 }

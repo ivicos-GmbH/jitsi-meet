@@ -29,7 +29,7 @@ export class ShapeExtractor {
 
         const shapeProperties = shapeEncoding.split('-');
 
-        this._sizeRatio = this._sanitizeSizeRatio(shapeProperties[1] || DEFAULT_SIZE_RATIO);
+        this._sizeRatio = this._sanitizeSizeRatio(Number(shapeProperties[1]) || DEFAULT_SIZE_RATIO);
         this._shape = this._createShape(shapeProperties[0], this._sizeRatio);
 
     }
