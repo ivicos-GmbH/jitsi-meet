@@ -38,3 +38,5 @@ jobs:
           prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
           files: $(echo $(ls artifacts/))
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
