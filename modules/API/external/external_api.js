@@ -43,6 +43,7 @@ const commands = {
     resizeLargeVideo: 'resize-large-video',
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendTones: 'send-tones',
+    setBackgroundImage: 'set-background-image',
     setLargeVideoParticipant: 'set-large-video-participant',
     setVideoQuality: 'set-video-quality',
     startRecording: 'start-recording',
@@ -86,6 +87,7 @@ const events = {
     'password-required': 'passwordRequired',
     'proxy-connection-event': 'proxyConnectionEvent',
     'raise-hand-updated': 'raiseHandUpdated',
+    'room-background-updated': 'roomBackgroundUpdated',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
     'video-conference-left': 'videoConferenceLeft',
@@ -1104,5 +1106,20 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     stopRecording(mode) {
         this.executeCommand('startRecording', mode);
+    }
+
+    /**
+     * Sets a background image for the room.
+     *
+     * @param {string} backgroundImageUrl - URL of the background image.
+     * @param {string} backgroundColor - Custom color code for the background.
+     * @returns {void}
+     */
+    setBackgroundImage(backgroundImageUrl, backgroundColor) {
+        this.executeCommand(
+            'setBackgroundImage',
+            backgroundImageUrl,
+            backgroundColor
+        );
     }
 }

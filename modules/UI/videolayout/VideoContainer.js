@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import { browser } from '../../../react/features/base/lib-jitsi-meet';
 import { isTestModeEnabled } from '../../../react/features/base/testing';
 import { ORIENTATION, LargeVideoBackground, updateLastLargeVideoMediaEvent } from '../../../react/features/large-video';
+import { isRoomBackgroundDefined } from '../../../react/features/room-background';
 import { LAYOUTS, getCurrentLayout } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
 import UIEvents from '../../../service/UI/UIEvents';
@@ -19,6 +20,7 @@ import LargeContainer from './LargeContainer';
 export const VIDEO_CONTAINER_TYPE = 'camera';
 
 const FADE_DURATION_MS = 300;
+const BACKGROUND_RESIZING_RATIO = 0.7;
 
 /**
  * List of container events that we are going to process, will be added as listener to the
@@ -108,18 +110,18 @@ function computeCameraVideoSize( // eslint-disable-line max-params
     case 'both': {
         const videoSpaceRatio = videoSpaceWidth / videoSpaceHeight;
         const maxZoomCoefficient = interfaceConfig.MAXIMUM_ZOOMING_COEFFICIENT
-            || Infinity;
+                || Infinity;
 
         if (videoSpaceRatio === aspectRatio) {
             return [ videoSpaceWidth, videoSpaceHeight ];
         }
 
         let [ width, height ] = computeCameraVideoSize(
-            videoWidth,
-            videoHeight,
-            videoSpaceWidth,
-            videoSpaceHeight,
-            videoSpaceRatio < aspectRatio ? 'height' : 'width');
+                videoWidth,
+                videoHeight,
+                videoSpaceWidth,
+                videoSpaceHeight,
+                videoSpaceRatio < aspectRatio ? 'height' : 'width');
         const maxWidth = videoSpaceWidth * maxZoomCoefficient;
         const maxHeight = videoSpaceHeight * maxZoomCoefficient;
 
@@ -161,8 +163,10 @@ function getCameraVideoPosition( // eslint-disable-line max-params
     const horizontalIndent = (videoSpaceWidth - videoWidth) / 2;
     const verticalIndent = (videoSpaceHeight - videoHeight) / 2;
 
-    return { horizontalIndent,
-        verticalIndent };
+    return {
+        horizontalIndent,
+        verticalIndent
+    };
 }
 
 /**
@@ -349,9 +353,9 @@ export class VideoContainer extends LargeContainer {
         }
 
         return getCameraVideoPosition(width,
-                height,
-                containerWidthToUse,
-                containerHeight);
+            height,
+            containerWidthToUse,
+            containerHeight);
 
     }
 
@@ -398,7 +402,10 @@ export class VideoContainer extends LargeContainer {
         if (this.$video.length === 0) {
             return;
         }
-        const currentLayout = getCurrentLayout(APP.store.getState());
+
+        const state = APP.store.getState();
+        const currentLayout = getCurrentLayout(state);
+        const backgroundRoomDefined = isRoomBackgroundDefined(state);
 
         if (currentLayout === LAYOUTS.TILE_VIEW) {
             // We don't need to resize the large video since it won't be displayed and we'll resize when returning back
@@ -408,7 +415,12 @@ export class VideoContainer extends LargeContainer {
 
         this.positionRemoteStatusMessages();
 
-        const [ width, height ] = this._getVideoSize(containerWidth, containerHeight);
+        const [ videoWidth, videoHeight ] = this._getVideoSize(containerWidth, containerHeight, backgroundRoomDefined);
+
+        // If a background is defined for the room, we resize the video so that the background is visible
+        const shouldResizeVideo = backgroundRoomDefined && !this.isScreenSharing();
+        const width = shouldResizeVideo ? videoWidth * BACKGROUND_RESIZING_RATIO : videoWidth;
+        const height = shouldResizeVideo ? videoHeight * BACKGROUND_RESIZING_RATIO : videoHeight;
 
         if (width === 0 || height === 0) {
             // We don't need to set 0 for width or height since the visibility is controled by the visibility css prop
@@ -419,7 +431,9 @@ export class VideoContainer extends LargeContainer {
             return;
         }
 
-        if ((containerWidth > width) || (containerHeight > height)) {
+        if (backgroundRoomDefined) {
+            this._hideBackground = true;
+        } else if ((containerWidth > width) || (containerHeight > height)) {
             this._backgroundOrientation = containerWidth > width ? ORIENTATION.LANDSCAPE : ORIENTATION.PORTRAIT;
             this._hideBackground = false;
         } else {
@@ -609,22 +623,22 @@ export class VideoContainer extends LargeContainer {
         // performance issues from the presence of the background or if
         // explicitly disabled.
         if (interfaceConfig.DISABLE_VIDEO_BACKGROUND
-                || browser.isFirefox()
-                || browser.isWebKitBased()) {
+            || browser.isFirefox()
+            || browser.isWebKitBased()) {
             return;
         }
 
         ReactDOM.render(
             <LargeVideoBackground
-                hidden = { this._hideBackground || this._isHidden }
-                mirror = {
+                hidden={this._hideBackground || this._isHidden}
+                mirror={
                     this.stream
                     && this.stream.isLocal()
                     && this.localFlipX
                 }
-                orientationFit = { this._backgroundOrientation }
-                videoElement = { this.$video && this.$video[0] }
-                videoTrack = { this.stream } />,
+                orientationFit={this._backgroundOrientation}
+                videoElement={this.$video && this.$video[0]}
+                videoTrack={this.stream} />,
             document.getElementById('largeVideoBackgroundContainer')
         );
     }

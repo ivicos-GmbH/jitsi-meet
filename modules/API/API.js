@@ -2,10 +2,7 @@
 
 import Logger from 'jitsi-meet-logger';
 
-import {
-    createApiEvent,
-    sendAnalytics
-} from '../../react/features/analytics';
+import { createApiEvent, sendAnalytics } from '../../react/features/analytics';
 import {
     getCurrentConference,
     sendTones,
@@ -19,9 +16,7 @@ import { MEDIA_TYPE } from '../../react/features/base/media';
 import { pinParticipant, getParticipantById, kickParticipant } from '../../react/features/base/participants';
 import { setPrivateMessageRecipient } from '../../react/features/chat/actions';
 import { openChat } from '../../react/features/chat/actions.web';
-import {
-    processExternalDeviceRequest
-} from '../../react/features/device-selection/functions';
+import { processExternalDeviceRequest } from '../../react/features/device-selection/functions';
 import { isEnabled as isDropboxEnabled } from '../../react/features/dropbox';
 import { toggleE2EE } from '../../react/features/e2ee/actions';
 import { invite } from '../../react/features/invite';
@@ -111,11 +106,7 @@ function initCommands() {
             } else {
                 sendAnalytics(createApiEvent('password.changed'));
 
-                APP.store.dispatch(setPassword(
-                    conference,
-                    conference.lock,
-                    password
-                ));
+                APP.store.dispatch(setPassword(conference, conference.lock, password));
             }
         },
         'pin-participant': id => {
@@ -135,6 +126,10 @@ function initCommands() {
             const { duration, tones, pause } = options;
 
             APP.store.dispatch(sendTones(tones, duration, pause));
+        },
+        'set-background-image': (backgroundImageUrl, backgroundColor) => {
+            logger.debug('Set background image command received');
+            APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');
@@ -383,20 +378,20 @@ function initCommands() {
         const { name } = request;
 
         switch (name) {
-        case 'capture-largevideo-screenshot' :
+        case 'capture-largevideo-screenshot':
             APP.store.dispatch(captureLargeVideoScreenshot())
-                .then(dataURL => {
-                    let error;
+                    .then(dataURL => {
+                        let error;
 
-                    if (!dataURL) {
-                        error = new Error('No large video found!');
-                    }
+                        if (!dataURL) {
+                            error = new Error('No large video found!');
+                        }
 
-                    callback({
-                        error,
-                        dataURL
+                        callback({
+                            error,
+                            dataURL
+                        });
                     });
-                });
             break;
         case 'invite': {
             const { invitees } = request;
@@ -412,22 +407,22 @@ function initCommands() {
             // The store should be already available because API.init is called
             // on appWillMount action.
             APP.store.dispatch(
-                invite(invitees, true))
-                .then(failedInvitees => {
-                    let error;
-                    let result;
+                    invite(invitees, true))
+                    .then(failedInvitees => {
+                        let error;
+                        let result;
 
-                    if (failedInvitees.length) {
-                        error = new Error('One or more invites failed!');
-                    } else {
-                        result = true;
-                    }
+                        if (failedInvitees.length) {
+                            error = new Error('One or more invites failed!');
+                        } else {
+                            result = true;
+                        }
 
-                    callback({
-                        error,
-                        result
+                        callback({
+                            error,
+                            result
+                        });
                     });
-                });
             break;
         }
         case 'is-audio-muted':
@@ -488,12 +483,13 @@ function shouldBeEnabled() {
     return (
         typeof API_ID === 'number'
 
-            // XXX Enable the API when a JSON Web Token (JWT) is specified in
-            // the location/URL because then it is very likely that the Jitsi
-            // Meet (Web) app is being used by an external/wrapping (Web) app
-            // and, consequently, the latter will need to communicate with the
-            // former. (The described logic is merely a heuristic though.)
-            || parseJWTFromURLParams());
+        // XXX Enable the API when a JSON Web Token (JWT) is specified in
+        // the location/URL because then it is very likely that the Jitsi
+        // Meet (Web) app is being used by an external/wrapping (Web) app
+        // and, consequently, the latter will need to communicate with the
+        // former. (The described logic is merely a heuristic though.)
+        || parseJWTFromURLParams()
+    );
 }
 
 /**
@@ -638,8 +634,8 @@ class API {
      */
     notifyReceivedChatMessage(
             { body, id, nick, privateMessage, ts }: {
-                body: *, id: string, nick: string, privateMessage: boolean, ts: *
-            } = {}) {
+            body: *, id: string, nick: string, privateMessage: boolean, ts: *
+        } = {}) {
         if (APP.conference.isLocalId(id)) {
             return;
         }
@@ -786,9 +782,7 @@ class API {
      * @param {string} email - The new email of the participant.
      * @returns {void}
      */
-    notifyEmailChanged(
-            id: string,
-            { email }: Object) {
+    notifyEmailChanged(id: string, { email }: Object) {
         this._sendEvent({
             name: 'email-change',
             email,
@@ -1121,6 +1115,21 @@ class API {
             name: 'raise-hand-updated',
             handRaised,
             id
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated its background information.
+     *
+     * @param {string} localId - Local participant ID.
+     * @param {Object} backgroundData - Background image/color object.
+     * @returns {void}
+     */
+    notifyBackgroundChanged(localId: string, backgroundData: Object) {
+        this._sendEvent({
+            name: 'room-background-updated',
+            backgroundData,
+            localId
         });
     }
 
