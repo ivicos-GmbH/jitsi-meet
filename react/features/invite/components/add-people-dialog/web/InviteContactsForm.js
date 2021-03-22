@@ -4,13 +4,13 @@ import InlineMessage from '@atlaskit/inline-message';
 import React from 'react';
 import type { Dispatch } from 'redux';
 
-import { isVpaasMeeting } from '../.../../../billing-counter/functions';
 import { Avatar } from '../../../../base/avatar';
 import { translate, translateToHTML } from '../../../../base/i18n';
 import { Icon, IconPhone } from '../../../../base/icons';
 import { getLocalParticipant } from '../../../../base/participants';
 import { MultiSelectAutocomplete } from '../../../../base/react';
 import { connect } from '../../../../base/redux';
+import { isVpaasMeeting } from '../../../../billing-counter/functions';
 import { hideAddPeopleDialog } from '../../../actions';
 import AbstractAddPeopleDialog, {
     type Props as AbstractProps,
