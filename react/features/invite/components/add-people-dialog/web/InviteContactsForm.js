@@ -10,13 +10,13 @@ import { Icon, IconPhone } from '../../../../base/icons';
 import { getLocalParticipant } from '../../../../base/participants';
 import { MultiSelectAutocomplete } from '../../../../base/react';
 import { connect } from '../../../../base/redux';
-import { isVpaasMeeting } from '../s../../../billing-counter/functions';
 import { hideAddPeopleDialog } from '../../../actions';
 import AbstractAddPeopleDialog, {
     type Props as AbstractProps,
     type State,
     _mapStateToProps as _abstractMapStateToProps
 } from '../AbstractAddPeopleDialog';
+import { isVpaasMeeting } from '../s../../../billing-counter/functions';
 
 declare var interfaceConfig: Object;
 
@@ -145,22 +145,22 @@ class InviteContactsForm extends AbstractAddPeopleDialog<Props, State> {
 
         return (
             <div
-                className='add-people-form-wrap'
-                onKeyDown={this._onKeyDown}>
+                className = 'add-people-form-wrap'
+                onKeyDown = { this._onKeyDown }>
                 { this._renderErrorMessage()}
                 <MultiSelectAutocomplete
-                    footer={footerText}
-                    isDisabled={isMultiSelectDisabled}
-                    loadingMessage={t(loadingMessage)}
-                    noMatchesFound={t(noMatches)}
-                    onItemSelected={this._onItemSelected}
-                    onSelectionChange={this._onSelectionChange}
-                    placeholder={t(placeholder)}
-                    ref={this._setMultiSelectElement}
-                    resourceClient={this._resourceClient}
-                    shouldFitContainer={true}
-                    shouldFocus={true}
-                    showSupportLink={!_isVpaas} />
+                    footer = { footerText }
+                    isDisabled = { isMultiSelectDisabled }
+                    loadingMessage = { t(loadingMessage) }
+                    noMatchesFound = { t(noMatches) }
+                    onItemSelected = { this._onItemSelected }
+                    onSelectionChange = { this._onSelectionChange }
+                    placeholder = { t(placeholder) }
+                    ref = { this._setMultiSelectElement }
+                    resourceClient = { this._resourceClient }
+                    shouldFitContainer = { true }
+                    shouldFocus = { true }
+                    showSupportLink = { !_isVpaas } />
                 { this._renderFormActions()}
             </div>
         );
@@ -188,7 +188,7 @@ _onItemSelected(item) {
     return item;
 }
 
-_onSelectionChange: (Map <*, *>) => void;
+_onSelectionChange: (Map<*, *>) => void;
 
 /**
  * Handles a selection change.
@@ -253,7 +253,7 @@ _onKeyDown(event) {
     }
 }
 
-_parseQueryResults: (? Array < Object >) => Array < Object >;
+_parseQueryResults: (? Array<Object>) => Array<Object>;
 
 /**
  * Returns the avatar component for a user.
@@ -266,9 +266,9 @@ _parseQueryResults: (? Array < Object >) => Array < Object >;
 _getAvatar(user, className = 'avatar-small') {
     return (
         <Avatar
-            className={className}
-            status={user.status}
-            url={user.avatar} />
+            className = { className }
+            status = { user.status }
+            url = { user.avatar } />
     );
 }
 
@@ -305,7 +305,7 @@ _parseQueryResults(response = []) {
 
         if (phone && _dialOutEnabled) {
             userDisplayItems.push({
-                filterValues: [name, phone],
+                filterValues: [ name, phone ],
                 content: `${phone} (${name})`,
                 elemBefore: elemAvatar,
                 item: {
@@ -354,7 +354,7 @@ _parseQueryResults(response = []) {
     ];
 }
 
-_query: (string) => Promise < Array < Object >>;
+_query: (string) => Promise<Array<Object>>;
 
 _renderFooterText: () => Object;
 
@@ -369,10 +369,10 @@ _renderFooterText() {
 
     if (_footerTextEnabled) {
         footerText = {
-            content: <div className='footer-text-wrap'>
+            content: <div className = 'footer-text-wrap'>
                 <div>
-                    <span className='footer-telephone-icon'>
-                        <Icon src={IconPhone} />
+                    <span className = 'footer-telephone-icon'>
+                        <Icon src = { IconPhone } />
                     </span>
                 </div>
                 {translateToHTML(t, 'addPeople.footerText')}
@@ -411,15 +411,15 @@ _renderFormActions() {
     }
 
     return (
-        <div className={`invite-more-dialog invite-buttons${this._isAddDisabled() ? ' disabled' : ''}`}>
+        <div className = { `invite-more-dialog invite-buttons${this._isAddDisabled() ? ' disabled' : ''}` }>
             <a
-                className='invite-more-dialog invite-buttons-cancel'
-                onClick={this._onClearItems}>
+                className = 'invite-more-dialog invite-buttons-cancel'
+                onClick = { this._onClearItems }>
                 {t('dialog.Cancel')}
             </a>
             <a
-                className='invite-more-dialog invite-buttons-add'
-                onClick={this._onSubmit}>
+                className = 'invite-more-dialog invite-buttons-add'
+                onClick = { this._onSubmit }>
                 {t('addPeople.add')}
             </a>
         </div>
@@ -452,9 +452,9 @@ _renderErrorMessage() {
             </span>
             <span>
                 <a
-                    href={supportLink}
-                    rel='noopener noreferrer'
-                    target='_blank'>
+                    href = { supportLink }
+                    rel = 'noopener noreferrer'
+                    target = '_blank'>
                     {t('inlineDialogFailure.support')}
                 </a>
             </span>
@@ -463,10 +463,10 @@ _renderErrorMessage() {
     );
 
     return (
-        <div className='modal-dialog-form-error'>
+        <div className = 'modal-dialog-form-error'>
             <InlineMessage
-                title={t('addPeople.failedToAdd')}
-                type='error'>
+                title = { t('addPeople.failedToAdd') }
+                type = 'error'>
                 {supportLinkContent}
             </InlineMessage>
         </div>
@@ -481,13 +481,13 @@ _renderErrorMessage() {
  */
 _renderTelephoneIcon() {
     return (
-        <span className='add-telephone-icon'>
-            <Icon src={IconPhone} />
+        <span className = 'add-telephone-icon'>
+            <Icon src = { IconPhone } />
         </span>
     );
 }
 
-_setMultiSelectElement: (React$ElementRef <*> | null) => void;
+_setMultiSelectElement: (React$ElementRef<*> | null) => void;
 
 /**
  * Sets the instance variable for the multi select component

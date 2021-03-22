@@ -111,15 +111,15 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
         return (
             <Popover
-                content={content}
-                overflowDrawer={this.props._overflowDrawer}
-                position={this.props._menuPosition}>
+                content = { content }
+                overflowDrawer = { this.props._overflowDrawer }
+                position = { this.props._menuPosition }>
                 <span
-                    className='popover-trigger remote-video-menu-trigger'>
+                    className = 'popover-trigger remote-video-menu-trigger'>
                     <Icon
-                        size='1em'
-                        src={IconMenuThumb}
-                        title='Remote user controls' />
+                        size = '1em'
+                        src = { IconMenuThumb }
+                        title = 'Remote user controls' />
                 </span>
             </Popover>
         );
@@ -150,37 +150,37 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
             if (!_disableRemoteMute) {
                 buttons.push(
                     <MuteButton
-                        key='mute'
-                        participantID={participantID} />
+                        key = 'mute'
+                        participantID = { participantID } />
                 );
                 buttons.push(
                     <MuteEveryoneElseButton
-                        key='mute-others'
-                        participantID={participantID} />
+                        key = 'mute-others'
+                        participantID = { participantID } />
                 );
                 buttons.push(
                     <MuteVideoButton
-                        key='mute-video'
-                        participantID={participantID} />
+                        key = 'mute-video'
+                        participantID = { participantID } />
                 );
                 buttons.push(
                     <MuteEveryoneElsesVideoButton
-                        key='mute-others-video'
-                        participantID={participantID} />
+                        key = 'mute-others-video'
+                        participantID = { participantID } />
                 );
             }
 
             buttons.push(
                 <GrantModeratorButton
-                    key='grant-moderator'
-                    participantID={participantID} />
+                    key = 'grant-moderator'
+                    participantID = { participantID } />
             );
 
             if (!_disableKick) {
                 buttons.push(
                     <KickButton
-                        key='kick'
-                        participantID={participantID} />
+                        key = 'kick'
+                        participantID = { participantID } />
                 );
             }
         }
@@ -196,31 +196,31 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
             buttons.push(
                 <RemoteControlButton
-                    key='remote-control'
-                    onClick={onRemoteControlToggle}
-                    participantID={participantID}
-                    remoteControlState={_remoteControlState} />
+                    key = 'remote-control'
+                    onClick = { onRemoteControlToggle }
+                    participantID = { participantID }
+                    remoteControlState = { _remoteControlState } />
             );
         }
 
         buttons.push(
             <PrivateMessageMenuButton
-                key='privateMessage'
-                participantID={participantID} />
+                key = 'privateMessage'
+                participantID = { participantID } />
         );
 
         if (onVolumeChange && typeof initialVolumeValue === 'number' && !isNaN(initialVolumeValue)) {
             buttons.push(
                 <VolumeSlider
-                    initialValue={initialVolumeValue}
-                    key='volume-slider'
-                    onChange={onVolumeChange} />
+                    initialValue = { initialVolumeValue }
+                    key = 'volume-slider'
+                    onChange = { onVolumeChange } />
             );
         }
 
         if (buttons.length > 0) {
             return (
-                <VideoMenu id={participantID}>
+                <VideoMenu id = { participantID }>
                     { buttons}
                 </VideoMenu>
             );
@@ -267,14 +267,14 @@ function _mapStateToProps(state, ownProps) {
     let _menuPosition;
 
     switch (currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-            _menuPosition = 'left-start';
-            break;
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            _menuPosition = 'left-end';
-            break;
-        default:
-            _menuPosition = 'auto';
+    case LAYOUTS.TILE_VIEW:
+        _menuPosition = 'left-start';
+        break;
+    case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
+        _menuPosition = 'left-end';
+        break;
+    default:
+        _menuPosition = 'auto';
     }
 
     return {
