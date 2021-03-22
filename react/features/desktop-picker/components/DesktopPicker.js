@@ -198,9 +198,7 @@ class DesktopPicker extends PureComponent<Props, State> {
                 onCancel = { this._onCloseModal }
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.shareYourScreen'
-                width = 'medium' >
-                { this._renderTabs()}
-            </Dialog>
+                width = 'medium' />
         );
     }
 
