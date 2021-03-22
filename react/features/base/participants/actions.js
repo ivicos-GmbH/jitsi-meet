@@ -548,4 +548,3 @@ export function setLoadableAvatarUrl(participantId, url) {
         }
     };
 }
-

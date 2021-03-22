@@ -20,4 +20,4 @@
 
 ## Issues to clarify before merge
 
-- [ ] : Issue
+- [ ] Issue
