@@ -14,8 +14,8 @@ import { Text } from 'react-native';
 export default function renderConferenceTimer(timerValue: string, textStyle: Object) {
     return (
         <Text
-            numberOfLines={1}
-            style={textStyle}>
+            numberOfLines = { 1 }
+            style = { textStyle }>
             { timerValue}
         </Text>
     );

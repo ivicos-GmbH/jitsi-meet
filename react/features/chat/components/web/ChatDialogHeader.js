@@ -27,10 +27,10 @@ type Props = {
 function Header({ onCancel, className }: Props) {
     return (
         <div
-            className={className || 'chat-dialog-header'}>
+            className = { className || 'chat-dialog-header' }>
             <Icon
-                onClick={onCancel}
-                src={IconClose} />
+                onClick = { onCancel }
+                src = { IconClose } />
         </div>
     );
 }

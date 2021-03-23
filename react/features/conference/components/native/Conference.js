@@ -151,11 +151,11 @@ class Conference extends AbstractConference<Props, *> {
         const { _fullscreenEnabled } = this.props;
 
         return (
-            <Container style={styles.conference}>
+            <Container style = { styles.conference }>
                 <StatusBar
-                    barStyle='light-content'
-                    hidden={_fullscreenEnabled}
-                    translucent={_fullscreenEnabled} />
+                    barStyle = 'light-content'
+                    hidden = { _fullscreenEnabled }
+                    translucent = { _fullscreenEnabled } />
                 { this._renderContent()}
             </Container>
         );
@@ -207,9 +207,9 @@ class Conference extends AbstractConference<Props, *> {
      */
     _renderConferenceModals() {
         return [
-            <AddPeopleDialog key='addPeopleDialog' />,
-            <Chat key='chat' />,
-            <SharedDocument key='sharedDocument' />
+            <AddPeopleDialog key = 'addPeopleDialog' />,
+            <Chat key = 'chat' />,
+            <SharedDocument key = 'sharedDocument' />
         ];
     }
 
@@ -252,8 +252,8 @@ class Conference extends AbstractConference<Props, *> {
                   * The LargeVideo is the lowermost stacking layer.
                   */
                     _shouldDisplayTileView
-                        ? <TileView onClick={this._onClick} />
-                        : <LargeVideo onClick={this._onClick} />
+                        ? <TileView onClick = { this._onClick } />
+                        : <LargeVideo onClick = { this._onClick } />
                 }
 
                 {/*
@@ -273,13 +273,13 @@ class Conference extends AbstractConference<Props, *> {
                 }
 
                 <View
-                    pointerEvents='box-none'
-                    style={styles.toolboxAndFilmstripContainer}>
+                    pointerEvents = 'box-none'
+                    style = { styles.toolboxAndFilmstripContainer }>
 
-                    <Captions onPress={this._onClick} />
+                    <Captions onPress = { this._onClick } />
 
-                    {_shouldDisplayTileView || <Container style={styles.displayNameContainer}>
-                        <DisplayNameLabel participantId={_largeVideoParticipantId} />
+                    {_shouldDisplayTileView || <Container style = { styles.displayNameContainer }>
+                        <DisplayNameLabel participantId = { _largeVideoParticipantId } />
                     </Container>}
 
                     <LonelyMeetingExperience />
@@ -289,8 +289,8 @@ class Conference extends AbstractConference<Props, *> {
                 </View>
 
                 <SafeAreaView
-                    pointerEvents='box-none'
-                    style={styles.navBarSafeView}>
+                    pointerEvents = 'box-none'
+                    style = { styles.navBarSafeView }>
                     <NavigationBar />
                     {this._renderNotificationsContainer()}
                     <KnockingParticipantList />
@@ -316,7 +316,7 @@ class Conference extends AbstractConference<Props, *> {
 
         return (
             <>
-                <LargeVideo onClick={this._onClick} />
+                <LargeVideo onClick = { this._onClick } />
 
                 {
                     _connecting
