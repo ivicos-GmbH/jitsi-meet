@@ -1,6 +1,5 @@
 // @flow
 
-import { getBlurEffect } from '../../blur';
 import { createForegroundOverlay } from '../../stream-effects/foreground-overlay';
 import { createScreenshotCaptureEffect } from '../../stream-effects/screenshot-capture';
 import { createVirtualBackgroundEffect } from '../../stream-effects/virtual-background';
@@ -47,5 +46,5 @@ export default function loadEffects(store: Object): Promise<any> {
             })
         : Promise.resolve();
 
-    return Promise.all([backgroundPromise, foregroundOverlayPromise, screenshotCapturePromise]);
+    return Promise.all([ backgroundPromise, foregroundOverlayPromise, screenshotCapturePromise ]);
 }
