@@ -44,6 +44,7 @@ const commands = {
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendTones: 'send-tones',
     setBackgroundImage: 'set-background-image',
+    setForegroundOverlay: 'set-foreground-overlay',
     setLargeVideoParticipant: 'set-large-video-participant',
     setTileView: 'set-tile-view',
     setVideoQuality: 'set-video-quality',
@@ -1122,7 +1123,25 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this.executeCommand(
             'setBackgroundImage',
             backgroundImageUrl,
-            backgroundColor
+            backgroundColor);
+    }
+
+    /**
+     * Sets an overlay for the video flow of the local user.
+     *
+     * @param { string } overlayImageUrl - URL of the overlay image.
+     * @param { string } overlayColor - Color of the overlay if no image is given.
+     * @param { string } mode - Mode chosen for the overlay : Example 'fusion' if given background transparent, 'circle'
+     * if a circular shape should be manually extracted from the overlay (default). It is possible to add a size ratio
+     * simply by adding it to the shape name, example 'square-0.8' for a square of size 80% from the maximum possible.
+     * @returns {void}
+     */
+    setForegroundOverlay(overlayImageUrl, overlayColor, mode) {
+        this.executeCommand(
+            'setForegroundOverlay',
+            overlayImageUrl,
+            overlayColor,
+            mode
         );
     }
 }

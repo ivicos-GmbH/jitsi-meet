@@ -25,6 +25,9 @@ import { openChat } from '../../react/features/chat/actions.web';
 import { processExternalDeviceRequest } from '../../react/features/device-selection/functions';
 import { isEnabled as isDropboxEnabled } from '../../react/features/dropbox';
 import { toggleE2EE } from '../../react/features/e2ee/actions';
+import {
+    setForegroundOverlay
+} from '../../react/features/foreground-overlay/actions';
 import { invite } from '../../react/features/invite';
 import {
     captureLargeVideoScreenshot,
@@ -136,6 +139,11 @@ function initCommands() {
         'set-background-image': (backgroundImageUrl, backgroundColor) => {
             logger.debug('Set background image command received');
             APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
+        },
+        'set-foreground-overlay': (overlayImageUrl, overlayColor, mode) => {
+            logger.debug('Set foreground overlay command received');
+
+            APP.store.dispatch(setForegroundOverlay(overlayImageUrl, overlayColor, mode));
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');
@@ -520,8 +528,7 @@ function shouldBeEnabled() {
         // Meet (Web) app is being used by an external/wrapping (Web) app
         // and, consequently, the latter will need to communicate with the
         // former. (The described logic is merely a heuristic though.)
-        || parseJWTFromURLParams()
-    );
+        || parseJWTFromURLParams());
 }
 
 /**
@@ -815,7 +822,9 @@ class API {
      * @param {string} email - The new email of the participant.
      * @returns {void}
      */
-    notifyEmailChanged(id: string, { email }: Object) {
+    notifyEmailChanged(
+            id: string,
+            { email }: Object) {
         this._sendEvent({
             name: 'email-change',
             email,
