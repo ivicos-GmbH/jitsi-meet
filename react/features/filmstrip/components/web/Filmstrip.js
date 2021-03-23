@@ -150,8 +150,13 @@ class Filmstrip extends Component<Props> {
         const filmstripRemoteVideosContainerStyle = {};
         let remoteVideoContainerClassName = 'remote-videos-container';
         const { _currentLayout, _participants } = this.props;
-        const remoteParticipants = _participants.filter(p => !p.local);
+        const sortingFunction = function(a, b) {
+            return b.id > a.id ? -1 : 1;
+        };
+        const sortedParticipants = _participants
+            .sort(sortingFunction);
         const localParticipant = getLocalParticipant(_participants);
+
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
 
         switch (_currentLayout) {
@@ -217,20 +222,9 @@ class Filmstrip extends Component<Props> {
                             id = 'filmstripRemoteVideosContainer'
                             style = { filmstripRemoteVideosContainerStyle }>
                             {
-                                remoteParticipants.map(
-                                    p => (
-                                        <Thumbnail
-                                            key = { `remote_${p.id}` }
-                                            participantID = { p.id } />
-                                    ))
-                            }
-                            <div id = 'localVideoTileViewContainer'>
-                                {
-                                    tileViewActive && <Thumbnail
-                                        key = 'local'
-                                        participantID = { localParticipant.id } />
-                                }
-                            </div>
+                                sortedParticipants.map(
+                                    p => this._renderParticipant(tileViewActive, p))
+                            };
                         </div>
                     </div>
                 </div>
@@ -284,6 +278,30 @@ class Filmstrip extends Component<Props> {
             }));
 
         this._doToggleFilmstrip();
+    }
+
+    /**
+     * Render participant tile view container.
+     *
+     * @param {boolean} tileViewActive - Boolean indicating whether the tile view is active or not.
+     * @param {Object} participant - Object containing participant properties.
+     * @private
+     * @returns {ReactElement}
+     */
+    _renderParticipant(tileViewActive, participant) {
+        if (participant.local) {
+            return (<div id = 'localVideoTileViewContainer'>
+                {
+                    tileViewActive && <Thumbnail
+                        key = 'local'
+                        participantID = { participant.id } />
+                }
+            </div>);
+        }
+
+        return (<Thumbnail
+            key = { `remote_${participant.id}` }
+            participantID = { participant.id } />);
     }
 
     /**
