@@ -9,16 +9,9 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 import { i18next } from '../../../react/features/base/i18n';
-import {
-    JitsiParticipantConnectionStatus
-} from '../../../react/features/base/lib-jitsi-meet';
-import { getParticipantById } from '../../../react/features/base/participants';
 import { isTestModeEnabled } from '../../../react/features/base/testing';
 import { updateLastTrackVideoMediaEvent } from '../../../react/features/base/tracks';
 import { Thumbnail, isVideoPlayable } from '../../../react/features/filmstrip';
-import { PresenceLabel } from '../../../react/features/presence-status';
-import { stopController, requestRemoteControl } from '../../../react/features/remote-control';
-import { RemoteVideoMenuTriggerButton } from '../../../react/features/remote-video-menu';
 /* eslint-enable no-unused-vars */
 import UIUtils from '../util/UIUtil';
 
@@ -47,10 +40,22 @@ function createContainer(spanId) {
 
     const remoteVideosContainer
         = document.getElementById('filmstripRemoteVideosContainer');
-    const localVideoContainer
-        = document.getElementById('localVideoTileViewContainer');
 
-    remoteVideosContainer.insertBefore(container, localVideoContainer);
+    const state = APP.store.getState();
+    const participants = state['features/base/participants'];
+    const newParticipantId = container.id.split('_')[1];
+    const sortingFunction = function(a, b) {
+        return b.id > a.id ? -1 : 1;
+    };
+    const sortedParticipants = participants
+        .sort(sortingFunction);
+    const position = sortedParticipants.findIndex(e => e.id === newParticipantId);
+
+    if (position <= remoteVideosContainer.children.length - 1) {
+        remoteVideosContainer.insertBefore(container, remoteVideosContainer.children[position]);
+    } else {
+        remoteVideosContainer.appendChild(container);
+    }
 
     return container;
 }
@@ -107,9 +112,9 @@ export default class RemoteVideo extends SmallVideo {
      */
     renderThumbnail(isHovered = false) {
         ReactDOM.render(
-            <Provider store = { APP.store }>
-                <I18nextProvider i18n = { i18next }>
-                    <Thumbnail participantID = { this.id } isHovered = { isHovered } />
+            <Provider store={APP.store}>
+                <I18nextProvider i18n={i18next}>
+                    <Thumbnail participantID={this.id} isHovered={isHovered} />
                 </I18nextProvider>
             </Provider>, this.container);
     }
