@@ -80,7 +80,7 @@ export type Props = {
 
     /**
      * The audio track related to the participant.
-     */
+    */
     _audioTrack: ?Object,
 
     /**

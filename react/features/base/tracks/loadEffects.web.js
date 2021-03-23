@@ -46,5 +46,5 @@ export default function loadEffects(store: Object): Promise<any> {
             })
         : Promise.resolve();
 
-    return Promise.all([backgroundPromise, foregroundOverlayPromise, screenshotCapturePromise]);
+    return Promise.all([ backgroundPromise, foregroundOverlayPromise, screenshotCapturePromise ]);
 }
