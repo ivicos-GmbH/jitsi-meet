@@ -205,6 +205,15 @@ class DesktopPicker extends PureComponent<Props, State> {
     }
 
     /**
+     * Function not implemented yet.
+     *
+     * @returns {void}
+     */
+    _renderTabs() {
+        return;
+    }
+
+    /**
      * Computates the selected source.
      *
      * @param {Object} sources - The available sources.
