@@ -123,7 +123,7 @@ function RoomBackground({ dispatch, t }: Props) {
                         position = { 'top' }>
                         <img
                             className = { selected === image.id ? 'thumbnail-selected' : 'thumbnail' }
-                            onClick = { () => addRoomImageBackground(image, '') }
+                            onClick = { () => addRoomImageBackground(image) }
                             onError = { event => event.target.style.display = 'none' }
                             src = { image.src } />
                     </Tooltip>

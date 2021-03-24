@@ -20,7 +20,7 @@ import {
  * @param {string} backgroundColor - Optional color for the background.
  * @returns {Function}
  */
-export function setBackgroundImage(backgroundImageUrl, backgroundColor) {
+export function setBackgroundImage(backgroundImageUrl: string, backgroundColor: string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
 
         const state = getState();
