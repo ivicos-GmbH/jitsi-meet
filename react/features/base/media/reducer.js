@@ -47,20 +47,20 @@ export const _AUDIO_INITIAL_MEDIA_STATE = {
  */
 function _audio(state = _AUDIO_INITIAL_MEDIA_STATE, action) {
     switch (action.type) {
-    case SET_AUDIO_AVAILABLE:
-        return {
-            ...state,
-            available: action.available
-        };
+        case SET_AUDIO_AVAILABLE:
+            return {
+                ...state,
+                available: action.available
+            };
 
-    case SET_AUDIO_MUTED:
-        return {
-            ...state,
-            muted: action.muted
-        };
+        case SET_AUDIO_MUTED:
+            return {
+                ...state,
+                muted: action.muted
+            };
 
-    default:
-        return state;
+        default:
+            return state;
     }
 }
 
@@ -104,50 +104,50 @@ export const _VIDEO_INITIAL_MEDIA_STATE = {
  */
 function _video(state = _VIDEO_INITIAL_MEDIA_STATE, action) {
     switch (action.type) {
-    case CONFERENCE_FAILED:
-    case CONFERENCE_LEFT:
-        return _clearAllVideoTransforms(state);
+        case CONFERENCE_FAILED:
+        case CONFERENCE_LEFT:
+            return _clearAllVideoTransforms(state);
 
-    case SET_CAMERA_FACING_MODE:
-        return {
-            ...state,
-            facingMode: action.cameraFacingMode
-        };
+        case SET_CAMERA_FACING_MODE:
+            return {
+                ...state,
+                facingMode: action.cameraFacingMode
+            };
 
-    case SET_VIDEO_AVAILABLE:
-        return {
-            ...state,
-            available: action.available
-        };
+        case SET_VIDEO_AVAILABLE:
+            return {
+                ...state,
+                available: action.available
+            };
 
-    case SET_VIDEO_MUTED:
-        return {
-            ...state,
-            muted: action.muted
-        };
+        case SET_VIDEO_MUTED:
+            return {
+                ...state,
+                muted: action.muted
+            };
 
-    case STORE_VIDEO_TRANSFORM:
-        return _storeVideoTransform(state, action);
+        case STORE_VIDEO_TRANSFORM:
+            return _storeVideoTransform(state, action);
 
-    case TOGGLE_CAMERA_FACING_MODE: {
-        let cameraFacingMode = state.facingMode;
+        case TOGGLE_CAMERA_FACING_MODE: {
+            let cameraFacingMode = state.facingMode;
 
-        cameraFacingMode
-            = cameraFacingMode === CAMERA_FACING_MODE.USER
-                ? CAMERA_FACING_MODE.ENVIRONMENT
-                : CAMERA_FACING_MODE.USER;
+            cameraFacingMode
+                = cameraFacingMode === CAMERA_FACING_MODE.USER
+                    ? CAMERA_FACING_MODE.ENVIRONMENT
+                    : CAMERA_FACING_MODE.USER;
 
-        return {
-            ...state,
-            facingMode: cameraFacingMode
-        };
-    }
+            return {
+                ...state,
+                facingMode: cameraFacingMode
+            };
+        }
 
-    case TRACK_REMOVED:
-        return _trackRemoved(state, action);
+        case TRACK_REMOVED:
+            return _trackRemoved(state, action);
 
-    default:
-        return state;
+        default:
+            return state;
     }
 }
 

@@ -3,11 +3,46 @@
 import type { Dispatch } from 'redux';
 
 import {
+    getLocalParticipant,
+    participantUpdated
+} from './../base/participants';
+import {
     SET_BACKGROUND_DATA
 } from './actionTypes';
 import {
     extractBackgroundProperties
 } from './functions';
+
+/**
+ * Set background image/color for the room.
+ *
+ * @param {string} backgroundImageUrl - Optional image URL for the background.
+ * @param {string} backgroundColor - Optional color for the background.
+ * @returns {Function}
+ */
+export function setBackgroundImage(backgroundImageUrl, backgroundColor) {
+    return async (dispatch: Dispatch<any>, getState: Function) => {
+
+        const state = getState();
+        const localParticipant = getLocalParticipant(state);
+        const backgroundData = `${backgroundColor}|${backgroundImageUrl}`;
+
+        if (
+            !state['features/base/conference']?.conference
+            || backgroundData === localParticipant?.backgroundData
+        ) {
+            return;
+        }
+
+        // Update local participants background information
+        dispatch(participantUpdated({
+            id: localParticipant.id,
+            local: localParticipant.local,
+            backgroundData
+        }));
+
+    };
+}
 
 /**
  * Extract background-relevant information (if existing) from serialized background properties
