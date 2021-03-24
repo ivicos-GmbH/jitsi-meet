@@ -25,14 +25,19 @@ export function setBackgroundImage(backgroundImageUrl, backgroundColor) {
 
         const state = getState();
         const localParticipant = getLocalParticipant(state);
-        const backgroundData = `${backgroundColor}|${backgroundImageUrl}`;
+        const previousBackgroundData = extractBackgroundProperties(localParticipant?.backgroundData);
 
         if (
             !state['features/base/conference']?.conference
-            || backgroundData === localParticipant?.backgroundData
+            || (backgroundColor === previousBackgroundData?.backgroundColor
+                && backgroundImageUrl === previousBackgroundData?.backgroundImageUrl)
         ) {
             return;
         }
+
+        // Adding lastUpdate to help the synchronization of the last background set among the participants.
+        const lastUpdate = Date.now();
+        const backgroundData = `${backgroundColor}|${backgroundImageUrl}|${lastUpdate}`;
 
         // Update local participants background information
         dispatch(participantUpdated({
@@ -59,7 +64,8 @@ export function updateBackgroundData(serializedBackgroundData: String) {
 
         return dispatch(setBackgroundData({
             backgroundColor: backgroundDataObject.backgroundColor,
-            backgroundImageUrl: backgroundDataObject.backgroundImageUrl
+            backgroundImageUrl: backgroundDataObject.backgroundImageUrl,
+            lastUpdate: backgroundDataObject.lastUpdate
         }));
     };
 }

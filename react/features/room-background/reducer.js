@@ -38,12 +38,14 @@ ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     case SET_BACKGROUND_DATA: {
         const {
             backgroundColor,
-            backgroundImageUrl
+            backgroundImageUrl,
+            lastUpdate
         } = action.value;
 
         return {
             backgroundColor,
-            backgroundImageUrl
+            backgroundImageUrl,
+            lastUpdate
         };
     }
     }

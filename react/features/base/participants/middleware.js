@@ -13,6 +13,7 @@ import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
 import { playSound, registerSound, unregisterSound } from '../sounds';
 
+import { extractBackgroundProperties } from './../../room-background';
 import {
     DOMINANT_SPEAKER_CHANGED,
     GRANT_MODERATOR,
@@ -289,7 +290,7 @@ function _e2eeUpdated({ dispatch }, conference, participantId, newValue) {
 }
 
 /**
- * Handles a background update.
+ * Handles a room background update.
  *
  * @param {Function} dispatch - The Redux dispatch function.
  * @param {Object} localParticipant - Redux state of the local participant.
@@ -298,7 +299,11 @@ function _e2eeUpdated({ dispatch }, conference, participantId, newValue) {
  */
 function _backgroundDataUpdated({ dispatch }, localParticipant, newValue) {
 
-    if (localParticipant?.backgroundData === newValue) {
+    const formerBackgroundData = extractBackgroundProperties(localParticipant?.backgroundData);
+    const newBackgroundData = extractBackgroundProperties(newValue);
+
+    // An update is made only if the timestamp of the new data is more recent.
+    if ((newBackgroundData?.lastUpdate || 0) <= (formerBackgroundData?.lastUpdate || 0)) {
         return;
     }
 
