@@ -31,6 +31,9 @@ import {
 import { toggleLobbyMode } from '../../react/features/lobby/actions.web';
 import { RECORDING_TYPES } from '../../react/features/recording/constants';
 import { getActiveSession } from '../../react/features/recording/functions';
+import {
+    setBackgroundImage
+} from '../../react/features/room-background/actions';
 import { toggleTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality';
@@ -132,7 +135,7 @@ function initCommands() {
         },
         'set-background-image': (backgroundImageUrl, backgroundColor) => {
             logger.debug('Set background image command received');
-            APP.conference.setBackgroundImage(backgroundImageUrl, backgroundColor);
+            APP.store.dispatch(setBackgroundImage(backgroundImageUrl, backgroundColor));
         },
         'set-foreground-overlay': (overlayImageUrl, overlayColor, mode) => {
             logger.debug('Set foreground overlay command received');

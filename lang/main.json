@@ -337,6 +337,10 @@
         "enableBlur": "Enable blur",
         "removeBackground": "Remove background"
     },
+    "roomBackground": {
+        "title": "Room Backgrounds",
+        "removeBackground": "Remove room background"
+    },
     "feedback": {
         "average": "Average",
         "bad": "Bad",
@@ -753,7 +757,8 @@
             "toggleCamera": "Toggle camera",
             "toggleFilmstrip": "Toggle filmstrip",
             "videomute": "Toggle mute video",
-            "selectBackground": "Select Background"
+            "selectBackground": "Select Background",
+            "selectRoomBackground": "Select the room background"
         },
         "addPeople": "Add people to your call",
         "audioSettings": "Audio settings",
@@ -815,7 +820,8 @@
         "tileViewToggle": "Toggle tile view",
         "toggleCamera": "Toggle camera",
         "videomute": "Start / Stop camera",
-        "selectBackground": "Select background"
+        "selectBackground": "Select background",
+        "selectRoomBackground": "Select the room background"
     },
     "transcribing": {
         "ccButtonTooltip": "Start / Stop subtitles",

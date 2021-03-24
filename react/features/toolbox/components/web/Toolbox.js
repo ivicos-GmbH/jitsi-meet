@@ -47,6 +47,7 @@ import {
     LiveStreamButton,
     RecordButton
 } from '../../../recording';
+import { RoomBackgroundButton } from '../../../room-background';
 import { SecurityDialogButton } from '../../../security';
 import {
     SETTINGS_TABS,
@@ -1027,6 +1028,11 @@ class Toolbox extends Component<Props, State> {
                 key = { 'select-background' }
                 showLabel = { true }
                 visible = { !_screensharing && checkBlurSupport() } />,
+            this._shouldShowButton('select-room-background')
+            && <RoomBackgroundButton
+                key = { 'select-room-background' }
+                showLabel = { true }
+                visible = { true } />,
             this._shouldShowButton('stats')
             && <OverflowMenuItem
                 accessibilityLabel = { t('toolbar.accessibilityLabel.speakerStats') }
