@@ -10,14 +10,16 @@ export function extractBackgroundProperties(serializedBackgroundProperties: Stri
     if (!serializedBackgroundProperties) {
         return {
             backgroundColor: undefined,
-            backgroundImageUrl: undefined
+            backgroundImageUrl: undefined,
+            lastUpdate: undefined
         };
     }
     const unparsedBackgroundData = serializedBackgroundProperties.split('|');
 
     return {
         backgroundColor: unparsedBackgroundData[0],
-        backgroundImageUrl: unparsedBackgroundData[1]
+        backgroundImageUrl: unparsedBackgroundData[1],
+        lastUpdate: unparsedBackgroundData[2]
     };
 }
 
