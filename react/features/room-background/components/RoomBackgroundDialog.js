@@ -12,28 +12,52 @@ const images = [
     {
         tooltip: 'Image 1',
         name: 'background-1.jpg',
-        id: 1,
+        id: 'image_1',
         src: 'images/virtual-background/background-1.jpg'
     },
     {
         tooltip: 'Image 2',
         name: 'background-2.jpg',
-        id: 2,
+        id: 'image_2',
         src: 'images/virtual-background/background-2.jpg'
     },
     {
         tooltip: 'Image 3',
         name: 'background-3.jpg',
-        id: 3,
+        id: 'image_3',
         src: 'images/virtual-background/background-3.jpg'
     },
     {
         tooltip: 'Image 4',
         name: 'background-4.jpg',
-        id: 4,
+        id: 'image_4',
         src: 'images/virtual-background/background-4.jpg'
     }
 ];
+
+const colors = [
+    {
+        tooltip: 'Black',
+        code: 'black',
+        id: 'black'
+    },
+    {
+        tooltip: 'Blue',
+        code: '#004A7F',
+        id: 'blue'
+    },
+    {
+        tooltip: 'Red',
+        code: '#7F0000',
+        id: 'red'
+    },
+    {
+        tooltip: 'Green',
+        code: '#007F0E',
+        id: 'green'
+    }
+];
+
 type Props = {
 
     /**
@@ -69,6 +93,13 @@ function RoomBackground({ dispatch, t }: Props) {
         );
     };
 
+    const addRoomColorBackground = color => {
+        setSelected(color.id);
+        dispatch(
+            setBackgroundImage('', color.code)
+        );
+    };
+
     return (
         <Dialog
             hideCancelButton = { true }
@@ -92,11 +123,26 @@ function RoomBackground({ dispatch, t }: Props) {
                         position = { 'top' }>
                         <img
                             className = { selected === image.id ? 'thumbnail-selected' : 'thumbnail' }
-                            onClick = { () => addRoomImageBackground(image) }
+                            onClick = { () => addRoomImageBackground(image, '') }
                             onError = { event => event.target.style.display = 'none' }
                             src = { image.src } />
                     </Tooltip>
+                ))};
+            </div>
+            <div className = 'room-background-dialog'>
+                {colors.map((color, index) => (
+                    <Tooltip
+                        content = { color.tooltip }
+                        key = { index }
+                        position = { 'top' }>
+                        <div
+                            className = { selected === color.id ? 'thumbnail-color-selected' : 'thumbnail-color' }
+                            onClick = { () => addRoomColorBackground(color) }
+                            onError = { event => event.target.style.display = 'none' }
+                            style = {{ backgroundColor: color.code }} />
+                    </Tooltip>
                 ))}
+
             </div>
         </Dialog>
     );

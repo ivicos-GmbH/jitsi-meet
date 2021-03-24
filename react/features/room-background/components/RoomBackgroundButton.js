@@ -7,6 +7,8 @@ import { connect } from '../../base/redux';
 import { AbstractButton } from '../../base/toolbox/components';
 import type { AbstractButtonProps } from '../../base/toolbox/components';
 
+import { isRoomBackgroundDefined } from './../functions';
+
 import { RoomBackgroundDialog } from './index';
 
 /**
@@ -71,13 +73,8 @@ class RoomBackgroundButton extends AbstractButton<Props, *> {
  */
 function _mapStateToProps(state): Object {
 
-    const roomBackgroundState = state['features/room-background'];
-    const roomBackgroundSet
-        = Boolean(roomBackgroundState?.backgroundColor)
-        || Boolean(roomBackgroundState?.backgroundImageUrl);
-
     return {
-        _isBackgroundRoomEnabled: roomBackgroundSet
+        _isBackgroundRoomEnabled: isRoomBackgroundDefined(state)
     };
 }
 
