@@ -44,9 +44,9 @@ MiddlewareRegistry.register(store => next => action => {
 });
 
 type DocumentElement = {
-    +requestFullscreen?: Function,
-    +mozRequestFullScreen?: Function,
-    +webkitRequestFullscreen?: Function
+    +requestFullscreen ?: Function,
+    +mozRequestFullScreen ?: Function,
+    +webkitRequestFullscreen ?: Function
 }
 
 /**
@@ -83,16 +83,16 @@ function _setFullScreen(next, action) {
             if (typeof document.exitFullscreen === 'function') {
                 document.exitFullscreen();
 
-            // $FlowFixMe
+                // $FlowFixMe
             } else if (typeof document.mozCancelFullScreen === 'function') {
                 document.mozCancelFullScreen();
 
-            // $FlowFixMe
+                // $FlowFixMe
             } else if (typeof document.webkitExitFullscreen === 'function') {
                 document.webkitExitFullscreen();
             }
 
-            /* eslint-enable no-loney-if */
+            /* eslint-enable no-lonely-if */
         }
     }
 

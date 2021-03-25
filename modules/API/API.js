@@ -347,7 +347,7 @@ function initCommands() {
                 return;
             }
 
-            if (![JitsiRecordingConstants.mode.FILE, JitsiRecordingConstants.mode.STREAM].includes(mode)) {
+            if (![ JitsiRecordingConstants.mode.FILE, JitsiRecordingConstants.mode.STREAM ].includes(mode)) {
                 logger.error('Invalid recording mode provided!');
 
                 return;
@@ -407,8 +407,8 @@ function initCommands() {
         const { name } = request;
 
         switch (name) {
-            case 'capture-largevideo-screenshot':
-                APP.store.dispatch(captureLargeVideoScreenshot())
+        case 'capture-largevideo-screenshot':
+            APP.store.dispatch(captureLargeVideoScreenshot())
                     .then(dataURL => {
                         let error;
 
@@ -421,21 +421,21 @@ function initCommands() {
                             dataURL
                         });
                     });
+            break;
+        case 'invite': {
+            const { invitees } = request;
+
+            if (!Array.isArray(invitees) || invitees.length === 0) {
+                callback({
+                    error: new Error('Unexpected format of invitees')
+                });
+
                 break;
-            case 'invite': {
-                const { invitees } = request;
+            }
 
-                if (!Array.isArray(invitees) || invitees.length === 0) {
-                    callback({
-                        error: new Error('Unexpected format of invitees')
-                    });
-
-                    break;
-                }
-
-                // The store should be already available because API.init is called
-                // on appWillMount action.
-                APP.store
+            // The store should be already available because API.init is called
+            // on appWillMount action.
+            APP.store
                     .dispatch(invite(invitees, true))
                     .then(failedInvitees => {
                         let error;
@@ -452,51 +452,51 @@ function initCommands() {
                             result
                         });
                     });
-                break;
-            }
-            case 'is-audio-muted':
-                callback(APP.conference.isLocalAudioMuted());
-                break;
-            case 'is-video-muted':
-                callback(APP.conference.isLocalVideoMuted());
-                break;
-            case 'is-audio-available':
-                callback(audioAvailable);
-                break;
-            case 'is-video-available':
-                callback(videoAvailable);
-                break;
-            case 'is-sharing-screen':
-                callback(Boolean(APP.conference.isSharingScreen));
-                break;
-            case 'get-content-sharing-participants': {
-                const tracks = getState()['features/base/tracks'];
-                const sharingParticipantIds = tracks.filter(tr => tr.videoType === 'desktop').map(t => t.participantId);
+            break;
+        }
+        case 'is-audio-muted':
+            callback(APP.conference.isLocalAudioMuted());
+            break;
+        case 'is-video-muted':
+            callback(APP.conference.isLocalVideoMuted());
+            break;
+        case 'is-audio-available':
+            callback(audioAvailable);
+            break;
+        case 'is-video-available':
+            callback(videoAvailable);
+            break;
+        case 'is-sharing-screen':
+            callback(Boolean(APP.conference.isSharingScreen));
+            break;
+        case 'get-content-sharing-participants': {
+            const tracks = getState()['features/base/tracks'];
+            const sharingParticipantIds = tracks.filter(tr => tr.videoType === 'desktop').map(t => t.participantId);
 
-                callback({
-                    sharingParticipantIds
-                });
-                break;
-            }
-            case 'get-livestream-url': {
-                const state = APP.store.getState();
-                const conference = getCurrentConference(state);
-                let livestreamUrl;
+            callback({
+                sharingParticipantIds
+            });
+            break;
+        }
+        case 'get-livestream-url': {
+            const state = APP.store.getState();
+            const conference = getCurrentConference(state);
+            let livestreamUrl;
 
-                if (conference) {
-                    const activeSession = getActiveSession(state, JitsiRecordingConstants.mode.STREAM);
+            if (conference) {
+                const activeSession = getActiveSession(state, JitsiRecordingConstants.mode.STREAM);
 
-                    livestreamUrl = activeSession?.liveStreamViewURL;
-                } else {
-                    logger.error('Conference is not defined');
-                }
-                callback({
-                    livestreamUrl
-                });
-                break;
+                livestreamUrl = activeSession?.liveStreamViewURL;
+            } else {
+                logger.error('Conference is not defined');
             }
-            default:
-                return false;
+            callback({
+                livestreamUrl
+            });
+            break;
+        }
+        default:
+            return false;
         }
 
         return true;
@@ -662,7 +662,7 @@ class API {
      * @returns {void}
      */
     notifyReceivedChatMessage(
-        { body, id, nick, privateMessage, ts }: {
+            { body, id, nick, privateMessage, ts }: {
             body: *, id: string, nick: string, privateMessage: boolean, ts: *
         } = {}) {
         if (APP.conference.isLocalId(id)) {
@@ -793,8 +793,8 @@ class API {
      * @returns {void}
      */
     notifyDisplayNameChanged(
-        id: string,
-        { displayName, formattedDisplayName }: Object
+            id: string,
+            { displayName, formattedDisplayName }: Object
     ) {
         this._sendEvent({
             name: 'display-name-change',
