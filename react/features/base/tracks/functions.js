@@ -1,5 +1,8 @@
 /* global APP */
 
+import {
+    notifyCameraError
+} from '../devices';
 import JitsiMeetJS, { JitsiTrackErrors, browser } from '../lib-jitsi-meet';
 import { MEDIA_TYPE, VIDEO_TYPE, setAudioMuted } from '../media';
 import {
@@ -472,6 +475,18 @@ export function setTrackMuted(track, muted) {
         if (error.name !== JitsiTrackErrors.TRACK_IS_DISPOSED) {
             // FIXME Emit mute failed, so that the app can show error dialog.
             logger.error(`set track ${f} failed`, error);
+
+            const showUI = true;
+            const maybeShowErrorDialog = errorObject => {
+                showUI && APP.store.dispatch(notifyCameraError(errorObject));
+            };
+            const errorAndRetry = {
+                ...error,
+                customActionNameKey: 'dialog.retry',
+                customActionHandler: () => APP.conference.toggleVideoMuted(showUI)
+            };
+
+            maybeShowErrorDialog(errorAndRetry);
         }
     });
 }

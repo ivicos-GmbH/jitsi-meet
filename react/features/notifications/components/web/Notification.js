@@ -125,14 +125,26 @@ class Notification extends AbstractNotification<Props> {
 
             return buttons;
         }
-        case NOTIFICATION_TYPE.WARNING:
-            return [
+        case NOTIFICATION_TYPE.WARNING: {
+            const buttons = [
                 {
                     content: this.props.t('dialog.Ok'),
                     onClick: this._onDismissed
                 }
             ];
 
+            if (this.props.customActionNameKey && this.props.customActionHandler) {
+                buttons.push({
+                    content: this.props.t(this.props.customActionNameKey),
+                    onClick: () => {
+                        this.props.customActionHandler();
+                        this._onDismissed();
+                    }
+                });
+            }
+
+            return buttons;
+        }
         default:
             if (this.props.customActionNameKey && this.props.customActionHandler) {
                 return [

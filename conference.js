@@ -1009,7 +1009,23 @@ export default {
                 .then(([ videoTrack ]) => videoTrack)
                 .catch(error => {
                     // FIXME should send some feedback to the API on error ?
-                    maybeShowErrorDialog(error);
+
+                    // Retrying to capture video track only if the video is still muted
+                    if (!mute) {
+                        const errorAndRetry = {
+                            ...error,
+                            customActionNameKey: 'dialog.retry',
+                            customActionHandler: () => {
+                                if (this.isLocalVideoMuted()) {
+                                    this.muteVideo(mute, showUI);
+                                }
+
+                                return true;
+                            }
+                        };
+
+                        maybeShowErrorDialog(errorAndRetry);
+                    }
 
                     // Rollback the video muted status by using null track
                     return null;

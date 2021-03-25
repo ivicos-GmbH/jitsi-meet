@@ -110,7 +110,7 @@ export function showNotification(props: Object = {}, timeout: ?number) {
 export function showWarningNotification(props: Object) {
     return showNotification({
         ...props,
-        appearance: NOTIFICATION_TYPE.WARNING
+        appearance: NOTIFICATION_TYPE.NORMAL
     });
 }
 

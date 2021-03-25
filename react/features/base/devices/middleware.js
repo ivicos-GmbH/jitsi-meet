@@ -119,6 +119,8 @@ MiddlewareRegistry.register(store => next => action => {
         }
 
         const { message, name } = action.error;
+        const customActionNameKey = action.error?.customActionNameKey;
+        const customActionHandler = action.error?.customActionHandler;
 
         const cameraJitsiTrackErrorMsg
                 = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
@@ -132,7 +134,9 @@ MiddlewareRegistry.register(store => next => action => {
         store.dispatch(showWarningNotification({
             description: additionalCameraErrorMsg,
             descriptionKey: cameraErrorMsg,
-            titleKey
+            titleKey,
+            customActionNameKey,
+            customActionHandler
         }));
 
         if (isPrejoinPageVisible(store.getState())) {
