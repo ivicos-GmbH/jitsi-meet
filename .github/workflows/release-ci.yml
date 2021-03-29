@@ -25,6 +25,8 @@ jobs:
       - run: make
       - name: Generate Debian package
         run: bash ./scripts/generate-package.sh
+      - name: Generate external JS file for client
+        run: bash ./scripts/generate-js-api.sh
       - name: Create tag
         uses: actions/github-script@v3
         with:
@@ -48,5 +50,7 @@ jobs:
             artifacts/jitsi-meet-*.deb
             artifacts/jitsi-meet-*.buildinfo
             artifacts/jitsi-meet-*.changes
+            artifacts/external_api.min.js
+            artifacts/external_api.min.map
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
