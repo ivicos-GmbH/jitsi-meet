@@ -2952,32 +2952,6 @@ export default {
     },
 
     /**
-     * Set background image/color for the room.
-     * @param {String} backgroundImageUrl optional image URL for the background
-     * @param {String} backgroundColor optional color for the background
-     * @param {Function} listener the listener.
-     */
-    setBackgroundImage(backgroundImageUrl, backgroundColor) {
-        const state = APP.store.getState();
-        const localParticipant = getLocalParticipant(state);
-        const backgroundData = `${backgroundColor}|${backgroundImageUrl}`;
-
-        if (
-            !state['features/base/conference']?.conference
-            || backgroundData === localParticipant?.backgroundData
-        ) {
-            return;
-        }
-
-        // Update local participants background information
-        APP.store.dispatch(participantUpdated({
-            id: localParticipant.id,
-            local: localParticipant.local,
-            backgroundData
-        }));
-    },
-
-    /**
      * Changes the display name for the local user
      * @param nickname {string} the new display name
      */
