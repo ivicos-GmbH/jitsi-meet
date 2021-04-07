@@ -79,6 +79,7 @@ const events = {
     'feedback-submitted': 'feedbackSubmitted',
     'feedback-prompt-displayed': 'feedbackPromptDisplayed',
     'filmstrip-display-changed': 'filmstripDisplayChanged',
+    'foreground-overlay-updated': 'foregroundOverlayUpdated',
     'incoming-message': 'incomingMessage',
     'log': 'log',
     'mic-error': 'micError',

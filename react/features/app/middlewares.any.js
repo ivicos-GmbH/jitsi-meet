@@ -29,6 +29,7 @@ import '../display-name/middleware';
 import '../etherpad/middleware';
 import '../filmstrip/middleware';
 import '../follow-me/middleware';
+import '../foreground-overlay/middleware';
 import '../invite/middleware';
 import '../large-video/middleware';
 import '../lobby/middleware';
