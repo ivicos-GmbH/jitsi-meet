@@ -45,6 +45,7 @@ import '../recent-list/reducer';
 import '../recording/reducer';
 import '../room-background/reducer';
 import '../settings/reducer';
+import '../speaker-stats/reducer';
 import '../subtitles/reducer';
 import '../toolbox/reducer';
 import '../transcribing/reducer';

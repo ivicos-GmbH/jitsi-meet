@@ -40,6 +40,11 @@ import { getActiveSession } from '../../react/features/recording/functions';
 import {
     setBackgroundImage
 } from '../../react/features/room-background/actions';
+import {
+    getSpeakerStats,
+    startSpeakerStatsCollect,
+    stopSpeakerStatsCollect
+} from '../../react/features/speaker-stats/actions';
 import { toggleTileView, setTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality';
@@ -87,6 +92,18 @@ function initCommands() {
         'display-name': displayName => {
             sendAnalytics(createApiEvent('display.name.changed'));
             APP.conference.changeLocalDisplayName(displayName);
+        },
+        'get-speaker-stats': (repeatedRequest, intervalRequest) => {
+            logger.debug('Get speaker stats command received');
+            if (repeatedRequest) {
+                APP.store.dispatch(startSpeakerStatsCollect(intervalRequest));
+            } else {
+                getSpeakerStats();
+            }
+        },
+        'stop-speaker-stats': () => {
+            logger.debug('Stop collecting speaker stats command received');
+            APP.store.dispatch(stopSpeakerStatsCollect());
         },
         'mute-everyone': mediaType => {
             const muteMediaType = mediaType ? mediaType : MEDIA_TYPE.AUDIO;
@@ -1211,6 +1228,43 @@ class API {
             overlayImageUrl,
             overlayColor,
             mode
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that new speaker stats data are available.
+     *
+     * @param {Object} speakerData - List of participants with their corresponding speaking time.
+     * @returns {void}
+     */
+    notifySpeakerStatsReceived(speakerData: Object) {
+        this._sendEvent({
+            name: 'speaker-stats-updated',
+            speakerData
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that the speaker stats collection has started.
+     *
+     * @param {number} intervalRequest - Interval between two consecutive request (ms).
+     * @returns {void}
+     */
+    notifySpeakerStatsCollectStarted(intervalRequest: number) {
+        this._sendEvent({
+            name: 'speaker-stats-collect-started',
+            intervalRequest
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that the speaker stats collection has stopped.
+     *
+     * @returns {void}
+     */
+    notifySpeakerStatsCollectStopped() {
+        this._sendEvent({
+            name: 'speaker-stats-collect-stopped'
         });
     }
 

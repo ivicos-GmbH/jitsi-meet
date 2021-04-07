@@ -33,6 +33,8 @@ const commands = {
     e2eeKey: 'e2ee-key',
     email: 'email',
     toggleLobby: 'toggle-lobby',
+    getSpeakerStats: 'get-speaker-stats',
+    stopSpeakerStats: 'stop-speaker-stats',
     hangup: 'video-hangup',
     intiatePrivateChat: 'initiate-private-chat',
     kickParticipant: 'kick-participant',
@@ -93,6 +95,9 @@ const events = {
     'raise-hand-updated': 'raiseHandUpdated',
     'recording-status-changed': 'recordingStatusChanged',
     'room-background-updated': 'roomBackgroundUpdated',
+    'speaker-stats-collect-started': 'speakerStatsCollectStarted',
+    'speaker-stats-collect-stopped': 'speakerStatsCollectStopped',
+    'speaker-stats-updated': 'speakerStatsUpdated',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
     'video-conference-left': 'videoConferenceLeft',
@@ -1144,5 +1149,33 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             overlayColor,
             mode
         );
+    }
+
+    /**
+     * Get speaker statistics for the room.
+     *
+     * @returns {void}
+     */
+    getSpeakerStats() {
+        this.executeCommand('getSpeakerStats', false, 0);
+    }
+
+    /**
+     * Start collecting speaker stats.
+     *
+     * @param { number } intervalRequest - Interval (ms) between each speaker stats notification.
+     * @returns {void}
+     */
+    startCollectSpeakerStats(intervalRequest = 1000) {
+        this.executeCommand('getSpeakerStats', true, intervalRequest);
+    }
+
+    /**
+     * Stop collecting speaker stats.
+     *
+     * @returns {void}
+     */
+    stopCollectSpeakerStats() {
+        this.executeCommand('stopSpeakerStats');
     }
 }
