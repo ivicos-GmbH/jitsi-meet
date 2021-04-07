@@ -1196,6 +1196,23 @@ class API {
     }
 
     /**
+     * Notify external application (if API is enabled) that user updated its foreground overlay information.
+     *
+     * @param {string} overlayImageUrl - URL of the overlay image.
+     * @param {string} overlayColor - Color code of the overlay.
+     * @param {string} mode - Combination mode of the overlay.
+     * @returns {void}
+     */
+    notifyForegroundOverlayChanged(overlayImageUrl: string, overlayColor: string, mode: string) {
+        this._sendEvent({
+            name: 'foreground-overlay-updated',
+            overlayImageUrl,
+            overlayColor,
+            mode
+        });
+    }
+
+    /**
      * Disposes the allocated resources.
      *
      * @returns {void}

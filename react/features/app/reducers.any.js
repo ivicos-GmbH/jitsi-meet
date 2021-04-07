@@ -34,6 +34,7 @@ import '../dynamic-branding/reducer';
 import '../etherpad/reducer';
 import '../filmstrip/reducer';
 import '../follow-me/reducer';
+import '../foreground-overlay/reducer';
 import '../google-api/reducer';
 import '../invite/reducer';
 import '../large-video/reducer';
