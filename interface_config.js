@@ -213,7 +213,8 @@ var interfaceConfig = {
     //     'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
     //     'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
     //     'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-    //     'tileview', 'select-background', 'download', 'help', 'mute-everyone', 'mute-video-everyone', 'security', 'select-room-background'
+    //     'tileview', 'select-background', 'download', 'help', 'mute-everyone', 'mute-video-everyone',
+    //     'security', 'select-room-background', 'select-foreground-overlay'
     // ],
 
     TOOLBAR_TIMEOUT: 4000,

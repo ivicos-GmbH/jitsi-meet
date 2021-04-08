@@ -9,20 +9,16 @@ import logger from './logger';
 /**
 * Signals the local participant is changing its foreground overlay.
 *
-* @param {string} overlayImageUrl - URL of the foreground shape ('' if none).
-* @param { string } overlayColor - Color of the overlay if no image is given.
-* @param { string } mode - Mode chosen for the overlay : Example 'fusion' if given background transparent,
-* 'circle' if a shape should be manually extracted from the overlay (default).
+* @param {string} overlayOptions - Options defining the overlay wished by the user.
 * @returns {Promise}
 */
-export function setForegroundOverlay(overlayImageUrl: string, overlayColor: string, mode: string) {
+export function setForegroundOverlay(overlayOptions: Object) {
     return function(dispatch: (Object) => Object, getState: () => any) {
         const state = getState();
 
-        const overlayOptions = {
-            overlayImageUrl,
-            overlayColor,
-            mode
+        const overlayCombinedOptions = {
+            ...state['features/foreground-overlay'],
+            ...overlayOptions
         };
 
         if (state['features/foreground-overlay'] !== overlayOptions) {
@@ -34,13 +30,21 @@ export function setForegroundOverlay(overlayImageUrl: string, overlayColor: stri
                 return;
             }
 
-            return createForegroundOverlay(overlayImageUrl, overlayColor, mode)
+            return createForegroundOverlay(
+                overlayCombinedOptions.overlayImageUrl,
+                overlayCombinedOptions.overlayColor,
+                overlayCombinedOptions.mode)
                 .then(foregroundOverlayEffectInstance =>
                     jitsiTrack.setEffect(
-                        overlayImageUrl === '' && overlayColor === '' ? undefined : foregroundOverlayEffectInstance
+                        overlayCombinedOptions.overlayImageUrl === ''
+                        && overlayCombinedOptions.overlayColor === ''
+                            ? undefined : foregroundOverlayEffectInstance
                     )
                         .then(() => {
-                            dispatch(newForegroundOverlaySet(overlayImageUrl, overlayColor, mode));
+                            dispatch(newForegroundOverlaySet(
+                                overlayCombinedOptions.overlayImageUrl,
+                                overlayCombinedOptions.overlayColor,
+                                overlayCombinedOptions.mode));
                         })
                         .catch(error => {
                             dispatch(newForegroundOverlaySet('', '', ''));

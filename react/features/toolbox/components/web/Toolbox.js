@@ -40,6 +40,7 @@ import { InviteMore } from '../../../conference';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
 import { openFeedbackDialog } from '../../../feedback';
+import { ForegroundOverlayButton } from '../../../foreground-overlay';
 import { beginAddPeople } from '../../../invite';
 import { openKeyboardShortcutsDialog } from '../../../keyboard-shortcuts';
 import { LocalRecordingInfoDialog } from '../../../local-recording';
@@ -992,6 +993,11 @@ class Toolbox extends Component<Props> {
                 key = { 'select-background' }
                 showLabel = { true }
                 visible = { !_screensharing && checkBlurSupport() } />,
+            this._shouldShowButton('select-foreground-overlay')
+             && <ForegroundOverlayButton
+                 key = { 'select-foreground-overlay' }
+                 showLabel = { true }
+                 visible = { true } />,
             this._shouldShowButton('select-room-background')
             && <RoomBackgroundButton
                 key = { 'select-room-background' }

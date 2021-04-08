@@ -4,35 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.7] - 2021-04-08
+### Added
+- Add UI for the foreground overlay functionality
+
 ## [1.1.6] - 2021-04-08
-## Changed
+### Changed
 - Deleting specific release branch to only rely on master to create release.
 
 ## [1.1.5] - 2021-04-07
-## Added
+### Added
 - Notify the client when a new foreground overlay is being set
 
 ## [1.1.4] - 2021-03-30
-## Added
+### Added
 - Removing versioning for bundle files in import
 
 ## [1.1.3] - 2021-03-29
-## Added
+### Added
 - Added external dependencies compiled file (external_api.js)
 
 ## [1.1.2] - 2021-03-24
-## Fixed
+### Fixed
 - Synchronization issue for the 'set room background' command
 
-## Added
+### Added
 - UI for the set room background feature
 
 ## [1.1.1] - 2021-03-23
-## Fixed
+### Fixed
 - Fixing video order in tile view after rebasing
 
 ## [1.1.0] - 2021-03-23
-## Added
+### Added
 - Updating the community version of Jitsi Meet (Rebasing with master)
 - Breaking change for video order predictability
 
@@ -45,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Adding the possibility to set a foreground overlay for each participant
 
 ## [1.0.4] - 2021-03-19
-## Added
+### Added
 - Adding an external endpoint to add a background image/color to the room
 
 ## [1.0.3] - 2021-03-19
