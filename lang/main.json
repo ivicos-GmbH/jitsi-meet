@@ -348,6 +348,10 @@
         "title": "Room Backgrounds",
         "removeBackground": "Remove room background"
     },
+    "foregroundOverlay": {
+        "title": "Foreground Overlays",
+        "removeForeground": "Remove foreground overlay"
+    },
     "feedback": {
         "average": "Average",
         "bad": "Bad",
@@ -765,7 +769,8 @@
             "toggleFilmstrip": "Toggle filmstrip",
             "videomute": "Toggle mute video",
             "selectBackground": "Select Background",
-            "selectRoomBackground": "Select the room background"
+            "selectRoomBackground": "Select the room background",
+            "selectForegroundOverlay": "Select a foreground"
         },
         "addPeople": "Add people to your call",
         "audioSettings": "Audio settings",
@@ -829,7 +834,8 @@
         "videomute": "Start / Stop camera",
         "videoSettings": "Video settings",
         "selectBackground": "Select background",
-        "selectRoomBackground": "Select the room background"
+        "selectRoomBackground": "Select the room background",
+        "selectForegroundOverlay": "Select the foreground"
     },
     "transcribing": {
         "ccButtonTooltip": "Start / Stop subtitles",

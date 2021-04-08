@@ -146,7 +146,9 @@ function initCommands() {
         'set-foreground-overlay': (overlayImageUrl, overlayColor, mode) => {
             logger.debug('Set foreground overlay command received');
 
-            APP.store.dispatch(setForegroundOverlay(overlayImageUrl, overlayColor, mode));
+            APP.store.dispatch(setForegroundOverlay({ overlayImageUrl,
+                overlayColor,
+                mode }));
         },
         'set-large-video-participant': participantId => {
             logger.debug('Set large video participant command received');
