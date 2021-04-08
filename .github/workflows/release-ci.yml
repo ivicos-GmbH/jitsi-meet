@@ -1,9 +1,9 @@
-name: Standard Build CI for release branch
+name: Standard Build CI for master branch
 
 on:
     push:
         branches:
-            - 'ivicos-release'
+            - 'master'
 
 jobs:
   build:

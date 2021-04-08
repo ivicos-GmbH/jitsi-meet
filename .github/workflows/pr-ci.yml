@@ -4,11 +4,9 @@ on:
     push:
         branches-ignore:
             - 'master'
-            - 'ivicos-release'
     pull_request:
         branches-ignore:
             - 'master'
-            - 'ivicos-release'
 
 jobs:
   build:
