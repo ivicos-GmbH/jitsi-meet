@@ -15,7 +15,8 @@ export const NOTIFICATION_TYPE = {
     INFO: 'info',
     NORMAL: 'normal',
     SUCCESS: 'success',
-    WARNING: 'warning'
+    WARNING: 'warning',
+    UNREACHABLE: 'unreachable'
 };
 
 /**

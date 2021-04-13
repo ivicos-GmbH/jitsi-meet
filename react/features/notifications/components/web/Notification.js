@@ -4,6 +4,7 @@ import Flag from '@atlaskit/flag';
 import EditorInfoIcon from '@atlaskit/icon/glyph/editor/info';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
 
@@ -34,6 +35,7 @@ const ICON_COLOR = {
  * @extends Component
  */
 class Notification extends AbstractNotification<Props> {
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -54,7 +56,7 @@ class Notification extends AbstractNotification<Props> {
         return (
             <Flag
                 actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
-                appearance = { appearance }
+                appearance = { this._getResolvedAppearance(appearance) }
                 description = { this._renderDescription() }
                 icon = { this._mapAppearanceToIcon() }
                 id = { uid }
@@ -95,6 +97,22 @@ class Notification extends AbstractNotification<Props> {
      */
     _onOpenSupportLink() {
         window.open(interfaceConfig.SUPPORT_URL, '_blank', 'noopener');
+    }
+
+    /**
+     * Gives back a native appearance type if the appearance requested is not existing
+     * for the Flag component
+     *
+     * @param {string} appearance - Requested appearance
+     * @private
+     * @returns {string}
+     */
+    _getResolvedAppearance(appearance){
+        const nativeAppearances = ['error','info','success','normal','warning']
+        if(nativeAppearances.includes(appearance)){
+            return appearance;
+        }
+        return 'normal';
     }
 
     /**
@@ -191,7 +209,13 @@ class Notification extends AbstractNotification<Props> {
                     secondaryColor = { secIconColor }
                     size = { iconSize } />
             );
-
+        case NOTIFICATION_TYPE.UNREACHABLE:
+            return (
+                <CrossCircleIcon
+                    label = { appearance }
+                    secondaryColor = { secIconColor }
+                    size = { iconSize } />
+            );
         default:
             return (
                 <EditorInfoIcon
