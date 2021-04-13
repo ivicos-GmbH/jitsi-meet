@@ -1,10 +1,10 @@
 // @flow
 
 import Flag from '@atlaskit/flag';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EditorInfoIcon from '@atlaskit/icon/glyph/editor/info';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
-import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
 
@@ -101,17 +101,19 @@ class Notification extends AbstractNotification<Props> {
 
     /**
      * Gives back a native appearance type if the appearance requested is not existing
-     * for the Flag component
+     * for the Flag component.
      *
-     * @param {string} appearance - Requested appearance
+     * @param {string} appearance - Requested appearance.
      * @private
      * @returns {string}
      */
-    _getResolvedAppearance(appearance){
-        const nativeAppearances = ['error','info','success','normal','warning']
-        if(nativeAppearances.includes(appearance)){
+    _getResolvedAppearance(appearance) {
+        const nativeAppearances = [ 'error', 'info', 'success', 'normal', 'warning' ];
+
+        if (nativeAppearances.includes(appearance)) {
             return appearance;
         }
+
         return 'normal';
     }
 

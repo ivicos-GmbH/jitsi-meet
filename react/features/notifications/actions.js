@@ -120,7 +120,7 @@ export function showWarningNotification(props: Object) {
  * @param {Object} props - The props needed to show the notification component.
  * @returns {Object}
  */
- export function showUnreachableNotification(props: Object) {
+export function showUnreachableNotification(props: Object) {
     return showNotification({
         ...props,
         appearance: NOTIFICATION_TYPE.UNREACHABLE
