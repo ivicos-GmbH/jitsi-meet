@@ -2,7 +2,7 @@
 
 import UIEvents from '../../../../service/UI/UIEvents';
 import { processExternalDeviceRequest } from '../../device-selection';
-import { showNotification, showWarningNotification } from '../../notifications';
+import { showNotification, showWarningNotification, showUnreachableNotification } from '../../notifications';
 import { replaceAudioTrackById, replaceVideoTrackById, setDeviceStatusWarning } from '../../prejoin/actions';
 import { isPrejoinPageVisible } from '../../prejoin/functions';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../app';
@@ -119,6 +119,8 @@ MiddlewareRegistry.register(store => next => action => {
         }
 
         const { message, name } = action.error;
+        const customActionNameKey = action.error?.customActionNameKey;
+        const customActionHandler = action.error?.customActionHandler;
 
         const cameraJitsiTrackErrorMsg
                 = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
@@ -129,10 +131,12 @@ MiddlewareRegistry.register(store => next => action => {
         const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
             ? 'deviceError.cameraPermission' : 'deviceError.cameraError';
 
-        store.dispatch(showWarningNotification({
+        store.dispatch(showUnreachableNotification({
             description: additionalCameraErrorMsg,
             descriptionKey: cameraErrorMsg,
-            titleKey
+            titleKey,
+            customActionNameKey,
+            customActionHandler
         }));
 
         if (isPrejoinPageVisible(store.getState())) {

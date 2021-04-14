@@ -158,6 +158,8 @@ export function getAvailableDevices() {
  * @param {string} error.name - The constant for the type of the error.
  * @param {string} error.message - Optional additional information about the
  * error.
+ * @param {string} error.customActionNameKey - Optional action name linked with the notification.
+ * @param {Function} error.customActionHandler - Optional function corresponding to the action.
  * @returns {{
  *     type: NOTIFY_CAMERA_ERROR,
  *     error: Object

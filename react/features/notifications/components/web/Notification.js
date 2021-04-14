@@ -1,6 +1,7 @@
 // @flow
 
 import Flag from '@atlaskit/flag';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EditorInfoIcon from '@atlaskit/icon/glyph/editor/info';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
@@ -34,6 +35,7 @@ const ICON_COLOR = {
  * @extends Component
  */
 class Notification extends AbstractNotification<Props> {
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -54,7 +56,7 @@ class Notification extends AbstractNotification<Props> {
         return (
             <Flag
                 actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
-                appearance = { appearance }
+                appearance = { this._getResolvedAppearance(appearance) }
                 description = { this._renderDescription() }
                 icon = { this._mapAppearanceToIcon() }
                 id = { uid }
@@ -98,6 +100,24 @@ class Notification extends AbstractNotification<Props> {
     }
 
     /**
+     * Gives back a native appearance type if the appearance requested is not existing
+     * for the Flag component.
+     *
+     * @param {string} appearance - Requested appearance.
+     * @private
+     * @returns {string}
+     */
+    _getResolvedAppearance(appearance) {
+        const nativeAppearances = [ 'error', 'info', 'success', 'normal', 'warning' ];
+
+        if (nativeAppearances.includes(appearance)) {
+            return appearance;
+        }
+
+        return 'normal';
+    }
+
+    /**
      * Creates action button configurations for the notification based on
      * notification appearance.
      *
@@ -125,14 +145,26 @@ class Notification extends AbstractNotification<Props> {
 
             return buttons;
         }
-        case NOTIFICATION_TYPE.WARNING:
-            return [
+        case NOTIFICATION_TYPE.WARNING: {
+            const buttons = [
                 {
                     content: this.props.t('dialog.Ok'),
                     onClick: this._onDismissed
                 }
             ];
 
+            if (this.props.customActionNameKey && this.props.customActionHandler) {
+                buttons.push({
+                    content: this.props.t(this.props.customActionNameKey),
+                    onClick: () => {
+                        this.props.customActionHandler();
+                        this._onDismissed();
+                    }
+                });
+            }
+
+            return buttons;
+        }
         default:
             if (this.props.customActionNameKey && this.props.customActionHandler) {
                 return [
@@ -179,7 +211,13 @@ class Notification extends AbstractNotification<Props> {
                     secondaryColor = { secIconColor }
                     size = { iconSize } />
             );
-
+        case NOTIFICATION_TYPE.UNREACHABLE:
+            return (
+                <CrossCircleIcon
+                    label = { appearance }
+                    secondaryColor = { secIconColor }
+                    size = { iconSize } />
+            );
         default:
             return (
                 <EditorInfoIcon

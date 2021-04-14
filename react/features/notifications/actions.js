@@ -115,6 +115,19 @@ export function showWarningNotification(props: Object) {
 }
 
 /**
+ * Queues an unreachable notification for display.
+ *
+ * @param {Object} props - The props needed to show the notification component.
+ * @returns {Object}
+ */
+export function showUnreachableNotification(props: Object) {
+    return showNotification({
+        ...props,
+        appearance: NOTIFICATION_TYPE.UNREACHABLE
+    });
+}
+
+/**
  * An array of names of participants that have joined the conference. The array
  * is replaced with an empty array as notifications are displayed.
  *
