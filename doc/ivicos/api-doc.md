@@ -78,31 +78,18 @@ api.addListener('foregroundOverlayUpdated', (e) => {
 
 A toolbar button can also be used in order to trigger the command. The corresponding ID is 'select-foreground-overlay'.
 
-## getSpeakerStats (coming soon)
+## getSpeakerStats
 
 ### Description
 
 The command enables to get via API command the speaker statistics given back as a JSON object.
-The user can either request the statistics once or at a regular interval.
+This command can be used to request the statistics once.
+It is possible to collect speaker stats at regular interval with the command `startCollectSpeakerStats` introduced after.
 
 ### Usage
 
-#### General
-
-```
-api.getSpeakerStats(intervalRequest) # intervalRequest being optional, in ms when given
-```
-
-#### One-time request
-
 ```
 api.getSpeakerStats()
-```
-
-#### 1s-spaced requests
-
-```
-api.getSpeakerStats(1000)
 ```
 
 ### Notification event
@@ -111,6 +98,57 @@ A notification event is sent back to the local participant with the speaker stat
 
 ```
 api.addListener('speakerStatsUpdated', (e) => {
+	console.log(e);
+});
+```
+
+## startCollectSpeakerStats
+
+### Description
+
+The command enables to start collecting speaker statistics at a regular interval.
+
+### Usage
+
+```
+api.startCollectSpeakerStats(intervalRequest)
+```
+* `intervalRequest` : time interval (in ms) between two requests, default is 1000ms
+
+### Notification event
+
+A notification event is sent back to the local participant with the speaker statistics once collected. In order to catch this event, the following code can be used. The event contains the speaker stats requested by the user :
+
+```
+api.addListener('speakerStatsUpdated', (e) => {
+	console.log(e);
+});
+```
+
+It is also possible to check whether the original command has been received successfully with :
+```
+api.addListener('speakerStatsCollectStarted', (e) => {
+	console.log(e);
+});
+```
+
+## stopCollectSpeakerStats
+
+### Description
+
+The command enables to stop collecting speaker statistics (if existing).
+
+### Usage
+
+```
+api.stopCollectSpeakerStats()
+```
+
+### Notification event
+
+It is  possible to check whether the stopping command has been received successfully with :
+```
+api.addListener('speakerStatsCollectStopped', (e) => {
 	console.log(e);
 });
 ```
