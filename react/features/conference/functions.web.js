@@ -85,7 +85,7 @@ export function getConferenceOptions(stateful) {
 
     options.applicationName = getName();
     options.getWiFiStatsMethod = getWiFiStatsMethod;
-    options.createVADProcessor = createNoiseGateProcessor;
+    options.createVADProcessor = createRnnoiseProcessor;
     options.billingId = getVpaasBillingId(state);
 
     // Disable CallStats, if requessted.

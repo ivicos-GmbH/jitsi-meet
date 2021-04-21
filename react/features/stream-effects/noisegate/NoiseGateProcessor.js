@@ -192,16 +192,16 @@ export default class NoiseGateProcessor {
         this._convertTo16BitPCM(pcmFrame);
         this._copyPCMSampleToWasmBuffer(pcmFrame);
 
-        const v = this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
+        // const v = this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
 
-        if (v > 0.5) {
-            console.log(v);
-        } else {
-            console.log('Closed');
-        }
+        // if (v > 0.5) {
+        //     console.log(v);
+        // } else {
+        //     console.log('Closed');
+        // }
 
-        return 0;
+        // return 0;
 
-        // return this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
+        return this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
     }
 }
