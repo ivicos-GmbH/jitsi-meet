@@ -213,6 +213,6 @@ export default class RnnoiseProcessor {
 
         createNoiseGateProcessor(v);
 
-        return this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
+        return v;
     }
 }

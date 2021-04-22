@@ -1459,15 +1459,18 @@ export default {
             _replaceLocalAudioTrackQueue.enqueue(onFinish => {
                 const state = APP.store.getState();
 
+                console.log('HEREHEHREHREHREHER');
+                console.log(APP);
+
                 // When the prejoin page is displayed localAudio is not set
                 // so just replace the audio track from the store with the new one.
                 if (isPrejoinPageVisible(state)) {
                     const oldTrack = getLocalJitsiAudioTrack(state);
 
                     return APP.store.dispatch(replaceLocalTrack(oldTrack, newTrack))
-                        .then(resolve)
-                        .catch(reject)
-                        .then(onFinish);
+                    .then(resolve)
+                    .catch(reject)
+                    .then(onFinish);
                 }
 
                 APP.store.dispatch(
