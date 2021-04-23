@@ -804,8 +804,9 @@ class Thumbnail extends Component<Props, State> {
             _videoTrack
         } = this.props;
         const { id } = _participant;
-        const { audioLevel, canPlayEventReceived } = this.state;
-        const volume = createNoiseGateProcessor(audioLevel);
+        const { audioLevel, canPlayEventReceived, volume } = this.state;
+        const initialVolume = volume === null || undefined ? 0 : volume;
+        const newVolume = createNoiseGateProcessor(audioLevel, initialVolume);
         const styles = this._getStyles();
         const containerClassName = this._getContainerClassName();
 
@@ -851,7 +852,7 @@ class Thumbnail extends Component<Props, State> {
                         id = { `remoteAudio_${audioTrackId || ''}` }
                         muted = { _startSilent }
                         onInitialVolumeSet = { this._onInitialVolumeSet }
-                        volume = { volume } />
+                        volume = { newVolume } />
                 }
                 <div className = 'videocontainer__background' />
                 <div className = 'videocontainer__toptoolbar'>
@@ -874,7 +875,7 @@ class Thumbnail extends Component<Props, State> {
                 </div>
                 <span className = 'remotevideomenu'>
                     <RemoteVideoMenuTriggerButton
-                        initialVolumeValue = { volume }
+                        initialVolumeValue = { newVolume }
                         onVolumeChange = { onVolumeChange }
                         participantID = { id } />
                 </span>
