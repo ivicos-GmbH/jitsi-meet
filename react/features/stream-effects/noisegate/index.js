@@ -1,20 +1,22 @@
 // @flow
-/* global APP */
-
 
 /**
  * Creates a new instance of NoiseGateProcessor.
  *
  * @returns {Promise<NoiseGateProcessor>}
- * @param {number} VADvalue - VAD value of input signal.
+ * @param {number} audioLevel - Audio level from remote audio track.
  */
-export function createNoiseGateProcessor(VADvalue: number) {
-    const state = APP.store.getState();
-    const localAudioTrack = state['features/base/tracks'][1].jitsiTrack;
+export function createNoiseGateProcessor(audioLevel: number) {
+    let volume;
 
-    // localAudioTrack._constraints.advanced = [ 'askjdn', 'kjashdkjnasd' ];
+    if (audioLevel < 0.07) {
+        volume = 0;
+    } else {
+        volume = 1;
+    }
 
-    console.log(localAudioTrack);
+    // console.log('VOLUME');
+    // console.log(audioLevel);
 
-    return 0;
+    return volume;
 }

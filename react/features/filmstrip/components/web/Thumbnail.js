@@ -26,6 +26,7 @@ import { ConnectionIndicator } from '../../../connection-indicator';
 import { DisplayName } from '../../../display-name';
 import { StatusIndicators, RaisedHandIndicator, DominantSpeakerIndicator } from '../../../filmstrip';
 import { PresenceLabel } from '../../../presence-status';
+import { createNoiseGateProcessor } from '../../../stream-effects/noisegate';
 import { getCurrentLayout, LAYOUTS } from '../../../video-layout';
 import { LocalVideoMenuTriggerButton, RemoteVideoMenuTriggerButton } from '../../../video-menu';
 import {
@@ -803,7 +804,8 @@ class Thumbnail extends Component<Props, State> {
             _videoTrack
         } = this.props;
         const { id } = _participant;
-        const { audioLevel, canPlayEventReceived, volume } = this.state;
+        const { audioLevel, canPlayEventReceived } = this.state;
+        const volume = createNoiseGateProcessor(audioLevel);
         const styles = this._getStyles();
         const containerClassName = this._getContainerClassName();
 
