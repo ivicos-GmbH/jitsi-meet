@@ -9,7 +9,7 @@ let volume = 1;
  * @param {number} volume - Current volume from the Thubnail.
  */
 export function createNoiseGateProcessor(audioLevel: number) {
-    const oldVolume = volume;
+    const oldVolume: number = volume;
     let newVolume;
 
     if (audioLevel <= 0.07) {
