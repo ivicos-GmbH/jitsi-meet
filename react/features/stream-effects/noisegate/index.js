@@ -1,5 +1,5 @@
 // @flow
-let volume = 1;
+let volume: number = 1;
 
 /**
  * Creates a new instance of NoiseGateProcessor.
@@ -10,7 +10,7 @@ let volume = 1;
  */
 export function createNoiseGateProcessor(audioLevel: number) {
     const oldVolume: number = volume;
-    let newVolume;
+    let newVolume: number = 0;
 
     if (audioLevel <= 0.07) {
         const reductedVolume = oldVolume - 0.1;
