@@ -805,8 +805,7 @@ class Thumbnail extends Component<Props, State> {
         } = this.props;
         const { id } = _participant;
         const { audioLevel, canPlayEventReceived, volume } = this.state;
-        const initialVolume = volume === null || undefined ? 0 : volume;
-        const newVolume = createNoiseGateProcessor(audioLevel, initialVolume);
+        const newVolume = createNoiseGateProcessor(audioLevel);
         const styles = this._getStyles();
         const containerClassName = this._getContainerClassName();
 
@@ -875,7 +874,7 @@ class Thumbnail extends Component<Props, State> {
                 </div>
                 <span className = 'remotevideomenu'>
                     <RemoteVideoMenuTriggerButton
-                        initialVolumeValue = { newVolume }
+                        initialVolumeValue = { volume }
                         onVolumeChange = { onVolumeChange }
                         participantID = { id } />
                 </span>
