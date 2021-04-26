@@ -1465,9 +1465,9 @@ export default {
                     const oldTrack = getLocalJitsiAudioTrack(state);
 
                     return APP.store.dispatch(replaceLocalTrack(oldTrack, newTrack))
-                        .then(resolve)
-                        .catch(reject)
-                        .then(onFinish);
+                    .then(resolve)
+                    .catch(reject)
+                    .then(onFinish);
                 }
 
                 APP.store.dispatch(

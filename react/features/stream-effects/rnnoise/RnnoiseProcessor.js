@@ -192,6 +192,8 @@ export default class RnnoiseProcessor {
         this._convertTo16BitPCM(pcmFrame);
         this._copyPCMSampleToWasmBuffer(pcmFrame);
 
-        return this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
+        const v = this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
+
+        return v;
     }
 }
