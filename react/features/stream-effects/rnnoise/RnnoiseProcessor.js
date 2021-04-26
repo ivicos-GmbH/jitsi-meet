@@ -1,7 +1,5 @@
 // @flow
 
-import { createNoiseGateProcessor } from '../noisegate/index.js';
-
 /**
  * Constant. Rnnoise default sample size, samples of different size won't work.
  */
