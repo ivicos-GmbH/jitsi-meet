@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.12] - 2021-04-26
 ### Added
 - NoiseGate Effect created using the Thumbnails volume and the current audioLevel of each remote participant.
+
 ## [1.1.11] - 2021-04-15
 ### Added
 - External API commands to access speaker stats
