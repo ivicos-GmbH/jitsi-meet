@@ -47,11 +47,6 @@ export default class RnnoiseProcessor {
     _wasmPcmInputF32Index: number;
 
     /**
-    //  * The Float32Array index representing the start point in the wasm heap of the _wasmPcmOutput buffer.
-    //  */
-    // _wasmPcmOutputF32Index: number;
-
-    /**
      * WASM dynamic memory buffer used as output for rnnoise processing method.
      */
     _wasmPcmOutput: Object;
@@ -86,8 +81,6 @@ export default class RnnoiseProcessor {
             // which is an array of bytes. This means we have to divide it by the size of a float to get the index
             // relative to a Float32 Array.
             this._wasmPcmInputF32Index = this._wasmPcmInput / 4;
-
-            // this._wasmPcmOutputF32Index = this._wasmPcmOutput / 4;
 
             this._context = this._wasmInterface._rnnoise_create();
         } catch (error) {
@@ -198,10 +191,6 @@ export default class RnnoiseProcessor {
 
         this._convertTo16BitPCM(pcmFrame);
         this._copyPCMSampleToWasmBuffer(pcmFrame);
-
-        // const pcmSampleOut = Array(pcmFrameLength).fill(0);
-
-        // this._wasmInterface.HEAPF32.set(pcmSampleOut, this._wasmPcmOutputF32Index);
 
         const v = this._wasmInterface._rnnoise_process_frame(this._context, this._wasmPcmOutput, this._wasmPcmInput);
 
