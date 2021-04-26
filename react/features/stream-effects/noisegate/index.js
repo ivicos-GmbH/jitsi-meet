@@ -14,6 +14,9 @@ export function createNoiseGateProcessor(audioLevel: number) {
     console.log('VOLUME');
     console.log(volume);
 
+    console.log('AUDIO LEVEL');
+    console.log(audioLevel);
+
     if (audioLevel <= 0.07) {
         const reductedVolume = oldVolume - 0.1;
 
