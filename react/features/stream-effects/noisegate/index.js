@@ -32,10 +32,10 @@ export function createNoiseGateProcessor(audioLevel: number) {
 
     volume = newVolume;
 
-    console.log('FIRST VOLUME');
-    console.log(oldVolume);
-    console.log('NEW VOLUME');
-    console.log(newVolume);
+    // console.log('FIRST VOLUME');
+    // console.log(oldVolume);
+    // console.log('NEW VOLUME');
+    // console.log(newVolume);
 
     return newVolume;
 }

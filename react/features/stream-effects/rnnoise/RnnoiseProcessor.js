@@ -75,11 +75,7 @@ export default class RnnoiseProcessor {
                 throw Error('Failed to create wasm input memory buffer!');
             }
 
-            // console.log('LOOK HERE!');
-
             this._wasmPcmOutput = this._wasmInterface._malloc(RNNOISE_BUFFER_SIZE);
-
-            // console.log(this._wasmPcmOutput);
 
             if (!this._wasmPcmOutput) {
                 wasmInterface._free(this._wasmPcmInput);
