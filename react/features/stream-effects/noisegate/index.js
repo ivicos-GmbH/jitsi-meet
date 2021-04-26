@@ -6,7 +6,6 @@ let volume: number = 1;
  *
  * @returns {Promise<NoiseGateProcessor>}
  * @param {number} audioLevel - Audio level from remote audio track.
- * @param {number} volume - Current volume from the Thubnail.
  */
 export function createNoiseGateProcessor(audioLevel: number) {
     const oldVolume: number = volume;
@@ -22,11 +21,11 @@ export function createNoiseGateProcessor(audioLevel: number) {
         }
 
     } else if (audioLevel > 0.07) {
-        const increasedVolume = oldVolume + 0.3;
+        const increasedVolume = oldVolume + 0.5;
 
-        if (oldVolume >= 0.7) {
+        if (oldVolume >= 0.5) {
             newVolume = 1;
-        } else if (oldVolume < 0.7) {
+        } else if (oldVolume < 0.5) {
             newVolume = increasedVolume;
         }
     }
