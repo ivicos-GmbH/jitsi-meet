@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.14] - 2021-04-28
 ### Added
 - Skip createNoiseGateProcessor and console.log 'audioLevel' and 'volume', to double check if even skipping the noise gate the audioLevel is 0.
+
 ## [1.1.13] - 2021-04-26
 ### Added
 - Enable console.log for volume, oldVolume and newVolume values.
