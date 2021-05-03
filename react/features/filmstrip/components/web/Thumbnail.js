@@ -26,6 +26,7 @@ import { ConnectionIndicator } from '../../../connection-indicator';
 import { DisplayName } from '../../../display-name';
 import { StatusIndicators, RaisedHandIndicator, DominantSpeakerIndicator } from '../../../filmstrip';
 import { PresenceLabel } from '../../../presence-status';
+import { createNoiseGateProcessor } from '../../../stream-effects/noisegate';
 import { getCurrentLayout, LAYOUTS } from '../../../video-layout';
 import { LocalVideoMenuTriggerButton, RemoteVideoMenuTriggerButton } from '../../../video-menu';
 import {
@@ -37,8 +38,6 @@ import {
 } from '../../constants';
 import { isVideoPlayable, computeDisplayMode } from '../../functions';
 import logger from '../../logger';
-
-// import { createNoiseGateProcessor } from '../../../stream-effects/noisegate';
 
 const JitsiTrackEvents = JitsiMeetJS.events.track;
 
@@ -806,8 +805,7 @@ class Thumbnail extends Component<Props, State> {
         } = this.props;
         const { id } = _participant;
         const { audioLevel, canPlayEventReceived, volume } = this.state;
-
-        // const newVolume = createNoiseGateProcessor(audioLevel);
+        const newVolume = createNoiseGateProcessor(audioLevel);
         const styles = this._getStyles();
         const containerClassName = this._getContainerClassName();
 
@@ -858,7 +856,7 @@ class Thumbnail extends Component<Props, State> {
                         id = { `remoteAudio_${audioTrackId || ''}` }
                         muted = { _startSilent }
                         onInitialVolumeSet = { this._onInitialVolumeSet }
-                        volume = { volume } />
+                        volume = { newVolume } />
                 }
                 <div className = 'videocontainer__background' />
                 <div className = 'videocontainer__toptoolbar'>
