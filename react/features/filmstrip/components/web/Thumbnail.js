@@ -26,6 +26,7 @@ import { ConnectionIndicator } from '../../../connection-indicator';
 import { DisplayName } from '../../../display-name';
 import { StatusIndicators, RaisedHandIndicator, DominantSpeakerIndicator } from '../../../filmstrip';
 import { PresenceLabel } from '../../../presence-status';
+import { createNoiseGateProcessor } from '../../../stream-effects/noisegate';
 import { getCurrentLayout, LAYOUTS } from '../../../video-layout';
 import { LocalVideoMenuTriggerButton, RemoteVideoMenuTriggerButton } from '../../../video-menu';
 import {
@@ -37,7 +38,6 @@ import {
 } from '../../constants';
 import { isVideoPlayable, computeDisplayMode } from '../../functions';
 import logger from '../../logger';
-import { createNoiseGateProcessor } from '../../../stream-effects/noisegate';
 
 const JitsiTrackEvents = JitsiMeetJS.events.track;
 
