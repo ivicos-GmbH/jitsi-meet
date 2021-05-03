@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.17] - 2021-05-03
+### Added
+- Adjust close/open timing for Noise Gate.
+
 ## [1.1.16] - 2021-05-03
 ### Added
 - Enable createNoisegateProcessor to test if it works after modifying campus-alpha-client config to enable audioLevels and set intervals.

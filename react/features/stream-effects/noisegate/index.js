@@ -12,7 +12,7 @@ export function createNoiseGateProcessor(audioLevel: number) {
     let newVolume: number = 0;
 
     if (audioLevel <= 0.07) {
-        const reductedVolume = oldVolume - 0.2;
+        const reductedVolume = oldVolume * 0.6;
 
         if (oldVolume <= 0.1) {
             newVolume = 0;
@@ -21,13 +21,7 @@ export function createNoiseGateProcessor(audioLevel: number) {
         }
 
     } else if (audioLevel > 0.07) {
-        const increasedVolume = oldVolume + 0.5;
-
-        if (oldVolume >= 0.5) {
-            newVolume = 1;
-        } else if (oldVolume < 0.5) {
-            newVolume = increasedVolume;
-        }
+        newVolume = 1;
     }
 
     volume = newVolume;

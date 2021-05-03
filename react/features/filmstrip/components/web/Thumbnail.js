@@ -829,11 +829,6 @@ class Thumbnail extends Component<Props, State> {
             display: 'none'
         };
 
-        console.log('AUDIO LEVEL');
-        console.log(audioLevel);
-        console.log('VOLUME');
-        console.log(volume);
-
         return (
             <span
                 className = { containerClassName }
