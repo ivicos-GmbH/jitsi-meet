@@ -14,10 +14,47 @@ export const _CONFIG_STORE_PREFIX = 'config.js';
  * @type Array<string>
  */
 export const TOOLBAR_BUTTONS = [
-    'microphone', 'camera', 'closedcaptions', 'desktop', 'embedmeeting', 'fullscreen',
-    'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
-    'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
-    'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-    'tileview', 'select-background', 'download', 'help', 'mute-everyone', 'mute-video-everyone',
-    'security', 'toggle-camera', 'select-room-background', 'select-foreground-overlay'
+    'camera',
+    'chat',
+    'closedcaptions',
+    'desktop',
+    'download',
+    'embedmeeting',
+    'etherpad',
+    'feedback',
+    'filmstrip',
+    'fullscreen',
+    'hangup',
+    'help',
+    'invite',
+    'livestreaming',
+    'microphone',
+    'mute-everyone',
+    'mute-video-everyone',
+    'participants-pane',
+    'profile',
+    'raisehand',
+    'recording',
+    'security',
+    'select-background',
+    'select-room-background',
+    'select-foreground-overlay',
+    'settings',
+    'shareaudio',
+    'sharedvideo',
+    'shortcuts',
+    'stats',
+    'tileview',
+    'toggle-camera',
+    'videoquality'
 ];
+
+/**
+ * The toolbar buttons to show on premeeting screens.
+ */
+export const PREMEETING_BUTTONS = [ 'microphone', 'camera', 'select-background', 'invite', 'settings' ];
+
+/**
+  * The toolbar buttons to show on 3rdParty prejoin screen.
+  */
+export const THIRD_PARTY_PREJOIN_BUTTONS = [ 'microphone', 'camera', 'select-background' ];

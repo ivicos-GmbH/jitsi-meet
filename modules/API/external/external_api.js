@@ -36,30 +36,39 @@ const commands = {
     getSpeakerStats: 'get-speaker-stats',
     stopSpeakerStats: 'stop-speaker-stats',
     hangup: 'video-hangup',
-    intiatePrivateChat: 'initiate-private-chat',
+    initiatePrivateChat: 'initiate-private-chat',
     kickParticipant: 'kick-participant',
     muteEveryone: 'mute-everyone',
     overwriteConfig: 'overwrite-config',
     password: 'password',
     pinParticipant: 'pin-participant',
     resizeLargeVideo: 'resize-large-video',
+    sendChatMessage: 'send-chat-message',
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendTones: 'send-tones',
     setBackgroundImage: 'set-background-image',
     setForegroundOverlay: 'set-foreground-overlay',
+    setFollowMe: 'set-follow-me',
     setLargeVideoParticipant: 'set-large-video-participant',
+    setParticipantVolume: 'set-participant-volume',
     setTileView: 'set-tile-view',
     setVideoQuality: 'set-video-quality',
     startRecording: 'start-recording',
+    startShareVideo: 'start-share-video',
     stopRecording: 'stop-recording',
+    stopShareVideo: 'stop-share-video',
     subject: 'subject',
     submitFeedback: 'submit-feedback',
     toggleAudio: 'toggle-audio',
+    toggleCamera: 'toggle-camera',
+    toggleCameraMirror: 'toggle-camera-mirror',
     toggleChat: 'toggle-chat',
     toggleFilmStrip: 'toggle-film-strip',
     toggleRaiseHand: 'toggle-raise-hand',
+    toggleShareAudio: 'toggle-share-audio',
     toggleShareScreen: 'toggle-share-screen',
     toggleTileView: 'toggle-tile-view',
+    toggleVirtualBackgroundDialog: 'toggle-virtual-background',
     toggleVideo: 'toggle-video'
 };
 
@@ -71,12 +80,15 @@ const events = {
     'avatar-changed': 'avatarChanged',
     'audio-availability-changed': 'audioAvailabilityChanged',
     'audio-mute-status-changed': 'audioMuteStatusChanged',
+    'browser-support': 'browserSupport',
     'camera-error': 'cameraError',
     'chat-updated': 'chatUpdated',
     'content-sharing-participants-changed': 'contentSharingParticipantsChanged',
+    'data-channel-opened': 'dataChannelOpened',
     'device-list-changed': 'deviceListChanged',
     'display-name-change': 'displayNameChange',
     'email-change': 'emailChange',
+    'error-occurred': 'errorOccurred',
     'endpoint-text-message-received': 'endpointTextMessageReceived',
     'feedback-submitted': 'feedbackSubmitted',
     'feedback-prompt-displayed': 'feedbackPromptDisplayed',
@@ -85,6 +97,9 @@ const events = {
     'incoming-message': 'incomingMessage',
     'log': 'log',
     'mic-error': 'micError',
+    'mouse-enter': 'mouseEnter',
+    'mouse-leave': 'mouseLeave',
+    'mouse-move': 'mouseMove',
     'outgoing-message': 'outgoingMessage',
     'participant-joined': 'participantJoined',
     'participant-kicked-out': 'participantKickedOut',
@@ -108,7 +123,8 @@ const events = {
     'dominant-speaker-changed': 'dominantSpeakerChanged',
     'subject-change': 'subjectChange',
     'suspend-detected': 'suspendDetected',
-    'tile-view-changed': 'tileViewChanged'
+    'tile-view-changed': 'tileViewChanged',
+    'toolbar-button-clicked': 'toolbarButtonClicked'
 };
 
 /**
@@ -168,7 +184,7 @@ function parseArguments(args) {
 
     switch (typeof firstArg) {
     case 'string': // old arguments format
-    case undefined: {
+    case 'undefined': {
         // Not sure which format but we are trying to parse the old
         // format because if the new format is used everything will be undefined
         // anyway.
@@ -765,6 +781,17 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     getCurrentDevices() {
         return getCurrentDevices(this._transport);
+    }
+
+    /**
+     * Returns any custom avatars backgrounds.
+     *
+     * @returns {Promise} - Resolves with the list of custom avatar backgrounds.
+     */
+    getCustomAvatarBackgrounds() {
+        return this._transport.sendRequest({
+            name: 'get-custom-avatar-backgrounds'
+        });
     }
 
     /**

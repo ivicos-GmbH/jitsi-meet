@@ -5,8 +5,7 @@ import React, { Component } from 'react';
 import { Watermarks } from '../../base/react';
 import { connect } from '../../base/redux';
 import { setColorAlpha } from '../../base/util';
-import { Subject } from '../../conference';
-import { fetchCustomBrandingData } from '../../dynamic-branding';
+import { SharedVideo } from '../../shared-video/components/web';
 import { Captions } from '../../subtitles/';
 
 declare var interfaceConfig: Object;
@@ -29,11 +28,6 @@ type Props = {
     _customBackgroundImageUrl: string,
 
     /**
-     * Fetches the branding data.
-     */
-    _fetchCustomBrandingData: Function,
-
-    /**
      * Prop that indicates whether the chat is open.
      */
     _isChatOpen: boolean,
@@ -52,14 +46,6 @@ type Props = {
  * @extends Component
  */
 class LargeVideo extends Component<Props> {
-    /**
-     * Implements React's {@link Component#componentDidMount}.
-     *
-     * @inheritdoc
-     */
-    componentDidMount() {
-        this.props._fetchCustomBrandingData();
-    }
 
     /**
      * Implements React's {@link Component#render()}.
@@ -68,18 +54,19 @@ class LargeVideo extends Component<Props> {
      * @returns {React$Element}
      */
     render() {
+        const {
+            _isChatOpen,
+            _noAutoPlayVideo
+        } = this.props;
         const style = this._getCustomSyles();
-        const className = `videocontainer${this.props._isChatOpen ? ' shift-right' : ''}`;
+        const className = `videocontainer${_isChatOpen ? ' shift-right' : ''}`;
 
         return (
             <div
                 className = { className }
                 id = 'largeVideoContainer'
                 style = { style }>
-                <Subject />
-                <div id = 'sharedVideo'>
-                    <div id = 'sharedVideoIFrame' />
-                </div>
+                <SharedVideo />
                 <div id = 'etherpad' />
 
                 <Watermarks />
@@ -101,9 +88,11 @@ class LargeVideo extends Component<Props> {
                       * another container for the background and the
                       * largeVideoWrapper in order to hide/show them.
                       */}
-                    <div id = 'largeVideoWrapper'>
+                    <div
+                        id = 'largeVideoWrapper'
+                        role = 'figure' >
                         <video
-                            autoPlay = { !this.props._noAutoPlayVideo }
+                            autoPlay = { !_noAutoPlayVideo }
                             id = 'largeVideo'
                             muted = { true }
                             playsInline = { true } /* for Safari on iOS to work */ />
@@ -187,8 +176,4 @@ function _mapStateToProps(state) {
     };
 }
 
-const _mapDispatchToProps = {
-    _fetchCustomBrandingData: fetchCustomBrandingData
-};
-
-export default connect(_mapStateToProps, _mapDispatchToProps)(LargeVideo);
+export default connect(_mapStateToProps)(LargeVideo);

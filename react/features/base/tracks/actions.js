@@ -55,9 +55,12 @@ export function createDesiredLocalTracks(...desiredTypes) {
         dispatch(destroyLocalDesktopTrackIfExists());
 
         if (desiredTypes.length === 0) {
-            const { audio, video } = state['features/base/media'];
+            const { video } = state['features/base/media'];
 
-            audio.muted || desiredTypes.push(MEDIA_TYPE.AUDIO);
+            // XXX: Always create the audio track early, even if it will be muted.
+            // This fixes a timing issue when adding the track to the conference which
+            // manifests primarily on iOS 15.
+            desiredTypes.push(MEDIA_TYPE.AUDIO);
 
             // XXX When the app is coming into the foreground from the
             // background in order to handle a URL, it may realize the new
@@ -226,7 +229,7 @@ export function noDataFromSource(track) {
  * @returns {Function}
  */
 export function showNoDataFromSourceVideoError(jitsiTrack) {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         let notificationInfo;
 
         const track = getTrackByJitsiTrack(getState()['features/base/tracks'], jitsiTrack);
@@ -238,12 +241,11 @@ export function showNoDataFromSourceVideoError(jitsiTrack) {
         if (track.isReceivingData) {
             notificationInfo = undefined;
         } else {
-            const notificationAction = showErrorNotification({
+            const notificationAction = await dispatch(showErrorNotification({
                 descriptionKey: 'dialog.cameraNotSendingData',
                 titleKey: 'dialog.cameraNotSendingDataTitle'
-            });
+            }));
 
-            dispatch(notificationAction);
             notificationInfo = {
                 uid: notificationAction.uid
             };
@@ -256,13 +258,22 @@ export function showNoDataFromSourceVideoError(jitsiTrack) {
  * Signals that the local participant is ending screensharing or beginning the
  * screensharing flow.
  *
+ * @param {boolean} enabled - The state to toggle screen sharing to.
+ * @param {boolean} audioOnly - Only share system audio.
+ * @param {boolean} ignoreDidHaveVideo - Wether or not to ignore if video was on when sharing started.
  * @returns {{
  *     type: TOGGLE_SCREENSHARING,
+ *     on: boolean,
+ *     audioOnly: boolean,
+ *     ignoreDidHaveVideo: boolean
  * }}
  */
-export function toggleScreensharing() {
+export function toggleScreensharing(enabled, audioOnly = false, ignoreDidHaveVideo = false) {
     return {
-        type: TOGGLE_SCREENSHARING
+        type: TOGGLE_SCREENSHARING,
+        enabled,
+        audioOnly,
+        ignoreDidHaveVideo
     };
 }
 
@@ -354,7 +365,7 @@ function replaceStoredTracks(oldTrack, newTrack) {
  * @returns {{ type: TRACK_ADDED, track: Track }}
  */
 export function trackAdded(track) {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         track.on(
             JitsiTrackEvents.TRACK_MUTE_CHANGED,
             () => dispatch(trackMutedChanged(track)));
@@ -381,12 +392,10 @@ export function trackAdded(track) {
             track.on(JitsiTrackEvents.NO_DATA_FROM_SOURCE, () => dispatch(noDataFromSource({ jitsiTrack: track })));
             if (!isReceivingData) {
                 if (mediaType === MEDIA_TYPE.AUDIO) {
-                    const notificationAction = showNotification({
+                    const notificationAction = await dispatch(showNotification({
                         descriptionKey: 'dialog.micNotSendingData',
                         titleKey: 'dialog.micNotSendingDataTitle'
-                    });
-
-                    dispatch(notificationAction);
+                    }));
 
                     // Set the notification ID so that other parts of the application know that this was
                     // displayed in the context of the current device.
