@@ -70,10 +70,13 @@ export default class MessageContainer extends AbstractMessageContainer<Props> {
 
         return (
             <div
+                aria-labelledby = 'chat-header'
                 id = 'chatconversation'
                 onScroll = { this._onChatScroll }
-                ref = { this._messageListRef }>
-                { messages}
+                ref = { this._messageListRef }
+                role = 'log'
+                tabIndex = { 0 }>
+                { messages }
                 <div ref = { this._messagesListEndRef } />
             </div>
         );

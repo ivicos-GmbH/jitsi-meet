@@ -3,8 +3,10 @@
 import {
     notifyCameraError
 } from '../devices';
+import { isMobileBrowser } from '../environment/utils';
 import JitsiMeetJS, { JitsiTrackErrors, browser } from '../lib-jitsi-meet';
 import { MEDIA_TYPE, VIDEO_TYPE, setAudioMuted } from '../media';
+import { toState } from '../redux';
 import {
     getUserSelectedCameraDeviceId,
     getUserSelectedMicDeviceId
@@ -12,6 +14,60 @@ import {
 
 import loadEffects from './loadEffects';
 import logger from './logger';
+
+/**
+ * Returns root tracks state.
+ *
+ * @param {Object} state - Global state.
+ * @returns {Object} Tracks state.
+ */
+export const getTrackState = state => state['features/base/tracks'];
+
+/**
+ * Checks if the passed media type is muted for the participant.
+ *
+ * @param {Object} participant - Participant reference.
+ * @param {MEDIA_TYPE} mediaType - Media type.
+ * @param {Object} state - Global state.
+ * @returns {boolean} - Is the media type muted for the participant.
+ */
+export function isParticipantMediaMuted(participant, mediaType, state) {
+    if (!participant) {
+        return false;
+    }
+
+    const tracks = getTrackState(state);
+
+    if (participant?.local) {
+        return isLocalTrackMuted(tracks, mediaType);
+    } else if (!participant?.isFakeParticipant) {
+        return isRemoteTrackMuted(tracks, mediaType, participant.id);
+    }
+
+    return true;
+}
+
+/**
+ * Checks if the participant is audio muted.
+ *
+ * @param {Object} participant - Participant reference.
+ * @param {Object} state - Global state.
+ * @returns {boolean} - Is audio muted for the participant.
+ */
+export function isParticipantAudioMuted(participant, state) {
+    return isParticipantMediaMuted(participant, MEDIA_TYPE.AUDIO, state);
+}
+
+/**
+ * Checks if the participant is video muted.
+ *
+ * @param {Object} participant - Participant reference.
+ * @param {Object} state - Global state.
+ * @returns {boolean} - Is video muted for the participant.
+ */
+export function isParticipantVideoMuted(participant, state) {
+    return isParticipantMediaMuted(participant, MEDIA_TYPE.VIDEO, state);
+}
 
 /**
  * Creates a local video track for presenter. The constraints are computed based
@@ -312,7 +368,7 @@ export function getLocalVideoType(tracks) {
  * @returns {Object}
  */
 export function getLocalJitsiVideoTrack(state) {
-    const track = getLocalVideoTrack(state['features/base/tracks']);
+    const track = getLocalVideoTrack(getTrackState(state));
 
     return track?.jitsiTrack;
 }
@@ -324,7 +380,7 @@ export function getLocalJitsiVideoTrack(state) {
  * @returns {Object}
  */
 export function getLocalJitsiAudioTrack(state) {
-    const track = getLocalAudioTrack(state['features/base/tracks']);
+    const track = getLocalAudioTrack(getTrackState(state));
 
     return track?.jitsiTrack;
 }
@@ -414,7 +470,7 @@ export function isLocalTrackMuted(tracks, mediaType) {
  * @returns {boolean}
  */
 export function isLocalVideoTrackDesktop(state) {
-    const videoTrack = getLocalVideoTrack(state['features/base/tracks']);
+    const videoTrack = getLocalVideoTrack(getTrackState(state));
 
     return videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 }
@@ -489,4 +545,17 @@ export function setTrackMuted(track, muted) {
             maybeShowErrorDialog(errorAndRetry);
         }
     });
+}
+
+/**
+ * Determines whether toggle camera should be enabled or not.
+ *
+ * @param {Function|Object} stateful - The redux store or {@code getState} function.
+ * @returns {boolean} - Whether toggle camera should be enabled.
+ */
+export function isToggleCameraEnabled(stateful) {
+    const state = toState(stateful);
+    const { videoInput } = state['features/base/devices'].availableDevices;
+
+    return isMobileBrowser() && videoInput.length > 1;
 }

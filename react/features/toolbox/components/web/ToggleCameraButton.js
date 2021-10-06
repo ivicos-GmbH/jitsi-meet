@@ -1,11 +1,10 @@
 // @flow
 
-import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n';
 import { IconCameraRefresh } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
-import { isLocalCameraTrackMuted, toggleCamera } from '../../../base/tracks';
+import { isLocalCameraTrackMuted, isToggleCameraEnabled, toggleCamera } from '../../../base/tracks';
 
 /**
  * The type of the React {@code Component} props of {@link ToggleCameraButton}.
@@ -42,7 +41,15 @@ class ToggleCameraButton extends AbstractButton<Props, any> {
      * @returns {void}
      */
     _handleClick() {
-        this.props.dispatch(toggleCamera());
+        const { dispatch, handleClick } = this.props;
+
+        if (handleClick) {
+            handleClick();
+
+            return;
+        }
+
+        dispatch(toggleCamera());
     }
 
     /**
@@ -65,12 +72,11 @@ class ToggleCameraButton extends AbstractButton<Props, any> {
 function mapStateToProps(state): Object {
     const { enabled: audioOnly } = state['features/base/audio-only'];
     const tracks = state['features/base/tracks'];
-    const { videoInput } = state['features/base/devices'].availableDevices;
 
     return {
         _audioOnly: Boolean(audioOnly),
         _videoMuted: isLocalCameraTrackMuted(tracks),
-        visible: isMobileBrowser() && videoInput.length > 1
+        visible: isToggleCameraEnabled(state)
     };
 }
 

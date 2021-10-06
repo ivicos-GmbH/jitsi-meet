@@ -1,4 +1,4 @@
-# Jitsi Meet - Secure, Simple and Scalable Video Conferences
+# <p align="center">Jitsi Meet</p>
 
 This repository is a fork of the official Jitsi Meet repository (https://github.com/jitsi/jitsi-meet). Most of the features contained in this fork come from the original repository. A few additional custom features have been added for an Ivicos Jitsi Meet version. The deployment/release process has also been adapted.
 The documentation for the features can be found in `doc/ivicos` and the usage is described in `USAGE.md` (repository setup and deployment procedure).
@@ -12,4 +12,8 @@ Jitsi Meet is an open-source (Apache) WebRTC JavaScript application that uses [J
 
 ## Acknowledgements
 
-Jitsi Meet started out as a sample conferencing application using Jitsi Videobridge. It was originally developed by ESTOS' developer Philipp Hancke who then contributed it to the community where development continues with joint forces!
+<footer>
+<p align="center" style="font-size: smaller;">
+Built with ❤️ by the Jitsi team at <a href="https://8x8.com" target="_blank">8x8</a> and our community.
+</p>
+</footer>

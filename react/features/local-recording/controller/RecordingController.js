@@ -1,5 +1,7 @@
 /* @flow */
 
+import Bourne from '@hapi/bourne';
+
 import { i18next } from '../../base/i18n';
 import logger from '../logger';
 import {
@@ -422,15 +424,15 @@ class RecordingController {
     getParticipantsStats() {
         const members
             = this._conference.getParticipants()
-                .map(member => {
-                    return {
-                        id: member.getId(),
-                        displayName: member.getDisplayName(),
-                        recordingStats:
-                            JSON.parse(member.getProperty(PROPERTY_STATS) || '{}'),
-                        isSelf: false
-                    };
-                });
+            .map(member => {
+                return {
+                    id: member.getId(),
+                    displayName: member.getDisplayName(),
+                    recordingStats:
+                        Bourne.parse(member.getProperty(PROPERTY_STATS) || '{}'),
+                    isSelf: false
+                };
+            });
 
         // transform into a dictionary for consistent ordering
         const result = {};

@@ -50,6 +50,7 @@ const JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP = {
     }
 };
 
+const WARNING_DISPLAY_TIMER = 4000;
 
 /**
  * A listener for device permissions changed reported from lib-jitsi-meet.
@@ -137,7 +138,7 @@ MiddlewareRegistry.register(store => next => action => {
             titleKey,
             customActionNameKey,
             customActionHandler
-        }));
+        }, WARNING_DISPLAY_TIMER));
 
         if (isPrejoinPageVisible(store.getState())) {
             store.dispatch(setDeviceStatusWarning(titleKey));
@@ -166,7 +167,7 @@ MiddlewareRegistry.register(store => next => action => {
             description: additionalMicErrorMsg,
             descriptionKey: micErrorMsg,
             titleKey
-        }));
+        }, WARNING_DISPLAY_TIMER));
 
         if (isPrejoinPageVisible(store.getState())) {
             store.dispatch(setDeviceStatusWarning(titleKey));

@@ -305,13 +305,17 @@ class LocalRecordingInfoDialog extends Component<Props, State> {
             <div>
                 <div className = 'localrec-control-action-links'>
                     <div className = 'localrec-control-action-link'>
-                        {isEngaged ? <a
-                            onClick = { this._onStop }>
-                            {t('localRecording.stop')}
+                        { isEngaged ? <a
+                            onClick = { this._onStop }
+                            role = 'button'
+                            tabIndex = { 0 }>
+                            { t('localRecording.stop') }
                         </a>
                             : <a
-                                onClick = { this._onStart }>
-                                {t('localRecording.start')}
+                                onClick = { this._onStart }
+                                role = 'button'
+                                tabIndex = { 0 }>
+                                { t('localRecording.start') }
                             </a>
                         }
                     </div>
