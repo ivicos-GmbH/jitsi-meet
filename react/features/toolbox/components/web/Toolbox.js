@@ -27,7 +27,6 @@ import { ChatButton } from '../../../chat/components';
 import { DominantSpeakerName } from '../../../display-name';
 import { EmbedMeetingButton } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
-import { ForegroundOverlayButton } from '../../../foreground-overlay';
 import { FeedbackButton } from '../../../feedback';
 import { InviteButton } from '../../../invite/components/add-people-dialog';
 import { isVpaasMeeting } from '../../../jaas/functions';
@@ -47,7 +46,6 @@ import {
     LiveStreamButton,
     RecordButton
 } from '../../../recording';
-import { RoomBackgroundButton } from '../../../room-background';
 import {
     isScreenAudioSupported,
     isScreenVideoShared,
@@ -92,6 +90,9 @@ import Separator from './Separator';
 import ShareDesktopButton from './ShareDesktopButton';
 import ToggleCameraButton from './ToggleCameraButton';
 import VideoSettingsButton from './VideoSettingsButton';
+
+// import { RoomBackgroundButton } from '../../../room-background';
+// import { ForegroundOverlayButton } from '../../../foreground-overlay';
 
 /**
  * The type of the React {@code Component} props of {@link Toolbox}.

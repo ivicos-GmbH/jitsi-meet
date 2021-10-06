@@ -4,6 +4,8 @@ import { jitsiLocalStorage } from '@jitsi/js-utils';
 import EventEmitter from 'events';
 import Logger from 'jitsi-meet-logger';
 
+import { setSharedVideoStatus } from '../../actions.any';
+
 import { openConnection } from './connection';
 import { ENDPOINT_TEXT_MESSAGE_NAME } from './modules/API/constants';
 import { AUDIO_ONLY_SCREEN_SHARE_NO_TRACK } from './modules/UI/UIErrors';
@@ -2467,8 +2469,8 @@ export default {
                             await stream.setEffect(this._mixerEffect);
                         }
 
-                    return this.useAudioStream(stream);
-                })
+                        return this.useAudioStream(stream);
+                    })
                 .then(() => {
                     const localAudio = getLocalJitsiAudioTrack(APP.store.getState());
 
@@ -2480,8 +2482,8 @@ export default {
                     }
                     logger.log(`switched local audio device: ${localAudio?.getDeviceId()}`);
 
-                        this._updateAudioDeviceId();
-                    })
+                    this._updateAudioDeviceId();
+                })
                     .catch(err => {
                         APP.store.dispatch(notifyMicError(err));
                     });

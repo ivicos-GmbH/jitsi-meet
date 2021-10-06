@@ -35,10 +35,10 @@ import { openChat } from '../../react/features/chat/actions.web';
 import { processExternalDeviceRequest } from '../../react/features/device-selection/functions';
 import { isEnabled as isDropboxEnabled } from '../../react/features/dropbox';
 import { toggleE2EE } from '../../react/features/e2ee/actions';
+import { setVolume } from '../../react/features/filmstrip';
 import {
     setForegroundOverlay
 } from '../../react/features/foreground-overlay/actions';
-import { setVolume } from '../../react/features/filmstrip';
 import { invite } from '../../react/features/invite';
 import {
     selectParticipantInLargeVideo
@@ -53,14 +53,14 @@ import { getActiveSession } from '../../react/features/recording/functions';
 import {
     setBackgroundImage
 } from '../../react/features/room-background/actions';
+import { isScreenAudioSupported } from '../../react/features/screen-share';
+import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
+import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
 import {
     getSpeakerStats,
     startSpeakerStatsCollect,
     stopSpeakerStatsCollect
 } from '../../react/features/speaker-stats/actions';
-import { isScreenAudioSupported } from '../../react/features/screen-share';
-import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
-import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
 import { toggleTileView, setTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality';
@@ -1386,6 +1386,7 @@ class API {
             localId
         });
     }
+
     /**
      * Notify external application (if API is enabled) that an error occured.
      *
@@ -1415,6 +1416,7 @@ class API {
             mode
         });
     }
+
     /**
      * Notify external application ( if API is enabled) that a toolbar button was clicked.
      *
@@ -1464,6 +1466,7 @@ class API {
             name: 'speaker-stats-collect-stopped'
         });
     }
+
     /**
      * Notify external application (if API is enabled) wether the used browser is supported or not.
      *
