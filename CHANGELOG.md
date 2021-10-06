@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.20] - 2021-10-06
 ### Updated
-- Updated form the last version of the Jitsi official repo.
+- Updated from the last version of the Jitsi official repo.
 
 ## [1.1.19] - 2021-05-07
 ### Added
