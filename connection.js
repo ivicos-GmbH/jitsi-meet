@@ -88,17 +88,18 @@ function checkForAttachParametersAndConnect(id, password, connection) {
 export async function connect(id, password, roomName) {
     const connectionConfig = Object.assign({}, config);
     const state = APP.store.getState();
-    let { jwt } = state['features/base/jwt'];
-    const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
+    const { jwt } = state['features/base/jwt'];
 
-    if (!iAmRecorder && !iAmSipGateway && isVpaasMeeting(state)) {
-        await APP.store.dispatch(getCustomerDetails());
+    // const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
 
-        if (!jwt) {
-            jwt = await getJaasJWT(state);
-            APP.store.dispatch(setJWT(jwt));
-        }
-    }
+    // if (!iAmRecorder && !iAmSipGateway && isVpaasMeeting(state)) {
+    //     await APP.store.dispatch(getCustomerDetails());
+
+    //     if (!jwt) {
+    //         jwt = await getJaasJWT(state);
+    //         APP.store.dispatch(setJWT(jwt));
+    //     }
+    // }
 
     // Use Websocket URL for the web app if configured. Note that there is no 'isWeb' check, because there's assumption
     // that this code executes only on web browsers/electron. This needs to be changed when mobile and web are unified.
