@@ -322,18 +322,11 @@ class ConferenceConnector {
         // not enough rights to create conference
         case JitsiConferenceErrors.AUTHENTICATION_REQUIRED: {
 
-            const replaceParticipant = getReplaceParticipant(APP.store.getState());
-
             // Schedule reconnect to check if someone else created the room.
             this.reconnectTimeout = setTimeout(() => {
                 APP.store.dispatch(conferenceWillJoin(room));
-                room.join(null, replaceParticipant);
+                room.join(null);
             }, 5000);
-
-            const { password }
-                = APP.store.getState()['features/base/conference'];
-
-            AuthHandler.requireAuth(room, password);
 
             break;
         }
