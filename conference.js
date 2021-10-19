@@ -1,6 +1,6 @@
 /* global APP, JitsiMeetJS, config, interfaceConfig */
 
-import { jitsiLocalStorage } from '@jitsi/js-utils';
+// import { jitsiLocalStorage } from '@jitsi/js-utils';
 import EventEmitter from 'events';
 import Logger from 'jitsi-meet-logger';
 
@@ -413,10 +413,7 @@ class ConferenceConnector {
      *
      */
     connect() {
-        const replaceParticipant = getReplaceParticipant(APP.store.getState());
-
-        // the local storage overrides here and in connection.js can be used by jibri
-        room.join(jitsiLocalStorage.getItem('xmpp_conference_password_override'), replaceParticipant);
+        room.join();
     }
 }
 
