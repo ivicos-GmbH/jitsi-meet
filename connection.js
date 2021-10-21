@@ -92,16 +92,13 @@ export async function connect(id, password, roomName) {
 
     const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
 
-    console.log('iAmRecorder & iAmSipGateway jwt', jwt);
     if (!iAmRecorder && !iAmSipGateway && isVpaasMeeting(state)) {
         await APP.store.dispatch(getCustomerDetails());
 
         if (!jwt) {
-            console.log('!jwt', jwt);
             jwt = await getJaasJWT(state);
             APP.store.dispatch(setJWT(jwt));
         }
-        console.log('iAmRecorder jwt', jwt);
     }
 
     // Use Websocket URL for the web app if configured. Note that there is no 'isWeb' check, because there's assumption

@@ -1,6 +1,6 @@
 /* global APP, JitsiMeetJS, config, interfaceConfig */
 
-// import { jitsiLocalStorage } from '@jitsi/js-utils';
+import { jitsiLocalStorage } from '@jitsi/js-utils';
 import EventEmitter from 'events';
 import Logger from 'jitsi-meet-logger';
 
@@ -322,11 +322,18 @@ class ConferenceConnector {
         // not enough rights to create conference
         case JitsiConferenceErrors.AUTHENTICATION_REQUIRED: {
 
+            const replaceParticipant = getReplaceParticipant(APP.store.getState());
+
             // Schedule reconnect to check if someone else created the room.
             this.reconnectTimeout = setTimeout(() => {
                 APP.store.dispatch(conferenceWillJoin(room));
-                room.join(null);
+                room.join(null, replaceParticipant);
             }, 5000);
+
+            const { password }
+                = APP.store.getState()['features/base/conference'];
+
+            AuthHandler.requireAuth(room, password);
 
             break;
         }
@@ -406,7 +413,10 @@ class ConferenceConnector {
      *
      */
     connect() {
-        room.join();
+        const replaceParticipant = getReplaceParticipant(APP.store.getState());
+
+        // the local storage overrides here and in connection.js can be used by jibri
+        room.join(jitsiLocalStorage.getItem('xmpp_conference_password_override'), replaceParticipant);
     }
 }
 
