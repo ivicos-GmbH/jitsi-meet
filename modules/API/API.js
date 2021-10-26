@@ -56,6 +56,10 @@ import {
 import { isScreenAudioSupported } from '../../react/features/screen-share';
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
+import { startSpeakerStatsCollect, stopSpeakerStatsCollect } from '../../react/features/speaker-stats/actions';
+import {
+    getSpeakerStats
+} from '../../react/features/speaker-stats/functions';
 import { toggleTileView, setTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality';
@@ -64,9 +68,6 @@ import { getJitsiMeetTransport } from '../transport';
 
 import { API_ID, ENDPOINT_TEXT_MESSAGE_NAME } from './constants';
 
-// import {
-//     getSpeakerStats,
-// } from '../../react/features/speaker-stats/functions';
 
 const logger = Logger.getLogger(__filename);
 
@@ -109,20 +110,18 @@ function initCommands() {
             sendAnalytics(createApiEvent('display.name.changed'));
             APP.conference.changeLocalDisplayName(displayName);
         },
-        // eslint-disable-next-line no-trailing-spaces
-
-        // 'get-speaker-stats': (repeatedRequest, intervalRequest) => {
-        //     logger.debug('Get speaker stats command received');
-        //     if (repeatedRequest) {
-        //         APP.store.dispatch(startSpeakerStatsCollect(intervalRequest));
-        //     } else {
-        //         getSpeakerStats();
-        //     }
-        // },
-        // 'stop-speaker-stats': () => {
-        //     logger.debug('Stop collecting speaker stats command received');
-        //     APP.store.dispatch(stopSpeakerStatsCollect());
-        // },
+        'get-speaker-stats': (repeatedRequest, intervalRequest) => {
+            logger.debug('Get speaker stats command received');
+            if (repeatedRequest) {
+                APP.store.dispatch(startSpeakerStatsCollect(intervalRequest));
+            } else {
+                getSpeakerStats();
+            }
+        },
+        'stop-speaker-stats': () => {
+            logger.debug('Stop collecting speaker stats command received');
+            APP.store.dispatch(stopSpeakerStatsCollect());
+        },
         'mute-everyone': mediaType => {
             const muteMediaType = mediaType ? mediaType : MEDIA_TYPE.AUDIO;
 
