@@ -46,6 +46,7 @@ import {
     LiveStreamButton,
     RecordButton
 } from '../../../recording';
+import { RoomBackgroundButton } from '../../../room-background';
 import {
     isScreenAudioSupported,
     isScreenVideoShared,
@@ -714,6 +715,12 @@ class Toolbox extends Component<Props> {
             group: 3
         };
 
+        const roomBackground = {
+            key: 'select-room-background',
+            Content: RoomBackgroundButton,
+            group: 3
+        };
+
         const speakerStats = {
             key: 'stats',
             Content: SpeakerStatsButton,
@@ -780,6 +787,7 @@ class Toolbox extends Component<Props> {
             shareAudio,
             etherpad,
             virtualBackground,
+            roomBackground,
             speakerStats,
             settings,
             shortcuts,

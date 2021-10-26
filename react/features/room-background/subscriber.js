@@ -1,6 +1,6 @@
 // @flow
 
-import { getLocalParticipant } from '../base/participants';
+// import { getLocalParticipant } from '../base/participants';
 import { StateListenerRegistry } from '../base/redux';
 
 import {
@@ -18,16 +18,21 @@ StateListenerRegistry.register(
     /* selector */ state => state['features/base/participants'],
     /* listener */(state, { dispatch }, previousState) => {
 
-        if (!state.length) {
-            return;
-        }
 
-        const localParticipant = getLocalParticipant(state);
-        const backgroundData = localParticipant?.backgroundData;
+        // if (!state.length) {
+        //     return;
+        // }
 
-        if (backgroundData === getLocalParticipant(previousState)?.backgroundData) {
-            return;
-        }
+        // const localParticipant = getLocalParticipant(state);
+        const backgroundData = state.local?.backgroundData;
+
+        console.log('UPDATED!!!!', backgroundData);
+
+
+        // if (backgroundData === previousState.local?.backgroundData) {
+        //     return;
+        // }
+
 
         // Updating the background of the room
         dispatch(updateBackgroundData(backgroundData));
@@ -36,8 +41,9 @@ StateListenerRegistry.register(
         if (typeof APP !== 'undefined') {
             const backgroundProperties = extractBackgroundProperties(backgroundData);
 
+
             APP.API.notifyBackgroundChanged(
-                localParticipant.id,
+                state.local.id,
                 {
                     backgroundImageUrl: backgroundProperties.backgroundImageUrl,
                     backgroundColor: backgroundProperties.backgroundColor
