@@ -16,7 +16,7 @@ declare var APP: Object;
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/participants'],
-    /* listener */(state, { dispatch }, previousState) => {
+    /* listener */(state, { dispatch }) => {
 
 
         // if (!state.length) {
@@ -25,8 +25,6 @@ StateListenerRegistry.register(
 
         // const localParticipant = getLocalParticipant(state);
         const backgroundData = state.local?.backgroundData;
-
-        console.log('UPDATED!!!!', backgroundData);
 
 
         // if (backgroundData === previousState.local?.backgroundData) {
