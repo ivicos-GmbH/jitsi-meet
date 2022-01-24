@@ -1,10 +1,10 @@
-/* Error: expected "{".
- *     ,
- * 108 |     display: none;
- *     |                  ^
- *     '
- *   css/_subject.scss 108:18  @import
- *   css/main.scss 52:9        root stylesheet */
+/* Error: Undefined variable.
+ *    ,
+ * 11 |             0px 0px 1.3px 4px $videoThumbnailSelected;
+ *    |                               ^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   css/filmstrip/_tile_view.scss 11:31  @import
+ *   css/main.scss 75:9                   root stylesheet */
 
 body::before {
   font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
@@ -14,5 +14,5 @@ body::before {
   padding: 1em;
   margin-bottom: 1em;
   border-bottom: 2px solid black;
-  content: 'Error: expected "{".\a     \2577 \a 108 \2502      display: none;\a     \2502                   ^\a     \2575 \a   css/_subject.scss 108:18  @import\a   css/main.scss 52:9        root stylesheet';
+  content: "Error: Undefined variable.\a    \2577 \a 11 \2502              0px 0px 1.3px 4px $videoThumbnailSelected;\a    \2502                                ^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   css/filmstrip/_tile_view.scss 11:31  @import\a   css/main.scss 75:9                   root stylesheet";
 }
