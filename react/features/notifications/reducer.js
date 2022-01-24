@@ -52,6 +52,14 @@ ReducerRegistry.register('features/notifications',
                 )
             };
 
+        case HIDE_RAISE_HAND_NOTIFICATIONS:
+            return {
+                ...state,
+                notifications: state.notifications.filter(
+                    notification => !notification.props.raiseHandNotification
+                )
+            };
+
         case SET_NOTIFICATIONS_ENABLED:
             return {
                 ...state,

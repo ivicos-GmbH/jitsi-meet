@@ -51,7 +51,7 @@
     if (self = [super init]) {
         // Initialize the one and only bridge for interfacing with React Native.
         _bridgeWrapper = [[RCTBridgeWrapper alloc] init];
-        
+
         // Initialize the listener for handling start/stop screensharing notifications.
         _screenshareEventEmiter = [[ScheenshareEventEmiter alloc] init];
 
@@ -122,11 +122,12 @@
     if (_bridgeWrapper != nil) {
         return;
     };
-    
+
     _bridgeWrapper = [[RCTBridgeWrapper alloc] init];
 }
 
 - (void)destroyReactNativeBridge {
+    [_bridgeWrapper invalidate];
     _bridgeWrapper = nil;
 }
 

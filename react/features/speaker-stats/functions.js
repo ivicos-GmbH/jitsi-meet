@@ -1,10 +1,11 @@
 // @flow
 
-declare var APP: Object;
-
 import _ from 'lodash';
 
-import { getParticipantById, PARTICIPANT_ROLE } from '../base/participants';
+import {
+    getParticipantById,
+    PARTICIPANT_ROLE
+} from '../base/participants';
 import { objectSort } from '../base/util';
 
 /**

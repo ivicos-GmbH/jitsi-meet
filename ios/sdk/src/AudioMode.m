@@ -20,6 +20,7 @@
 #import <React/RCTLog.h>
 #import <WebRTC/WebRTC.h>
 
+#import "JitsiAudioSession+Private.h"
 #import "LogUtils.h"
 
 
@@ -113,7 +114,7 @@ RCT_EXPORT_MODULE();
         isSpeakerOn = NO;
         isEarpieceOn = NO;
 
-        RTCAudioSession *session = [RTCAudioSession sharedInstance];
+        RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
         [session addDelegate:self];
     }
 
@@ -127,7 +128,7 @@ RCT_EXPORT_MODULE();
 
 - (BOOL)setConfigWithoutLock:(RTCAudioSessionConfiguration *)config
                        error:(NSError * _Nullable *)outError {
-    RTCAudioSession *session = [RTCAudioSession sharedInstance];
+    RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
 
     return [session setConfiguration:config error:outError];
 }
@@ -135,7 +136,7 @@ RCT_EXPORT_MODULE();
 - (BOOL)setConfig:(RTCAudioSessionConfiguration *)config
             error:(NSError * _Nullable *)outError {
 
-    RTCAudioSession *session = [RTCAudioSession sharedInstance];
+    RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
     [session lockForConfiguration];
     BOOL success = [self setConfigWithoutLock:config error:outError];
     [session unlockForConfiguration];
@@ -169,7 +170,7 @@ RCT_EXPORT_METHOD(setMode:(int)mode
     } else {
         reject(@"setMode", error.localizedDescription, error);
     }
-    
+
     [self notifyDevicesChanged];
 }
 
@@ -177,16 +178,16 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     DDLogInfo(@"[AudioMode] Selected device: %@", device);
-    
-    RTCAudioSession *session = [RTCAudioSession sharedInstance];
+
+    RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
     [session lockForConfiguration];
     BOOL success;
     NSError *error = nil;
-    
+
     // Reset these, as we are about to compute them.
     forceSpeaker = NO;
     forceEarpiece = NO;
-    
+
     // The speaker is special, so test for it first.
     if ([device isEqualToString:kDeviceTypeSpeaker]) {
         forceSpeaker = NO;
@@ -209,7 +210,7 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
             if (isSpeakerOn) {
                 [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
             }
-            
+
             // Special case for the earpiece.
             if ([port.portType isEqualToString:AVAudioSessionPortBuiltInMic]) {
                 forceEarpiece = YES;
@@ -227,9 +228,9 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
             error = RCTErrorWithMessage(@"Could not find audio device");
         }
     }
-    
+
     [session unlockForConfiguration];
-    
+
     if (success) {
         resolve(nil);
     } else {
@@ -273,7 +274,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
             RTCAudioSessionConfiguration *config = [self configForMode:self->activeMode];
             [self setConfig:config error:nil];
             if (self->forceSpeaker && !self->isSpeakerOn) {
-                RTCAudioSession *session = [RTCAudioSession sharedInstance];
+                RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
                 [session lockForConfiguration];
                 [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
                 [session unlockForConfiguration];
@@ -331,7 +332,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
         AVAudioSession *session = [AVAudioSession sharedInstance];
         NSString *currentPort = @"";
         AVAudioSessionRouteDescription *currentRoute = session.currentRoute;
-        
+
         // Check what the current device is. Because the speaker is somewhat special, we need to
         // check for it first.
         if (currentRoute != nil) {
@@ -346,7 +347,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                 self->isEarpieceOn = [input.portType isEqualToString:AVAudioSessionPortBuiltInMic];
             }
         }
-        
+
         BOOL headphonesAvailable = NO;
         for (AVAudioSessionPortDescription *portDesc in session.availableInputs) {
             if ([portDesc.portType isEqualToString:AVAudioSessionPortHeadsetMic] || [portDesc.portType isEqualToString:AVAudioSessionPortHeadphones]) {
@@ -354,7 +355,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                 break;
             }
         }
-        
+
         for (AVAudioSessionPortDescription *portDesc in session.availableInputs) {
             // Skip "Phone" if headphones are present.
             if (headphonesAvailable && [portDesc.portType isEqualToString:AVAudioSessionPortBuiltInMic]) {
@@ -378,7 +379,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                @"uid": kDeviceTypeSpeaker,
                @"selected": [NSNumber numberWithBool:[kDeviceTypeSpeaker isEqualToString:currentPort]]
         }];
-        
+
         [self sendEventWithName:kDevicesChanged body:data];
     });
 }

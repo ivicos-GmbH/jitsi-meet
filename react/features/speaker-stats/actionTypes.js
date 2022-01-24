@@ -42,3 +42,13 @@ export const INIT_REORDER_STATS = 'INIT_REORDER_STATS';
  * Action used to configure the speaker stats related events
  */
 export const CONFIGURE_SPEAKER_STATS_COLLECT = 'CONFIGURE_SPEAKER_STATS_COLLECT';
+
+/**
+ * Action type to reset the search criteria.
+ *
+ * {
+ *     type: RESET_SEARCH_CRITERIA
+ * }
+ */
+export const RESET_SEARCH_CRITERIA = 'RESET_SEARCH_CRITERIA'
+

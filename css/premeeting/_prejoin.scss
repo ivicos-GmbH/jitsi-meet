@@ -21,9 +21,8 @@
 .prejoin-preview {
     &-dropdown-btns {
         padding: 8px 0;
-        width: calc(100% - 48px);
     }
-  
+
     &-dropdown-btn {
         align-items: center;
         color: #1C2025;
@@ -33,25 +32,25 @@
         font-size: 15px;
         line-height: 24px;
         padding: 0 16px;
-  
+
         &:hover {
             background-color: #DAEBFA;
         }
     }
-  
+
     &-dropdown-icon {
         display: inline-block;
         margin-right: 16px;
-  
+
         & > svg {
             fill:  #1C2025;
         }
     }
-  
+
     &-dropdown-container {
         position: relative;
         width: 100%;
-  
+
         /**
         * Override default InlineDialog behaviour, since it does not play nicely with relative widths
         */
@@ -59,10 +58,7 @@
             background: #fff;
             padding: 0;
             position: absolute !important;
-            top: 48px !important;
-            transform: none !important;
             width: 100%;
         }
     }
   }
-  
