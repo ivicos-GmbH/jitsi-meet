@@ -8,7 +8,7 @@ import { Dialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
 import { JitsiRecordingConstants } from '../../../../base/lib-jitsi-meet';
 import { connect } from '../../../../base/redux';
-import { isDynamicBrandingDataLoaded } from '../../../../dynamic-branding/functions';
+import { isDynamicBrandingDataLoaded } from '../../../../dynamic-branding';
 import EmbedMeetingTrigger from '../../../../embed-meeting/components/EmbedMeetingTrigger';
 import { isVpaasMeeting } from '../../../../jaas/functions';
 import { getActiveSession } from '../../../../recording';
@@ -162,7 +162,7 @@ function AddPeopleDialog({
             titleKey = 'addPeople.inviteMorePrompt'
             width = { 'small' }>
             <div className = 'invite-more-dialog'>
-                {_inviteContactsVisible && <InviteContactsSection />}
+                { _inviteContactsVisible && <InviteContactsSection /> }
                 {_urlSharingVisible ? <CopyMeetingLinkSection url = { _inviteUrl } /> : null}
                 {
                     _emailSharingVisible
@@ -172,16 +172,16 @@ function AddPeopleDialog({
                             inviteTextiOS = { _invitationTextiOS } />
                         : null
                 }
-                {_embedMeetingVisible && <EmbedMeetingTrigger />}
+                { _embedMeetingVisible && <EmbedMeetingTrigger /> }
                 <div className = 'invite-more-dialog separator' />
                 {
                     _liveStreamViewURL
-                    && <LiveStreamSection liveStreamViewURL = { _liveStreamViewURL } />
+                        && <LiveStreamSection liveStreamViewURL = { _liveStreamViewURL } />
                 }
                 {
                     _phoneNumber
-                    && _dialInVisible
-                    && <DialInSection phoneNumber = { _phoneNumber } />
+                        && _dialInVisible
+                        && <DialInSection phoneNumber = { _phoneNumber } />
                 }
             </div>
         </Dialog>
@@ -213,11 +213,7 @@ function mapStateToProps(state, ownProps) {
         _dialInVisible: isSharingEnabled(sharingFeatures.dialIn),
         _urlSharingVisible: isDynamicBrandingDataLoaded(state) && isSharingEnabled(sharingFeatures.url),
         _emailSharingVisible: isSharingEnabled(sharingFeatures.email),
-        _invitationText: getInviteText({
-            state,
-            phoneNumber,
-            t: ownProps.t }),
-        _invitationTextiOS: getInviteTextiOS({ state,
+        _invitationText: getInviteText({ state,
             phoneNumber,
             t: ownProps.t }),
         _invitationTextiOS: getInviteTextiOS({ state,
@@ -228,7 +224,7 @@ function mapStateToProps(state, ownProps) {
         _inviteUrl: getInviteURL(state),
         _liveStreamViewURL:
             currentLiveStreamingSession
-            && currentLiveStreamingSession.liveStreamViewURL,
+                && currentLiveStreamingSession.liveStreamViewURL,
         _phoneNumber: phoneNumber
     };
 }

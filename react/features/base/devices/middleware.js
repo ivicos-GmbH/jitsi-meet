@@ -2,7 +2,11 @@
 
 import UIEvents from '../../../../service/UI/UIEvents';
 import { processExternalDeviceRequest } from '../../device-selection';
-import { showNotification, showWarningNotification, showUnreachableNotification } from '../../notifications';
+import {
+    NOTIFICATION_TIMEOUT_TYPE,
+    showNotification,
+    showWarningNotification
+} from '../../notifications';
 import { replaceAudioTrackById, replaceVideoTrackById, setDeviceStatusWarning } from '../../prejoin/actions';
 import { isPrejoinPageVisible } from '../../prejoin/functions';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../app';
@@ -50,8 +54,6 @@ const JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP = {
     }
 };
 
-const WARNING_DISPLAY_TIMER = 4000;
-
 /**
  * A listener for device permissions changed reported from lib-jitsi-meet.
  */
@@ -96,21 +98,21 @@ MiddlewareRegistry.register(store => next => action => {
             mediaDevices.isDevicePermissionGranted('audio'),
             mediaDevices.isDevicePermissionGranted('video')
         ])
-                .then(results => {
-                    _permissionsListener({
-                        audio: results[0],
-                        video: results[1]
-                    });
-                })
-                .catch(() => {
-                    // Ignore errors.
-                });
+        .then(results => {
+            _permissionsListener({
+                audio: results[0],
+                video: results[1]
+            });
+        })
+        .catch(() => {
+            // Ignore errors.
+        });
         break;
     }
     case APP_WILL_UNMOUNT:
         if (typeof permissionsListener === 'function') {
             JitsiMeetJS.mediaDevices.removeEventListener(
-                    JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
+                JitsiMediaDevicesEvents.PERMISSIONS_CHANGED, permissionsListener);
             permissionsListener = undefined;
         }
         break;
@@ -120,25 +122,21 @@ MiddlewareRegistry.register(store => next => action => {
         }
 
         const { message, name } = action.error;
-        const customActionNameKey = action.error?.customActionNameKey;
-        const customActionHandler = action.error?.customActionHandler;
 
         const cameraJitsiTrackErrorMsg
-                = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
+            = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.camera[name];
         const cameraErrorMsg = cameraJitsiTrackErrorMsg
-                || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
-                    .camera[JitsiTrackErrors.GENERAL];
+            || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
+                .camera[JitsiTrackErrors.GENERAL];
         const additionalCameraErrorMsg = cameraJitsiTrackErrorMsg ? null : message;
         const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
             ? 'deviceError.cameraPermission' : 'deviceError.cameraError';
 
-        store.dispatch(showUnreachableNotification({
+        store.dispatch(showWarningNotification({
             description: additionalCameraErrorMsg,
             descriptionKey: cameraErrorMsg,
-            titleKey,
-            customActionNameKey,
-            customActionHandler
-        }, WARNING_DISPLAY_TIMER));
+            titleKey
+        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
 
         if (isPrejoinPageVisible(store.getState())) {
             store.dispatch(setDeviceStatusWarning(titleKey));
@@ -154,10 +152,10 @@ MiddlewareRegistry.register(store => next => action => {
         const { message, name } = action.error;
 
         const micJitsiTrackErrorMsg
-                = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[name];
+            = JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP.microphone[name];
         const micErrorMsg = micJitsiTrackErrorMsg
-                || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
-                    .microphone[JitsiTrackErrors.GENERAL];
+            || JITSI_TRACK_ERROR_TO_MESSAGE_KEY_MAP
+                .microphone[JitsiTrackErrors.GENERAL];
         const additionalMicErrorMsg = micJitsiTrackErrorMsg ? null : message;
         const titleKey = name === JitsiTrackErrors.PERMISSION_DENIED
             ? 'deviceError.microphonePermission'
@@ -167,7 +165,7 @@ MiddlewareRegistry.register(store => next => action => {
             description: additionalMicErrorMsg,
             descriptionKey: micErrorMsg,
             titleKey
-        }, WARNING_DISPLAY_TIMER));
+        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
 
         if (isPrejoinPageVisible(store.getState())) {
             store.dispatch(setDeviceStatusWarning(titleKey));
@@ -290,7 +288,7 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
             titleKey = 'notify.newDeviceCameraTitle';
             break;
         }
-        case 'audioinput':
+        case 'audioinput' :
         case 'audiooutput': {
             titleKey = 'notify.newDeviceAudioTitle';
             break;
@@ -339,18 +337,18 @@ function _useDevice({ dispatch }, devices) {
         }
         case 'audiooutput': {
             setAudioOutputDeviceId(
-                    device.deviceId,
-                    dispatch,
-                    true,
-                    device.label)
-                    .then(() => logger.log('changed audio output device'))
-                    .catch(err => {
-                        logger.warn(
-                            'Failed to change audio output device.',
-                            'Default or previously set audio output device will',
-                            ' be used instead.',
-                            err);
-                    });
+                device.deviceId,
+                dispatch,
+                true,
+                device.label)
+                .then(() => logger.log('changed audio output device'))
+                .catch(err => {
+                    logger.warn(
+                        'Failed to change audio output device.',
+                        'Default or previously set audio output device will',
+                        ' be used instead.',
+                        err);
+                });
             break;
         }
         }
