@@ -3,13 +3,15 @@
 import Flag from '@atlaskit/flag';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EditorInfoIcon from '@atlaskit/icon/glyph/editor/info';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
-import { colors } from '@atlaskit/theme';
+import EditorSuccessIcon from '@atlaskit/icon/glyph/editor/success';
+import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import QuestionsIcon from '@atlaskit/icon/glyph/questions';
 import React from 'react';
 
 import { translate } from '../../../base/i18n';
-import { NOTIFICATION_TYPE } from '../../constants';
+import Message from '../../../base/react/components/web/Message';
+import { colors } from '../../../base/ui/Tokens';
+import { NOTIFICATION_ICON, NOTIFICATION_TYPE } from '../../constants';
 import AbstractNotification, {
     type Props
 } from '../AbstractNotification';
@@ -22,17 +24,15 @@ declare var interfaceConfig: Object;
  * @type {{error, info, normal, success, warning}}
  */
 const ICON_COLOR = {
-    error: colors.R400,
-    info: colors.N500,
-    normal: colors.N0,
-    success: colors.G400,
-    warning: colors.Y200
+    error: colors.error06,
+    normal: colors.primary06,
+    warning: colors.warning05
 };
 
 /**
  * Implements a React {@link Component} to display a notification.
  *
- * @extends Component
+ * @augments Component
  */
 class Notification extends AbstractNotification<Props> {
 
@@ -44,7 +44,6 @@ class Notification extends AbstractNotification<Props> {
      */
     render() {
         const {
-            appearance,
             hideErrorSupportLink,
             t,
             title,
@@ -65,9 +64,9 @@ class Notification extends AbstractNotification<Props> {
         );
     }
 
-    _getDescription: () => Array<string>
+    _getDescription: () => Array<string>;
 
-    _getDescriptionKey: () => string
+    _getDescriptionKey: () => string;
 
     _onDismissed: () => void;
 
@@ -79,7 +78,7 @@ class Notification extends AbstractNotification<Props> {
      * @returns {ReactElement}
      */
     _renderDescription() {
-        const description = this._getDescription();
+        const description = this._getDescription().join(' ');
 
         // the id is used for testing the UI
         return (
@@ -166,21 +165,50 @@ class Notification extends AbstractNotification<Props> {
             return buttons;
         }
         default:
-            if (this.props.customActionNameKey && this.props.customActionHandler) {
-                return [
-                    {
-                        content: this.props.t(this.props.customActionNameKey),
+            if (this.props.customActionNameKey?.length && this.props.customActionHandler?.length) {
+                return this.props.customActionNameKey.map((customAction: string, customActionIndex: number) => {
+                    return {
+                        content: this.props.t(customAction),
                         onClick: () => {
-                            if (this.props.customActionHandler()) {
+                            if (this.props.customActionHandler[customActionIndex]()) {
                                 this._onDismissed();
                             }
                         }
-                    }
-                ];
+                    };
+                });
             }
 
             return [];
         }
+    }
+
+    /**
+     * Returns the Icon type component to be used, based on icon or appearance.
+     *
+     * @returns {ReactElement}
+     */
+    _getIcon() {
+        let Icon;
+
+        switch (this.props.icon || this.props.appearance) {
+        case NOTIFICATION_ICON.ERROR:
+            Icon = EditorErrorIcon;
+            break;
+        case NOTIFICATION_ICON.WARNING:
+            Icon = EditorWarningIcon;
+            break;
+        case NOTIFICATION_ICON.SUCCESS:
+            Icon = EditorSuccessIcon;
+            break;
+        case NOTIFICATION_ICON.MESSAGE:
+            Icon = QuestionsIcon;
+            break;
+        default:
+            Icon = EditorInfoIcon;
+            break;
+        }
+
+        return Icon;
     }
 
     /**
@@ -191,8 +219,8 @@ class Notification extends AbstractNotification<Props> {
      * @returns {ReactElement}
      */
     _mapAppearanceToIcon() {
-        const appearance = this.props.appearance;
-        const secIconColor = ICON_COLOR[this.props.appearance];
+        const { appearance, icon } = this.props;
+        const secIconColor = ICON_COLOR[appearance];
         const iconSize = 'medium';
 
         switch (appearance) {

@@ -56,7 +56,6 @@ const PollAnswer = (props: AbstractProps) => {
                     <span>{t('polls.answer.submit')}</span>
                 </button>
             </div>
-
         </div>
     );
 };

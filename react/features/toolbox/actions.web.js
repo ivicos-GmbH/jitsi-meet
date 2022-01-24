@@ -241,7 +241,8 @@ export function setToolbarHovered(hovered: boolean): Object {
 }
 
 /**
- * Dispatches an action which sets new timeout and clears the previous one.
+ * Dispatches an action which sets new timeout for the toolbox visibility and clears the previous one.
+ * On mobile browsers the toolbox does not hide on timeout. It is toggled on simple tap.
  *
  * @param {Function} handler - Function to be invoked after the timeout.
  * @param {number} timeoutMS - Delay.

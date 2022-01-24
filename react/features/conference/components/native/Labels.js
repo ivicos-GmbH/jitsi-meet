@@ -8,7 +8,7 @@ import { RecordingLabel, RecordingExpandedLabel } from '../../../recording';
 import { TranscribingExpandedLabel, TranscribingLabel } from '../../../transcribing';
 import { VideoQualityExpandedLabel, VideoQualityLabel } from '../../../video-quality';
 
-import InsecureRoomNameExpandedLabel from './InsecureRoomNameExpandedLabel';
+import { LabelHitSlop, LABEL_ID_INSECURE_ROOM_NAME, LABEL_ID_QUALITY, LABEL_ID_TRANSCRIBING } from './constants';
 import styles from './styles';
 
 import { InsecureRoomNameLabel } from '.';
@@ -21,7 +21,7 @@ type State = {
      * String to show which {@code ExpandedLabel} to be shown. (Equals to the
      * label IDs below.)
      */
-    visibleExpandedLabel: ?string
+    createOnPress: Function
 }
 
 const LABEL_ID_QUALITY = 'quality';

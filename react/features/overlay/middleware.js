@@ -12,6 +12,27 @@ import { setFatalError } from './actions';
 declare var APP: Object;
 
 /**
+ * Error type. Basically like Error, but augmented with a recoverable property.
+ */
+type ErrorType = {|
+
+    /**
+     * Error message.
+     */
+    message?: string,
+
+    /**
+     * Error name.
+     */
+    name: string,
+
+    /**
+     * Indicates whether this event is recoverable or not.
+     */
+    recoverable?: boolean
+|};
+
+/**
  * List of errors that are not fatal (or handled differently) so then the overlays won't kick in.
  */
 const NON_OVERLAY_ERRORS = [
@@ -74,7 +95,7 @@ StateListenerRegistry.register(
 
         return configError || connectionError || conferenceError;
     },
-    /* listener */ (error, { dispatch, getState }) => {
+    /* listener */ (error: ErrorType, { dispatch, getState }) => {
         if (!error) {
             return;
         }

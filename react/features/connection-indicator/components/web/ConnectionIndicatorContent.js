@@ -92,12 +92,17 @@ type Props = AbstractProps & {
     _onSaveLogs: Function,
 
     /**
+     * The region reported by the participant.
+     */
+    _region: String,
+
+    /**
      * The video SSRC of this client.
      */
     _videoSsrc: number,
 
     /**
-     * Css class to apply on container
+     * Css class to apply on container.
      */
     className: string,
 
@@ -107,7 +112,7 @@ type Props = AbstractProps & {
     dispatch: Dispatch<any>,
 
     /**
-     * Optional param for passing existing connection stats on component instantiation
+     * Optional param for passing existing connection stats on component instantiation.
      */
     inheritedStats: Object,
 
@@ -310,7 +315,8 @@ export function _mapStateToProps(state: Object, ownProps: Props) {
         _connectionStatus: participant?.connectionStatus,
         _enableSaveLogs: state['features/base/config'].enableSaveLogs,
         _disableShowMoreStats: state['features/base/config'].disableShowMoreStats,
-        _isLocalVideo: participant?.local
+        _isLocalVideo: participant?.local,
+        _region: participant?.region
     };
 
     if (conference) {

@@ -3,7 +3,7 @@
     flex-shrink: 0;
     overflow: hidden;
     position: relative;
-    transition: width .16s ease-in-out;
+    transition: width 0.16s ease-in-out;
     width: 315px;
     z-index: $zindex0;
 
@@ -52,7 +52,13 @@
 
 .jitsi-icon {
     &-dominant-speaker {
-        background-color: #1EC26A;
+        background-color: #1ec26a;
         border-radius: 3px;
+    }
+}
+
+.mobile-browser.shift-right {
+    .participants_pane {
+        z-index: -1;
     }
 }

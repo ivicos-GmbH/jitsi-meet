@@ -65,7 +65,7 @@ type Props = {
 
     /**
      * The custom no new-lines meeting invitation text for iOS default email.
-     * Needed because of this mailto: iOS issue: https://developer.apple.com/forums/thread/681023
+     * Needed because of this mailto: iOS issue: https://developer.apple.com/forums/thread/681023.
      */
     _invitationTextiOS: string,
 
@@ -142,11 +142,11 @@ function AddPeopleDialog({
      */
     useEffect(() => {
         sendAnalytics(createInviteDialogEvent(
-            'invite.dialog.opened', 'dialog'));
+            'opened', 'dialog'));
 
         return () => {
             sendAnalytics(createInviteDialogEvent(
-                'invite.dialog.closed', 'dialog'));
+                'closed', 'dialog'));
         };
     }, []);
 
@@ -215,6 +215,9 @@ function mapStateToProps(state, ownProps) {
         _emailSharingVisible: isSharingEnabled(sharingFeatures.email),
         _invitationText: getInviteText({
             state,
+            phoneNumber,
+            t: ownProps.t }),
+        _invitationTextiOS: getInviteTextiOS({ state,
             phoneNumber,
             t: ownProps.t }),
         _invitationTextiOS: getInviteTextiOS({ state,

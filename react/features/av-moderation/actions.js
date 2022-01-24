@@ -33,16 +33,43 @@ export const approveParticipant = (id: string) => (dispatch: Function, getState:
     const { conference } = getConferenceState(state);
     const participant = getParticipantById(state, id);
 
-    const isVideoForceMuted = isForceMuted(participant, MEDIA_TYPE.VIDEO, state);
     const isAudioModerationOn = isEnabledFromState(MEDIA_TYPE.AUDIO, state);
     const isVideoModerationOn = isEnabledFromState(MEDIA_TYPE.VIDEO, state);
+    const isVideoForceMuted = isForceMuted(participant, MEDIA_TYPE.VIDEO, state);
 
-    if (isAudioModerationOn || !isVideoModerationOn) {
+    if (isAudioModerationOn || !isVideoModerationOn || !isVideoForceMuted) {
         conference.avModerationApprove(MEDIA_TYPE.AUDIO, id);
     }
+};
+
+/**
+ * Action used by moderator to approve video for a participant.
+ *
+ * @param {staring} id - The id of the participant to be approved.
+ * @returns {void}
+ */
+export const approveParticipantVideo = (id: string) => (dispatch: Function, getState: Function) => {
+    const state = getState();
+    const { conference } = getConferenceState(state);
+    const participant = getParticipantById(state, id);
+
+    const isVideoForceMuted = isForceMuted(participant, MEDIA_TYPE.VIDEO, state);
+    const isVideoModerationOn = isEnabledFromState(MEDIA_TYPE.VIDEO, state);
+
     if (isVideoModerationOn && isVideoForceMuted) {
         conference.avModerationApprove(MEDIA_TYPE.VIDEO, id);
     }
+};
+
+/**
+ * Action used by moderator to approve audio and video for a participant.
+ *
+ * @param {staring} id - The id of the participant to be approved.
+ * @returns {void}
+ */
+export const approveParticipant = (id: string) => (dispatch: Function) => {
+    dispatch(approveParticipantAudio(id));
+    dispatch(approveParticipantVideo(id));
 };
 
 /**

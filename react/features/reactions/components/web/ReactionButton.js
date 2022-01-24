@@ -23,7 +23,7 @@ type Props = AbstractToolbarButtonProps & {
     tooltipPosition: string,
 
     /**
-     * Optional label for the button
+     * Optional label for the button.
      */
     label?: string
 };

@@ -1,5 +1,7 @@
 /* @flow */
 
+import { withStyles } from '@material-ui/styles';
+import clsx from 'clsx';
 import React, { Component } from 'react';
 
 import { translate } from '../../../base/i18n';
@@ -10,6 +12,11 @@ import { VOLUME_SLIDER_SCALE } from '../../constants';
  * The type of the React {@code Component} props of {@link VolumeSlider}.
  */
 type Props = {
+
+    /**
+     * An object containing the CSS classes.
+     */
+    classes: Object,
 
     /**
      * The value of the audio slider should display at when the component first
@@ -41,11 +48,48 @@ type State = {
     volumeLevel: number
 };
 
+const styles = theme => {
+    return {
+        container: {
+            minHeight: '40px',
+            width: '100%',
+            boxSizing: 'border-box',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 5px',
+
+            '&:hover': {
+                backgroundColor: theme.palette.ui04
+            }
+        },
+
+        icon: {
+            minWidth: '20px',
+            padding: '5px',
+            position: 'relative'
+        },
+
+        sliderContainer: {
+            position: 'relative',
+            width: '100%',
+            paddingRight: '5px'
+        },
+
+        slider: {
+            position: 'absolute',
+            width: '100%',
+            top: '50%',
+            transform: 'translate(0, -50%)'
+        }
+    };
+};
+
 /**
  * Implements a React {@link Component} which displays an input slider for
  * adjusting the local volume of a remote participant.
  *
- * @extends Component
+ * @augments Component
  */
 class VolumeSlider extends Component<Props, State> {
     /**
@@ -66,12 +110,24 @@ class VolumeSlider extends Component<Props, State> {
     }
 
     /**
+     * Click handler.
+     *
+     * @param {MouseEvent} e - Click event.
+     * @returns {void}
+     */
+    _onClick(e) {
+        e.stopPropagation();
+    }
+
+    /**
      * Implements React's {@link Component#render()}.
      *
      * @inheritdoc
      * @returns {ReactElement}
      */
     render() {
+        const { classes } = this.props;
+
         return (
             <li
                 aria-label = { this.props.t('volumeSlider') }
@@ -94,7 +150,7 @@ class VolumeSlider extends Component<Props, State> {
                             value = { this.state.volumeLevel } />
                     </div>
                 </div>
-            </li>
+            </div>
         );
     }
 

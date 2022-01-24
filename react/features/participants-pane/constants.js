@@ -92,14 +92,17 @@ export const AudioStateIcons: {[MediaState]: React$Element<any> | null} = {
  * Icon mapping for possible participant video states.
  */
 export const VideoStateIcons = {
+    [MEDIA_STATE.DOMINANT_SPEAKER]: null,
     [MEDIA_STATE.FORCE_MUTED]: (
         <Icon
             color = '#E04757'
+            id = 'videoMuted'
             size = { 16 }
             src = { IconCameraEmptyDisabled } />
     ),
     [MEDIA_STATE.MUTED]: (
         <Icon
+            id = 'videoMuted'
             size = { 16 }
             src = { IconCameraEmptyDisabled } />
     ),

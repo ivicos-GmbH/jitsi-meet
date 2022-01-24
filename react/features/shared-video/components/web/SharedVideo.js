@@ -15,12 +15,12 @@ declare var interfaceConfig: Object;
 type Props = {
 
     /**
-     * The available client width
+     * The available client width.
      */
     clientHeight: number,
 
     /**
-     * The available client width
+     * The available client width.
      */
     clientWidth: number,
 
@@ -37,7 +37,7 @@ type Props = {
      isOwner: boolean,
 
     /**
-     * The shared video url
+     * The shared video url.
      */
      videoUrl: string,
 }

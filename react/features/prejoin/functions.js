@@ -39,16 +39,6 @@ export function isDisplayNameRequired(state: Object): boolean {
 }
 
 /**
- * Selector for determining if the user has chosen to skip prejoin page.
- *
- * @param {Object} state - The state of the app.
- * @returns {boolean}
- */
-export function isPrejoinSkipped(state: Object) {
-    return state['features/prejoin'].userSelectedSkipPrejoin;
-}
-
-/**
  * Returns the text for the prejoin status bar.
  *
  * @param {Object} state - The state of the app.
@@ -148,10 +138,10 @@ export function isJoinByPhoneDialogVisible(state: Object): boolean {
  * @param {Object} state - The state of the app.
  * @returns {boolean}
  */
-export function isPrejoinPageEnabled(state: Object): boolean {
+export function isPrejoinPageVisible(state: Object): boolean {
     return navigator.product !== 'ReactNative'
-        && state['features/base/config'].prejoinPageEnabled
-        && !state['features/base/settings'].userSelectedSkipPrejoin
+        && state['features/base/config'].prejoinConfig?.enabled
+        && state['features/prejoin']?.showPrejoin
         && !(state['features/base/config'].enableForcedReload && state['features/prejoin'].skipPrejoinOnReload);
 }
 
@@ -182,8 +172,8 @@ export function isPrejoinPageLoading(state: Object): boolean {
  * @returns {boolean}
  */
 export function shouldAutoKnock(state: Object): boolean {
-    const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
+    const { iAmRecorder, iAmSipGateway, autoKnockLobby } = state['features/base/config'];
 
-    return (isPrejoinPageEnabled(state) || (iAmRecorder && iAmSipGateway))
+    return (isPrejoinPageVisible(state) || autoKnockLobby || (iAmRecorder && iAmSipGateway))
         && !state['features/lobby'].knocking;
 }

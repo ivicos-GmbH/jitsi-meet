@@ -39,6 +39,28 @@
     "audioOnly": {
         "audioOnly": "Geringe Bandbreite"
     },
+    "blankPage": {
+        "meetingEnded": "Konferenz beendet."
+    },
+    "breakoutRooms": {
+        "defaultName": "Breakout-Raum #{{index}}",
+        "mainRoom": "Hauptraum",
+        "actions": {
+            "add": "Breakout-Raum hinzufügen",
+            "autoAssign": "Automatisch auf Breakout-Räume verteilen",
+            "close": "Schließen",
+            "join": "Teilnehmen",
+            "leaveBreakoutRoom": "Breakout-Raum verlassen",
+            "more": "Mehr",
+            "remove": "Entfernen",
+            "sendToBreakoutRoom": "Anwesende in Breakout-Raum verschieben:"
+        },
+        "notifications": {
+            "joinedTitle": "Breakout-Räume",
+            "joined": "Breakout-Raum \"{{name}}\" betreten",
+            "joinedMainRoom": "Hauptraum betreten"
+        }
+    },
     "calendarSync": {
         "addMeetingURL": "Konferenzlink hinzufügen",
         "confirmAddLink": "Möchten Sie einen Jitsi-Link zu diesem Termin hinzufügen?",
@@ -158,7 +180,8 @@
         "joinInApp": "Mit der App am Meeting teilnehmen",
         "launchWebButton": "Im Web öffnen",
         "title": "Die Konferenz wird in {{app}} geöffnet …",
-        "tryAgainButton": "Erneut mit der nativen Applikation versuchen"
+        "tryAgainButton": "Erneut mit der nativen Applikation versuchen",
+        "unsupportedBrowser": "Sie verwenden einen Browser, der noch nicht unterstützt wird."
     },
     "defaultLink": "Bsp.: {{url}}",
     "defaultNickname": "Z. B. Jane Pink",
@@ -213,7 +236,9 @@
         "done": "Fertig",
         "e2eeDescription": "Ende-zu-Ende-Verschlüsselung ist derzeit noch EXPERIMENTELL. Bitte beachten Sie, dass das Aktivieren der Ende-zu-Ende-Verschlüsselung diverse serverseitige Funktionen deaktiviert: Aufnahmen, Livestreaming und Telefoneinwahl. Bitte beachten Sie außerdem, dass der Konferenz dann nur noch mit Browsern beigetreten werden kann, die Insertable Streams unterstützen.",
         "e2eeLabel": "Ende-zu-Ende-Verschlüsselung aktivieren",
+        "e2eeDisabledDueToMaxModeDescription": "Ende-zu-Ende-Verschlüsselung kann aufgrund der großen Zahl an Anwesenden nicht aktiviert werden.",
         "e2eeWarning": "WARNUNG: Nicht alle Personen dieser Konferenz scheinen Ende-zu-Ende-Verschlüsselung zu unterstützen. Wenn Sie diese aktivieren, können die entsprechenden Personen nichts mehr sehen oder hören.",
+        "e2eeWillDisableDueToMaxModeDescription": "WARNUNG: Ende-zu-Ende-Verschlüsselung wird automatisch deaktiviert, wenn weitere Anwesende an der Konferenz teilnehmen.",
         "enterDisplayName": "Bitte geben Sie hier Ihren Namen ein",
         "embedMeeting": "Besprechung einbetten",
         "error": "Fehler",
@@ -316,7 +341,7 @@
         "sessionRestarted": "Konferenz neugestartet",
         "Share": "Teilen",
         "shareAudio": "Fortfahren",
-        "shareAudioTitle" : "Wie kann Audio geteilt werden",
+        "shareAudioTitle": "Wie kann Audio geteilt werden",
         "shareAudioWarningTitle": "Sie müssen die Bildschirmfreigabe ausschalten, bevor Sie Audio teilen können",
         "shareAudioWarningH1": "Wenn Sie Ihr Audio teilen wollen:",
         "shareAudioWarningD1": "müssen Sie Ihre Bildschirmfreigabe stoppen, bevor Sie Audio teilen können.",
@@ -333,6 +358,7 @@
         "shareScreenWarningH1": "Wenn Sie Ihren Bildschirm freigeben wollen:",
         "shareScreenWarningD1": "müssen Sie Ihre Audiofreigabe stoppen, bevor Sie ihren Bildschirm freigeben.",
         "shareScreenWarningD2": "müssen Sie Ihre Audiofreigabe stoppen und dann die Bildschirmfreigabe mit der Option \"Audio freigeben\" starten.",
+        "sharedVideoLinkPlaceholder": "YouTube-URL oder direkte Video-URL",
         "stopLiveStreaming": "Livestream stoppen",
         "stopRecording": "Aufnahme stoppen",
         "stopRecordingWarning": "Sind Sie sicher, dass Sie die Aufnahme stoppen möchten?",
@@ -383,17 +409,18 @@
         "none": "keiner",
         "uploadedImage": "Hochgeladenes Bild {{index}}",
         "deleteImage": "Bild löschen",
-        "image1" : "Strand",
-        "image2" : "Weiße neutrale Wand",
-        "image3" : "Weißer leerer Raum",
-        "image4" : "Schwarze Stehlampe",
-        "image5" : "Berg",
-        "image6" : "Wald",
-        "image7" : "Sonnenaufgang",
+        "image1": "Strand",
+        "image2": "Weiße neutrale Wand",
+        "image3": "Weißer leerer Raum",
+        "image4": "Schwarze Stehlampe",
+        "image5": "Berg",
+        "image6": "Wald",
+        "image7": "Sonnenaufgang",
         "desktopShareError": "Desktop konnte nicht freigegeben werden",
         "desktopShare": "Desktopfreigabe",
         "webAssemblyWarning": "WebAssembly wird nicht unterstützt",
-        "backgroundEffectError": "Failed to apply background effect."
+        "webAssemblyWarningDescription": "WebAssembly ist deaktiviert oder wird in diesem Browser nicht unterstützt",
+        "backgroundEffectError": "Hintergrund konnte nicht aktiviert werden."
     },
     "feedback": {
         "average": "Durchschnittlich",
@@ -420,7 +447,7 @@
         "country": "Land",
         "dialANumber": "Um am Meeting teilzunehmen, müssen Sie eine dieser Nummern wählen und dann die PIN eingeben.",
         "dialInConferenceID": "PIN:",
-        "copyNumber":"Nummer kopieren",
+        "copyNumber": "Nummer kopieren",
         "dialInNotSupported": "Entschuldigung, leider wird das Einwählen derzeit nicht unterstützt.",
         "dialInNumber": "Einwählen:",
         "dialInSummaryError": "Fehler beim Abrufen der Einwahlinformationen. Versuchen Sie es später erneut.",
@@ -498,6 +525,7 @@
         "expandedPending": "Livestream wird gestartet …",
         "failedToStart": "Livestream konnte nicht gestartet werden",
         "getStreamKeyManually": "Wir waren nicht in der Lage, Livestreams abzurufen. Versuchen Sie, Ihren Livestream-Schlüssel von YouTube zu erhalten.",
+        "inProgress": "Livestreaming gestartet",
         "invalidStreamKey": "Der Livestream-Schlüssel ist u. U. falsch.",
         "off": "Livestream gestoppt",
         "offBy": "{{name}} stoppte den Livestream",
@@ -505,6 +533,7 @@
         "onBy": "{{name}} startete den Livestream",
         "pending": "Livestream wird gestartet …",
         "serviceName": "Livestreaming-Dienst",
+        "sessionAlreadyActive": "Diese Konferenz wird bereits als Livestream übertragen.",
         "signedInAs": "Sie sind derzeit angemeldet als:",
         "signIn": "Mit Google anmelden",
         "signInCTA": "Anmelden oder den Streamschlüssel des YouTube-Livestreams eingeben.",
@@ -548,18 +577,26 @@
     "lockRoomPasswordUppercase": "Passwort",
     "me": "ich",
     "notify": {
+        "allowAction": "Erlauben",
+        "allowedUnmute": "Sie können die Stummschaltung aufheben, Ihre Kamera einschalten oder Ihren Bildschirm teilen.",
+        "audioUnmuteBlockedTitle": "Stummschaltung kann nicht aufgehoben werden!",
+        "audioUnmuteBlockedDescription": "Díe Stummschaltung kann aus Überlastungsschutzgründen temporär nicht aufgehoben werden.",
+        "chatMessages": "Chatnachrichten",
         "connectedOneMember": "{{name}} nimmt am Meeting teil",
         "connectedThreePlusMembers": "{{name}} und {{count}} andere Personen nehmen am Meeting teil",
         "connectedTwoMembers": "{{first}} und {{second}} nehmen am Meeting teil",
         "disconnected": "getrennt",
+        "displayNotifications": "Benachrichtigungen anzeigen für",
         "focus": "Konferenzleitung",
         "focusFail": "{{component}} ist im Moment nicht verfügbar – wiederholen in {{ms}} Sekunden",
-        "grantedTo": "Moderationsrechte an {{to}} vergeben!",
         "hostAskedUnmute": "Die Moderation bittet Sie, das Mikrofon zu aktivieren",
         "invitedOneMember": "{{name}} wurde eingeladen",
         "invitedThreePlusMembers": "{{name}} und {{count}} andere wurden eingeladen",
         "invitedTwoMembers": "{{first}} und {{second}} wurden eingeladen",
         "kickParticipant": "{{kicked}} wurde von {{kicker}} ausgewiesen",
+        "leftOneMember": "{{name}} hat die Konferenz verlassen",
+        "leftThreePlusMembers": "{{name}} und Weitere haben die Konferenz verlassen",
+        "leftTwoMembers": "{{first}} und {{second}} haben die Konferenz verlassen",
         "me": "Ich",
         "moderator": "Moderationsrechte vergeben!",
         "muted": "Der Konferenz wurde stumm beigetreten.",
@@ -571,8 +608,10 @@
         "passwordRemovedRemotely": "$t(lockRoomPasswordUppercase) von einer anderen Person entfernt",
         "passwordSetRemotely": "$t(lockRoomPasswordUppercase) von einer anderen Person gesetzt",
         "raisedHand": "{{name}} möchte sprechen.",
+        "raisedHands": "{{participantName}} und {{raisedHands}} weitere möchten sprechen",
         "screenShareNoAudio": "Die Option \"Audio freigeben\" wurde bei der Auswahl des Fensters nicht ausgewählt.",
         "screenShareNoAudioTitle": "Share audio was not checked",
+        "selfViewTitle": "Sie können die eigene Ansicht immer in den Einstellungen reaktivieren",
         "somebody": "Jemand",
         "startSilentTitle": "Sie sind ohne Audioausgabe beigetreten!",
         "startSilentDescription": "Treten Sie dem Meeting noch einmal bei, um Ihr Audio zu aktivieren",
@@ -598,9 +637,11 @@
         "moderationStoppedTitle": "Moderation gestoppt",
         "moderationToggleDescription": "von {{participantDisplayName}}",
         "raiseHandAction": "Melden",
-        "groupTitle": "Benachrichtigungen",
         "reactionSounds": "Interaktionstöne deaktivieren",
-        "groupTitle": "Benachrichtigungen"
+        "reactionSoundsForAll": "Interaktionstöne für alle deaktivieren",
+        "groupTitle": "Benachrichtigungen",
+        "videoUnmuteBlockedTitle": "Kamera und Bildschirmfreigabe kann nicht aktiviert werden!",
+        "videoUnmuteBlockedDescription": "Die Kamera und Bildschirmfreigabe kann aus Überlastungsschutzgründen temporär nicht eingeschaltet werden."
     },
     "participantsPane": {
         "close": "Schließen",
@@ -612,29 +653,35 @@
         },
         "actions": {
             "allow": "Anwesenden erlauben:",
+            "allowVideo": "Kamera einschalten",
             "audioModeration": "Für sich selbst die Stummschaltung aufzuheben",
             "blockEveryoneMicCamera": "Kamera und Mikrofon von allen sperren",
             "invite": "Person einladen",
             "askUnmute": "Anfragen, Stummschaltung aufzuheben",
+            "moreModerationActions": "Weitere Moderationsoptionen",
+            "moreParticipantOptions": "Mehr Optionen für Anwesende",
             "mute": "Stummschalten",
             "muteAll": "Alle stummschalten",
             "muteEveryoneElse": "Alle anderen stummschalten",
             "stopEveryonesVideo": "Alle Kameras ausschalten",
             "stopVideo": "Kamera ausschalten",
             "unblockEveryoneMicCamera": "Kamera und Mikrofon von allen entsperren",
-            "videoModeration": "Kamera einschalten"
-        }
+            "videoModeration": "Kamera einschalten",
+            "moreModerationControls": "Weitere Moderationsoptionen"
+        },
+        "search": "Suche Anwesende"
     },
     "passwordSetRemotely": "von einer anderen Person gesetzt",
     "passwordDigitsOnly": "Bis zu {{number}} Ziffern",
     "polls": {
+        "by": "Von {{ name }}",
         "create": {
             "addOption": "Antwort hinzufügen",
             "answerPlaceholder": "Antwort {{index}}",
             "create": "Umfrage erstellen",
             "cancel": "Abbrechen",
-            "pollOption" : "Antwort {{index}}",
-            "pollQuestion" : "Frage",
+            "pollOption": "Antwort {{index}}",
+            "pollQuestion": "Frage",
             "questionPlaceholder": "Eine Frage stellen",
             "removeOption": "Antwort entfernen",
             "send": "Erstellen"
@@ -667,23 +714,23 @@
         "configuringDevices": "Geräte werden eingerichtet …",
         "connectedWithAudioQ": "Sie sind mit Audio verbunden?",
         "connection": {
-           "good": "Ihre Internetverbindung sieht gut aus!",
-           "nonOptimal": "Ihre Internetverbindung ist nicht optimal.",
-           "poor": "Sie haben eine schlechte Internetverbindung."
+            "good": "Ihre Internetverbindung sieht gut aus!",
+            "nonOptimal": "Ihre Internetverbindung ist nicht optimal.",
+            "poor": "Sie haben eine schlechte Internetverbindung."
         },
         "connectionDetails": {
-          "audioClipping": "Ihr Ton wird wahrscheinlich abgehackt sein.",
-          "audioHighQuality": "Ihr Ton sollte exzellent klingen.",
-          "audioLowNoVideo": "Ihr Ton wird wahrscheinlich schlecht klingen und es wird kein Video geben.",
-          "goodQuality": "Großartig! Ihre Bild- und Tonqualität sollte super sein.",
-          "noMediaConnectivity": "Es konnte für diesen Test keine Medienverbindung hergestellt werden. Das wird gewöhnlich durch eine Firewall oder ein NAT ausgelöst.",
-          "noVideo": "Ihr Bild wird wahrscheinlich eine schlechte Qualität haben.",
-          "undetectable": "Wenn Sie mit Ihrem Browser weiterhin Probleme in Konferenzen haben, sollten Sie die Verbindung und Funktion Ihrer Lautsprecher, Ihres Mikrofons und Ihrer Kamera überprüfen. Stellen Sie außerdem sicher, dass Ihr Browser die erforderlichen Rechte hat, auf das Mikrofon und die Kamera zuzugreifen, und dass Sie die neuste Browserversion installiert haben. Sollten Sie immer noch Probleme haben, kontaktieren Sie bitte den Support der Webanwendung.",
-          "veryPoorConnection": "Ihre Konferenzqualität wird wahrscheinlich sehr schlecht sein.",
-          "videoFreezing": "Ihr Bild wird wahrscheinlich einfrieren, schwarz werden und eine geringe Auflösung haben.",
-          "videoHighQuality": "Ihr Bild sollte sehr gut aussehen.",
-          "videoLowQuality": "Ihr Bild wird wahrscheinlich eine geringe Auflösung und Bildrate haben.",
-          "videoTearing": "Ihr Bild wird wahrscheinlich eine geringe Auflösung haben oder Artefakte aufweisen."
+            "audioClipping": "Ihr Ton wird wahrscheinlich abgehackt sein.",
+            "audioHighQuality": "Ihr Ton sollte exzellent klingen.",
+            "audioLowNoVideo": "Ihr Ton wird wahrscheinlich schlecht klingen und es wird kein Video geben.",
+            "goodQuality": "Großartig! Ihre Bild- und Tonqualität sollte super sein.",
+            "noMediaConnectivity": "Es konnte für diesen Test keine Medienverbindung hergestellt werden. Das wird gewöhnlich durch eine Firewall oder ein NAT ausgelöst.",
+            "noVideo": "Ihr Bild wird wahrscheinlich eine schlechte Qualität haben.",
+            "undetectable": "Wenn Sie mit Ihrem Browser weiterhin Probleme in Konferenzen haben, sollten Sie die Verbindung und Funktion Ihrer Lautsprecher, Ihres Mikrofons und Ihrer Kamera überprüfen. Stellen Sie außerdem sicher, dass Ihr Browser die erforderlichen Rechte hat, auf das Mikrofon und die Kamera zuzugreifen, und dass Sie die neuste Browserversion installiert haben. Sollten Sie immer noch Probleme haben, kontaktieren Sie bitte den Support der Webanwendung.",
+            "veryPoorConnection": "Ihre Konferenzqualität wird wahrscheinlich sehr schlecht sein.",
+            "videoFreezing": "Ihr Bild wird wahrscheinlich einfrieren, schwarz werden und eine geringe Auflösung haben.",
+            "videoHighQuality": "Ihr Bild sollte sehr gut aussehen.",
+            "videoLowQuality": "Ihr Bild wird wahrscheinlich eine geringe Auflösung und Bildrate haben.",
+            "videoTearing": "Ihr Bild wird wahrscheinlich eine geringe Auflösung haben oder Artefakte aufweisen."
         },
         "copyAndShare": "Konferenzlink kopieren & teilen",
         "dialInMeeting": "Telefoneinwahl",
@@ -695,6 +742,7 @@
         "errorDialOutFailed": "Anruf fehlgeschlagen. Anruf fehlgeschlagen",
         "errorDialOutStatus": "Fehler beim Abrufen des Anrufstatus",
         "errorMissingName": "Bitte geben Sie Ihren Namen ein, um der Konferenz beizutreten.",
+        "errorNoPermissions": "Sie müssen den Zugriff auf Mikrofon und Kamera erlauben",
         "errorStatusCode": "Anruf fehlgeschlagen. Statuscode: {{status}}",
         "errorValidation": "Nummerverifikation fehlgeschlagen",
         "iWantToDialIn": "Ich möchte mich einwählen",
@@ -707,7 +755,7 @@
         "or": "oder",
         "premeeting": "Vorschau",
         "showScreen": "Konferenzvorschau aktivieren",
-        "keyboardShortcuts" : "Tastaturkurzbefehle aktivieren",
+        "keyboardShortcuts": "Tastaturkurzbefehle aktivieren",
         "startWithPhone": "Mit Telefonaudio starten",
         "screenSharingError": "Fehler bei Bildschirmfreigabe:",
         "videoOnlyError": "Videofehler:",
@@ -736,6 +784,7 @@
         "title": "Profil"
     },
     "raisedHand": "Ich möchte sprechen",
+    "raisedHandsLabel": "Anzahl gehobener Hände",
     "recording": {
         "limitNotificationDescriptionWeb": "Wegen hoher Nachfrage ist Ihre Aufnahme auf {{limit}} Min. begrenzt. Für unlimitierte Aufnahmen nutzen Sie bitte <a href={{url}} rel='noopener noreferrer' target='_blank'>{{app}}</a>.",
         "limitNotificationDescriptionNative": "Wegen hoher Nachfrage ist Ihre Aufnahme auf {{limit}} Min. begrenzt. Für unlimitierte Aufnahmen nutzen Sie bitte <3>{{app}}</3>.",
@@ -752,6 +801,7 @@
         "expandedPending": "Aufzeichnung wird gestartet…",
         "failedToStart": "Die Aufnahme konnte nicht gestartet werden",
         "fileSharingdescription": "Aufzeichnung mit den Personen der Konferenz teilen",
+        "inProgress": "Aufzeichnung gestartet",
         "linkGenerated": "Link zur Aufzeichnung wurde generiert.",
         "live": "LIVE",
         "loggedIn": "Als {{userName}} angemeldet",
@@ -764,6 +814,7 @@
         "serviceDescription": "Ihre Aufzeichnung wird vom Aufzeichnungsdienst gespeichert",
         "serviceDescriptionCloud": "Cloud-Aufzeichnung",
         "serviceName": "Aufnahmedienst",
+        "sessionAlreadyActive": "Diese Konferenz wird bereits aufgezeichnet.",
         "signIn": "Anmelden",
         "signOut": "Abmelden",
         "unavailable": "Oh! Der {{serviceName}} ist aktuell nicht verfügbar. Wir arbeiten an der Behebung des Problems. Bitte versuchen Sie es später noch einmal.",
@@ -776,8 +827,8 @@
     "security": {
         "about": "Sie können Ihre Konferenz mit einem Passwort sichern. Teilnehmer müssen dieses eingeben, bevor sie an der Sitzung teilnehmen dürfen.",
         "aboutReadOnly": "Mit Moderationsrechten kann die Konferenz mit einem Passwort gesichert werden. Personen müssen dieses eingeben, bevor sie an der Sitzung teilnehmen dürfen.",
-        "insecureRoomNameWarning": "Der Raumname ist unsicher. Unerwünschte Teilnehmer könnten Ihrer Konferenz beitreten",
-        "securityOptions": "Sicherheitsoptionen"
+        "header": "Sicherheitsoptionen",
+        "insecureRoomNameWarning": "Der Raumname ist unsicher. Unerwünschte Teilnehmer könnten Ihrer Konferenz beitreten"
     },
     "settings": {
         "calendar": {
@@ -809,9 +860,11 @@
         "selectAudioOutput": "Audioausgabe",
         "selectCamera": "Kamera",
         "selectMic": "Mikrofon",
+        "selfView": "Eigene Ansicht",
         "sounds": "Hinweistöne",
         "speakers": "Lautsprecher",
         "startAudioMuted": "Alle Personen treten stummgeschaltet bei",
+        "startReactionsMuted": "Interaktionstöne für alle deaktivieren",
         "startVideoMuted": "Alle Personen treten ohne Video bei",
         "talkWhileMuted": "Wenn bei Stummschaltung gesprochen wird",
         "title": "Einstellungen"
@@ -844,13 +897,20 @@
     },
     "speaker": "Sprecher/-in",
     "speakerStats": {
-        "search": "Suche",
+        "angry": "Sauer",
+        "disgusted": "Angeekelt",
+        "fearful": "Ängstlich",
+        "happy": "Fröhlich",
         "hours": "{{count}} Std. ",
         "minutes": "{{count}} Min. ",
         "name": "Name",
+        "neutral": "Neutral",
+        "sad": "Traurig",
+        "search": "Suche",
         "seconds": "{{count}} Sek.",
+        "speakerTime": "Sprechzeit",
         "speakerStats": "Sprechstatistik",
-        "speakerTime": "Sprechzeit"
+        "surprised": "Überrascht"
     },
     "startupoverlay": {
         "policyText": " ",
@@ -867,6 +927,7 @@
             "audioOnly": "„Nur Audio“ ein-/ausschalten",
             "audioRoute": "Audiogerät auswählen",
             "boo": "Buhen",
+            "breakoutRoom": "Breakout-Räume betreten/verlassen",
             "callQuality": "Qualitätseinstellungen",
             "cc": "Untertitel ein-/ausschalten",
             "chat": "Chatfenster öffnen / schließen",
@@ -898,7 +959,7 @@
             "pip": "Bild-in-Bild-Modus ein-/ausschalten",
             "privateMessage": "Private Nachricht senden",
             "profile": "Profil bearbeiten",
-            "raiseHand": "Hand erheben / senken",
+            "raiseHand": "Hand heben",
             "reactionsMenu": "Interaktionsmenü öffnen / schließen",
             "recording": "Aufzeichnung ein-/ausschalten",
             "remoteMute": "Personen stummschalten",
@@ -935,7 +996,7 @@
         "chat": "Chat öffnen / schließen",
         "clap": "Klatschen",
         "closeChat": "Chat schließen",
-        "closeReactionsMenu": "Interationsmenü schließen",
+        "closeReactionsMenu": "Interaktionsmenü schließen",
         "disableReactionSounds": "Sie können die Interaktionstöne für diese Konferenz deaktivieren",
         "documentClose": "Geteiltes Dokument schließen",
         "documentOpen": "Geteiltes Dokument öffnen",
@@ -950,7 +1011,9 @@
         "hangup": "Konferenz verlassen",
         "help": "Hilfe",
         "invite": "Personen einladen",
+        "joinBreakoutRoom": "In Breakout-Raum wechseln",
         "laugh": "Lachen",
+        "leaveBreakoutRoom": "Breakout-Raum verlassen",
         "like": "Daumen hoch",
         "lobbyButtonDisable": "Lobbymodus deaktivieren",
         "lobbyButtonEnable": "Lobbymodus aktivieren",
@@ -970,12 +1033,12 @@
         "noisyAudioInputTitle": "Ihr Mikrofon scheint lärmintensiv zu sein!",
         "noisyAudioInputDesc": "Es klingt, als ob Ihr Mikrofon Störgeräusche verursacht. Bitte überlegen Sie, ob Sie das Gerät stummschalten oder austauschen wollen.",
         "openChat": "Chat öffnen",
-        "openReactionsMenu": "Interationsmenü öffnen",
+        "openReactionsMenu": "Interaktionsmenü öffnen",
         "participants": "Anwesende",
         "pip": "Bild-in-Bild-Modus einschalten",
         "privateMessage": "Private Nachricht senden",
         "profile": "Profil bearbeiten",
-        "raiseHand": "Hand erheben / senken",
+        "raiseHand": "Hand heben",
         "raiseYourHand": "Melden",
         "reactionBoo": "Buhen senden",
         "reactionClap": "Klatschen senden",
@@ -1040,7 +1103,10 @@
         "pending": "{{displayName}} wurde eingeladen"
     },
     "videoStatus": {
+        "adjustFor": "Einstellen für:",
         "audioOnly": "AUD",
+        "bestPerformance": "Beste Leistung",
+        "highestQuality": "Höchste Qualität",
         "audioOnlyExpanded": "Sie befinden sich im Modus „Nur Audio“. Dieser Modus benötigt weniger Bandbreite, Sie sehen jedoch nicht die Videos der anderen.",
         "callQuality": "Videoqualität",
         "hd": "HD",
@@ -1051,6 +1117,7 @@
         "ld": "LD",
         "ldTooltip": "Video wird in niedriger Auflösung angezeigt",
         "lowDefinition": "Niedrige Auflösung",
+        "performanceSettings": "Qualitätseinstellungen",
         "sd": "SD",
         "sdTooltip": "Video wird in Standardauflösung angezeigt",
         "standardDefinition": "Standardauflösung"
@@ -1063,12 +1130,14 @@
         "domuteVideoOfOthers": "Alle anderen Kameras auschalten",
         "flip": "Spiegeln",
         "grantModerator": "Moderationsrechte vergeben",
+        "hideSelfView": "Eigene Ansicht ausblenden",
         "kick": "Hinauswerfen",
         "moderator": "Moderation",
         "mute": "Person ist stumm geschaltet",
         "muted": "Stummgeschaltet",
         "videoMuted": "Kamera ausgeschaltet",
         "remoteControl": "Fernsteuerung",
+        "screenSharing": "Person teilt den Bildschirm",
         "show": "Im Vordergrund anzeigen",
         "videomute": "Person hat die Kamera angehalten"
     },
@@ -1111,18 +1180,24 @@
         "startMeeting": "Meeting starten",
         "terms": "AGB",
         "title": "Sichere, voll funktionale und komplett kostenlose Videokonferenzen",
-        "logo":{
-           "calendar":"Kalender Logo",
-           "microsoftLogo":"Microsoft Logo",
-           "logoDeepLinking":"Jitsi Meet Logo",
-           "desktopPreviewThumbnail":"Desktop-Vorschau Thumbnail",
-           "googleLogo":"Google Logo",
-           "policyLogo":"Richtlinienlogo"
+        "logo": {
+            "calendar": "Kalender Logo",
+            "microsoftLogo": "Microsoft Logo",
+            "logoDeepLinking": "Jitsi Meet Logo",
+            "desktopPreviewThumbnail": "Desktop-Vorschau Thumbnail",
+            "googleLogo": "Google Logo",
+            "policyLogo": "Richtlinienlogo"
         }
     },
     "lonelyMeetingExperience": {
         "button": "Andere einladen",
         "youAreAlone": "Nur Sie sind in dieser Konferenz"
+    },
+    "termsView": {
+        "header": "Nutzungsbedingungen"
+    },
+    "privacyView": {
+        "header": "Datenschutz"
     },
     "helpView": {
         "header": "Hilfecenter"

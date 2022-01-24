@@ -12,13 +12,10 @@ import {
 import {
     setDeviceStatusOk,
     setDeviceStatusWarning,
-    setJoiningInProgress,
-    setPrejoinPageVisibility
+    setJoiningInProgress
 } from './actions';
 import { PREJOIN_SCREEN_STATES } from './constants';
 import { isPrejoinPageVisible } from './functions';
-
-declare var APP: Object;
 
 /**
  * The redux middleware for {@link PrejoinPage}.

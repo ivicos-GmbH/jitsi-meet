@@ -33,7 +33,7 @@
         outline: 1px solid #455166;
     }
     .dropdown-menu button:not(:active):not(:hover) > span {
-        color: #B8C7E0;
+        color: #b8c7e0;
     }
 
     /**
@@ -42,7 +42,7 @@
     */
     div[role="tablist"] > div:not([data-selected]):not(:hover),
     label > div > span {
-        color: #B8C7E0 !important;
+        color: #b8c7e0 !important;
     }
 }
 
@@ -56,16 +56,16 @@
     }
 
     .jitsi-icon svg {
-        fill: #B8C7E0;
+        fill: #b8c7e0;
     }
 }
 
 /**
  * Override @atlaskit/modal-dialog footer styling.
  */
- .atlaskit-portal [role="dialog"] footer {
-     box-shadow: none;
- }
+.atlaskit-portal [role="dialog"] footer {
+    box-shadow: none;
+}
 
 /**
  * Make header close button more easily tappable on mobile.
@@ -87,11 +87,10 @@
     background: none;
 }
 
-
 /**
  * Keep overflow menu within screen vertical bounds and make it scrollable.
  */
- .toolbox-button-wth-dialog > div:nth-child(2) {
+.toolbox-button-wth-dialog > div:nth-child(2) {
     background: $menuBG;
     max-height: calc(100vh - #{$newToolbarSizeWithPadding} - 46px);
     margin-bottom: 4px;
@@ -147,7 +146,11 @@
     }
 
     // Remove Atlaskit padding from the chat dialog.
-    .shift-right .focus-lock [role="dialog"] > div:first-child > div:nth-child(2) {
+    .shift-right
+        .focus-lock
+        [role="dialog"]
+        > div:first-child
+        > div:nth-child(2) {
         padding: 0;
     }
 }
@@ -157,4 +160,21 @@ div.Tooltip {
     font-size: 12px;
     line-height: 14px;
     padding: 8px;
+}
+
+// make modal full screen on landscape orientation
+@media (max-height: 420px) {
+    .atlaskit-portal {
+        .css-1oc7v0j {
+            height: 100%;
+            padding: 0;
+            max-width: 100%;
+            top: 0;
+            width: 100%;
+
+            & > div {
+                height: 100%;
+            }
+        }
+    }
 }

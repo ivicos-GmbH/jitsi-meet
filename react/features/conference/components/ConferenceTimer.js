@@ -43,7 +43,7 @@ type State = {
  * ConferenceTimer react component.
  *
  * @class ConferenceTimer
- * @extends Component
+ * @augments Component
  */
 class ConferenceTimer extends Component<Props, State> {
 

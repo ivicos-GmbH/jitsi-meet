@@ -5,10 +5,14 @@
     bottom: 0;
     z-index: $drawerZ;
     border-radius: 16px 16px 0 0;
+
+    &.notification-portal {
+        z-index: $dropdownZ;
+    }
 }
 
 .drawer-portal::after {
-    content: '';
+    content: "";
     background-color: $participantsPaneBgColor;
     margin-bottom: env(safe-area-inset-bottom, 0);
 }
@@ -37,15 +41,6 @@
         svg {
             fill: none;
         }
-    }
-
-    .popupmenu {
-        margin: auto;
-        width: 100%;
-    }
-
-    .popupmenu__item {
-        height: 48px;
     }
 
     &#{&} .overflow-menu {

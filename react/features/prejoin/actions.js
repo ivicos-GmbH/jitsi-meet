@@ -3,7 +3,7 @@
 declare var JitsiMeetJS: Object;
 declare var APP: Object;
 
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import { getDialOutStatusUrl, getDialOutUrl, updateConfig } from '../base/config';
 import { isIosMobileBrowser } from '../base/environment/utils';
@@ -20,7 +20,7 @@ import {
 } from '../base/tracks';
 import { openURLInBrowser } from '../base/util';
 import { executeDialOutRequest, executeDialOutStatusRequest, getDialInfoPageURL } from '../invite/functions';
-import { showErrorNotification } from '../notifications';
+import { NOTIFICATION_TIMEOUT_TYPE, showErrorNotification } from '../notifications';
 
 import {
     PREJOIN_JOINING_IN_PROGRESS,
@@ -29,7 +29,6 @@ import {
     SET_DIALOUT_NUMBER,
     SET_DIALOUT_STATUS,
     SET_PREJOIN_DISPLAY_NAME_REQUIRED,
-    SET_SKIP_PREJOIN,
     SET_SKIP_PREJOIN_RELOAD,
     SET_JOIN_BY_PHONE_DIALOG_VISIBLITY,
     SET_PRECALL_TEST_RESULTS,
@@ -116,7 +115,7 @@ function pollForStatus(
             case DIAL_OUT_STATUS.DISCONNECTED: {
                 dispatch(showErrorNotification({
                     titleKey: 'prejoin.errorDialOutDisconnected'
-                }));
+                }, NOTIFICATION_TIMEOUT_TYPE.LONG));
 
                 return onFail();
             }
@@ -124,7 +123,7 @@ function pollForStatus(
             case DIAL_OUT_STATUS.FAILED: {
                 dispatch(showErrorNotification({
                     titleKey: 'prejoin.errorDialOutFailed'
-                }));
+                }, NOTIFICATION_TIMEOUT_TYPE.LONG));
 
                 return onFail();
             }
@@ -132,7 +131,7 @@ function pollForStatus(
         } catch (err) {
             dispatch(showErrorNotification({
                 titleKey: 'prejoin.errorDialOutStatus'
-            }));
+            }, NOTIFICATION_TIMEOUT_TYPE.LONG));
             logger.error('Error getting dial out status', err);
             onFail();
         }
@@ -153,7 +152,7 @@ function pollForStatus(
 export function dialOut(onSuccess: Function, onFail: Function) {
     return async function(dispatch: Function, getState: Function) {
         const state = getState();
-        const reqId = uuid.v4();
+        const reqId = uuidv4();
         const url = getDialOutUrl(state);
         const conferenceUrl = getDialOutConferenceUrl(state);
         const phoneNumber = getFullDialOutNumber(state);
@@ -185,7 +184,7 @@ export function dialOut(onSuccess: Function, onFail: Function) {
                 }
             }
 
-            dispatch(showErrorNotification(notification));
+            dispatch(showErrorNotification(notification, NOTIFICATION_TIMEOUT_TYPE.LONG));
             logger.error('Error dialing out', err);
             onFail();
         }
@@ -483,19 +482,6 @@ export function setPrejoinDisplayNameRequired() {
 export function setDialOutNumber(value: string) {
     return {
         type: SET_DIALOUT_NUMBER,
-        value
-    };
-}
-
-/**
- * Sets the visibility of the prejoin page for future uses.
- *
- * @param {boolean} value - The visibility value.
- * @returns {Object}
- */
-export function setSkipPrejoin(value: boolean) {
-    return {
-        type: SET_SKIP_PREJOIN,
         value
     };
 }

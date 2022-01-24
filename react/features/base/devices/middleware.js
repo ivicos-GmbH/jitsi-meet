@@ -296,13 +296,14 @@ function _checkAndNotifyForNewDevice(store, newDevices, oldDevices) {
             break;
         }
         }
-
-        dispatch(showNotification({
-            description,
-            titleKey,
-            customActionNameKey: 'notify.newDeviceAction',
-            customActionHandler: _useDevice.bind(undefined, store, devicesArray)
-        }));
+        if (!isPrejoinPageVisible(store.getState())) {
+            dispatch(showNotification({
+                description,
+                titleKey,
+                customActionNameKey: [ 'notify.newDeviceAction' ],
+                customActionHandler: [ _useDevice.bind(undefined, store, devicesArray) ]
+            }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+        }
     });
 }
 

@@ -15,7 +15,7 @@ import { COMMAND_ANSWER_POLL } from '../constants';
 type InputProps = {
 
     /**
-     * ID of the poll to display
+     * ID of the poll to display.
      */
     pollId: string,
 };

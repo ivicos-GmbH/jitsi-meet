@@ -1,3 +1,4 @@
+import { MD_ITEM_HEIGHT } from '../../../base/dialog/components/native/styles';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 
 /**
@@ -112,7 +113,9 @@ export default {
     admitAllParticipantsActionButtonLabel: {
         ...BaseTheme.typography.heading6,
         color: BaseTheme.palette.link01,
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        marginRight: BaseTheme.spacing[5],
+        marginTop: BaseTheme.spacing[3]
     },
 
     participantContainer: {
@@ -322,5 +325,53 @@ export default {
 
     divider: {
         backgroundColor: BaseTheme.palette.dividerColor
+    },
+
+    clearableInput: {
+        display: 'flex',
+        height: MD_ITEM_HEIGHT,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: BaseTheme.palette.border02,
+        backgroundColor: BaseTheme.palette.uiBackground,
+        borderRadius: BaseTheme.shape.borderRadius,
+        marginLeft: BaseTheme.spacing[3],
+        marginRight: BaseTheme.spacing[3],
+        marginBottom: BaseTheme.spacing[4]
+    },
+
+    clearableInputFocus: {
+        borderWidth: 3,
+        borderColor: BaseTheme.palette.field01Focus
+    },
+
+    clearButton: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        paddingTop: 12,
+        paddingLeft: BaseTheme.spacing[2],
+        width: 40,
+        height: MD_ITEM_HEIGHT
+    },
+
+    clearIcon: {
+        color: BaseTheme.palette.icon02
+    },
+
+    clearableInputTextInput: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        height: '100%',
+        width: '100%',
+        textAlign: 'center',
+        color: BaseTheme.palette.text01,
+        paddingTop: BaseTheme.spacing[2],
+        paddingBottom: BaseTheme.spacing[2],
+        paddingLeft: BaseTheme.spacing[3],
+        paddingRight: BaseTheme.spacing[3],
+        fontSize: 16
     }
 };

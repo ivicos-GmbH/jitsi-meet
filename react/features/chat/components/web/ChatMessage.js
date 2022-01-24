@@ -1,16 +1,13 @@
 // @flow
 
 import React from 'react';
-import { toArray } from 'react-emoji-render';
-
 
 import { translate } from '../../../base/i18n';
-import { Linkify } from '../../../base/react';
+import Message from '../../../base/react/components/web/Message';
 import { MESSAGE_TYPE_LOCAL } from '../../constants';
-import AbstractChatMessage, {
-    type Props
-} from '../AbstractChatMessage';
-import PrivateMessageButton from '../PrivateMessageButton';
+import AbstractChatMessage, { type Props } from '../AbstractChatMessage';
+
+import PrivateMessageButton from './PrivateMessageButton';
 
 /**
  * Renders a single chat message.

@@ -6,6 +6,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconWarning } from '../../../base/icons';
 import { Label } from '../../../base/label';
+import { COLORS } from '../../../base/label/constants';
 import { connect } from '../../../base/redux';
 import AbstractInsecureRoomNameLabel, { _mapStateToProps } from '../AbstractInsecureRoomNameLabel';
 

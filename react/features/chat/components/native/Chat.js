@@ -5,14 +5,14 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { translate } from '../../../base/i18n';
-import { JitsiModal } from '../../../base/modal';
+import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { connect } from '../../../base/redux';
 import { PollsPane } from '../../../polls/components';
 import { closeChat } from '../../actions.any';
 import { BUTTON_MODES, CHAT_VIEW_MODAL_ID } from '../../constants';
 import AbstractChat, {
     _mapStateToProps,
-    type Props
+    type Props as AbstractProps
 } from '../AbstractChat';
 
 import ChatInputBar from './ChatInputBar';
@@ -20,21 +20,30 @@ import MessageContainer from './MessageContainer';
 import MessageRecipient from './MessageRecipient';
 import styles from './styles';
 
+
+type Props = AbstractProps & {
+
+    /**
+     * Is this screen focused or not(React Navigation).
+     */
+    isChatScreenFocused: boolean,
+
+    /**
+     * Default prop for navigating between screen components(React Navigation).
+     */
+    navigation: Object,
+
+    /**
+     * Default prop for navigating between screen components(React Navigation).
+     */
+    route: Object
+};
+
 /**
  * Implements a React native component that renders the chat window (modal) of
  * the mobile client.
  */
 class Chat extends AbstractChat<Props> {
-    /**
-     * Creates a new instance.
-     *
-     * @inheritdoc
-     */
-    constructor(props: Props) {
-        super(props);
-
-        this._onClose = this._onClose.bind(this);
-    }
 
     /**
      * Implements React's {@link Component#render()}.
@@ -42,6 +51,9 @@ class Chat extends AbstractChat<Props> {
      * @inheritdoc
      */
     render() {
+        const { _messages, route } = this.props;
+        const privateMessageRecipient = route.params?.privateMessageRecipient;
+
         return (
             <JitsiModal
                 headerProps = {{
@@ -97,8 +109,18 @@ class Chat extends AbstractChat<Props> {
     }
 
     _onSendMessage: (string) => void;
+}
 
-    _onClose: () => boolean
+export default translate(connect(_mapStateToProps)(props => {
+    const {
+        _nbUnreadMessages,
+        dispatch,
+        navigation,
+        route,
+        t
+    } = props;
+    const isChatScreenFocused = useIsFocused();
+    const privateMessageRecipient = route.params?.privateMessageRecipient;
 
     _onTogglePollsTab: () => void;
     _onToggleChatTab: () => void;
@@ -111,8 +133,19 @@ class Chat extends AbstractChat<Props> {
     _onClose() {
         this.props.dispatch(closeChat());
 
-        return true;
-    }
-}
+    useEffect(() => {
+        dispatch(openChat(privateMessageRecipient));
 
-export default translate(connect(_mapStateToProps)(Chat));
+        navigation.setOptions({
+            tabBarLabel: `${t('chat.tabs.chat')} ${nrUnreadMessages}`
+        });
+
+        return () => dispatch(closeChat());
+    }, [ nrUnreadMessages ]);
+
+    return (
+        <Chat
+            { ...props }
+            isChatScreenFocused = { isChatScreenFocused } />
+    );
+}));

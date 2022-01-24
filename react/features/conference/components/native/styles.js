@@ -1,7 +1,21 @@
 import { ColorSchemeRegistry, schemeColor } from '../../../base/color-scheme';
-import { BoxModel, ColorPalette, fixAndroidViewClipping } from '../../../base/styles';
+import { BoxModel, fixAndroidViewClipping } from '../../../base/styles';
+import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 
-export const INSECURE_ROOM_NAME_LABEL_COLOR = ColorPalette.warning;
+export const INSECURE_ROOM_NAME_LABEL_COLOR = BaseTheme.palette.actionDanger;
+
+const TITLE_BAR_BUTTON_SIZE = 24;
+
+
+/**
+ * The styles of the safe area view that contains the title bar.
+ */
+const titleBarSafeView = {
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0
+};
 
 const NAVBAR_BUTTON_SIZE = 24;
 
@@ -11,16 +25,26 @@ const NAVBAR_BUTTON_SIZE = 24;
 export default {
 
     /**
-     * {@code Conference} style.
+     * {@code Conference} Style.
      */
     conference: fixAndroidViewClipping({
         alignSelf: 'stretch',
-        backgroundColor: '#040404',
+        backgroundColor: BaseTheme.palette.uiBackground,
         flex: 1
     }),
 
     displayNameContainer: {
         margin: 10
+    },
+
+    headerNavigationIcon: {
+        marginLeft: 12
+    },
+
+    headerNavigationButton: {
+        height: BaseTheme.spacing[6],
+        marginTop: 20,
+        width: BaseTheme.spacing[6]
     },
 
     /**
@@ -51,7 +75,7 @@ export default {
         alignItems: 'center',
         borderRadius: 24,
         flexDirection: 'row',
-        height: 48,
+        height: BaseTheme.spacing[6],
         justifyContent: 'space-around',
         paddingHorizontal: 12
     },
@@ -86,14 +110,11 @@ export default {
         underlayColor: ColorPalette.buttonUnderlay
     },
 
-    navBarSafeView: {
-        left: 0,
-        position: 'absolute',
-        right: 0,
-        top: 0
+    titleBarSafeViewTransparent: {
+        ...titleBarSafeView
     },
 
-    navBarWrapper: {
+    titleBarWrapper: {
         alignItems: 'center',
         flex: 1,
         flexDirection: 'row',
@@ -110,18 +131,16 @@ export default {
     },
 
     roomTimerView: {
-        backgroundColor: 'rgba(0,0,0,0.8)',
-        borderBottomRightRadius: 3,
-        borderTopRightRadius: 3,
-        height: 28,
+        backgroundColor: BaseTheme.palette.action02,
+        borderRadius: 3,
         justifyContent: 'center',
         minWidth: 50
     },
 
     roomName: {
-        color: ColorPalette.white,
-        fontSize: 14,
-        fontWeight: '400'
+        color: BaseTheme.palette.text01,
+        ...BaseTheme.typography.bodyShortBold,
+        paddingVertical: 6
     },
 
     roomNameView: {
@@ -156,6 +175,20 @@ export default {
 
     insecureRoomNameLabel: {
         backgroundColor: INSECURE_ROOM_NAME_LABEL_COLOR
+    },
+
+    raisedHandsCountLabel: {
+        backgroundColor: BaseTheme.palette.warning02,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: BaseTheme.spacing[0],
+        marginBottom: BaseTheme.spacing[0],
+        marginRight: BaseTheme.spacing[1]
+    },
+
+    raisedHandsCountLabelText: {
+        color: BaseTheme.palette.uiBackground,
+        paddingLeft: BaseTheme.spacing[2]
     }
 };
 
