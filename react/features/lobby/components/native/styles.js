@@ -8,10 +8,6 @@ export const ENABLED_THUMB_COLOR = BaseTheme.palette.action04;
 export const ENABLED_TRACK_COLOR = BaseTheme.palette.screen01Header;
 export const DISABLED_THUMB_COLOR = BaseTheme.palette.icon04;
 
-export const ENABLED_THUMB_COLOR = ColorPalette.blueHighlight;
-export const ENABLED_TRACK_COLOR = ColorPalette.blue;
-export const DISABLED_THUMB_COLOR = ColorPalette.darkGrey;
-
 export default {
     button: {
         alignItems: 'center',

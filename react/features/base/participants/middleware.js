@@ -591,11 +591,6 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
         raisedHandTimestamp
     }));
 
-    dispatch(raiseHandUpdateQueue({
-        id: participantId,
-        raisedHand
-    }));
-
     if (typeof APP !== 'undefined') {
         APP.API.notifyRaiseHandUpdated(participantId, raisedHandTimestamp);
     }

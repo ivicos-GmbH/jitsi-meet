@@ -9,7 +9,7 @@ import { getLocalParticipant } from '../../../base/participants/functions';
 import { connect } from '../../../base/redux';
 import { escapeRegexp } from '../../../base/util';
 import { initSearch } from '../../actions';
-import { resetSearchCriteria } from '../../actions.any';
+import { resetSearchCriteria, initUpdateStats } from '../../actions.any';
 import { getSpeakerStats, getSearchCriteria } from '../../functions';
 
 
@@ -185,9 +185,9 @@ function _mapStateToProps(state) {
          * @private
          * @type {string|undefined}
          */
-         _localDisplayName: localParticipant && localParticipant.name,
-         _stats: getSpeakerStats(state),
-         _criteria: getSearchCriteria(state),
+        _localDisplayName: localParticipant && localParticipant.name,
+        _stats: getSpeakerStats(state),
+        _criteria: getSearchCriteria(state),
         _showFacialExpressions: enableFacialRecognition,
         _reduceExpressions: clientWidth < 750
     };

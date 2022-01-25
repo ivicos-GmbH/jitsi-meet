@@ -158,6 +158,19 @@ export function showWarningNotification(props: Object, type: ?string) {
 }
 
 /**
+ * Queues an unreachable notification for display.
+ *
+ * @param {Object} props - The props needed to show the notification component.
+ * @returns {Object}
+ */
+export function showUnreachableNotification(props: Object) {
+    return showNotification({
+        ...props,
+        appearance: NOTIFICATION_TYPE.UNREACHABLE
+    });
+}
+
+/**
  * Queues a message notification for display.
  *
  * @param {Object} props - The props needed to show the notification component.

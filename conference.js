@@ -61,7 +61,6 @@ import {
     setAudioOutputDeviceId,
     updateDeviceList
 } from './react/features/base/devices';
-import { isIosMobileBrowser } from './react/features/base/environment/utils';
 import {
     browser,
     isFatalJitsiConnectionError,

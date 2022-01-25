@@ -5,7 +5,8 @@ import { processExternalDeviceRequest } from '../../device-selection';
 import {
     NOTIFICATION_TIMEOUT_TYPE,
     showNotification,
-    showWarningNotification
+    showWarningNotification,
+    showUnreachableNotification
 } from '../../notifications';
 import { replaceAudioTrackById, replaceVideoTrackById, setDeviceStatusWarning } from '../../prejoin/actions';
 import { isPrejoinPageVisible } from '../../prejoin/functions';
@@ -137,7 +138,9 @@ MiddlewareRegistry.register(store => next => action => {
         store.dispatch(showUnreachableNotification({
             description: additionalCameraErrorMsg,
             descriptionKey: cameraErrorMsg,
-            titleKey
+            titleKey,
+            customActionNameKey,
+            customActionHandler
         }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
 
         if (isPrejoinPageVisible(store.getState())) {

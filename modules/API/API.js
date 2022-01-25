@@ -2,6 +2,7 @@
 
 import Logger from '@jitsi/logger';
 
+
 import { createApiEvent, sendAnalytics } from '../../react/features/analytics';
 import {
     approveParticipantAudio,
@@ -65,6 +66,7 @@ import { toggleLobbyMode, setKnockingParticipantApproval } from '../../react/fea
 import { isForceMuted } from '../../react/features/participants-pane/functions';
 import { RECORDING_TYPES } from '../../react/features/recording/constants';
 import { getActiveSession } from '../../react/features/recording/functions';
+import { setBackgroundImage } from '../../react/features/room-background/actions';
 import { isScreenAudioSupported, isScreenVideoShared } from '../../react/features/screen-share';
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
@@ -1599,7 +1601,7 @@ class API {
      * @param {Object} speakerData - List of participants with their corresponding speaking time.
      * @returns {void}
      */
-     notifySpeakerStatsReceived(speakerData: Object) {
+    notifySpeakerStatsReceived(speakerData: Object) {
         this._sendEvent({
             name: 'speaker-stats-updated',
             speakerData
@@ -1629,8 +1631,8 @@ class API {
             name: 'speaker-stats-collect-stopped'
         });
     }
-    /**
 
+    /**
      * Notify external application (if API is enabled) wether the used browser is supported or not.
      *
      * @param {boolean} supported - If browser is supported or not.

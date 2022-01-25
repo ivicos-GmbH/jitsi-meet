@@ -23,7 +23,6 @@ import { LargeVideo } from '../../../large-video';
 import { KnockingParticipantList } from '../../../lobby';
 import { getIsLobbyVisible } from '../../../lobby/functions';
 import { BackButtonRegistry } from '../../../mobile/back-button';
-import { ParticipantsPane } from '../../../participants-pane/components/native';
 import { Captions } from '../../../subtitles';
 import { setToolboxVisible } from '../../../toolbox/actions';
 import { Toolbox } from '../../../toolbox/components/native';
@@ -208,11 +207,7 @@ class Conference extends AbstractConference<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const { _fullscreenEnabled, _showLobby } = this.props;
-
-        if (_showLobby) {
-            return <LobbyScreen />;
-        }
+        const { _fullscreenEnabled } = this.props;
 
         return (
             <Container style = { styles.conference }>
@@ -320,7 +315,6 @@ class Conference extends AbstractConference<Props, State> {
     _renderContent() {
         const {
             _connecting,
-            _isParticipantsPaneOpen,
             _largeVideoParticipantId,
             _reducedUI,
             _shouldDisplayTileView,
