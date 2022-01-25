@@ -5,9 +5,13 @@ import type { Dispatch } from 'redux';
 
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
+import { getLocalParticipant } from '../../../base/participants/functions';
 import { connect } from '../../../base/redux';
 import { escapeRegexp } from '../../../base/util';
-import { initSearch, resetSearchCriteria } from '../../actions';
+import { initSearch } from '../../actions';
+import { resetSearchCriteria } from '../../actions.any';
+import { getSpeakerStats, getSearchCriteria } from '../../functions';
+
 
 import SpeakerStatsLabels from './SpeakerStatsLabels';
 import SpeakerStatsList from './SpeakerStatsList';

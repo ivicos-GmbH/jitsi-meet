@@ -1,4 +1,5 @@
 // @flow
+declare var APP: Object;
 
 import _ from 'lodash';
 
