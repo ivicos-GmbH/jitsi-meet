@@ -178,7 +178,7 @@ const styles = theme => {
  *
  * @augments {Component}
  */
-class ConnectionIndicator extends AbstractConnectionIndicator<Props, AbstractState> {
+class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
     /**
      * Initializes a new {@code ConnectionIndicator} instance.
      *

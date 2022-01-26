@@ -535,7 +535,7 @@ export function setPrejoinDeviceErrors(value: Object) {
  * @param {string} value - The value.
  * @returns {Object}
  */
-export function setPrejoinPageVisibility(value: PREJOIN_SCREEN_STATE) {
+export function setPrejoinPageVisibility(value: boolean) {
     return {
         type: SET_PREJOIN_PAGE_VISIBILITY,
         value

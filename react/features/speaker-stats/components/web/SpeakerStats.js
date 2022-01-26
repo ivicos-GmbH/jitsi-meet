@@ -17,10 +17,17 @@ import SpeakerStatsLabels from './SpeakerStatsLabels';
 import SpeakerStatsList from './SpeakerStatsList';
 import SpeakerStatsSearch from './SpeakerStatsSearch';
 
+declare var interfaceConfig: Object;
+
 /**
  * The type of the React {@code Component} props of {@link SpeakerStats}.
  */
 type Props = {
+
+    /**
+     * The display name for the local participant obtained from the redux store.
+     */
+     _localDisplayName: string,
 
     /**
      * The flag which shows if the facial recognition is enabled, obtained from the redux store.
@@ -37,6 +44,11 @@ type Props = {
      * The search criteria.
      */
     _criteria: string | null,
+
+    /**
+     * The JitsiConference from which stats will be pulled.
+     */
+     conference: Object,
 
     /**
      * Redux store dispatch method.
@@ -162,6 +174,7 @@ class SpeakerStats extends Component<Props> {
     }
 }
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Maps (parts of) the redux state to the associated SpeakerStats's props.
  *
@@ -171,6 +184,8 @@ class SpeakerStats extends Component<Props> {
  * *   _localDisplayName: ?string,
  *     _showFacialExpressions: ?boolean,
  *     _reduceExpressions: boolean,
+ *     _stats: Object,
+ *     _criteria: string,
  * }}
  */
 function _mapStateToProps(state) {

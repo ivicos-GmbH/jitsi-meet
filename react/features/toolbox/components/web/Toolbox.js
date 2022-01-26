@@ -186,6 +186,11 @@ type Props = {
     _localVideo: Object,
 
     /**
+     * Whether or not the overflow menu is visible.
+     */
+     _overflowMenuVisible: boolean,
+
+    /**
      *Whether or not the overflow menu is displayed in a drawer drawer.
      */
     _overflowDrawer: boolean,

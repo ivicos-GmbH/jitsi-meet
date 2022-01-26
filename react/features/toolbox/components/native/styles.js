@@ -69,33 +69,6 @@ const reactionMenu = {
 };
 
 /**
- * The style of reaction buttons.
- */
-const reactionButton = {
-    ...toolbarButton,
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    marginTop: 0,
-    marginHorizontal: 0
-};
-
-/**
- * The style of the emoji on the reaction buttons.
- */
-const reactionEmoji = {
-    fontSize: 20,
-    color: ColorPalette.white
-};
-
-const reactionMenu = {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: ColorPalette.black,
-    padding: 16
-};
-
-/**
  * The Toolbox and toolbar related styles.
  */
 const styles = {
@@ -221,67 +194,6 @@ ColorSchemeRegistry.register('Toolbox', {
 
     emojiAnimation: {
         color: BaseTheme.palette.icon01,
-        position: 'absolute',
-        zIndex: 1001,
-        elevation: 2,
-        fontSize: 20,
-        left: '50%',
-        top: '100%'
-    },
-
-    reactionDialog: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'transparent'
-    },
-
-    overflowReactionMenu: reactionMenu,
-
-    reactionMenu: {
-        ...reactionMenu,
-        borderRadius: 3,
-        width: 360
-    },
-
-    reactionRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        marginBottom: 16
-    },
-
-    reactionButton: {
-        style: reactionButton,
-        underlayColor: ColorPalette.toggled,
-        emoji: reactionEmoji
-    },
-
-    raiseHandButton: {
-        style: {
-            ...reactionButton,
-            backgroundColor: ColorPalette.toggled,
-            width: '100%',
-            borderRadius: 6
-        },
-        underlayColor: ColorPalette.toggled,
-        emoji: reactionEmoji,
-        text: {
-            color: ColorPalette.white,
-            fontWeight: '600',
-            marginLeft: 8,
-            lineHeight: 24
-        },
-        container: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }
-    },
-
-    emojiAnimation: {
-        color: ColorPalette.white,
         position: 'absolute',
         zIndex: 1001,
         elevation: 2,

@@ -755,19 +755,6 @@ class Thumbnail extends Component<Props, State> {
         dispatch(updateLastTrackVideoMediaEvent(jitsiVideoTrack, event.type));
     }
 
-    _setInstance: Object => void;
-
-    /**
-     * Stores the local or remote video menu button instance in a variable.
-     *
-     * @param {Object} instance - The local or remote video menu trigger instance.
-     *
-     * @returns {void}
-     */
-    _setInstance(instance) {
-        this.videoMenuTriggerRef = instance;
-    }
-
     /**
      * Renders a remote participant's 'thumbnail.
      *
