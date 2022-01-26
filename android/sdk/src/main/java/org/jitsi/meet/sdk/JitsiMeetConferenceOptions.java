@@ -51,11 +51,6 @@ public class JitsiMeetConferenceOptions implements Parcelable {
     private Bundle config;
 
     /**
-     * Config. See: https://github.com/jitsi/jitsi-meet/blob/master/config.js
-     */
-    private Bundle config;
-
-    /**
      * USer information, to be used when no token is specified.
      */
     private JitsiMeetUserInfo userInfo;
