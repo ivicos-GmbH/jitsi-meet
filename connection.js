@@ -1,7 +1,7 @@
 /* global APP, JitsiMeetJS, config */
 
 import { jitsiLocalStorage } from '@jitsi/js-utils';
-import Logger from 'jitsi-meet-logger';
+import Logger from '@jitsi/logger';
 
 import { redirectToTokenAuthService } from './modules/UI/authentication/AuthHandler';
 import { LoginDialog } from './react/features/authentication/components';
@@ -88,8 +88,7 @@ function checkForAttachParametersAndConnect(id, password, connection) {
 export async function connect(id, password, roomName) {
     const connectionConfig = Object.assign({}, config);
     const state = APP.store.getState();
-    let { jwt } = APP.store.getState()['features/base/jwt'];
-
+    let { jwt } = state['features/base/jwt'];
     const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
 
     if (!iAmRecorder && !iAmSipGateway && isVpaasMeeting(state)) {

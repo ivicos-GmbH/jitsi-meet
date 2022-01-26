@@ -101,7 +101,7 @@ type State = {
 /**
  * React component for DesktopPicker.
  *
- * @extends Component
+ * @augments Component
  */
 class DesktopPicker extends PureComponent<Props, State> {
     /**

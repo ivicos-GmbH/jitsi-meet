@@ -44,12 +44,7 @@ type Props = {
     /**
      * Whether or not the reactions feature is enabled.
      */
-    _reactionsEnabled: boolean,
-
-    /**
-     * The redux {@code dispatch} function.
-     */
-    dispatch: Function
+    _reactionsEnabled: boolean
 };
 
 /**
@@ -88,10 +83,12 @@ function Toolbox(props: Props) {
                 <VideoMuteButton
                     styles = { buttonStylesBorderless }
                     toggledStyles = { toggledButtonStyles } />
-                {additionalButtons.has('chat')
-                    && <ChatButton
-                        styles = { buttonStylesBorderless }
-                        toggledStyles = { backgroundToggledStyle } />}
+                {
+                    additionalButtons.has('chat')
+                      && <ChatButton
+                          styles = { buttonStylesBorderless }
+                          toggledStyles = { backgroundToggledStyle } />
+                }
 
                 { additionalButtons.has('raisehand') && (_reactionsEnabled
                     ? <ReactionsMenuButton

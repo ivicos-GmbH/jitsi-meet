@@ -8,17 +8,17 @@
         "contacts": "contatti",
         "countryNotSupported": "Non supportiamo ancora questa destinazione.",
         "countryReminder": "Stai chiamando fuori dagli Stati Uniti? Assicurati d'inserire il prefisso internazionale!",
-        "defaultEmail": "Tua e-mail di default",
+        "defaultEmail": "Tua email di default",
         "disabled": "Non puoi invitare persone.",
         "failedToAdd": "L'aggiunta di nuove persone è fallita",
         "footerText": "La chiamata all'esterno è disabilitata.",
-        "googleEmail": "E-mail Google",
+        "googleEmail": "Email Google",
         "inviteMoreHeader": "Sei l'unico presente nella riunione",
         "inviteMoreMailSubject": "Unisciti alla riunione {{appName}}",
         "inviteMorePrompt": "Invita altre persone",
         "linkCopied": "Collegamento copiato negli appunti",
         "noResults": "Nessun risultato corrispondente",
-        "outlookEmail": "E-mail Outlook",
+        "outlookEmail": "Email Outlook",
         "phoneNumbers": "numeri di telefono",
         "searching": "Sto cercando...",
         "shareInvite": "Condividi invito alla riunione",
@@ -27,7 +27,7 @@
         "sipAddresses": "indirizzi SIP",
         "telephone": "Telefono: {{number}}",
         "title": "Invita persone a questa riunione",
-        "yahooEmail": "E-mail Yahoo"
+        "yahooEmail": "Email Yahoo"
     },
     "audioDevices": {
         "bluetooth": "Bluetooth",
@@ -318,7 +318,7 @@
         "sessionRestarted": "Chiamata riavviata automaticamente",
         "Share": "Condividi",
         "shareAudio": "Continue",
-        "shareAudioTitle" : "Come condividere l'audio",
+        "shareAudioTitle": "Come condividere l'audio",
         "shareAudioWarningTitle": "Ferma la condivisione dello schermo, per condividere l'audio",
         "shareAudioWarningH1": "Se vuoi condividere solo l'audio:",
         "shareAudioWarningD1": "devi fermare la condivisione dello schermo, per condividere l'audio.",
@@ -361,7 +361,7 @@
         "Yes": "Sì",
         "yourEntireScreen": "Schermo intero",
         "remoteUserControls": "Controlli dell'utente remoto {{username}}",
-        "localUserControls": "Controlli dell'utente locale"        
+        "localUserControls": "Controlli dell'utente locale"
     },
     "dialOut": {
         "statusMessage": "è {{status}}"
@@ -386,15 +386,15 @@
         "none": "Nessuno",
         "uploadedImage": "Carica immagine {{index}}",
         "deleteImage": "Cancella immagine",
-        "image1" : "Spiaggia",
-        "image2" : "Parete neutra bianca",
-        "image3" : "Stanza bianca vuota",
-        "image4" : "Lampanda da pavimento nera",
-        "image5" : "Montagna",
-        "image6" : "Foresta",
-        "image7" : "Alba",
+        "image1": "Spiaggia",
+        "image2": "Parete neutra bianca",
+        "image3": "Stanza bianca vuota",
+        "image4": "Lampanda da pavimento nera",
+        "image5": "Montagna",
+        "image6": "Foresta",
+        "image7": "Alba",
         "desktopShareError": "Impossibile condividere il desktop",
-        "desktopShare":"Condivisione desktop",
+        "desktopShare": "Condivisione desktop",
         "webAssemblyWarning": "Il WebAssembly not è supportato",
         "backgroundEffectError": "L'applicazione dell'effetto allo sfondo è fallita."
     },
@@ -423,7 +423,7 @@
         "country": "Paese",
         "dialANumber": "Per collegarti telefonicamente al meeting, chiama uno di questi numeri e metti il pin.",
         "dialInConferenceID": "PIN:",
-        "copyNumber":"Copia numero",
+        "copyNumber": "Copia numero",
         "dialInNotSupported": "Spiacenti, la partecipazione solo telefonica non è supportata attualmente",
         "dialInNumber": "Componi:",
         "dialInSummaryError": "Errore nella ricerca dei numeri telefonici. Riprova più tardi.",
@@ -608,11 +608,11 @@
     "participantsPane": {
         "close": "Chiudi",
         "header": "Partecipanti",
-         "headings": {
+        "headings": {
             "lobby": "Sala d'attesa ({{count}})",
             "participantsList": "Partecipanti alla riunione ({{count}})",
             "waitingLobby": "In attesa ({{count}})"
-},
+        },
         "actions": {
             "allow": "Permetti ai partecipanti di:",
             "allowVideo": "Autorizza video",
@@ -637,8 +637,8 @@
             "answerPlaceholder": "Risposta {{index}}",
             "create": "Crea un sondaggio",
             "cancel": "Annulla",
-            "pollOption" : "Risposta sondaggio {{index}}",
-            "pollQuestion" : "Domanda Sondaggio",
+            "pollOption": "Risposta sondaggio {{index}}",
+            "pollQuestion": "Domanda Sondaggio",
             "questionPlaceholder": "Poni una domanda",
             "removeOption": "Elimina risposta",
             "send": "Invia"
@@ -671,23 +671,23 @@
         "configuringDevices": "Configurazione dispositivi...",
         "connectedWithAudioQ": "Sei connesso con l'audio?",
         "connection": {
-           "good": "La tua connessione Internet sembra buona!",
-           "nonOptimal": "La tua connessione Internet non è ottimale",
-           "poor": "La tua connessione Internet è scarsa"
+            "good": "La tua connessione Internet sembra buona!",
+            "nonOptimal": "La tua connessione Internet non è ottimale",
+            "poor": "La tua connessione Internet è scarsa"
         },
         "connectionDetails": {
-          "audioClipping": "Ci aspettiamo che il tuo audio sarà a sighiozzo.",
-          "audioHighQuality": "Ci aspettiamo che il tuo audio sarà di eccellente qualità.",
-          "audioLowNoVideo": "Ci aspettiamo una bassa qualità audio e che il video sia assente.",
-          "goodQuality": "Ottimo! La tue funzioni multimediali andranno alla grande.",
-          "noMediaConnectivity": "Non siamo riusciti a stabilire una connessione multimediale per fare questo test. Questo è tipicamente causato da un firewall o dal NAT.",
-          "noVideo": "Ci aspettiamo una pessima qualità video.",
-          "undetectable": "Se non riesci ancora a fare chiamate nel browser, ti consigliamo di verificare che il microfono e la videocamera siano configurate correttamente, che tu abbia dato al browser i permessi di usare microfono e videocamera e che il tuo browser sia aggiornato all'ultima versione. Se hai ancora problemi, dovresti contattare lo sviluppatore dell'applicazione web.",
-          "veryPoorConnection": "Ci aspettiamo una qualità della chiamata davvero terribile.",
-          "videoFreezing": "Ci aspettiamo che il video si blocchi, sparisca, o sia molto pixelato.",
-          "videoHighQuality": "Ci aspettiamo che il video sia di buona qualità.",
-          "videoLowQuality": "Ci aspettiamo che il video abbia pochi fotogrammi al secondo e sia a bassa risoluzione.",
-          "videoTearing": "Ci aspettiamo che il video sia pixelato e abbia deformazioni visive."
+            "audioClipping": "Ci aspettiamo che il tuo audio sarà a sighiozzo.",
+            "audioHighQuality": "Ci aspettiamo che il tuo audio sarà di eccellente qualità.",
+            "audioLowNoVideo": "Ci aspettiamo una bassa qualità audio e che il video sia assente.",
+            "goodQuality": "Ottimo! La tue funzioni multimediali andranno alla grande.",
+            "noMediaConnectivity": "Non siamo riusciti a stabilire una connessione multimediale per fare questo test. Questo è tipicamente causato da un firewall o dal NAT.",
+            "noVideo": "Ci aspettiamo una pessima qualità video.",
+            "undetectable": "Se non riesci ancora a fare chiamate nel browser, ti consigliamo di verificare che il microfono e la videocamera siano configurate correttamente, che tu abbia dato al browser i permessi di usare microfono e videocamera e che il tuo browser sia aggiornato all'ultima versione. Se hai ancora problemi, dovresti contattare lo sviluppatore dell'applicazione web.",
+            "veryPoorConnection": "Ci aspettiamo una qualità della chiamata davvero terribile.",
+            "videoFreezing": "Ci aspettiamo che il video si blocchi, sparisca, o sia molto pixelato.",
+            "videoHighQuality": "Ci aspettiamo che il video sia di buona qualità.",
+            "videoLowQuality": "Ci aspettiamo che il video abbia pochi fotogrammi al secondo e sia a bassa risoluzione.",
+            "videoTearing": "Ci aspettiamo che il video sia pixelato e abbia deformazioni visive."
         },
         "copyAndShare": "Copia e condividi il collegamento della riunione",
         "dialInMeeting": "Chiama e collegati alla riunione",
@@ -712,7 +712,7 @@
         "or": "o",
         "premeeting": "Attesa riunione",
         "showScreen": "Avvia la schermata d'attesa della riunione",
-        "keyboardShortcuts" : "Attiva le scorciatoie da tastiera",
+        "keyboardShortcuts": "Attiva le scorciatoie da tastiera",
         "startWithPhone": "Avvia usando il telefono, per parlare",
         "screenSharingError": "Errore di condivisione dello schermo:",
         "videoOnlyError": "Errore video:",
@@ -736,8 +736,8 @@
     "profile": {
         "avatar": "avatar",
         "setDisplayNameLabel": "Imposta il nome da visualizzare",
-        "setEmailInput": "Inserisci e-mail",
-        "setEmailLabel": "Imposta l'e-mail gravatar",
+        "setEmailInput": "Inserisci email",
+        "setEmailLabel": "Imposta l'email gravatar",
         "title": "Profilo"
     },
     "raisedHand": "Vorrebbe parlare",
@@ -834,7 +834,7 @@
         "disableCrashReporting": "Disattiva la diagnostica dei crash",
         "disableCrashReportingWarning": "Sei sicuro di voler disattivare la diagnostica dei crash? Quest'impostazione verrà eseguita al prossimo avvio dell'app.",
         "displayName": "Nome visualizzato",
-        "email": "e-mail",
+        "email": "email",
         "header": "Impostazioni",
         "profileSection": "Profilo",
         "serverURL": "URL del server",
@@ -1064,7 +1064,7 @@
         "connectionInfo": "Info connessione",
         "domute": "Disattiva audio",
         "domuteVideo": "Disattiva video",
-        "domuteOthers": "Disattiva audio di tutti gli altri",        
+        "domuteOthers": "Disattiva audio di tutti gli altri",
         "domuteVideoOfOthers": "Disattiva video di tutti gli altri",
         "flip": "Rifletti",
         "grantModerator": "Autorizza moderatore",
@@ -1116,13 +1116,13 @@
         "startMeeting": "Inizia riunione",
         "terms": "Termini di utilizzo",
         "title": "Il sistema di videoconferenza sicuro, funzionale e completamente gratuito.",
-        "logo":{
-           "calendar":"Logo calendario",
-           "microsoftLogo":"Logo Microsoft",
-           "logoDeepLinking":"Logo Jitsi meet",
-           "desktopPreviewThumbnail":"Icona anteprima desktop",
-           "googleLogo":"Logo Google",
-           "policyLogo":"Logo normativa"
+        "logo": {
+            "calendar": "Logo calendario",
+            "microsoftLogo": "Logo Microsoft",
+            "logoDeepLinking": "Logo Jitsi meet",
+            "desktopPreviewThumbnail": "Icona anteprima desktop",
+            "googleLogo": "Logo Google",
+            "policyLogo": "Logo normativa"
         }
     },
     "lonelyMeetingExperience": {
@@ -1141,7 +1141,7 @@
         "dialogTitle": "Sala d'attesa",
         "disableDialogContent": "Sala d'attesa attiva. Questa funzione ti permette di non dare accesso alla riunione a partecipanti indesiderati. Vuoi disattivarla?",
         "disableDialogSubmit": "Disattiva",
-        "emailField": "Inserisci il tuo indirizzo e-mail",
+        "emailField": "Inserisci il tuo indirizzo email",
         "enableDialogPasswordField": "Imposta password (opzionale)",
         "enableDialogSubmit": "Attiva",
         "enableDialogText": "La sala d'attesa ti permette di proteggere la riunione concedendo l'ingresso solo alle persone autorizzate da un moderatore.",

@@ -1,3 +1,5 @@
 module.exports = {
-    extends: [ 'eslint-config-jitsi' ]
+    'extends': [
+        '@jitsi/eslint-config'
+    ]
 };
