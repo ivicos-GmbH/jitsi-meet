@@ -23,7 +23,7 @@ export class ShapeExtractor {
      *
      * @class
      * @param {string} shapeEncoding - The shape encoding can either correspond to the simple name of
-     * a shape 'circle' or 'square' or also include a size ratio between 0 and 1 (ex. circle-0.8).
+     * a shape 'circle' or 'square' or also include a size ratio between 0 and 1 (ex. `circle-0.8`).
      */
     constructor(shapeEncoding: string) {
 
