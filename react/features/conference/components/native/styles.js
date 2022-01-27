@@ -17,7 +17,7 @@ const titleBarSafeView = {
     top: 0
 };
 
-const NAVBAR_BUTTON_SIZE = 24;
+// const NAVBAR_BUTTON_SIZE = 24;
 
 /**
  * The styles of the feature conference.

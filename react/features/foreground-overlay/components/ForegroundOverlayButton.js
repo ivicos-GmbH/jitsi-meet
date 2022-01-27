@@ -18,7 +18,7 @@ import { ForegroundOverlayDialog } from './index';
 type Props = AbstractButtonProps & {
 
     /**
-     * True if the foreground overlay of the room is set
+     * True if the foreground overlay of the room is set.
      */
     _isForegroundOverlayEnabled: boolean,
 

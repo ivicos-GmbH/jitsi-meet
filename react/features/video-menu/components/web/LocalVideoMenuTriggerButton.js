@@ -279,9 +279,6 @@ function _mapStateToProps(state) {
     case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
         _menuPosition = 'top-start';
         break;
-    case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
-        _menuPosition = 'top';
-        break;
     default:
         _menuPosition = 'auto';
     }

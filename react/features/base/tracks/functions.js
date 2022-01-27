@@ -1,5 +1,6 @@
 /* global APP */
 
+import { notifyCameraError } from '../../base/devices/actions';
 import { isMobileBrowser } from '../environment/utils';
 import JitsiMeetJS, { JitsiTrackErrors, browser } from '../lib-jitsi-meet';
 import { MEDIA_TYPE, VIDEO_TYPE, setAudioMuted } from '../media';

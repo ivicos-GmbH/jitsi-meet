@@ -5,7 +5,7 @@ import { StateListenerRegistry } from '../base/redux';
 declare var APP: Object;
 
 /**
- * Send an event when the foreground overlay has been changed
+ * Send an event when the foreground overlay has been changed.
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/foreground-overlay'],

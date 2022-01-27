@@ -96,18 +96,18 @@ class RecentList extends AbstractRecentList<Props> {
         );
     }
 
-_onLongPress: (Object) => void;
+    _onLongPress: (Object) => void;
 
-/**
+    /**
  * Handles the list's navigate action.
  *
  * @private
  * @param {Object} item - The item which was long pressed.
  * @returns {void}
  */
-_onLongPress(item) {
-    this.props.dispatch(openDialog(RecentListItemMenu, { item }));
-}
+    _onLongPress(item) {
+        this.props.dispatch(openDialog(RecentListItemMenu, { item }));
+    }
 }
 
 /**

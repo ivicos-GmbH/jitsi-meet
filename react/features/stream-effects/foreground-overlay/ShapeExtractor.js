@@ -18,7 +18,6 @@ export class ShapeExtractor {
     _sizeRatio: number;
     _shape: Object;
 
-    // eslint-disable-next-line jsdoc/require-description-complete-sentence
     /**
      * Represents a shape extractor class.
      *

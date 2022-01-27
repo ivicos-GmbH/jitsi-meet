@@ -18,8 +18,6 @@ import VideoQualityDialog from './VideoQualityDialog.web';
 
 declare var interfaceConfig: Object;
 
-declare var interfaceConfig: Object;
-
 type Props = AbstractProps & {
 
     /**

@@ -123,7 +123,7 @@ export function setFullScreen(fullScreen: boolean) {
  * @param {number} timeout - Timeout for showing the toolbox.
  * @returns {Function}
  */
- export function showToolbox(timeout: number = 0): Object {
+export function showToolbox(timeout: number = 0): Object {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
         const {

@@ -1,7 +1,7 @@
 // @flow
 
 /**
- * Circle shape
+ * Circle shape.
  */
 export class Circle {
 
@@ -48,7 +48,7 @@ export class Circle {
 }
 
 /**
- * Square shape
+ * Square shape.
  */
 export class Square {
 

@@ -1,6 +1,6 @@
 // @flow
 
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { BoxModel } from '../../base/styles';
 import BaseTheme from '../../base/ui/components/BaseTheme.native';

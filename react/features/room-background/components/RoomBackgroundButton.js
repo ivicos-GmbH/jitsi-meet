@@ -17,7 +17,7 @@ import { RoomBackgroundDialog } from './index';
 type Props = AbstractButtonProps & {
 
     /**
-     * True if the background of the room is set
+     * True if the background of the room is set.
      */
     _isBackgroundRoomEnabled: boolean,
 
