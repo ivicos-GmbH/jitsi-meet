@@ -39,11 +39,11 @@ export default class AbstractGrantModeratorButton extends AbstractButton<Props, 
     label = 'videothumbnail.grantModerator';
 
     /**
-     * Handles clicking / pressing the button, and kicks the participant.
-     *
-     * @private
-     * @returns {void}
-     */
+   * Handles clicking / pressing the button, and kicks the participant.
+   *
+   * @private
+   * @returns {void}
+   */
     _handleClick() {
         const { dispatch, participantID } = this.props;
 

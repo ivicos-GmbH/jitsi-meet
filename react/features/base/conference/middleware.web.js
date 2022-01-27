@@ -1,7 +1,6 @@
 // @flow
 
-import { setPrejoinPageVisibility, setSkipPrejoinOnReload } from '../../prejoin';
-import { PREJOIN_SCREEN_STATES } from '../../prejoin/constants';
+import { setSkipPrejoinOnReload } from '../../prejoin';
 import { JitsiConferenceErrors } from '../lib-jitsi-meet';
 import { MiddlewareRegistry } from '../redux';
 
@@ -14,7 +13,6 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
     switch (action.type) {
     case CONFERENCE_JOINED: {
         if (enableForcedReload) {
-            dispatch(setPrejoinPageVisibility(PREJOIN_SCREEN_STATES.HIDDEN));
             dispatch(setSkipPrejoinOnReload(false));
         }
 
@@ -22,8 +20,8 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
     }
     case CONFERENCE_FAILED: {
         enableForcedReload
-                && action.error?.name === JitsiConferenceErrors.CONFERENCE_RESTARTED
-                && dispatch(setSkipPrejoinOnReload(true));
+            && action.error?.name === JitsiConferenceErrors.CONFERENCE_RESTARTED
+            && dispatch(setSkipPrejoinOnReload(true));
 
         break;
     }

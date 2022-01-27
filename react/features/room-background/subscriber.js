@@ -12,7 +12,7 @@ import { extractBackgroundProperties } from './functions';
 declare var APP: Object;
 
 /**
- * Updates the room background when participants backgroundData property is updated
+ * Updates the room background when participants backgroundData property is updated.
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/participants'],

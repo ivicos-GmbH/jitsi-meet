@@ -1,12 +1,17 @@
 // @flow
 
+import i18n from 'i18next';
 import { batch } from 'react-redux';
 
 import UIEvents from '../../../../service/UI/UIEvents';
 import { approveParticipant } from '../../av-moderation/actions';
 import { toggleE2EE } from '../../e2ee/actions';
 import { MAX_MODE } from '../../e2ee/constants';
-import { NOTIFICATION_TIMEOUT, showNotification } from '../../notifications';
+import {
+    NOTIFICATION_TIMEOUT_TYPE,
+    RAISE_HAND_NOTIFICATION_ID,
+    showNotification
+} from '../../notifications';
 import { isForceMuted } from '../../participants-pane/functions';
 import { CALLING, INVITED } from '../../presence-status';
 import { RAISE_HAND_SOUND_ID } from '../../reactions/constants';
@@ -61,6 +66,8 @@ import {
 } from './functions';
 import { PARTICIPANT_JOINED_FILE, PARTICIPANT_LEFT_FILE } from './sounds';
 
+import { hasRaisedHand, raiseHand } from '.';
+
 declare var APP: Object;
 
 /**
@@ -87,27 +94,14 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case DOMINANT_SPEAKER_CHANGED: {
-        // Ensure the raised hand state is cleared for the dominant speaker
-        // and only if it was set when this is the local participant
-
-        const { conference, id } = action.participant;
+        // Lower hand through xmpp when local participant becomes dominant speaker.
+        const { id } = action.participant;
         const state = store.getState();
         const participant = getLocalParticipant(state);
         const isLocal = participant && participant.id === id;
 
-        if (isLocal && participant.raisedHand === undefined) {
-            // if local was undefined, let's leave it like that
-            // avoids sending unnecessary presence updates
-            break;
-        }
-
-        if (!getDisableRemoveRaisedHandOnFocus(state)) {
-            participant && store.dispatch(participantUpdated({
-                conference,
-                id,
-                local: isLocal,
-                raisedHand: false
-            }));
+        if (isLocal && hasRaisedHand(participant) && !getDisableRemoveRaisedHandOnFocus(state)) {
+            store.dispatch(raiseHand(false));
         }
 
         break;
@@ -128,13 +122,8 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case LOCAL_PARTICIPANT_RAISE_HAND: {
-        const { enabled } = action;
+        const { raisedHandTimestamp } = action;
         const localId = getLocalParticipant(store.getState())?.id;
-
-        store.dispatch(raiseHandUpdateQueue({
-            id: localId,
-            raisedHand: enabled
-        }));
 
         store.dispatch(participantUpdated({
             // XXX Only the local participant is allowed to update without
@@ -145,11 +134,16 @@ MiddlewareRegistry.register(store => next => action => {
 
             id: localId,
             local: true,
-            raisedHand: enabled
+            raisedHandTimestamp
+        }));
+
+        store.dispatch(raiseHandUpdateQueue({
+            id: localId,
+            raisedHandTimestamp
         }));
 
         if (typeof APP !== 'undefined') {
-            APP.API.notifyRaiseHandUpdated(localId, enabled);
+            APP.API.notifyRaiseHandUpdated(localId, raisedHandTimestamp);
         }
 
         break;
@@ -178,16 +172,22 @@ MiddlewareRegistry.register(store => next => action => {
 
     case RAISE_HAND_UPDATED: {
         const { participant } = action;
-        const queue = getRaiseHandsQueue(store.getState());
+        let queue = getRaiseHandsQueue(store.getState());
 
-        if (participant.raisedHand) {
-            queue.push(participant.id);
-            action.queue = queue;
+        if (participant.raisedHandTimestamp) {
+            queue.push({
+                id: participant.id,
+                raisedHandTimestamp: participant.raisedHandTimestamp
+            });
+
+            // sort the queue before adding to store.
+            queue = queue.sort(({ raisedHandTimestamp: a }, { raisedHandTimestamp: b }) => a - b);
         } else {
-            const filteredQueue = queue.filter(id => id !== participant.id);
-
-            action.queue = filteredQueue;
+            // no need to sort on remove value.
+            queue = queue.filter(({ id }) => id !== participant.id);
         }
+
+        action.queue = queue;
         break;
     }
 
@@ -293,7 +293,14 @@ StateListenerRegistry.register(
                         id: participant.getId(),
                         features: { 'screen-sharing': true }
                     })),
-                'raisedHand': (participant, value) => _raiseHandUpdated(store, conference, participant.getId(), value),
+                'raisedHand': (participant, value) =>
+                    _raiseHandUpdated(store, conference, participant.getId(), value),
+                'region': (participant, value) =>
+                    store.dispatch(participantUpdated({
+                        conference,
+                        id: participant.getId(),
+                        region: value
+                    })),
                 'remoteControlSessionStatus': (participant, value) =>
                     store.dispatch(participantUpdated({
                         conference,
@@ -326,7 +333,7 @@ StateListenerRegistry.register(
 
             // We left the conference, the local participant must be updated.
             _e2eeUpdated(store, conference, localParticipantId, false);
-            _raiseHandUpdated(store, conference, localParticipantId, false);
+            _raiseHandUpdated(store, conference, localParticipantId, 0);
         }
     }
 );
@@ -342,18 +349,23 @@ StateListenerRegistry.register(
  */
 function _e2eeUpdated({ getState, dispatch }, conference, participantId, newValue) {
     const e2eeEnabled = newValue === 'true';
-
-    const { maxMode } = getState()['features/e2ee'] || {};
-
-    if (maxMode !== MAX_MODE.THRESHOLD_EXCEEDED || !e2eeEnabled) {
-        dispatch(toggleE2EE(e2eeEnabled));
-    }
+    const { e2ee = {} } = getState()['features/base/config'];
 
     dispatch(participantUpdated({
         conference,
         id: participantId,
         e2eeEnabled
     }));
+
+    if (e2ee.externallyManagedKey) {
+        return;
+    }
+
+    const { maxMode } = getState()['features/e2ee'] || {};
+
+    if (maxMode !== MAX_MODE.THRESHOLD_EXCEEDED || !e2eeEnabled) {
+        dispatch(toggleE2EE(e2eeEnabled));
+    }
 }
 
 /**
@@ -483,18 +495,19 @@ function _maybePlaySounds({ getState, dispatch }, action) {
  */
 function _participantJoinedOrUpdated(store, next, action) {
     const { dispatch, getState } = store;
-    const { participant: { avatarURL, e2eeEnabled, email, id, local, name, raisedHand, backgroundData } } = action;
+    const { participant: { avatarURL, email, id, local, name, raisedHandTimestamp, backgroundData } } = action;
 
     // Send an external update of the local participant's raised hand state
     // if a new raised hand state is defined in the action.
-    if (typeof raisedHand !== 'undefined') {
+    if (typeof raisedHandTimestamp !== 'undefined') {
 
         if (local) {
             const { conference } = getState()['features/base/conference'];
+            const rHand = parseInt(raisedHandTimestamp, 10);
 
             // Send raisedHand signalling only if there is a change
-            if (conference && raisedHand !== getLocalParticipant(getState()).raisedHand) {
-                conference.setLocalParticipantProperty('raisedHand', raisedHand);
+            if (conference && rHand !== getLocalParticipant(getState()).raisedHandTimestamp) {
+                conference.setLocalParticipantProperty('raisedHand', rHand);
             }
         }
     }
@@ -508,16 +521,6 @@ function _participantJoinedOrUpdated(store, next, action) {
             if (conference) {
                 conference.setLocalParticipantProperty('backgroundData', backgroundData);
             }
-        }
-    }
-
-    // Send an external update of the local participant's E2EE enabled state
-    // if a new state is defined in the action.
-    if (typeof e2eeEnabled !== 'undefined') {
-        if (local) {
-            const { conference } = getState()['features/base/conference'];
-
-            conference && conference.setLocalParticipantProperty('e2eeEnabled', e2eeEnabled);
         }
     }
 
@@ -535,8 +538,8 @@ function _participantJoinedOrUpdated(store, next, action) {
             const updatedParticipant = getParticipantById(getState(), participantId);
 
             getFirstLoadableAvatarUrl(updatedParticipant, store)
-                .then(url => {
-                    dispatch(setLoadableAvatarUrl(participantId, url));
+                .then(urlData => {
+                    dispatch(setLoadableAvatarUrl(participantId, urlData?.src, urlData?.isUsingCORS));
                 });
         }
     }
@@ -562,22 +565,34 @@ function _participantJoinedOrUpdated(store, next, action) {
  * @returns {void}
  */
 function _raiseHandUpdated({ dispatch, getState }, conference, participantId, newValue) {
-    const raisedHand = newValue === 'true';
+    let raisedHandTimestamp;
+
+    switch (newValue) {
+    case undefined:
+    case 'false':
+        raisedHandTimestamp = 0;
+        break;
+    case 'true':
+        raisedHandTimestamp = Date.now();
+        break;
+    default:
+        raisedHandTimestamp = parseInt(newValue, 10);
+    }
     const state = getState();
 
     dispatch(participantUpdated({
         conference,
         id: participantId,
-        raisedHand
+        raisedHandTimestamp
     }));
 
     dispatch(raiseHandUpdateQueue({
         id: participantId,
-        raisedHand
+        raisedHandTimestamp
     }));
 
     if (typeof APP !== 'undefined') {
-        APP.API.notifyRaiseHandUpdated(participantId, raisedHand);
+        APP.API.notifyRaiseHandUpdated(participantId, raisedHandTimestamp);
     }
 
     const isModerator = isLocalParticipantModerator(state);
@@ -590,19 +605,34 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
     }
 
     const action = shouldDisplayAllowAction ? {
-        customActionNameKey: 'notify.allowAction',
-        customActionHandler: () => dispatch(approveParticipant(participantId))
+        customActionNameKey: [ 'notify.allowAction' ],
+        customActionHandler: [ () => dispatch(approveParticipant(participantId)) ]
     } : {};
 
-    if (raisedHand) {
+    if (raisedHandTimestamp) {
+        let notificationTitle;
+        const participantName = getParticipantDisplayName(state, participantId);
+        const { raisedHandsQueue } = state['features/base/participants'];
+
+        if (raisedHandsQueue.length > 1) {
+            const raisedHands = raisedHandsQueue.length - 1;
+
+            notificationTitle = i18n.t('notify.raisedHands', {
+                participantName,
+                raisedHands
+            });
+        } else {
+            notificationTitle = participantName;
+        }
         dispatch(showNotification({
             titleKey: 'notify.somebody',
-            title: getParticipantDisplayName(state, participantId),
+            title: notificationTitle,
             descriptionKey: 'notify.raisedHand',
             raiseHandNotification: true,
             concatText: true,
+            uid: RAISE_HAND_NOTIFICATION_ID,
             ...action
-        }, NOTIFICATION_TIMEOUT * (shouldDisplayAllowAction ? 2 : 1)));
+        }, shouldDisplayAllowAction ? NOTIFICATION_TIMEOUT_TYPE.MEDIUM : NOTIFICATION_TIMEOUT_TYPE.SHORT));
         dispatch(playSound(RAISE_HAND_SOUND_ID));
     }
 }

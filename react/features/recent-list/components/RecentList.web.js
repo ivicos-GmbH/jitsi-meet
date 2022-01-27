@@ -12,7 +12,7 @@ import { isRecentListEnabled, toDisplayableList } from '../functions';
 import AbstractRecentList from './AbstractRecentList';
 
 /**
- * The type of the React {@code Component} props of {@link RecentList}
+ * The type of the React {@code Component} props of {@link RecentList}.
  */
 type Props = {
 
@@ -59,43 +59,43 @@ class RecentList extends AbstractRecentList<Props> {
         this._onItemDelete = this._onItemDelete.bind(this);
     }
 
-_onItemDelete: Object => void;
+    _onItemDelete: Object => void;
 
-/**
+    /**
  * Deletes a recent entry.
  *
  * @param {Object} entry - The entry to be deleted.
  * @inheritdoc
  */
-_onItemDelete(entry) {
-    this.props.dispatch(deleteRecentListEntry(entry));
-}
+    _onItemDelete(entry) {
+        this.props.dispatch(deleteRecentListEntry(entry));
+    }
 
-/**
+    /**
  * Implements the React Components's render method.
  *
  * @inheritdoc
  */
-render() {
-    if (!isRecentListEnabled()) {
-        return null;
-    }
-    const {
-        disabled,
-        _recentList
-    } = this.props;
-    const recentList = toDisplayableList(_recentList);
+    render() {
+        if (!isRecentListEnabled()) {
+            return null;
+        }
+        const {
+            disabled,
+            _recentList
+        } = this.props;
+        const recentList = toDisplayableList(_recentList);
 
-    return (
-        <MeetingsList
-            disabled = { disabled }
-            hideURL = { true }
-            listEmptyComponent = { this._getRenderListEmptyComponent() }
-            meetings = { recentList }
-            onItemDelete = { this._onItemDelete }
-            onPress = { this._onPress } />
-    );
-}
+        return (
+            <MeetingsList
+                disabled = { disabled }
+                hideURL = { true }
+                listEmptyComponent = { this._getRenderListEmptyComponent() }
+                meetings = { recentList }
+                onItemDelete = { this._onItemDelete }
+                onPress = { this._onPress } />
+        );
+    }
 }
 
 /**

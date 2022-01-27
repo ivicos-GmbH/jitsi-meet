@@ -1,6 +1,6 @@
 // @flow
 
-import Logger from 'jitsi-meet-logger';
+import Logger from '@jitsi/logger';
 
 import {
     Circle,
@@ -18,13 +18,12 @@ export class ShapeExtractor {
     _sizeRatio: number;
     _shape: Object;
 
-    // eslint-disable-next-line jsdoc/require-description-complete-sentence
     /**
      * Represents a shape extractor class.
      *
      * @class
      * @param {string} shapeEncoding - The shape encoding can either correspond to the simple name of
-     * a shape 'circle' or 'square' or also include a size ratio between 0 and 1 (ex. circle-0.8).
+     * a shape 'circle' or 'square' or also include a size ratio between 0 and 1 (ex. `circle-0.8`).
      */
     constructor(shapeEncoding: string) {
 

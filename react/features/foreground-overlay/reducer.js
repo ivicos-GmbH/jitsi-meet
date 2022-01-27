@@ -12,7 +12,7 @@ const STORE_NAME = 'features/foreground-overlay';
 
 const DEFAULT_STATE = {
     /**
-     * The custom overlay foreground image
+     * The custom overlay foreground image.
      *
      * @public
      * @type {string}
@@ -20,7 +20,7 @@ const DEFAULT_STATE = {
     overlayImageUrl: '',
 
     /**
-     * The custom overlay color (if no overlay image is given)
+     * The custom overlay color (if no overlay image is given).
      *
      * @public
      * @type {string}
@@ -29,7 +29,7 @@ const DEFAULT_STATE = {
 
     /**
      * Mode chosen for the overlay : example 'fusion' if given background transparent,
-     * 'circle' if a shape should be manually extracted from the overlay (default)
+     * 'circle' if a shape should be manually extracted from the overlay (default).
      *
      * @public
      * @type {string}

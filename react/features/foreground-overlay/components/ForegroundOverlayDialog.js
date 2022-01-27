@@ -98,7 +98,7 @@ type Props = {
     t: Function,
 
     /**
-     * The overlay combination mode
+     * The overlay combination mode.
      */
     _overlayMode: string,
 };

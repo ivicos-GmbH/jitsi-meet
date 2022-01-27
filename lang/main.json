@@ -39,6 +39,28 @@
     "audioOnly": {
         "audioOnly": "Low bandwidth"
     },
+    "blankPage": {
+        "meetingEnded": "Meeting ended."
+    },
+    "breakoutRooms": {
+        "defaultName": "Breakout room #{{index}}",
+        "mainRoom": "Main room",
+        "actions": {
+            "add": "Add breakout room",
+            "autoAssign": "Auto assign to breakout rooms",
+            "close": "Close",
+            "join": "Join",
+            "leaveBreakoutRoom": "Leave breakout room",
+            "more": "More",
+            "remove": "Remove",
+            "sendToBreakoutRoom": "Send participant to:"
+        },
+        "notifications": {
+            "joinedTitle": "Breakout Rooms",
+            "joined": "Joining the \"{{name}}\" breakout room",
+            "joinedMainRoom": "Joining the main room"
+        }
+    },
     "calendarSync": {
         "addMeetingURL": "Add a meeting link",
         "confirmAddLink": "Do you want to add a Jitsi link to this event?",
@@ -158,7 +180,8 @@
         "joinInApp": "Join this meeting using the app",
         "launchWebButton": "Launch in web",
         "title": "Launching your meeting in {{app}}...",
-        "tryAgainButton": "Try again in desktop"
+        "tryAgainButton": "Try again in desktop",
+        "unsupportedBrowser": "It looks like you're using a browser we don't support."
     },
     "defaultLink": "e.g. {{url}}",
     "defaultNickname": "ex. Jane Pink",
@@ -190,7 +213,7 @@
         "cameraNotSendingData": "We are unable to access your camera. Please check if another application is using this device, select another device from the settings menu or try to reload the application.",
         "cameraNotSendingDataTitle": "Unable to access camera",
         "cameraPermissionDeniedError": "You have not granted permission to use your camera. You can still join the conference but others won't see you. Use the camera button in the address bar to fix this.",
-        "cameraTimeoutError": "Could not start video source. Timeout occured!",
+        "cameraTimeoutError": "Could not start video source. Timeout occurred!",
         "cameraUnknownError": "Cannot use camera for an unknown reason.",
         "cameraUnsupportedResolutionError": "Your camera does not support required video resolution.",
         "Cancel": "Cancel",
@@ -268,12 +291,12 @@
         "muteEveryoneStartMuted": "Everyone starts muted from now on",
         "muteParticipantBody": "You won't be able to unmute them, but they can unmute themselves at any time.",
         "muteParticipantButton": "Mute",
-        "muteParticipantDialog": "Are you sure you want to mute this participant? You won't be able to unmute them, but they can unmute themselves at any time.",
         "muteParticipantsVideoDialog": "Are you sure you want to turn off this participant's camera? You won't be able to turn the camera back on, but they can turn it back on at any time.",
-        "muteParticipantTitle": "Mute this participant?",
+        "muteParticipantsVideoDialogModerationOn": "Are you sure you want to turn off this participant's camera? You won't be able to turn the camera back on and neither will they.",
         "muteParticipantsVideoButton": "Stop video",
         "muteParticipantsVideoTitle": "Disable camera of this participant?",
         "muteParticipantsVideoBody": "You won't be able to turn the camera back on, but they can turn it back on at any time.",
+        "muteParticipantsVideoBodyModerationOn": "You won't be able to turn the camera back on and neither will they.",
         "noDropboxToken": "No valid Dropbox token",
         "Ok": "OK",
         "password": "Password",
@@ -315,10 +338,10 @@
         "sendPrivateMessageTitle": "Send privately?",
         "serviceUnavailable": "Service unavailable",
         "sessTerminated": "Call terminated",
-        "sessionRestarted": "Call restarted by the bridge",
+        "sessionRestarted": "Call restarted because of a connection issue.",
         "Share": "Share",
         "shareAudio": "Continue",
-        "shareAudioTitle" : "How to share audio",
+        "shareAudioTitle": "How to share audio",
         "shareAudioWarningTitle": "You need to stop screen sharing before sharing audio",
         "shareAudioWarningH1": "If you want to share just audio:",
         "shareAudioWarningD1": "you need to stop screen sharing before sharing your audio.",
@@ -386,25 +409,18 @@
         "none": "None",
         "uploadedImage": "Uploaded image {{index}}",
         "deleteImage": "Delete image",
-        "image1" : "Beach",
-        "image2" : "White neutral wall",
-        "image3" : "White empty room",
-        "image4" : "Black floor lamp",
-        "image5" : "Mountain",
-        "image6" : "Forest ",
-        "image7" : "Sunrise",
+        "image1": "Beach",
+        "image2": "White neutral wall",
+        "image3": "White empty room",
+        "image4": "Black floor lamp",
+        "image5": "Mountain",
+        "image6": "Forest ",
+        "image7": "Sunrise",
         "desktopShareError": "Could not create desktop share",
         "desktopShare":"Desktop share",
         "webAssemblyWarning": "WebAssembly not supported",
+        "webAssemblyWarningDescription": "WebAssembly disabled or not supported by this browser",
         "backgroundEffectError": "Failed to apply background effect."
-    },
-    "roomBackground": {
-        "title": "Room Backgrounds",
-        "removeBackground": "Remove room background"
-    },
-    "foregroundOverlay": {
-        "title": "Foreground Overlays",
-        "removeForeground": "Remove foreground overlay"
     },
     "feedback": {
         "average": "Average",
@@ -454,7 +470,7 @@
         "noPassword": "None",
         "noRoom": "No room was specified to dial-in into.",
         "numbers": "Dial-in Numbers",
-        "password": "$t(lockRoomPasswordUppercase):",
+        "password": "$t(lockRoomPasswordUppercase): ",
         "sip": "SIP address",
         "title": "Share",
         "tooltip": "Share link and dial-in info for this meeting",
@@ -509,6 +525,7 @@
         "expandedPending": "The live streaming is being started...",
         "failedToStart": "Live Streaming failed to start",
         "getStreamKeyManually": "We weren’t able to fetch any live streams. Try getting your live stream key from YouTube.",
+        "inProgress": "Recording or live streaming in progress",
         "invalidStreamKey": "Live stream key may be incorrect.",
         "off": "Live Streaming stopped",
         "offBy": "{{name}} stopped the live streaming",
@@ -516,6 +533,7 @@
         "onBy": "{{name}} started the live streaming",
         "pending": "Starting Live Stream...",
         "serviceName": "Live Streaming service",
+        "sessionAlreadyActive": "This session is already being recorded or live streamed.",
         "signedInAs": "You are currently signed in as:",
         "signIn": "Sign in with Google",
         "signInCTA": "Sign in or enter your live stream key from YouTube.",
@@ -561,10 +579,14 @@
     "notify": {
         "allowAction": "Allow",
         "allowedUnmute": "You can unmute your microphone, start your camera or share your screen.",
+        "audioUnmuteBlockedTitle": "Mic unmute blocked!",
+        "audioUnmuteBlockedDescription": "Mic unmute operation has been temporarily blocked because of system limits.",
+        "chatMessages": "Chat messages",
         "connectedOneMember": "{{name}} joined the meeting",
         "connectedThreePlusMembers": "{{name}} and many others joined the meeting",
         "connectedTwoMembers": "{{first}} and {{second}} joined the meeting",
         "disconnected": "disconnected",
+        "displayNotifications": "Display notifications for",
         "focus": "Conference focus",
         "focusFail": "{{component}} not available - retry in {{ms}} sec",
         "hostAskedUnmute": "The moderator would like you to speak",
@@ -572,19 +594,24 @@
         "invitedThreePlusMembers": "{{name}} and {{count}} others have been invited",
         "invitedTwoMembers": "{{first}} and {{second}} have been invited",
         "kickParticipant": "{{kicked}} was kicked by {{kicker}}",
+        "leftOneMember": "{{name}} left the meeting",
+        "leftThreePlusMembers": "{{name}} and many others left the meeting",
+        "leftTwoMembers": "{{first}} and {{second}} left the meeting",
         "me": "Me",
         "moderator": "You're now a moderator",
         "muted": "You have started the conversation muted.",
         "mutedTitle": "You're muted!",
-        "mutedRemotelyTitle": "You've been muted by {{moderator}}",
+        "mutedRemotelyTitle": "You've been muted by {{participantDisplayName}}",
         "mutedRemotelyDescription": "You can always unmute when you're ready to speak. Mute back when you're done to keep noise away from the meeting.",
-        "videoMutedRemotelyTitle": "Your video has been turned off by {{moderator}}",
+        "videoMutedRemotelyTitle": "Your video has been turned off by {{participantDisplayName}}",
         "videoMutedRemotelyDescription": "You can always turn it on again.",
         "passwordRemovedRemotely": "$t(lockRoomPasswordUppercase) removed by another participant",
         "passwordSetRemotely": "$t(lockRoomPasswordUppercase) set by another participant",
         "raisedHand": "Would like to speak.",
-        "screenShareNoAudio": " Share audio box was not checked in the window selection screen.",
+        "raisedHands": "{{participantName}} and {{raisedHands}} more people",
+        "screenShareNoAudio": "Share audio box was not checked in the window selection screen.",
         "screenShareNoAudioTitle": "Couldn't share system audio!",
+        "selfViewTitle": "You can always un-hide the self-view from settings",
         "somebody": "Somebody",
         "startSilentTitle": "You joined with no audio output!",
         "startSilentDescription": "Rejoin the meeting to enable audio",
@@ -611,7 +638,10 @@
         "moderationToggleDescription": "by {{participantDisplayName}}",
         "raiseHandAction": "Raise hand",
         "reactionSounds": "Disable sounds",
-        "groupTitle": "Notifications"
+        "reactionSoundsForAll": "Disable sounds for all",
+        "groupTitle": "Notifications",
+        "videoUnmuteBlockedTitle": "Camera unmute and desktop sharing blocked!",
+        "videoUnmuteBlockedDescription": "Camera unmute and desktop sharing operation have been temporarily blocked because of system limits."
     },
     "participantsPane": {
         "close": "Close",
@@ -628,18 +658,23 @@
             "blockEveryoneMicCamera": "Block everyone's mic and camera",
             "invite": "Invite Someone",
             "askUnmute": "Ask to unmute",
+            "moreModerationActions": "More moderation options",
+            "moreParticipantOptions": "More participant options",
             "mute": "Mute",
             "muteAll": "Mute all",
             "muteEveryoneElse": "Mute everyone else",
             "stopEveryonesVideo": "Stop everyone's video",
             "stopVideo": "Stop video",
             "unblockEveryoneMicCamera": "Unblock everyone's mic and camera",
-            "videoModeration": "Start their video"
-        }
+            "videoModeration": "Start their video",
+            "moreModerationControls": "More moderation controls"
+        },
+        "search": "Search participants"
     },
     "passwordSetRemotely": "Set by another participant",
     "passwordDigitsOnly": "Up to {{number}} digits",
     "polls": {
+        "by": "By {{ name }}",
         "create": {
             "addOption": "Add option",
             "answerPlaceholder": "Option {{index}}",
@@ -744,11 +779,12 @@
     "profile": {
         "avatar": "avatar",
         "setDisplayNameLabel": "Set your display name",
-        "setEmailInput": "Enter e-mail",
+        "setEmailInput": "Enter email",
         "setEmailLabel": "Set your gravatar email",
         "title": "Profile"
     },
     "raisedHand": "Would like to speak",
+    "raisedHandsLabel": "Number of raised hands",
     "recording": {
         "limitNotificationDescriptionWeb": "Due to high demand your recording will be limited to {{limit}} min. For unlimited recordings try <a href={{url}} rel='noopener noreferrer' target='_blank'>{{app}}</a>.",
         "limitNotificationDescriptionNative": "Due to high demand your recording will be limited to {{limit}} min. For unlimited recordings try <3>{{app}}</3>.",
@@ -765,6 +801,7 @@
         "expandedPending": "Recording is being started...",
         "failedToStart": "Recording failed to start",
         "fileSharingdescription": "Share recording with meeting participants",
+        "inProgress": "Recording or live streaming in progress",
         "linkGenerated": "We have generated a link to your recording.",
         "live": "LIVE",
         "loggedIn": "Logged in as {{userName}}",
@@ -777,6 +814,7 @@
         "serviceDescription": "Your recording will be saved by the recording service",
         "serviceDescriptionCloud": "Cloud recording",
         "serviceName": "Recording service",
+        "sessionAlreadyActive": "This session is already being recorded or live streamed.",
         "signIn": "Sign in",
         "signOut": "Sign out",
         "unavailable": "Oops! The {{serviceName}} is currently unavailable. We're working on resolving the issue. Please try again later.",
@@ -789,8 +827,8 @@
     "security": {
         "about": "You can add a $t(lockRoomPassword) to your meeting. Participants will need to provide the $t(lockRoomPassword) before they are allowed to join the meeting.",
         "aboutReadOnly": "Moderator participants can add a $t(lockRoomPassword) to the meeting. Participants will need to provide the $t(lockRoomPassword) before they are allowed to join the meeting.",
-        "insecureRoomNameWarning": "The room name is unsafe. Unwanted participants may join your conference. Consider securing your meeting using the security button.",
-        "securityOptions": "Security options"
+        "header": "Security Options",
+        "insecureRoomNameWarning": "The room name is unsafe. Unwanted participants may join your conference. Consider securing your meeting using the security button."
     },
     "settings": {
         "calendar": {
@@ -822,9 +860,11 @@
         "selectAudioOutput": "Audio output",
         "selectCamera": "Camera",
         "selectMic": "Microphone",
+        "selfView": "Self view",
         "sounds": "Sounds",
         "speakers": "Speakers",
         "startAudioMuted": "Everyone starts muted",
+        "startReactionsMuted": "Mute reaction sounds for everyone",
         "startVideoMuted": "Everyone starts hidden",
         "talkWhileMuted": "Talk while muted",
         "title": "Settings"
@@ -857,13 +897,20 @@
     },
     "speaker": "Speaker",
     "speakerStats": {
-        "search": "Search",
+        "angry": "Angry",
+        "disgusted": "Disgusted",
+        "fearful": "Fearful",
+        "happy": "Happy",
         "hours": "{{count}}h",
         "minutes": "{{count}}m",
         "name": "Name",
+        "neutral": "Neutral",
+        "sad": "Sad",
+        "search": "Search",
         "seconds": "{{count}}s",
+        "speakerTime": "Speaker Time",
         "speakerStats": "Speaker Stats",
-        "speakerTime": "Speaker Time"
+        "surprised": "Surprised"
     },
     "startupoverlay": {
         "policyText": " ",
@@ -880,6 +927,7 @@
             "audioOnly": "Toggle audio only",
             "audioRoute": "Select the sound device",
             "boo": "Boo",
+            "breakoutRoom": "Join/leave breakout room",
             "callQuality": "Manage video quality",
             "cc": "Toggle subtitles",
             "chat": "Open / Close chat",
@@ -905,8 +953,8 @@
             "mute": "Mute / Unmute",
             "muteEveryone": "Mute everyone",
             "muteEveryoneElse": "Mute everyone else",
-            "muteEveryonesVideo": "Disable everyone's video",
-            "muteEveryoneElsesVideo": "Disable everyone else's video",
+            "muteEveryonesVideoStream": "Stop everyone's video",
+            "muteEveryoneElsesVideoStream": "Stop everyone else's video",
             "participants": "Participants",
             "pip": "Toggle Picture-in-Picture mode",
             "privateMessage": "Send private message",
@@ -930,11 +978,9 @@
             "tileView": "Toggle tile view",
             "toggleCamera": "Toggle camera",
             "toggleFilmstrip": "Toggle filmstrip",
-            "videomute": "Toggle mute video",
+            "videomute": "Start / Stop camera",
             "videoblur": "Toggle video blur",
             "selectBackground": "Select Background",
-            "selectRoomBackground": "Select the room background",
-            "selectForegroundOverlay": "Select a foreground",
             "expand": "Expand",
             "collapse": "Collapse"
         },
@@ -965,7 +1011,9 @@
         "hangup": "Leave the meeting",
         "help": "Help",
         "invite": "Invite people",
+        "joinBreakoutRoom": "Join breakout room",
         "laugh": "Laugh",
+        "leaveBreakoutRoom": "Leave breakout room",
         "like": "Thumbs Up",
         "lobbyButtonDisable": "Disable lobby mode",
         "lobbyButtonEnable": "Enable lobby mode",
@@ -1017,9 +1065,7 @@
         "tileViewToggle": "Toggle tile view",
         "toggleCamera": "Toggle camera",
         "videomute": "Start / Stop camera",
-        "selectBackground": "Select background",
-        "selectRoomBackground": "Select the room background",
-        "selectForegroundOverlay": "Select the foreground"
+        "selectBackground": "Select background"
     },
     "transcribing": {
         "ccButtonTooltip": "Start / Stop subtitles",
@@ -1057,7 +1103,10 @@
         "pending": "{{displayName}} has been invited"
     },
     "videoStatus": {
+        "adjustFor": "Adjust for:",
         "audioOnly": "AUD",
+        "bestPerformance": "Best performance",
+        "highestQuality": "Highest quality",
         "audioOnlyExpanded": "You are in low bandwidth mode. In this mode you will receive only audio and screen sharing.",
         "callQuality": "Video Quality",
         "hd": "HD",
@@ -1068,6 +1117,7 @@
         "ld": "LD",
         "ldTooltip": "Viewing low definition video",
         "lowDefinition": "Low definition",
+        "performanceSettings": "Performance settings",
         "sd": "SD",
         "sdTooltip": "Viewing standard definition video",
         "standardDefinition": "Standard definition"
@@ -1080,12 +1130,14 @@
         "domuteVideoOfOthers": "Disable camera of everyone else",
         "flip": "Flip",
         "grantModerator": "Grant Moderator Rights",
+        "hideSelfView": "Hide self view",
         "kick": "Kick out",
         "moderator": "Moderator",
         "mute": "Participant is muted",
         "muted": "Muted",
         "videoMuted": "Camera disabled",
         "remoteControl": "Start / Stop remote control",
+        "screenSharing": "Participant is sharing their screen",
         "show": "Show on stage",
         "videomute": "Participant has stopped the camera"
     },
@@ -1140,6 +1192,12 @@
     "lonelyMeetingExperience": {
         "button": "Invite others",
         "youAreAlone": "You are the only one in the meeting"
+    },
+    "termsView": {
+        "header": "Terms"
+    },
+    "privacyView": {
+        "header": "Privacy"
     },
     "helpView": {
         "header": "Help center"

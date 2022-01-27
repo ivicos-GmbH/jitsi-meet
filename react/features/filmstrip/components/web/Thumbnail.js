@@ -1,17 +1,16 @@
 // @flow
 
+import { withStyles } from '@material-ui/styles';
+import clsx from 'clsx';
 import React, { Component } from 'react';
 
 import { createScreenSharingIssueEvent, sendAnalytics } from '../../../analytics';
-import { AudioLevelIndicator } from '../../../audio-level-indicator';
 import { Avatar } from '../../../base/avatar';
-import { isNameReadOnly } from '../../../base/config';
 import { isMobileBrowser } from '../../../base/environment/utils';
-import JitsiMeetJS from '../../../base/lib-jitsi-meet/_';
 import { MEDIA_TYPE, VideoTrack } from '../../../base/media';
 import {
     getParticipantByIdOrUndefined,
-    getParticipantCount,
+    hasRaisedHand,
     pinParticipant
 } from '../../../base/participants';
 import { connect } from '../../../base/redux';
@@ -23,37 +22,26 @@ import {
     getTrackByMediaTypeAndParticipant,
     updateLastTrackVideoMediaEvent
 } from '../../../base/tracks';
-import { ConnectionIndicator } from '../../../connection-indicator';
-import { DisplayName } from '../../../display-name';
-import { StatusIndicators, RaisedHandIndicator, DominantSpeakerIndicator } from '../../../filmstrip';
 import { PresenceLabel } from '../../../presence-status';
 import { getCurrentLayout, LAYOUTS } from '../../../video-layout';
-import { LocalVideoMenuTriggerButton, RemoteVideoMenuTriggerButton } from '../../../video-menu';
-import { setVolume } from '../../actions.web';
 import {
     DISPLAY_MODE_TO_CLASS_NAME,
     DISPLAY_VIDEO,
-    DISPLAY_VIDEO_WITH_NAME,
     VIDEO_TEST_EVENTS,
     SHOW_TOOLBAR_CONTEXT_MENU_AFTER
 } from '../../constants';
-import { isVideoPlayable, computeDisplayMode } from '../../functions';
+import { isVideoPlayable, computeDisplayModeFromInput, getDisplayModeInput } from '../../functions';
 
-// import { createNoiseGateProcessor } from '../../../stream-effects/noisegate';
-
-const JitsiTrackEvents = JitsiMeetJS.events.track;
+import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
+import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
+import ThumbnailTopIndicators from './ThumbnailTopIndicators';
 
 declare var interfaceConfig: Object;
 
 /**
  * The type of the React {@code Component} state of {@link Thumbnail}.
  */
-export type State = {
-
-    /**
-     * The current audio level value for the Thumbnail.
-     */
-    audioLevel: number,
+export type State = {|
 
     /**
      * Indicates that the canplay event has been received.
@@ -66,15 +54,20 @@ export type State = {
     displayMode: number,
 
     /**
+     * Whether popover is visible or not.
+     */
+    popoverVisible: boolean,
+
+    /**
      * Indicates whether the thumbnail is hovered or not.
      */
     isHovered: boolean
-};
+|};
 
 /**
  * The type of the React {@code Component} props of {@link Thumbnail}.
  */
-export type Props = {
+export type Props = {|
 
     /**
      * If the display name is editable or not.
@@ -87,24 +80,9 @@ export type Props = {
     _audioTrack: ?Object,
 
     /**
-     * Disable/enable the auto hide functionality for the connection indicator.
-     */
-    _connectionIndicatorAutoHideEnabled: boolean,
-
-    /**
-     * Disable/enable the connection indicator.
-     */
-    _connectionIndicatorDisabled: boolean,
-
-    /**
      * The current layout of the filmstrip.
      */
     _currentLayout: string,
-
-    /**
-     * The default display name for the local participant.
-     */
-    _defaultLocalDisplayName: string,
 
     /**
      * Indicates whether the local video flip feature is disabled or not.
@@ -112,9 +90,9 @@ export type Props = {
     _disableLocalVideoFlip: boolean,
 
     /**
-     * The display mode of the thumbnail.
+     * Indicates whether enlargement of tiles to fill the available space is disabled.
      */
-    _displayMode: number,
+    _disableTileEnlargement: boolean,
 
     /**
      * The height of the Thumbnail.
@@ -122,14 +100,14 @@ export type Props = {
     _height: number,
 
     /**
-     * The aspect ratio of the Thumbnail in percents.
-     */
-    _heightToWidthPercent: number,
-
-    /**
      * Indicates whether the thumbnail should be hidden or not.
      */
     _isHidden: boolean,
+
+    /**
+     * Whether or not there is a pinned participant.
+     */
+    _isAnyParticipantPinned: boolean,
 
     /**
      * Indicates whether audio only mode is enabled.
@@ -172,33 +150,23 @@ export type Props = {
     _isTestModeEnabled: boolean,
 
     /**
-     * The size of the icon of indicators.
-     */
-    _indicatorIconSize: number,
-
-    /**
      * The current local video flip setting.
      */
     _localFlipX: boolean,
 
     /**
-     * An object with information about the participant related to the thumbnaul.
+     * An object with information about the participant related to the thumbnail.
      */
     _participant: Object,
 
     /**
-     * True if there are more than 2 participants in the call.
+     * Whether or not the participant has the hand raised.
      */
-     _participantCountMoreThan2: boolean,
+    _raisedHand: boolean,
 
     /**
-     * Indicates whether the "start silent" mode is enabled.
+     * The video track that will be displayed in the thumbnail.
      */
-    _startSilent: Boolean,
-
-    /**
-    * The video track that will be displayed in the thumbnail.
-    */
     _videoTrack: ?Object,
 
     /**
@@ -217,6 +185,11 @@ export type Props = {
     dispatch: Function,
 
     /**
+     * An object containing the CSS classes.
+     */
+    classes: Object,
+
+    /**
      * The horizontal offset in px for the thumbnail. Used to center the thumbnails from the last row in tile view.
      */
     horizontalOffset: number,
@@ -230,24 +203,90 @@ export type Props = {
      * Styles that will be set to the Thumbnail's main span element.
      */
     style?: ?Object
-};
+|};
 
-/**
- * Click handler for the display name container.
- *
- * @param {SyntheticEvent} event - The click event.
- * @returns {void}
- */
-function onClick(event) {
-    // If the event is propagated to the thumbnail container the participant will be pinned. That's why the propagation
-    // needs to be stopped.
-    event.stopPropagation();
-}
+const defaultStyles = theme => {
+    return {
+        indicatorsContainer: {
+            position: 'absolute',
+            padding: `${theme.spacing(1)}px`,
+            zIndex: 10,
+            width: '100%',
+            boxSizing: 'border-box',
+            display: 'flex',
+            left: 0,
+
+            '&.tile-view-mode': {
+                padding: `${theme.spacing(2)}px`
+            }
+        },
+
+        indicatorsTopContainer: {
+            top: 0,
+            justifyContent: 'space-between'
+        },
+
+        indicatorsBottomContainer: {
+            bottom: 0
+        },
+
+        indicatorsBackground: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            borderRadius: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            maxWidth: '100%',
+            overflow: 'hidden',
+
+            '&:not(:empty)': {
+                padding: '2px'
+            },
+
+            '& > *:not(:last-child)': {
+                marginRight: '4px'
+            },
+
+            '&:not(.top-indicators) > span:last-child': {
+                marginRight: '6px'
+            }
+        },
+
+        containerBackground: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            borderRadius: '4px',
+            backgroundColor: theme.palette.ui02
+        },
+
+        borderIndicator: {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            zIndex: '9',
+            borderRadius: '4px'
+        },
+
+        activeSpeaker: {
+            '& .active-speaker-indicator': {
+                boxShadow: `inset 0px 0px 0px 4px ${theme.palette.link01Active} !important`
+            }
+        },
+
+        raisedHand: {
+            '& .raised-hand-border': {
+                boxShadow: `inset 0px 0px 0px 2px ${theme.palette.warning02} !important`
+            }
+        }
+    };
+};
 
 /**
  * Implements a thumbnail.
  *
- * @extends Component
+ * @augments Component
  */
 class Thumbnail extends Component<Props, State> {
     /**
@@ -256,9 +295,10 @@ class Thumbnail extends Component<Props, State> {
     timeoutHandle: Object;
 
     /**
-     * Reference to local or remote Video Menu trigger button instance.
+     * Timeout used to detect double tapping.
+     * It is active while user has tapped once.
      */
-    videoMenuTriggerRef: Object;
+    _firstTap: ?TimeoutID;
 
     /**
      * Initializes a new Thumbnail instance.
@@ -270,31 +310,29 @@ class Thumbnail extends Component<Props, State> {
         super(props);
 
         const state = {
-            audioLevel: 0,
             canPlayEventReceived: false,
-            isHovered: false,
-            displayMode: DISPLAY_VIDEO
+            displayMode: DISPLAY_VIDEO,
+            popoverVisible: false,
+            isHovered: false
         };
 
         this.state = {
             ...state,
-            displayMode: computeDisplayMode(Thumbnail.getDisplayModeInput(props, state))
+            displayMode: computeDisplayModeFromInput(getDisplayModeInput(props, state))
         };
         this.timeoutHandle = null;
-        this.videoMenuTriggerRef = null;
 
-        this._setInstance = this._setInstance.bind(this);
-        this._updateAudioLevel = this._updateAudioLevel.bind(this);
+        this._clearDoubleClickTimeout = this._clearDoubleClickTimeout.bind(this);
         this._onCanPlay = this._onCanPlay.bind(this);
         this._onClick = this._onClick.bind(this);
-        this._onVolumeChange = this._onVolumeChange.bind(this);
         this._onMouseEnter = this._onMouseEnter.bind(this);
         this._onMouseLeave = this._onMouseLeave.bind(this);
         this._onTestingEvent = this._onTestingEvent.bind(this);
         this._onTouchStart = this._onTouchStart.bind(this);
         this._onTouchEnd = this._onTouchEnd.bind(this);
         this._onTouchMove = this._onTouchMove.bind(this);
-        this._showPopupMenu = this._showPopupMenu.bind(this);
+        this._showPopover = this._showPopover.bind(this);
+        this._hidePopover = this._hidePopover.bind(this);
     }
 
     /**
@@ -304,7 +342,6 @@ class Thumbnail extends Component<Props, State> {
      * @returns {void}
      */
     componentDidMount() {
-        this._listenForAudioUpdates();
         this._onDisplayModeChanged();
     }
 
@@ -316,12 +353,6 @@ class Thumbnail extends Component<Props, State> {
      * @returns {void}
      */
     componentDidUpdate(prevProps: Props, prevState: State) {
-        if (prevProps._audioTrack !== this.props._audioTrack) {
-            this._stopListeningForAudioUpdates(prevProps._audioTrack);
-            this._listenForAudioUpdates();
-            this._updateAudioLevel(0);
-        }
-
         if (prevState.displayMode !== this.state.displayMode) {
             this._onDisplayModeChanged();
         }
@@ -333,7 +364,7 @@ class Thumbnail extends Component<Props, State> {
      * @returns {void}
      */
     _onDisplayModeChanged() {
-        const input = Thumbnail.getDisplayModeInput(this.props, this.state);
+        const input = getDisplayModeInput(this.props, this.state);
 
         this._maybeSendScreenSharingIssueEvents(input);
     }
@@ -353,7 +384,7 @@ class Thumbnail extends Component<Props, State> {
         const { displayMode } = this.state;
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
 
-        if (![ DISPLAY_VIDEO, DISPLAY_VIDEO_WITH_NAME ].includes(displayMode)
+        if (!(DISPLAY_VIDEO === displayMode)
             && tileViewActive
             && _isScreenSharing
             && !_isAudioOnly) {
@@ -378,11 +409,11 @@ class Thumbnail extends Component<Props, State> {
 
             return {
                 ...newState,
-                displayMode: computeDisplayMode(Thumbnail.getDisplayModeInput(props, newState))
+                displayMode: computeDisplayModeFromInput(getDisplayModeInput(props, newState))
             };
         }
 
-        const newDisplayMode = computeDisplayMode(Thumbnail.getDisplayModeInput(props, prevState));
+        const newDisplayMode = computeDisplayModeFromInput(getDisplayModeInput(props, prevState));
 
         if (newDisplayMode !== prevState.displayMode) {
             return {
@@ -394,95 +425,43 @@ class Thumbnail extends Component<Props, State> {
         return null;
     }
 
-    /**
-     * Extracts information for props and state needed to compute the display mode.
-     *
-     * @param {Props} props - The component's props.
-     * @param {State} state - The component's state.
-     * @returns {Object}
-     */
-    static getDisplayModeInput(props: Props, state: State) {
-        const {
-            _currentLayout,
-            _isAudioOnly,
-            _isCurrentlyOnLargeVideo,
-            _isScreenSharing,
-            _isVideoPlayable,
-            _participant,
-            _videoTrack
-        } = props;
-        const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
-        const { canPlayEventReceived, isHovered } = state;
-
-        return {
-            isCurrentlyOnLargeVideo: _isCurrentlyOnLargeVideo,
-            isHovered,
-            isAudioOnly: _isAudioOnly,
-            tileViewActive,
-            isVideoPlayable: _isVideoPlayable,
-            connectionStatus: _participant?.connectionStatus,
-            canPlayEventReceived,
-            videoStream: Boolean(_videoTrack),
-            isRemoteParticipant: !_participant?.isFakeParticipant && !_participant?.local,
-            isScreenSharing: _isScreenSharing,
-            videoStreamMuted: _videoTrack ? _videoTrack.muted : 'no stream'
-        };
-    }
+    _clearDoubleClickTimeout: () => void;
 
     /**
-     * Unsubscribe from audio level updates.
+     * Clears the first click timeout.
      *
-     * @inheritdoc
      * @returns {void}
      */
-    componentWillUnmount() {
-        this._stopListeningForAudioUpdates(this.props._audioTrack);
+    _clearDoubleClickTimeout() {
+        clearTimeout(this._firstTap);
+        this._firstTap = undefined;
     }
 
+    _showPopover: () => void;
+
     /**
-     * Starts listening for audio level updates from the library.
+     * Shows popover.
      *
      * @private
      * @returns {void}
      */
-    _listenForAudioUpdates() {
-        const { _audioTrack } = this.props;
-
-        if (_audioTrack) {
-            const { jitsiTrack } = _audioTrack;
-
-            jitsiTrack && jitsiTrack.on(JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED, this._updateAudioLevel);
-        }
-    }
-
-    /**
-     * Stops listening to further updates from the passed track.
-     *
-     * @param {Object} audioTrack - The track.
-     * @private
-     * @returns {void}
-     */
-    _stopListeningForAudioUpdates(audioTrack) {
-        if (audioTrack) {
-            const { jitsiTrack } = audioTrack;
-
-            jitsiTrack && jitsiTrack.off(JitsiTrackEvents.TRACK_AUDIO_LEVEL_CHANGED, this._updateAudioLevel);
-        }
-    }
-
-    _updateAudioLevel: (number) => void;
-
-    /**
-     * Updates the internal state of the last know audio level. The level should
-     * be between 0 and 1, as the level will be used as a percentage out of 1.
-     *
-     * @param {number} audioLevel - The new audio level for the track.
-     * @private
-     * @returns {void}
-     */
-    _updateAudioLevel(audioLevel) {
+    _showPopover() {
         this.setState({
-            audioLevel
+            popoverVisible: true
+        });
+    }
+
+    _hidePopover: () => void;
+
+    /**
+     * Hides popover.
+     *
+     * @private
+     * @returns {void}
+     */
+    _hidePopover() {
+        this.setState({
+            popoverVisible: false
         });
     }
 
@@ -492,20 +471,56 @@ class Thumbnail extends Component<Props, State> {
      * @returns {Object} - The styles for the thumbnail.
      */
     _getStyles(): Object {
-        const { _height, _isHidden, _width, style, horizontalOffset } = this.props;
+        const { canPlayEventReceived } = this.state;
+        const {
+            _currentLayout,
+            _disableTileEnlargement,
+            _height,
+            _isHidden,
+            _isScreenSharing,
+            _participant,
+            _videoTrack,
+            _width,
+            horizontalOffset,
+            style
+        } = this.props;
+
+
+        const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
+        const jitsiVideoTrack = _videoTrack?.jitsiTrack;
+        const track = jitsiVideoTrack?.track;
+        const isPortraitVideo = ((track && track.getSettings()?.aspectRatio) || 1) < 1;
+
         let styles: {
+            avatar: Object,
             thumbnail: Object,
-            avatar: Object
+            video: Object
         } = {
             thumbnail: {},
-            avatar: {}
+            avatar: {},
+            video: {}
         };
 
-        const avatarSize = _height / 2;
+        const avatarSize = Math.min(_height / 2, _width - 30);
         let { left } = style || {};
 
         if (typeof left === 'number' && horizontalOffset) {
             left += horizontalOffset;
+        }
+
+        let videoStyles = null;
+        const doNotStretchVideo = (isPortraitVideo && tileViewActive)
+            || _disableTileEnlargement
+            || _isScreenSharing;
+
+        if (canPlayEventReceived || _participant.local) {
+            videoStyles = {
+                objectFit: doNotStretchVideo ? 'contain' : 'cover'
+            };
+        } else {
+            videoStyles = {
+                display: 'none'
+            };
         }
 
         styles = {
@@ -520,7 +535,8 @@ class Thumbnail extends Component<Props, State> {
             avatar: {
                 height: `${avatarSize}px`,
                 width: `${avatarSize}px`
-            }
+            },
+            video: videoStyles
         };
 
         if (_isHidden) {
@@ -566,28 +582,24 @@ class Thumbnail extends Component<Props, State> {
         this.setState({ isHovered: false });
     }
 
-    _showPopupMenu: () => void;
-
-    /**
-     * Triggers showing the popover context menu.
-     *
-     * @returns {void}
-     */
-    _showPopupMenu() {
-        if (this.videoMenuTriggerRef) {
-            this.videoMenuTriggerRef.showContextMenu();
-        }
-    }
-
     _onTouchStart: () => void;
 
     /**
-     * Set showing popover context menu after x miliseconds.
+     * Handler for touch start.
      *
      * @returns {void}
      */
     _onTouchStart() {
-        this.timeoutHandle = setTimeout(this._showPopupMenu, SHOW_TOOLBAR_CONTEXT_MENU_AFTER);
+        this.timeoutHandle = setTimeout(this._showPopover, SHOW_TOOLBAR_CONTEXT_MENU_AFTER);
+
+        if (this._firstTap) {
+            this._clearDoubleClickTimeout();
+            this._onClick();
+
+            return;
+        }
+
+        this._firstTap = setTimeout(this._clearDoubleClickTimeout, 300);
     }
 
     _onTouchEnd: () => void;
@@ -646,67 +658,6 @@ class Thumbnail extends Component<Props, State> {
     }
 
     /**
-     * Renders the top indicators of the thumbnail.
-     *
-     * @returns {Component}
-     */
-    _renderTopIndicators() {
-        const {
-            _connectionIndicatorAutoHideEnabled,
-            _connectionIndicatorDisabled,
-            _currentLayout,
-            _isDominantSpeakerDisabled,
-            _indicatorIconSize: iconSize,
-            _participant,
-            _participantCountMoreThan2
-        } = this.props;
-        const { isHovered } = this.state;
-        const showConnectionIndicator = isHovered || !_connectionIndicatorAutoHideEnabled;
-        const { id, dominantSpeaker = false } = _participant;
-        const showDominantSpeaker = !_isDominantSpeakerDisabled && dominantSpeaker;
-        let statsPopoverPosition, tooltipPosition;
-
-        switch (_currentLayout) {
-        case LAYOUTS.TILE_VIEW:
-            statsPopoverPosition = 'right-start';
-            tooltipPosition = 'right';
-            break;
-        case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
-            statsPopoverPosition = 'left-start';
-            tooltipPosition = 'left';
-            break;
-        case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
-            statsPopoverPosition = 'top';
-            tooltipPosition = 'top';
-            break;
-        default:
-            statsPopoverPosition = 'auto';
-            tooltipPosition = 'top';
-        }
-
-        return (
-            <div>
-                { !_connectionIndicatorDisabled
-                    && <ConnectionIndicator
-                        alwaysVisible = { showConnectionIndicator }
-                        enableStatsDisplay = { true }
-                        iconSize = { iconSize }
-                        participantId = { id }
-                        statsPopoverPosition = { statsPopoverPosition } />
-                }
-                <RaisedHandIndicator
-                    iconSize = { iconSize }
-                    participantId = { id }
-                    tooltipPosition = { tooltipPosition } />
-                { showDominantSpeaker && _participantCountMoreThan2
-                    && <DominantSpeakerIndicator
-                        iconSize = { iconSize }
-                        tooltipPosition = { tooltipPosition } />
-                }
-            </div>);
-    }
-
-    /**
      * Renders the avatar.
      *
      * @param {Object} styles - The styles that will be applied to the avatar.
@@ -735,110 +686,34 @@ class Thumbnail extends Component<Props, State> {
     _getContainerClassName() {
         let className = 'videocontainer';
         const { displayMode } = this.state;
-        const { _isAudioOnly, _isDominantSpeakerDisabled, _isHidden, _participant } = this.props;
-        const isRemoteParticipant = !_participant?.local && !_participant?.isFakeParticipant;
+        const {
+            _isDominantSpeakerDisabled,
+            _participant,
+            _currentLayout,
+            _isAnyParticipantPinned,
+            _raisedHand,
+            classes
+        } = this.props;
 
         className += ` ${DISPLAY_MODE_TO_CLASS_NAME[displayMode]}`;
 
-        if (_participant?.pinned) {
-            className += ' videoContainerFocused';
+        if (_raisedHand) {
+            className += ` ${classes.raisedHand}`;
         }
 
-        if (!_isDominantSpeakerDisabled && _participant?.dominantSpeaker) {
-            className += ' active-speaker';
-        }
-
-        if (_isHidden) {
-            className += ' hidden';
-        }
-
-        if (isRemoteParticipant && _isAudioOnly) {
-            className += ' audio-only';
+        if (_currentLayout === LAYOUTS.TILE_VIEW) {
+            if (!_isDominantSpeakerDisabled && _participant?.dominantSpeaker) {
+                className += ` ${classes.activeSpeaker} dominant-speaker`;
+            }
+        } else if (_isAnyParticipantPinned) {
+            if (_participant?.pinned) {
+                className += ` videoContainerFocused ${classes.activeSpeaker}`;
+            }
+        } else if (!_isDominantSpeakerDisabled && _participant?.dominantSpeaker) {
+            className += ` ${classes.activeSpeaker} dominant-speaker`;
         }
 
         return className;
-    }
-
-    /**
-     * Renders the local participant's thumbnail.
-     *
-     * @returns {ReactElement}
-     */
-    _renderLocalParticipant() {
-        const {
-            _allowEditing,
-            _defaultLocalDisplayName,
-            _disableLocalVideoFlip,
-            _isMobile,
-            _isMobilePortrait,
-            _isScreenSharing,
-            _localFlipX,
-            _participant,
-            _videoTrack
-        } = this.props;
-        const { id } = _participant || {};
-        const { audioLevel } = this.state;
-        const styles = this._getStyles();
-        let containerClassName = this._getContainerClassName();
-        const videoTrackClassName
-            = !_disableLocalVideoFlip && _videoTrack && !_isScreenSharing && _localFlipX ? 'flipVideoX' : '';
-
-        if (_isMobilePortrait) {
-            styles.thumbnail.height = styles.thumbnail.width;
-            containerClassName = `${containerClassName} self-view-mobile-portrait`;
-        }
-
-        return (
-            <span
-                className = { containerClassName }
-                id = 'localVideoContainer'
-                onClick = { this._onClick }
-                { ...(_isMobile
-                    ? {
-                        onTouchEnd: this._onTouchEnd,
-                        onTouchMove: this._onTouchMove,
-                        onTouchStart: this._onTouchStart
-                    }
-                    : {
-                        onMouseEnter: this._onMouseEnter,
-                        onMouseLeave: this._onMouseLeave
-                    }
-                ) }
-                style = { styles.thumbnail }>
-                <div className = 'videocontainer__background' />
-                <span id = 'localVideoWrapper'>
-                    <VideoTrack
-                        className = { videoTrackClassName }
-                        id = 'localVideo_container'
-                        videoTrack = { _videoTrack } />
-                </span>
-                <div className = 'videocontainer__toolbar'>
-                    <StatusIndicators participantID = { id } />
-                </div>
-                <div className = 'videocontainer__toptoolbar'>
-                    {this._renderTopIndicators()}
-                </div>
-                <div className = 'videocontainer__hoverOverlay' />
-                <div
-                    className = 'displayNameContainer'
-                    onClick = { onClick }>
-                    <DisplayName
-                        allowEditing = { _allowEditing }
-                        displayNameSuffix = { _defaultLocalDisplayName }
-                        elementID = 'localDisplayName'
-                        participantID = { id } />
-                </div>
-                { this._renderAvatar(styles.avatar) }
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
-                </span>
-                <span className = 'localvideomenu'>
-                    <LocalVideoMenuTriggerButton
-                        getRef = { this._setInstance } />
-                </span>
-
-            </span>
-        );
     }
 
     _onCanPlay: Object => void;
@@ -880,61 +755,62 @@ class Thumbnail extends Component<Props, State> {
         dispatch(updateLastTrackVideoMediaEvent(jitsiVideoTrack, event.type));
     }
 
-    _setInstance: Object => void;
-
-    /**
-     * Stores the local or remote video menu button instance in a variable.
-     *
-     * @param {Object} instance - The local or remote video menu trigger instance.
-     *
-     * @returns {void}
-     */
-    _setInstance(instance) {
-        this.videoMenuTriggerRef = instance;
-    }
-
     /**
      * Renders a remote participant's 'thumbnail.
      *
+     * @param {boolean} local - Whether or not it's the local participant.
      * @returns {ReactElement}
      */
-    _renderRemoteParticipant() {
+    _renderParticipant(local = false) {
         const {
+            _audioTrack,
+            _currentLayout,
+            _disableLocalVideoFlip,
             _isMobile,
+            _isMobilePortrait,
+            _isScreenSharing,
             _isTestModeEnabled,
+            _localFlipX,
             _participant,
-            _startSilent,
             _videoTrack,
-            _volume = 1
+            classes
         } = this.props;
-        const { id } = _participant;
-        const { audioLevel, canPlayEventReceived } = this.state;
+        const { id } = _participant || {};
+        const { isHovered, popoverVisible } = this.state;
         const styles = this._getStyles();
-        const containerClassName = this._getContainerClassName();
-
-        // hide volume when in silent mode
-        const onVolumeChange = _startSilent ? undefined : this._onVolumeChange;
+        let containerClassName = this._getContainerClassName();
+        const videoTrackClassName
+            = !_disableLocalVideoFlip && _videoTrack && !_isScreenSharing && _localFlipX ? 'flipVideoX' : '';
         const jitsiVideoTrack = _videoTrack?.jitsiTrack;
         const videoTrackId = jitsiVideoTrack && jitsiVideoTrack.getId();
         const videoEventListeners = {};
 
-        if (_videoTrack && _isTestModeEnabled) {
-            VIDEO_TEST_EVENTS.forEach(attribute => {
-                videoEventListeners[attribute] = this._onTestingEvent;
-            });
+        if (local) {
+            if (_isMobilePortrait) {
+                styles.thumbnail.height = styles.thumbnail.width;
+                containerClassName = `${containerClassName} self-view-mobile-portrait`;
+            }
+        } else {
+            if (_videoTrack && _isTestModeEnabled) {
+                VIDEO_TEST_EVENTS.forEach(attribute => {
+                    videoEventListeners[attribute] = this._onTestingEvent;
+                });
+            }
+            videoEventListeners.onCanPlay = this._onCanPlay;
         }
 
-        videoEventListeners.onCanPlay = this._onCanPlay;
-
-        const videoElementStyle = canPlayEventReceived ? null : {
-            display: 'none'
-        };
+        const video = _videoTrack && <VideoTrack
+            className = { local ? videoTrackClassName : '' }
+            eventHandlers = { videoEventListeners }
+            id = { local ? 'localVideo_container' : `remoteVideo_${videoTrackId || ''}` }
+            muted = { local ? undefined : true }
+            style = { styles.video }
+            videoTrack = { _videoTrack } />;
 
         return (
             <span
                 className = { containerClassName }
-                id = { `participant_${id}` }
-                onClick = { this._onClick }
+                id = { local ? 'localVideoContainer' : `participant_${id}` }
                 { ...(_isMobile
                     ? {
                         onTouchEnd: this._onTouchEnd,
@@ -942,65 +818,55 @@ class Thumbnail extends Component<Props, State> {
                         onTouchStart: this._onTouchStart
                     }
                     : {
+                        onClick: this._onClick,
                         onMouseEnter: this._onMouseEnter,
                         onMouseLeave: this._onMouseLeave
                     }
                 ) }
                 style = { styles.thumbnail }>
-                {
-                    _videoTrack && <VideoTrack
-                        eventHandlers = { videoEventListeners }
-                        id = { `remoteVideo_${videoTrackId || ''}` }
-                        muted = { true }
-                        style = { videoElementStyle }
-                        videoTrack = { _videoTrack } />
-                }
-                <div className = 'videocontainer__background' />
-                <div className = 'videocontainer__toptoolbar'>
-                    {this._renderTopIndicators()}
+                {local
+                    ? <span id = 'localVideoWrapper'>{video}</span>
+                    : video}
+                <div className = { classes.containerBackground } />
+                <div
+                    className = { clsx(classes.indicatorsContainer,
+                        classes.indicatorsTopContainer,
+                        _currentLayout === LAYOUTS.TILE_VIEW && 'tile-view-mode'
+                    ) }>
+                    <ThumbnailTopIndicators
+                        currentLayout = { _currentLayout }
+                        hidePopover = { this._hidePopover }
+                        indicatorsClassName = { classes.indicatorsBackground }
+                        isHovered = { isHovered }
+                        local = { local }
+                        participantId = { id }
+                        popoverVisible = { popoverVisible }
+                        showPopover = { this._showPopover } />
                 </div>
-                <div className = 'videocontainer__toolbar'>
-                    <StatusIndicators participantID = { id } />
+                <div
+                    className = { clsx(classes.indicatorsContainer,
+                        classes.indicatorsBottomContainer,
+                        _currentLayout === LAYOUTS.TILE_VIEW && 'tile-view-mode'
+                    ) }>
+                    <ThumbnailBottomIndicators
+                        className = { classes.indicatorsBackground }
+                        currentLayout = { _currentLayout }
+                        local = { local }
+                        participantId = { id } />
                 </div>
-                <div className = 'videocontainer__hoverOverlay' />
-                <div className = 'displayNameContainer'>
-                    <DisplayName
-                        elementID = { `participant_${id}_name` }
-                        participantID = { id } />
-                </div>
-                { this._renderAvatar(styles.avatar)}
-                <div className = 'presence-label-container'>
-                    <PresenceLabel
-                        className = 'presence-label'
-                        participantID = { id } />
-                </div>
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
-                </span>
-                <span className = 'remotevideomenu'>
-                    <RemoteVideoMenuTriggerButton
-                        getRef = { this._setInstance }
-                        initialVolumeValue = { _volume }
-                        onVolumeChange = { onVolumeChange }
-                        participantID = { id } />
-                </span>
+                { this._renderAvatar(styles.avatar) }
+                { !local && (
+                    <div className = 'presence-label-container'>
+                        <PresenceLabel
+                            className = 'presence-label'
+                            participantID = { id } />
+                    </div>
+                )}
+                <ThumbnailAudioIndicator _audioTrack = { _audioTrack } />
+                <div className = { clsx(classes.borderIndicator, 'raised-hand-border') } />
+                <div className = { clsx(classes.borderIndicator, 'active-speaker-indicator') } />
             </span>
         );
-    }
-
-    _onVolumeChange: number => void;
-
-    /**
-     * Handles volume changes.
-     *
-     * @param {number} value - The new value for the volume.
-     * @returns {void}
-     */
-    _onVolumeChange(value) {
-        const { _participant, dispatch } = this.props;
-        const { id } = _participant;
-
-        dispatch(setVolume(id, value));
     }
 
     /**
@@ -1019,14 +885,14 @@ class Thumbnail extends Component<Props, State> {
         const { isFakeParticipant, local } = _participant;
 
         if (local) {
-            return this._renderLocalParticipant();
+            return this._renderParticipant(true);
         }
 
         if (isFakeParticipant) {
             return this._renderFakeParticipant();
         }
 
-        return this._renderRemoteParticipant();
+        return this._renderParticipant();
     }
 }
 
@@ -1054,15 +920,14 @@ function _mapStateToProps(state, ownProps): Object {
     let size = {};
     let _isMobilePortrait = false;
     const {
-        startSilent,
+        defaultLocalDisplayName,
         disableLocalVideoFlip,
+        disableTileEnlargement,
         iAmRecorder,
         iAmSipGateway
     } = state['features/base/config'];
-    const { NORMAL = 8 } = interfaceConfig.INDICATOR_FONT_SIZES || {};
     const { localFlipX } = state['features/base/settings'];
     const _isMobile = isMobileBrowser();
-
 
     switch (_currentLayout) {
     case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
@@ -1104,15 +969,12 @@ function _mapStateToProps(state, ownProps): Object {
     }
 
     return {
-        _allowEditing: !isNameReadOnly(state),
+        // _allowEditing: !isNameReadOnly(state),
         _audioTrack,
-        _connectionIndicatorAutoHideEnabled:
-        Boolean(state['features/base/config'].connectionIndicators?.autoHide ?? true),
-        _connectionIndicatorDisabled: _isMobile
-            || Boolean(state['features/base/config'].connectionIndicators?.disabled),
         _currentLayout,
-        _defaultLocalDisplayName: interfaceConfig.DEFAULT_LOCAL_DISPLAY_NAME,
+        _defaultLocalDisplayName: defaultLocalDisplayName,
         _disableLocalVideoFlip: Boolean(disableLocalVideoFlip),
+        _disableTileEnlargement: Boolean(disableTileEnlargement),
         _isHidden: isLocal && iAmRecorder && !iAmSipGateway,
         _isAudioOnly: Boolean(state['features/base/audio-only'].enabled),
         _isCurrentlyOnLargeVideo: state['features/large-video']?.participantId === id,
@@ -1122,15 +984,13 @@ function _mapStateToProps(state, ownProps): Object {
         _isScreenSharing: _videoTrack?.videoType === 'desktop',
         _isTestModeEnabled: isTestModeEnabled(state),
         _isVideoPlayable: id && isVideoPlayable(state, id),
-        _indicatorIconSize: NORMAL,
         _localFlipX: Boolean(localFlipX),
         _participant: participant,
-        _participantCountMoreThan2: getParticipantCount(state) > 2,
-        _startSilent: Boolean(startSilent),
+        _raisedHand: hasRaisedHand(participant),
         _videoTrack,
         _volume: isLocal ? undefined : id ? participantsVolume[id] : undefined,
         ...size
     };
 }
 
-export default connect(_mapStateToProps)(Thumbnail);
+export default connect(_mapStateToProps)(withStyles(defaultStyles)(Thumbnail));
