@@ -37,7 +37,6 @@ const commands = {
     email: 'email',
     toggleLobby: 'toggle-lobby',
     getSpeakerStats: 'get-speaker-stats',
-    stopSpeakerStats: 'stop-speaker-stats',
     hangup: 'video-hangup',
     initiatePrivateChat: 'initiate-private-chat',
     localSubject: 'local-subject',
@@ -950,6 +949,18 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /**
+     * Returns whether the participants pane is open.
+     *
+     * @returns {Promise} - Resolves with true if the participants pane is open
+     * and with false if not.
+     */
+    isParticipantsPaneOpen() {
+        return this._transport.sendRequest({
+            name: 'is-participants-pane-open'
+        });
+    }
+
+    /**
      * Returns screen sharing status.
      *
      * @returns {Promise} - Resolves with screensharing status and rejects on failure.
@@ -1050,6 +1061,17 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         });
     }
 
+    /**
+     * Returns the list of breakout rooms.
+     *
+     * @returns {Promise} Resolves with the list of breakout rooms.
+     */
+    listBreakoutRooms() {
+        return this._transport.sendRequest({
+            name: 'list-breakout-rooms'
+        });
+    }
+    
     /**
      * Pins a participant's video on to the stage view.
      *
@@ -1268,15 +1290,6 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /**
-     * Get speaker statistics for the room.
-     *
-     * @returns {void}
-     */
-    getSpeakerStats() {
-        this.executeCommand('getSpeakerStats', false, 0);
-    }
-
-    /**
      * Start collecting speaker stats.
      *
      * @param { number } intervalRequest - Interval (ms) between each speaker stats notification.
@@ -1286,12 +1299,4 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this.executeCommand('getSpeakerStats', true, intervalRequest);
     }
 
-    /**
-     * Stop collecting speaker stats.
-     *
-     * @returns {void}
-     */
-    stopCollectSpeakerStats() {
-        this.executeCommand('stopSpeakerStats');
-    }
 }

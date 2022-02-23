@@ -70,7 +70,7 @@ const abstractSpeakerStatsList = (speakerStatsItem: Function): Function[] => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            updateStats();
+            updateStats();   
         }, SPEAKER_STATS_RELOAD_INTERVAL);
 
         return () => clearInterval(intervalId);

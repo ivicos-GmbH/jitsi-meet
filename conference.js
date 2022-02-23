@@ -1179,7 +1179,7 @@ export default {
      * speaker.
      */
     getSpeakerStats() {
-        return room.getSpeakerStats();
+        return this.getStats();
     },
 
     /**

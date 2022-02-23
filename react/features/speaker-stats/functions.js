@@ -8,6 +8,8 @@ import {
     PARTICIPANT_ROLE
 } from '../base/participants';
 import { objectSort } from '../base/util';
+import { useSelector } from 'react-redux';
+
 
 /**
  * Checks if the speaker stats search is disabled.
@@ -173,42 +175,46 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
 }
 
 /**
- * Clears the speaker stats requests with a specific timer ID.
- *
- * @param {Object} timerId - ID of the timer to be cleared.
- * @returns {void}
- */
-export function clearSpeakerStatsInterval(timerId: Object) {
-    if (timerId) {
-        clearInterval(timerId);
-    }
-}
-
-/**
- * Creates a timer to perform repeated requests to get speaker stats.
- *
- * @param {number} intervalRequest - Interval between two consecutive request (ms).
- * @returns {Object} - ID of the corresponding timer.
- */
-export function createSpeakerStatsInterval(intervalRequest: number) {
-    return setInterval(fetchDetailedSpeakerStats, intervalRequest);
-}
-
-/**
  * Fetch speaker stats and send them back to the client.
  *
  * @returns {void}
  */
-export function fetchDetailedSpeakerStats() {
-    const stats = APP.conference.getSpeakerStats();
-    const userIds = Object.keys(stats);
+ export function fetchDetailedSpeakerStats() {
+    const stats = APP.store.getState()['features/base/conference'].conference;
+    const users = stats.speakerStatsCollector.stats.users;
+    const userIds = Object.keys(users);
+    let time = new Date().getTime();
+    const calculateActiveDominantSpeakerSpeakingTime=(userInfo)=>{
+        if(userInfo._dominantSpeakerStart>0 && userInfo._dominantSpeakerStart<time)
+            return time-userInfo._dominantSpeakerStart;
+        else
+            return 0;
+    }
+
     const speakerTimeList = userIds.map(userId => {
         return {
-            userId,
-            userName: stats[userId].displayName,
-            speakerTime: stats[userId].getTotalDominantSpeakerTime()
+            userId:userId,
+            userName: users[userId].displayName,
+            speakerTime: users[userId].totalDominantSpeakerTime +  calculateActiveDominantSpeakerSpeakingTime(users[userId])
         };
     });
 
     APP.API.notifySpeakerStatsReceived(speakerTimeList);
+}
+
+/**
+ * Fetch speaker stats periodically with the given interval.
+ *
+ * @returns {NodeJS.Timer}
+ */
+export function createSpeakerStatsInterval(intervalRequest) {
+    return setInterval(fetchDetailedSpeakerStats, intervalRequest);
+}
+/**
+ * Initiates periodical collection of speakerstats and sends the stats to clients.
+ *
+ * @returns {void}
+ */
+export function startSpeakerStatsCollect(intervalRequest) {
+    const repeatedStatsRequest = createSpeakerStatsInterval(intervalRequest);
 }
