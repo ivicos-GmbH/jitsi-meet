@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.31] - 2022-03-02
+### Updated
+- Update to create a testing suite for external api; new makefile target dev-external-api and necessary bash scripts are implemented 
+ 
 ## [1.1.30] - 2022-03-02
 ### Updated
 - Updated speaker stats and corresponding extenal api endpoints

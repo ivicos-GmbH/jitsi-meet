@@ -16,6 +16,7 @@ STYLES_DESTINATION = css/all.css
 STYLES_MAIN = css/main.scss
 WEBPACK = ./node_modules/.bin/webpack
 WEBPACK_DEV_SERVER = ./node_modules/.bin/webpack serve --mode development
+EXTERNAL_API_TEST_DIR = ./external-api-test
 
 all: compile deploy clean
 
@@ -118,3 +119,11 @@ source-package:
 	cp css/all.css source_package/jitsi-meet/css && \
 	(cd source_package ; tar cjf ../jitsi-meet.tar.bz2 jitsi-meet) && \
 	rm -rf source_package
+
+stop-current-instance:
+	$(EXTERNAL_API_TEST_DIR)/stop-instance-at-port-8080.sh
+
+.NOTPARALLEL:
+dev-external-api: stop-current-instance compile
+	cp $(BUILD_DIR)/external_api.min* $(EXTERNAL_API_TEST_DIR) && \
+	bash -c 'sleep 10;  $(EXTERNAL_API_TEST_DIR)/open-in-browser.sh $(EXTERNAL_API_TEST_DIR)' & make dev

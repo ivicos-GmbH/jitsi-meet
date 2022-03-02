@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <script src='./external_api.min.js'></script>
+    </head>
+    <body>
+        <div id="jitsi-container"></div>
+        <script>
+            var container = document.querySelector(`#jitsi-container`);
+            var domain = "127.0.0.1:8080";
+            var options = {
+                "roomName": "TestRoom",
+                "parentNode": container,
+                "width": 900,
+                "height": 600,
+            };
+            var api = new JitsiMeetExternalAPI(domain, options);
+        </script>
+    </body>
+</html>
