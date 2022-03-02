@@ -8,7 +8,6 @@ import {
     PARTICIPANT_ROLE
 } from '../base/participants';
 import { objectSort } from '../base/util';
-import { useSelector } from 'react-redux';
 
 
 /**
@@ -179,23 +178,25 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
  *
  * @returns {void}
  */
- export function fetchDetailedSpeakerStats() {
+export function fetchDetailedSpeakerStats() {
     const stats = APP.store.getState()['features/base/conference'].conference;
     const users = stats.speakerStatsCollector.stats.users;
     const userIds = Object.keys(users);
-    let time = new Date().getTime();
-    const calculateActiveDominantSpeakerSpeakingTime=(userInfo)=>{
-        if(userInfo._dominantSpeakerStart>0 && userInfo._dominantSpeakerStart<time)
-            return time-userInfo._dominantSpeakerStart;
-        else
-            return 0;
-    }
+    const time = new Date().getTime();
+    const calculateActiveDominantSpeakerSpeakingTime = userInfo => {
+        if (userInfo._dominantSpeakerStart > 0 && userInfo._dominantSpeakerStart < time) {
+            return time - userInfo._dominantSpeakerStart;
+        }
+
+        return 0;
+    };
 
     const speakerTimeList = userIds.map(userId => {
         return {
-            userId:userId,
+            userId,
             userName: users[userId].displayName,
-            speakerTime: users[userId].totalDominantSpeakerTime +  calculateActiveDominantSpeakerSpeakingTime(users[userId])
+            speakerTime: users[userId].totalDominantSpeakerTime
+                + calculateActiveDominantSpeakerSpeakingTime(users[userId])
         };
     });
 
@@ -205,16 +206,19 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
 /**
  * Fetch speaker stats periodically with the given interval.
  *
+ * @param {number} intervalRequest - The reqeusted repetition interval in milliseconds.
  * @returns {NodeJS.Timer}
  */
 export function createSpeakerStatsInterval(intervalRequest) {
     return setInterval(fetchDetailedSpeakerStats, intervalRequest);
 }
+
 /**
  * Initiates periodical collection of speakerstats and sends the stats to clients.
  *
+ * @param {number} intervalRequest -The reqeusted repetition interval in milliseconds.
  * @returns {void}
  */
 export function startSpeakerStatsCollect(intervalRequest) {
-    const repeatedStatsRequest = createSpeakerStatsInterval(intervalRequest);
+    createSpeakerStatsInterval(intervalRequest);
 }

@@ -71,7 +71,7 @@ import { isScreenAudioSupported, isScreenVideoShared } from '../../react/feature
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
 import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
-
+import { startSpeakerStatsCollect, fetchDetailedSpeakerStats } from '../../react/features/speaker-stats/functions';
 import { toggleTileView, setTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality';
@@ -79,12 +79,11 @@ import VirtualBackgroundDialog from '../../react/features/virtual-background/com
 import { getJitsiMeetTransport } from '../transport';
 
 import { API_ID, ENDPOINT_TEXT_MESSAGE_NAME } from './constants';
-import {startSpeakerStatsCollect} from '../../react/features/speaker-stats/functions';
 
 
 const logger = Logger.getLogger(__filename);
 
-var APP;
+let APP;
 
 /**
  * List of the available commands.
@@ -141,7 +140,7 @@ function initCommands() {
             APP.conference.changeLocalDisplayName(displayName);
         },
         'get-speaker-stats': (repeatedRequest, intervalRequest) => {
-            logger.debug('Get speaker stats command received');            
+            logger.debug('Get speaker stats command received');
             if (repeatedRequest) {
                 startSpeakerStatsCollect(intervalRequest);
             } else {

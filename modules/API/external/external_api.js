@@ -1071,7 +1071,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             name: 'list-breakout-rooms'
         });
     }
-    
+
     /**
      * Pins a participant's video on to the stage view.
      *
