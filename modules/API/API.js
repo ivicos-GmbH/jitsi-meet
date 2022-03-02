@@ -71,10 +71,7 @@ import { isScreenAudioSupported, isScreenVideoShared } from '../../react/feature
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
 import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
-import { startSpeakerStatsCollect, stopSpeakerStatsCollect } from '../../react/features/speaker-stats/actions';
-import {
-    getSpeakerStats
-} from '../../react/features/speaker-stats/functions';
+import { startSpeakerStatsCollect, fetchDetailedSpeakerStats } from '../../react/features/speaker-stats/functions';
 import { toggleTileView, setTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality';
@@ -86,7 +83,7 @@ import { API_ID, ENDPOINT_TEXT_MESSAGE_NAME } from './constants';
 
 const logger = Logger.getLogger(__filename);
 
-declare var APP: Object;
+let APP;
 
 /**
  * List of the available commands.
@@ -145,14 +142,10 @@ function initCommands() {
         'get-speaker-stats': (repeatedRequest, intervalRequest) => {
             logger.debug('Get speaker stats command received');
             if (repeatedRequest) {
-                APP.store.dispatch(startSpeakerStatsCollect(intervalRequest));
+                startSpeakerStatsCollect(intervalRequest);
             } else {
-                getSpeakerStats();
+                fetchDetailedSpeakerStats();
             }
-        },
-        'stop-speaker-stats': () => {
-            logger.debug('Stop collecting speaker stats command received');
-            APP.store.dispatch(stopSpeakerStatsCollect());
         },
         'local-subject': localSubject => {
             sendAnalytics(createApiEvent('local.subject.changed'));
