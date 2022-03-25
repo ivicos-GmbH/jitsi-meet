@@ -71,9 +71,8 @@ import { isScreenAudioSupported, isScreenVideoShared } from '../../react/feature
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
 import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
-// import { startSpeakerStatsCollect, stopSpeakerStatsCollect } from '../../react/features/speaker-stats/actions';
 import {
-    getSpeakerStats,fetchDetailedSpeakerStatsNew
+    fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
 import { toggleTileView, setTileView } from '../../react/features/video-layout';
 import { muteAllParticipants } from '../../react/features/video-menu/actions';
@@ -152,10 +151,9 @@ function initCommands() {
         'get-speaker-stats': (repeatedRequest, intervalRequest) => {
             logger.debug('Get speaker stats command received');
             if (repeatedRequest) {
-                speakerStatsTimer=setInterval(fetchDetailedSpeakerStatsNew, intervalRequest)
-                //APP.store.dispatch(startSpeakerStatsCollect(intervalRequest));
+                speakerStatsTimer=setInterval(fetchDetailedSpeakerStats, intervalRequest)
             } else {
-                fetchDetailedSpeakerStatsNew();
+                fetchDetailedSpeakerStats();
             }
         },
         'stop-speaker-stats': () => {
@@ -163,7 +161,6 @@ function initCommands() {
             if (timerId) {
                 clearInterval(speakerStatsTimer);
             }
-            //APP.store.dispatch(stopSpeakerStatsCollect());
         },
         'local-subject': localSubject => {
             sendAnalytics(createApiEvent('local.subject.changed'));

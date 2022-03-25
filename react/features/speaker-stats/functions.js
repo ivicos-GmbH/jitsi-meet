@@ -176,7 +176,7 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
  *
  * @returns {void}
  */
-    export function fetchDetailedSpeakerStatsNew() {
+    export function fetchDetailedSpeakerStats() {
 
     const state=APP.store.getState();
 
@@ -212,23 +212,6 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
 
     const localSpeakerStats = Object.keys(speakerStats).length === 0 && conference ? getLocalSpeakerStats() : speakerStats;
     const userIds = Object.keys(localSpeakerStats);
-
-    // const calculateActiveDominantSpeakerSpeakingTime = userInfo => {
-    //     if (userInfo._dominantSpeakerStart > 0 && userInfo._dominantSpeakerStart < time) {
-    //         return time - userInfo._dominantSpeakerStart;
-    //     }
-
-    //     return 0;
-    // };
-
-    // const speakerTimeList = userIds.map(userId => {
-    //     return {
-    //         userId,
-    //         userName: users[userId].displayName,
-    //         speakerTime: users[userId].totalDominantSpeakerTime
-    //             + calculateActiveDominantSpeakerSpeakingTime(users[userId])
-    //     };
-    // });
 
     APP.API.notifySpeakerStatsReceived(localSpeakerStats);
 
