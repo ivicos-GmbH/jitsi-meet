@@ -155,7 +155,7 @@ function initCommands() {
                 speakerStatsTimer=setInterval(fetchDetailedSpeakerStatsNew, intervalRequest)
                 //APP.store.dispatch(startSpeakerStatsCollect(intervalRequest));
             } else {
-                getSpeakerStats();
+                fetchDetailedSpeakerStatsNew();
             }
         },
         'stop-speaker-stats': () => {

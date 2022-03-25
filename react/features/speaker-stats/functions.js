@@ -8,6 +8,7 @@ import {
 } from '../base/participants';
 import { objectSort } from '../base/util';
 
+
 /**
  * Checks if the speaker stats search is disabled.
  *
