@@ -114,11 +114,11 @@ let audioAvailable = true;
 let videoAvailable = true;
 
 /**
- * The timer for collection of speaker stats
+ * The timer for collection of speaker stats.
  *
  * @type {boolean}
  */
- let speakerStatsTimer;
+let speakerStatsTimer;
 
 /**
  * Initializes supported commands.
@@ -151,14 +151,14 @@ function initCommands() {
         'get-speaker-stats': (repeatedRequest, intervalRequest) => {
             logger.debug('Get speaker stats command received');
             if (repeatedRequest) {
-                speakerStatsTimer=setInterval(fetchDetailedSpeakerStats, intervalRequest)
+                speakerStatsTimer = setInterval(fetchDetailedSpeakerStats, intervalRequest);
             } else {
                 fetchDetailedSpeakerStats();
             }
         },
         'stop-speaker-stats': () => {
             logger.debug('Stop collecting speaker stats command received');
-            if (timerId) {
+            if (speakerStatsTimer) {
                 clearInterval(speakerStatsTimer);
             }
         },

@@ -219,6 +219,7 @@ export function fetchDetailedSpeakerStats() {
 
     Object.keys(localSpeakerStats).forEach(key => {
         const handRaised = raisedHandsQueue.find(item => item.id === key);
+
         localSpeakerStats[key].raisedHandTimestamp = handRaised ? handRaised.raisedHandTimestamp : 0;
     });
 
