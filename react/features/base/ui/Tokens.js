@@ -41,7 +41,7 @@ export const colors = {
     success05: '#1EC26A',
 
     warning05: '#F8AE1A',
-    warning06: '#FFD600',
+    warning06: '#99E2BF',
 
     disabled01: '#00000040',
 

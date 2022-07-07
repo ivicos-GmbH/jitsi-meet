@@ -1,4 +1,6 @@
 // @flow
+/* global APP */
+
 
 import _ from 'lodash';
 
@@ -171,19 +173,21 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
 
     return filteredStats;
 }
+
 /**
  * Fetch speaker stats and send them back to the client.
  *
  * @returns {void}
  */
-    export function fetchDetailedSpeakerStats() {
+export function fetchDetailedSpeakerStats() {
 
-    const state=APP.store.getState();
+    const state = APP.store.getState();
 
     const conference = state['features/base/conference'].conference;
     const speakerStats = state['features/speaker-stats'].stats;
 
     const localParticipant = state['features/base/participants'].local;
+    const raisedHandsQueue = state['features/base/participants'].raisedHandsQueue;
     const getLocalSpeakerStats = () => {
         const stats = conference.getSpeakerStats();
 
@@ -210,10 +214,16 @@ export function filterBySearchCriteria(state: Object, stats: ?Object) {
         return stats;
     };
 
-    const localSpeakerStats = Object.keys(speakerStats).length === 0 && conference ? getLocalSpeakerStats() : speakerStats;
-    const userIds = Object.keys(localSpeakerStats);
+    const localSpeakerStats
+        = Object.keys(speakerStats).length === 0 && conference ? getLocalSpeakerStats() : speakerStats;
+
+    Object.keys(localSpeakerStats).forEach(key => {
+        const handRaised = raisedHandsQueue.find(item => item.id === key);
+
+        localSpeakerStats[key].raisedHandTimestamp = handRaised ? handRaised.raisedHandTimestamp : 0;
+    });
 
     APP.API.notifySpeakerStatsReceived(localSpeakerStats);
 
- }
+}
 
