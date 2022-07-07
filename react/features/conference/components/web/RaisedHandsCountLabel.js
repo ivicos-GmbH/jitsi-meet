@@ -1,13 +1,14 @@
 import { makeStyles } from '@material-ui/styles';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { IconRaisedHand } from '../../../base/icons';
 import { Label } from '../../../base/label';
 import { Tooltip } from '../../../base/tooltip';
 import BaseTheme from '../../../base/ui/components/BaseTheme';
-import { open as openParticipantsPane } from '../../../participants-pane/actions';
+
+// import { open as openParticipantsPane } from '../../../participants-pane/actions';
 
 const useStyles = makeStyles(theme => {
     return {
@@ -21,13 +22,15 @@ const useStyles = makeStyles(theme => {
 
 const RaisedHandsCountLabel = () => {
     const styles = useStyles();
-    const dispatch = useDispatch();
+
+    // const dispatch = useDispatch();
     const raisedHandsCount = useSelector(state =>
         (state['features/base/participants'].raisedHandsQueue || []).length);
     const { t } = useTranslation();
-    const onClick = useCallback(() => {
-        dispatch(openParticipantsPane());
-    }, []);
+
+    // const onClick = useCallback(() => {
+    //     dispatch(openParticipantsPane());
+    // }, []);
 
     return raisedHandsCount > 0 && (<Tooltip
         content = { t('raisedHandsLabel') }
@@ -37,7 +40,8 @@ const RaisedHandsCountLabel = () => {
             icon = { IconRaisedHand }
             iconColor = { BaseTheme.palette.uiBackground }
             id = 'raisedHandsCountLabel'
-            onClick = { onClick }
+
+            // onClick = { onClick }
             text = { raisedHandsCount } />
     </Tooltip>);
 };
