@@ -26,6 +26,7 @@ import {
 import { overwriteConfig, getWhitelistedJSON } from '../../react/features/base/config';
 import { toggleDialog } from '../../react/features/base/dialog/actions';
 import { isSupportedBrowser } from '../../react/features/base/environment';
+import { i18next, DEFAULT_LANGUAGE } from '../../react/features/base/i18n';
 import { parseJWTFromURLParams } from '../../react/features/base/jwt';
 import JitsiMeetJS, { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
 import { MEDIA_TYPE } from '../../react/features/base/media';
@@ -81,8 +82,6 @@ import VirtualBackgroundDialog from '../../react/features/virtual-background/com
 import { getJitsiMeetTransport } from '../transport';
 
 import { API_ID, ENDPOINT_TEXT_MESSAGE_NAME } from './constants';
-import { i18next, DEFAULT_LANGUAGE } from '../../react/features/base/i18n';
-
 
 
 const logger = Logger.getLogger(__filename);
@@ -164,9 +163,10 @@ function initCommands() {
                 clearInterval(speakerStatsTimer);
             }
         },
-        'set-ui-language': (language) => {
+        'set-ui-language': language => {
             logger.debug('Setting UI Language');
-            const currentLanguage= i18next.language || DEFAULT_LANGUAGE;
+            const currentLanguage = i18next.language || DEFAULT_LANGUAGE;
+
             if (language !== currentLanguage) {
                 i18next.changeLanguage(language);
             }
@@ -724,7 +724,7 @@ function initCommands() {
             break;
         }
         case 'get-current-ui-language' : {
-            const currentLanguage= i18next.language || DEFAULT_LANGUAGE;
+            const currentLanguage = i18next.language || DEFAULT_LANGUAGE;
 
             callback({
                 currentLanguage

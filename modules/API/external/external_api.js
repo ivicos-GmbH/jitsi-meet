@@ -1310,8 +1310,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this.executeCommand('stopSpeakerStats');
     }
 
-    /**
-     * Returns the current language of the user interface
+    /** .........
+     * Returns the current language of the user interface.
      *
      * @returns {Promise} - Resolves with language code of the user interface.
      */
@@ -1321,12 +1321,13 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         });
     }
 
-    /**
-     * Sets the User Interface Language
+    /** .........
+     * Sets the User Interface Language.
      *
+     * @param { number } language - Language code of the language to set.
      * @returns {void}
      */
-     setUILanguage(language) {
+    setUILanguage(language) {
         this.executeCommand('setUILanguage', language);
     }
 

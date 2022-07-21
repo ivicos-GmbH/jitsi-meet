@@ -12,7 +12,7 @@ import i18next from './i18next';
  * @param {string} url - The url of the translation bundle.
  * @returns {void}
  */
-export async function changeLanguageBundle(language: string, url: string) {//
+export async function changeLanguageBundle(language: string, url: string) {
     const res = await fetch(url);
     const bundle = await res.json();
 

@@ -3,6 +3,7 @@
 import BrowserLanguageDetector from 'i18next-browser-languagedetector';
 
 import configLanguageDetector from './configLanguageDetector';
+
 // import customNavigatorDetector from './customNavigatorDetector';
 
 
@@ -16,6 +17,7 @@ declare var interfaceConfig: Object;
  */
 const order = [
     configLanguageDetector.name
+
     // 'querystring',
     // 'localStorage'
 ];
@@ -25,7 +27,7 @@ const order = [
 // interfaceConfig.LANG_DETECTION && order.push(customNavigatorDetector.name);
 
 // Default use configured language
-//order.push(configLanguageDetector.name);
+// order.push(configLanguageDetector.name);
 
 /**
  * The singleton language detector for Web.
@@ -37,12 +39,12 @@ const languageDetector
             caches: [ 'localStorage' ],
             lookupLocalStorage: 'language',
             lookupQuerystring: 'lang',
-            order,
+            order
         });
 
 // Add the language detector which looks the language up in the config. Its
 // order has already been established above.
 // languageDetector.addDetector(customNavigatorDetector);
-languageDetector.addDetector( configLanguageDetector);
+languageDetector.addDetector(configLanguageDetector);
 
 export default languageDetector;
