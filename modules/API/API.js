@@ -81,6 +81,8 @@ import VirtualBackgroundDialog from '../../react/features/virtual-background/com
 import { getJitsiMeetTransport } from '../transport';
 
 import { API_ID, ENDPOINT_TEXT_MESSAGE_NAME } from './constants';
+import { i18next, DEFAULT_LANGUAGE } from '../../react/features/base/i18n';
+
 
 
 const logger = Logger.getLogger(__filename);
@@ -162,6 +164,14 @@ function initCommands() {
                 clearInterval(speakerStatsTimer);
             }
         },
+        'set-ui-language': (language) => {
+            logger.debug('Setting UI Language');
+            const currentLanguage= i18next.language || DEFAULT_LANGUAGE;
+            if (language !== currentLanguage) {
+                i18next.changeLanguage(language);
+            }
+        },
+
         'local-subject': localSubject => {
             sendAnalytics(createApiEvent('local.subject.changed'));
             APP.store.dispatch(setLocalSubject(localSubject));
@@ -710,6 +720,14 @@ function initCommands() {
         case 'get-custom-avatar-backgrounds' : {
             callback({
                 avatarBackgrounds: APP.store.getState()['features/dynamic-branding'].avatarBackgrounds
+            });
+            break;
+        }
+        case 'get-current-ui-language' : {
+            const currentLanguage= i18next.language || DEFAULT_LANGUAGE;
+
+            callback({
+                currentLanguage
             });
             break;
         }
