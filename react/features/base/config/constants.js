@@ -41,6 +41,7 @@ export const TOOLBAR_BUTTONS = [
     'select-foreground-overlay',
     'settings',
     'shareaudio',
+    'noisegate',
     'sharedvideo',
     'shortcuts',
     'stats',

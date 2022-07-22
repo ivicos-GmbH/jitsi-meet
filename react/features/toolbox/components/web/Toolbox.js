@@ -35,6 +35,7 @@ import { InviteButton } from '../../../invite/components/add-people-dialog';
 import { isVpaasMeeting } from '../../../jaas/functions';
 import { KeyboardShortcutsButton } from '../../../keyboard-shortcuts';
 import { LocalRecordingButton } from '../../../local-recording';
+import { NoiseGateButton } from '../../../noise-gate/components';
 import {
     close as closeParticipantsPane,
     open as openParticipantsPane
@@ -759,6 +760,12 @@ class Toolbox extends Component<Props> {
             group: 3
         };
 
+        const noiseGate = {
+            key: 'noisegate',
+            Content: NoiseGateButton,
+            group: 3
+        };
+
         const settings = {
             key: 'settings',
             Content: SettingsButton,
@@ -820,6 +827,7 @@ class Toolbox extends Component<Props> {
             etherpad,
             virtualBackground,
             speakerStats,
+            noiseGate,
             settings,
             shortcuts,
             embed,
