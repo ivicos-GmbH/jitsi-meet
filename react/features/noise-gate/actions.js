@@ -18,6 +18,8 @@ import logger from './logger';
  * }}
  */
 export function setNoiseGateEnabledState(enabled) {
+    console.log('ENABLED state', enabled);
+
     return {
         type: SET_NOISE_GATE_ENABLED,
         enabled
@@ -32,9 +34,9 @@ export function setNoiseGateEnabledState(enabled) {
 export function toggleNoiseGate() {
     return (dispatch, getState) => {
         if (isNoiseGateEnabled(getState())) {
-            dispatch(setNoiseGateEnabledState(false));
+            dispatch(setNoiseGateEnabled(false));
         } else {
-            dispatch(setNoiseGateEnabledState(true));
+            dispatch(setNoiseGateEnabled(true));
         }
     };
 }
@@ -47,6 +49,8 @@ export function toggleNoiseGate() {
  * @returns {Function}
  */
 export function setNoiseGateEnabled(enabled) {
+    console.log('ENABLED', enabled);
+
     return async (dispatch, getState) => {
         const state = getState();
 
@@ -56,11 +60,12 @@ export function setNoiseGateEnabled(enabled) {
         logger.info(`Attempting to set noise gate enabled state: ${enabled}`);
 
         if (!localAudio) {
-            logger.warn('Can not apply noise suppression without any local track active.');
+            logger.warn('Can not apply noise gate without any local track active.');
 
             return;
         }
         try {
+            console.log('ENABLED TRIED', state);
             if (enabled && !noiseGateEnabled) {
                 if (!canEnableNoiseGate(state, dispatch, localAudio)) {
                     return;

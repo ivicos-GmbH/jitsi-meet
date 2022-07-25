@@ -72,28 +72,40 @@ export class NoiseGateEffect {
         this._analyser.connect(this._gainNode);
         this._gainNode.connect(this._audioDestination);
 
-        // GET LEVEL
-        const bufferLength = this._analyser.fftSize;
-        const dataArray = new Uint8Array(bufferLength);
+        const getLevel = input => {
+            // GET LEVEL
+            const bufferLength = input.fftSize;
+            const dataArray = new Uint8Array(bufferLength);
 
-        this._analyser.getByteTimeDomainData(dataArray);
+            this._analyser.getByteTimeDomainData(dataArray);
 
-        let levelContainer = 0.0;
+            let levelContainer = 0.0;
 
-        dataArray.forEach(item => {
-            levelContainer += item;
-        });
-        const levelReturn = levelContainer / bufferLength;
+            dataArray.forEach(item => {
+                levelContainer += item;
+            });
+            const levelReturn = levelContainer / bufferLength;
 
-        // NOISE GATE
-        if (levelReturn < 127.58) {
-            this._gainNode.gain.setTargetAtTime(0, this._audioContext.currentTime, 0.2);
-
-            console.log(`After Gate Level: ${levelReturn}`);
-        } else {
-            this._gainNode.gain.setTargetAtTime(1, this._audioContext.currentTime, 0.03);
-            console.log(`No Gate Level: ${levelReturn}`);
+            return levelReturn;
         }
+
+        const noiseGate = () => {
+            requestAnimationFrame(noiseGate);
+
+            const levelReturn = getLevel(this._analyser);
+
+            // NOISE GATE
+            if (levelReturn < 127.55) {
+                this._gainNode.gain.setTargetAtTime(0.1, this._audioContext.currentTime, 0.2);
+
+                console.log(`After Gate Level: ${levelReturn}`);
+            } else {
+                this._gainNode.gain.setTargetAtTime(1, this._audioContext.currentTime, 0.01);
+                console.log(`No Gate Level: ${levelReturn}`);
+            }
+        };
+
+        noiseGate();
 
         return this._audioDestination.stream;
     }
@@ -110,7 +122,7 @@ export class NoiseGateEffect {
     }
 
     /**
-     * Clean up resources acquired by noise suppressor and rnnoise processor.
+     * Clean up resources acquired by noise gate and rnnoise processor.
      *
      * @returns {void}
      */
