@@ -76,7 +76,7 @@ MiddlewareRegistry.register(store => next => action => {
                 }
             }
             );
-            dispatch(registerSound(RAISE_HAND_SOUND_ID, RAISE_HAND_SOUND_FILE));
+            // dispatch(registerSound(RAISE_HAND_SOUND_ID, RAISE_HAND_SOUND_FILE));
         });
         break;
 
@@ -87,7 +87,7 @@ MiddlewareRegistry.register(store => next => action => {
                     dispatch(unregisterSound(`${REACTIONS[key].soundId}${SOUNDS_THRESHOLDS[i]}`));
                 }
             });
-            dispatch(unregisterSound(RAISE_HAND_SOUND_ID));
+            // dispatch(unregisterSound(RAISE_HAND_SOUND_ID));
         });
         break;
 
