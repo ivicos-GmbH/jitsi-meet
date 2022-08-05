@@ -95,14 +95,14 @@ MiddlewareRegistry.register(store => next => action => {
 
     case DOMINANT_SPEAKER_CHANGED: {
         // Lower hand through xmpp when local participant becomes dominant speaker.
-        const { id } = action.participant;
-        const state = store.getState();
-        const participant = getLocalParticipant(state);
-        const isLocal = participant && participant.id === id;
+        // const { id } = action.participant;
+        // const state = store.getState();
+        // const participant = getLocalParticipant(state);
+        // const isLocal = participant && participant.id === id;
 
-        if (isLocal && hasRaisedHand(participant) && !getDisableRemoveRaisedHandOnFocus(state)) {
-            store.dispatch(raiseHand(false));
-        }
+        // if (isLocal && hasRaisedHand(participant) && !getDisableRemoveRaisedHandOnFocus(state)) {
+        //     store.dispatch(raiseHand(false));
+        // }
 
         break;
     }
