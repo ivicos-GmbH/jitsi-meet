@@ -14,14 +14,12 @@ import {
 } from '../../notifications';
 import { isForceMuted } from '../../participants-pane/functions';
 import { CALLING, INVITED } from '../../presence-status';
-import { RAISE_HAND_SOUND_ID } from '../../reactions/constants';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../app';
 import {
     CONFERENCE_WILL_JOIN,
     forEachConference,
     getCurrentConference
 } from '../conference';
-import { getDisableRemoveRaisedHandOnFocus } from '../config/functions.any';
 import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MEDIA_TYPE } from '../media';
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
@@ -66,7 +64,6 @@ import {
 } from './functions';
 import { PARTICIPANT_JOINED_FILE, PARTICIPANT_LEFT_FILE } from './sounds';
 
-import { hasRaisedHand, raiseHand } from '.';
 
 declare var APP: Object;
 
@@ -633,6 +630,7 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
             uid: RAISE_HAND_NOTIFICATION_ID,
             ...action
         }, shouldDisplayAllowAction ? NOTIFICATION_TIMEOUT_TYPE.MEDIUM : NOTIFICATION_TIMEOUT_TYPE.SHORT));
+
         // dispatch(playSound(RAISE_HAND_SOUND_ID));
     }
 }
