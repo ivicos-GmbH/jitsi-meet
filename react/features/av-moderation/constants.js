@@ -1,5 +1,4 @@
-// @flow
-
+/* eslint-disable flowtype/no-types-missing-file-annotation */
 import { MEDIA_TYPE, type MediaType } from '../base/media/constants';
 
 /**

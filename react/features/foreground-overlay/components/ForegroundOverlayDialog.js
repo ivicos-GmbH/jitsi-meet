@@ -1,4 +1,5 @@
-// @flow
+/* eslint-disable flowtype/no-types-missing-file-annotation */
+
 /* eslint-disable react/jsx-no-bind, no-return-assign */
 import React, { useState } from 'react';
 
