@@ -38,7 +38,6 @@ import {
 } from './actions.any';
 import {
     ENDPOINT_REACTION_NAME,
-    RAISE_HAND_SOUND_ID,
     REACTIONS,
     REACTION_SOUND,
     SOUNDS_THRESHOLDS,
@@ -51,7 +50,6 @@ import {
     sendReactionsWebhook
 } from './functions.any';
 import logger from './logger';
-import { RAISE_HAND_SOUND_FILE } from './sounds';
 
 /**
  * Middleware which intercepts Reactions actions to handle changes to the
@@ -76,7 +74,8 @@ MiddlewareRegistry.register(store => next => action => {
                 }
             }
             );
-            dispatch(registerSound(RAISE_HAND_SOUND_ID, RAISE_HAND_SOUND_FILE));
+
+            // dispatch(registerSound(RAISE_HAND_SOUND_ID, RAISE_HAND_SOUND_FILE));
         });
         break;
 
@@ -87,7 +86,8 @@ MiddlewareRegistry.register(store => next => action => {
                     dispatch(unregisterSound(`${REACTIONS[key].soundId}${SOUNDS_THRESHOLDS[i]}`));
                 }
             });
-            dispatch(unregisterSound(RAISE_HAND_SOUND_ID));
+
+            // dispatch(unregisterSound(RAISE_HAND_SOUND_ID));
         });
         break;
 
