@@ -196,9 +196,10 @@ class YoutubeVideoManager extends AbstractVideoManager<Props> {
                 playerVars: {
                     'origin': location.origin,
                     'fs': '0',
-                    'autoplay': 0,
-                    'controls': showControls,
-                    'rel': 0
+                    'autoplay': 0, // seems it doesn't change anything. Video always autoplay...
+                    'controls': 1,
+                    'rel': 1,
+                    'modestbranding': 1
                 }
             },
             onError: () => this.onError(),

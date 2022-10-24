@@ -111,8 +111,10 @@ class SharedVideo extends Component<Props> {
      * @returns {React$Element}
      */
     render() {
-        const { isOwner } = this.props;
-        const className = isOwner ? '' : 'disable-pointer';
+        // HERE ALLOWS NOT OWNER TO PLAY/PAUSE VIDEO INDEPENDENTLY
+        // const { isOwner } = this.props;
+        // const className = isOwner ? '' : 'disable-pointer';
+        const className = '';
 
         return (
             <div

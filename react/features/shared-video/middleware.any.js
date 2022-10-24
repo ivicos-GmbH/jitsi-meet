@@ -40,12 +40,13 @@ MiddlewareRegistry.register(store => next => action => {
         dispatch(resetSharedVideoStatus());
         break;
     case PARTICIPANT_LEFT:
-        if (action.participant.id === stateOwnerId) {
-            batch(() => {
-                dispatch(resetSharedVideoStatus());
-                dispatch(participantLeft(statevideoUrl, conference));
-            });
-        }
+        // HERE DOESN'T CLOSE THE VIDEO WHEN THE OWNER LEFT THE CALL
+        // if (action.participant.id === stateOwnerId) {
+        //     batch(() => {
+        //         dispatch(resetSharedVideoStatus());
+        //         dispatch(participantLeft(statevideoUrl, conference));
+        //     });
+        // }
         break;
     case SET_SHARED_VIDEO_STATUS:
         if (localParticipantId === ownerId) {
