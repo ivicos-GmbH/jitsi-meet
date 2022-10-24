@@ -38,6 +38,7 @@ const commands = {
     toggleLobby: 'toggle-lobby',
     getSpeakerStats: 'get-speaker-stats',
     stopSpeakerStats: 'stop-speaker-stats',
+    setUILanguage: 'set-ui-language',
     hangup: 'video-hangup',
     initiatePrivateChat: 'initiate-private-chat',
     localSubject: 'local-subject',
@@ -1307,6 +1308,27 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     stopCollectSpeakerStats() {
         this.executeCommand('stopSpeakerStats');
+    }
+
+    /** .........
+     * Returns the current language of the user interface.
+     *
+     * @returns {Promise} - Resolves with language code of the user interface.
+     */
+    getCurrentUILanguage() {
+        return this._transport.sendRequest({
+            name: 'get-current-ui-language'
+        });
+    }
+
+    /** .........
+     * Sets the User Interface Language.
+     *
+     * @param { number } language - Language code of the language to set.
+     * @returns {void}
+     */
+    setUILanguage(language) {
+        this.executeCommand('setUILanguage', language);
     }
 
 }
