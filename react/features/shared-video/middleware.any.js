@@ -8,7 +8,8 @@ import {
     getLocalParticipant,
     participantJoined,
     participantLeft,
-    pinParticipant
+    pinParticipant,
+    getRemoteParticipants
 } from '../base/participants';
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 
@@ -31,9 +32,14 @@ MiddlewareRegistry.register(store => next => action => {
     const { dispatch, getState } = store;
     const state = getState();
     const conference = getCurrentConference(state);
+
+    // const notLocalParticipants = Object.keys(state['features/base/conference'].conference.participants);
+    // const firstParticipant = notLocalParticipants[0];
     const localParticipantId = getLocalParticipant(state)?.id;
     const { videoUrl, status, ownerId, time, muted, volume } = action;
     const { ownerId: stateOwnerId, videoUrl: statevideoUrl } = state['features/shared-video'];
+
+    // const remoteParticipants = getRemoteParticipants(state);
 
     switch (action.type) {
     case CONFERENCE_LEFT:
@@ -41,14 +47,17 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     case PARTICIPANT_LEFT:
         // HERE DOESN'T CLOSE THE VIDEO WHEN THE OWNER LEFT THE CALL
-        // if (action.participant.id === stateOwnerId) {
-        //     batch(() => {
-        //         dispatch(resetSharedVideoStatus());
-        //         dispatch(participantLeft(statevideoUrl, conference));
-        //     });
-        // }
+        // console.log('PROPS3', remoteParticipants[0].id);
+        if (action.participant.id === stateOwnerId) {
+            batch(() => {
+                dispatch(resetSharedVideoStatus());
+                dispatch(participantLeft(statevideoUrl, conference));
+            });
+        }
         break;
     case SET_SHARED_VIDEO_STATUS:
+        // console.log('PROPS2', action, state['features/shared-video']);
+        console.log('PROPS3', Object.keys(state['features/base/conference'].conference.participants));
         if (localParticipantId === ownerId) {
             sendShareVideoCommand({
                 conference,
