@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.40] - 2021-11-29
+### Changed
+- Enabled the display of the moderator settings
+
 ## [1.1.39] - 2021-10-24
 ### Changed
 - Added endpoints triggering UI language change and changed language selection order in order to have a direct changed language with api load (works in Firefox)

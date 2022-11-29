@@ -241,7 +241,7 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                 onSelect = { this._onPopoverClose }
                 participant = { _participant }
                 remoteControlState = { _remoteControlState }
-                thumbnailMenu = { false } />
+                thumbnailMenu = { true } />
         );
     }
 }
