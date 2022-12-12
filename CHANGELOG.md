@@ -4,39 +4,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.40] - 2021-11-29
+## [1.1.41] - 2022-12-12
+### Changed
+- Disabled kick out participants send private message buttons
+
+## [1.1.40] - 2022-11-29
 ### Changed
 - Enabled the display of the moderator settings
 
-## [1.1.39] - 2021-10-24
+## [1.1.39] - 2022-10-24
 ### Changed
 - Added endpoints triggering UI language change and changed language selection order in order to have a direct changed language with api load (works in Firefox)
 
-## [1.1.38] - 2021-08-18
+## [1.1.38] - 2022-08-18
 ### Changed
 - disable handunraise when dominant speaker changes
 
-## [1.1.37] - 2021-08-18
+## [1.1.37] - 2022-08-18
 ### Changed
 - disabled notifications for raise hand
 
-## [1.1.36] - 2021-07-07
+## [1.1.36] - 2022-07-07
 ### Changed
 - Removed onClick event from Raise Hand Icon on video call screen in order to prevent participants panel from opening
 
-## [1.1.35] - 2021-06-17
+## [1.1.35] - 2022-06-17
 ### Changed
 - Added "Raise Hand" feature to the speaker stats for the virtual moderator
 
-## [1.1.34] - 2021-03-29
+## [1.1.34] - 2022-03-29
 ### Changed
 - Disabled thumbnailMenu because it was being displayed wrongly and causing some unstability
 
-## [1.1.33] - 2021-03-26
+## [1.1.33] - 2022-03-26
 ### Updated
 - Code cleaned unneccessary comments removed and one method is renamed
 
-## [1.1.32] - 2021-01-27
+## [1.1.32] - 2022-01-27
 ### Updated
 - Back to latest stable release [1.1.29] and fixed speaker stats again for testing in canary staging
 
@@ -48,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Updated
 - Updated speaker stats and corresponding extenal api endpoints
 
-## [1.1.29] - 2021-01-27
+## [1.1.29] - 2022-01-27
 ### Updated
 - Update to latest stable release 6826 and fixed video on Safari and iOS issue
 
