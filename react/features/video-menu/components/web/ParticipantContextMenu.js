@@ -30,7 +30,6 @@ import {
     MuteEveryoneElseButton,
     MuteEveryoneElsesVideoButton,
     MuteVideoButton,
-    KickButton,
     PrivateMessageMenuButton,
     RemoteControlButton,
     VolumeSlider
