@@ -30,7 +30,6 @@ import {
     MuteEveryoneElseButton,
     MuteEveryoneElsesVideoButton,
     MuteVideoButton,
-    KickButton,
     PrivateMessageMenuButton,
     RemoteControlButton,
     VolumeSlider
@@ -226,11 +225,11 @@ const ParticipantContextMenu = ({
         // }
     }
 
-    // buttons2.push(
-    //     <PrivateMessageMenuButton
-    //         key = 'privateMessage'
-    //         participantID = { _getCurrentParticipantId() } />
-    // );
+    buttons2.push(
+        <PrivateMessageMenuButton
+            key = 'privateMessage'
+            participantID = { _getCurrentParticipantId() } />
+    );
 
     if (thumbnailMenu && isMobileBrowser()) {
         buttons2.push(
