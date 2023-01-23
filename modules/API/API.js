@@ -427,6 +427,13 @@ function initCommands() {
             APP.store.dispatch(playSharedVideo(url));
         },
 
+        'update-share-video-owner': ownerId => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.start'));
+            console.log('!!! Update Share video command received');
+            // APP.store.dispatch(resetAndUpdateSharedVideoOwner(ownerId));
+        },
+
         'stop-share-video': () => {
             logger.debug('Share video command received');
             sendAnalytics(createApiEvent('share.video.stop'));

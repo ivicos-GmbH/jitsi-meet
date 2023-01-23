@@ -62,6 +62,7 @@ const commands = {
     setVideoQuality: 'set-video-quality',
     startRecording: 'start-recording',
     startShareVideo: 'start-share-video',
+    updateShareVideoOwner: 'update-share-video-owner',
     stopRecording: 'stop-recording',
     stopShareVideo: 'stop-share-video',
     subject: 'subject',
@@ -1331,4 +1332,34 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this.executeCommand('setUILanguage', language);
     }
 
+    /** .........
+     * Start sharing video
+     *
+     * @param { string } videoUrl - Youtube video url parameter
+     * @returns {void}
+     */
+    startShareVideo(videoUrl) {
+        this.executeCommand('startShareVideo', videoUrl);
+    }
+
+    /** .........
+     * Update owner Id of the shared video
+     *
+     * @param { string } ownerId - Language code of the language to set.
+     * @returns {void}
+     */
+    updateShareVideoOwner(ownerId) {
+            this.executeCommand('updateShareVideoOwner', ownerId);
+    }
+
+    /** .........
+     * Stops sharing video
+     *
+     * @returns {void}
+     */
+    stopShareVideo() {
+        this.executeCommand('stopShareVideo');
+    }
+
 }
+
