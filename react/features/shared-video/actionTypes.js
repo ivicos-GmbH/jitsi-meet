@@ -30,3 +30,12 @@ export const RESET_SHARED_VIDEO_STATUS = 'RESET_SHARED_VIDEO_STATUS';
  * }
  */
 export const SET_DISABLE_BUTTON = 'SET_DISABLE_BUTTON';
+
+/**
+ * The type of the action which signals to update owner of the shared video
+ *
+ * {
+ *     type: UPDATE_SHARED_VIDEO_OWNER
+ * }
+ */
+export const UPDATE_SHARED_VIDEO_OWNER = 'UPDATE_SHARED_VIDEO_OWNER';

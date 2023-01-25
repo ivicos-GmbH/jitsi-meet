@@ -23,10 +23,10 @@ export function resetSharedVideoStatus() {
  *
  * @param {Object} options - The options.
  * @param {boolean} options.muted - Is video muted.
- * @param {boolean} options.ownerId - Participant ID of the owner.
- * @param {boolean} options.status - Sharing status.
- * @param {boolean} options.time - Playback timestamp.
- * @param {boolean} options.videoUrl - URL of the shared video.
+ * @param {string} options.ownerId - Participant ID of the owner.
+ * @param {string} options.status - Sharing status.
+ * @param {number} options.time - Playback timestamp.
+ * @param {string} options.videoUrl - URL of the shared video.
  *
  * @returns {{
  *     type: SET_SHARED_VIDEO_STATUS,
@@ -116,6 +116,33 @@ export function toggleSharedVideo() {
             dispatch(stopSharedVideo());
         } else {
             dispatch(showSharedVideoDialog(id => dispatch(playSharedVideo(id))));
+        }
+    };
+}
+
+/**
+ *
+ * Updates a shared video ownerId.
+ *
+ * @param {string} ownerId - The new Video Owner Id for the current video.
+ *
+ * @returns {Function}
+ */
+export function updateSharedVideoOwner(ownerId) {
+    return (dispatch, getState) => {
+        const conference = getCurrentConference(getState());
+        const state = getState();
+        const currentVideoState = state['features/shared-video'];
+
+        if (conference) {
+
+            dispatch(setSharedVideoStatus({
+                videoUrl: currentVideoState.videoUrl,
+                status: currentVideoState.status,
+                time: currentVideoState.time,
+                muted: currentVideoState.muted,
+                ownerId: ownerId
+            }));
         }
     };
 }

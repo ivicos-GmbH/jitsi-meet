@@ -16,15 +16,28 @@ ReducerRegistry.register('features/shared-video', (state = initialState, action)
     case RESET_SHARED_VIDEO_STATUS:
         return initialState;
     case SET_SHARED_VIDEO_STATUS:
-        return {
+        const newState = {
             ...state,
             muted,
             ownerId,
             status,
             time,
             videoUrl
-        };
+        }
+        if(initialState.ownerId!==newState.ownerId)
+            console.log('!!! Initial State', initialState);
 
+        console.log('!!! New State', newState);
+        return newState;
+    // case UPDATE_SHARED_VIDEO_OWNER:
+    //     return {
+    //         ...state,
+    //         muted,
+    //         ownerId,
+    //         status,
+    //         time,
+    //         videoUrl
+    //     };
     case SET_DISABLE_BUTTON:
         return {
             ...state,

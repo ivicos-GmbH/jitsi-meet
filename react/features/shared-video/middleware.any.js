@@ -33,22 +33,46 @@ MiddlewareRegistry.register(store => next => action => {
     const conference = getCurrentConference(state);
     const localParticipantId = getLocalParticipant(state)?.id;
     const { videoUrl, status, ownerId, time, muted, volume } = action;
-    const { ownerId: stateOwnerId, videoUrl: statevideoUrl } = state['features/shared-video'];
+    const sharedVideoCurrentState = state['features/shared-video'];
+
+    const getNewVideoOwnerId=(conference,localParticipantId)=>{
+        const remoteParticipantIds = Object.keys(conference.participants)
+        const allParticipantIds=[localParticipantId,...remoteParticipantIds]
+        allParticipantIds.sort(function (a, b) {
+            return (a).localeCompare(b);
+        })
+        console.log('!!! All participant Ids ', allParticipantIds)
+        return allParticipantIds[0].length>0 && allParticipantIds[0]
+    }
 
     switch (action.type) {
     case CONFERENCE_LEFT:
         dispatch(resetSharedVideoStatus());
         break;
     case PARTICIPANT_LEFT:
-        if (action.participant.id === stateOwnerId) {
-            batch(() => {
-                dispatch(resetSharedVideoStatus());
-                dispatch(participantLeft(statevideoUrl, conference));
-            });
+
+        const hasVideoOwnerLeft=action.participant.id === sharedVideoCurrentState.ownerId
+
+        if (hasVideoOwnerLeft) {
+
+            const newState={...sharedVideoCurrentState}
+            const newVideoOwnerId=getNewVideoOwnerId(conference,localParticipantId)
+
+            if(newVideoOwnerId===localParticipantId)
+            {
+                newState.ownerId=localParticipantId
+                // newState.status='playing'
+                console.log('!!! UPDATE_SHARED_VIDEO_OWNER triggered because of PARTICIPANT_LEFT')
+                console.log(newState)
+                dispatch(setSharedVideoStatus({
+                    ...newState
+                    }))
+            }
         }
         break;
     case SET_SHARED_VIDEO_STATUS:
-        if (localParticipantId === ownerId) {
+        getNewVideoOwnerId(conference,localParticipantId)
+        if (localParticipantId === sharedVideoCurrentState.ownerId) {
             sendShareVideoCommand({
                 conference,
                 localParticipantId,
@@ -56,20 +80,20 @@ MiddlewareRegistry.register(store => next => action => {
                 status,
                 time,
                 id: videoUrl,
-                volume
+                ownerId
             });
         }
         break;
     case RESET_SHARED_VIDEO_STATUS:
-        if (localParticipantId === stateOwnerId) {
+        if (localParticipantId === sharedVideoCurrentState.ownerId) {
             sendShareVideoCommand({
                 conference,
-                id: statevideoUrl,
+                id: sharedVideoCurrentState.videoUrl,
                 localParticipantId,
                 muted: true,
                 status: 'stop',
                 time: 0,
-                volume: 0
+                ownerId:sharedVideoCurrentState.ownerId
             });
         }
         break;
@@ -120,7 +144,8 @@ StateListenerRegistry.register(
  * @param {JitsiConference} conference - The current conference.
  * @returns {void}
  */
-function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted }, conference) {
+function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted, ownerId }, conference) {
+
     const { dispatch, getState } = store;
     const localParticipantId = getLocalParticipant(getState()).id;
     const oldStatus = getState()['features/shared-video']?.status;
@@ -143,7 +168,7 @@ function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted },
     if (localParticipantId !== from) {
         dispatch(setSharedVideoStatus({
             muted: muted === 'true',
-            ownerId: from,
+            ownerId: ownerId,
             status: state,
             time: Number(time),
             videoUrl
@@ -163,15 +188,16 @@ function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted },
  * @param {string} time - The seek position of the video.
  * @returns {void}
  */
-function sendShareVideoCommand({ id, status, conference, localParticipantId, time, muted, volume }) {
+function sendShareVideoCommand({ id, status, conference, localParticipantId, time, muted, ownerId }) {
     conference.sendCommandOnce(SHARED_VIDEO, {
+
         value: id,
         attributes: {
             from: localParticipantId,
             muted,
             state: status,
             time,
-            volume
+            ownerId
         }
     });
 }
