@@ -35,16 +35,18 @@ export function resetSharedVideoStatus() {
  *     status: string,
  *     time: number,
  *     videoUrl: string,
+ *     previousOwnerId: string,
  * }}
  */
-export function setSharedVideoStatus({ videoUrl, status, time, ownerId, muted }) {
+export function setSharedVideoStatus({ videoUrl, status, time, ownerId, muted, previousOwnerId }) {
     return {
         type: SET_SHARED_VIDEO_STATUS,
         ownerId,
         status,
         time,
         videoUrl,
-        muted
+        muted,
+        previousOwnerId
     };
 }
 
@@ -95,7 +97,8 @@ export function playSharedVideo(videoUrl) {
                 videoUrl,
                 status: 'start',
                 time: 0,
-                ownerId: localParticipant.id
+                ownerId: localParticipant.id,
+                previousOwnerId: localParticipant.id 
             }));
         }
     };
@@ -141,7 +144,8 @@ export function updateSharedVideoOwner(ownerId) {
                 status: currentVideoState.status,
                 time: currentVideoState.time,
                 muted: currentVideoState.muted,
-                ownerId: ownerId
+                ownerId: ownerId,
+                previousOwnerId: currentVideoState.ownerId
             }));
         }
     };

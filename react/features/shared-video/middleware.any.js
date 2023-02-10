@@ -32,7 +32,7 @@ MiddlewareRegistry.register(store => next => action => {
     const state = getState();
     const conference = getCurrentConference(state);
     const localParticipantId = getLocalParticipant(state)?.id;
-    const { videoUrl, status, ownerId, time, muted, volume } = action;
+    const { videoUrl, status, ownerId, time, muted, volume, previousOwnerId } = action;
     const sharedVideoCurrentState = state['features/shared-video'];
 
     const getNewVideoOwnerId=(conference,localParticipantId)=>{
@@ -42,6 +42,8 @@ MiddlewareRegistry.register(store => next => action => {
             return (a).localeCompare(b);
         })
         console.log('!!! All participant Ids ', allParticipantIds)
+        console.log('!!! Local participant Id ', localParticipantId)
+
         return allParticipantIds[0].length>0 && allParticipantIds[0]
     }
 
@@ -61,9 +63,8 @@ MiddlewareRegistry.register(store => next => action => {
             if(newVideoOwnerId===localParticipantId)
             {
                 newState.ownerId=localParticipantId
-                // newState.status='playing'
-                console.log('!!! UPDATE_SHARED_VIDEO_OWNER triggered because of PARTICIPANT_LEFT')
-                console.log(newState)
+                newState.previousOwnerId=sharedVideoCurrentState.ownerId
+
                 dispatch(setSharedVideoStatus({
                     ...newState
                     }))
@@ -80,7 +81,8 @@ MiddlewareRegistry.register(store => next => action => {
                 status,
                 time,
                 id: videoUrl,
-                ownerId
+                ownerId,
+                previousOwnerId
             });
         }
         break;
@@ -144,7 +146,7 @@ StateListenerRegistry.register(
  * @param {JitsiConference} conference - The current conference.
  * @returns {void}
  */
-function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted, ownerId }, conference) {
+function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted, ownerId, previousOwnerId }, conference) {
 
     const { dispatch, getState } = store;
     const localParticipantId = getLocalParticipant(getState()).id;
@@ -166,13 +168,16 @@ function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted, o
     }
 
     if (localParticipantId !== from) {
-        dispatch(setSharedVideoStatus({
+        const newState={
             muted: muted === 'true',
             ownerId: ownerId,
             status: state,
             time: Number(time),
-            videoUrl
-        }));
+            videoUrl,
+            previousOwnerId
+        }
+
+        dispatch(setSharedVideoStatus(newState));
     }
 }
 
@@ -186,9 +191,12 @@ function handleSharingVideoStatus(store, videoUrl, { state, time, from, muted, o
  * @param {JitsiConference} conference - The current conference.
  * @param {string} localParticipantId - The id of the local participant.
  * @param {string} time - The seek position of the video.
+ * @param {string} ownerId - The id of video owner
+ * @param {string} previousOwnerId - The id of the previous video
+
  * @returns {void}
  */
-function sendShareVideoCommand({ id, status, conference, localParticipantId, time, muted, ownerId }) {
+function sendShareVideoCommand({ id, status, conference, localParticipantId, time, muted, ownerId, previousOwnerId }) {
     conference.sendCommandOnce(SHARED_VIDEO, {
 
         value: id,
@@ -197,7 +205,8 @@ function sendShareVideoCommand({ id, status, conference, localParticipantId, tim
             muted,
             state: status,
             time,
-            ownerId
+            ownerId,
+            previousOwnerId
         }
     });
 }

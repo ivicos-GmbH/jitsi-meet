@@ -10,7 +10,7 @@ const initialState = {};
  * Reduces the Redux actions of the feature features/shared-video.
  */
 ReducerRegistry.register('features/shared-video', (state = initialState, action) => {
-    const { videoUrl, status, time, ownerId, disabled, muted } = action;
+    const { videoUrl, status, time, ownerId, disabled, muted, previousOwnerId } = action;
 
     switch (action.type) {
     case RESET_SHARED_VIDEO_STATUS:
@@ -22,22 +22,12 @@ ReducerRegistry.register('features/shared-video', (state = initialState, action)
             ownerId,
             status,
             time,
-            videoUrl
+            videoUrl,
+            previousOwnerId
         }
-        if(initialState.ownerId!==newState.ownerId)
-            console.log('!!! Initial State', initialState);
 
-        console.log('!!! New State', newState);
         return newState;
-    // case UPDATE_SHARED_VIDEO_OWNER:
-    //     return {
-    //         ...state,
-    //         muted,
-    //         ownerId,
-    //         status,
-    //         time,
-    //         videoUrl
-    //     };
+
     case SET_DISABLE_BUTTON:
         return {
             ...state,

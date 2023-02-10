@@ -430,7 +430,6 @@ function initCommands() {
         'update-share-video-owner': ownerId => {
             logger.debug('Share video command received');
             sendAnalytics(createApiEvent('share.video.start'));
-            console.log('!!! Update Share video command received');
             APP.store.dispatch(updateSharedVideoOwner(ownerId));
         },
 
