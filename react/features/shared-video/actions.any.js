@@ -98,7 +98,7 @@ export function playSharedVideo(videoUrl) {
                 status: 'start',
                 time: 0,
                 ownerId: localParticipant.id,
-                previousOwnerId: localParticipant.id 
+                previousOwnerId: null 
             }));
         }
     };

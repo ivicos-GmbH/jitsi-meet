@@ -13,7 +13,7 @@ import { NOTIFICATION_TIMEOUT_TYPE } from '../../../notifications';
 import { showWarningNotification } from '../../../notifications/actions';
 import { dockToolbox } from '../../../toolbox/actions.web';
 import { muteLocal } from '../../../video-menu/actions.any';
-import { setSharedVideoStatus, stopSharedVideo } from '../../actions.any';
+import { resetSharedVideoStatus, setSharedVideoStatus, stopSharedVideo } from '../../actions.any';
 import { PLAYBACK_STATUSES } from '../../constants';
 
 const logger = Logger.getLogger(__filename);
@@ -182,17 +182,27 @@ class AbstractVideoManager extends PureComponent<Props> {
 
         let timeout=null
 
+        if(hasOwnerChanged)
+            APP.API.notifySharedVideoOwnerUpdated(_ownerId);
+
         if (_isOwner) {
             if(hasOwnerChanged)
             {
-                timeout = setTimeout(()=>{this.seek(_time)}, 2000);
+                timeout = setTimeout(()=>{
+                    this.seek(_status==='start' ? 0 : _time)
+                    this.pause()
+                }, 2000);
 
                 _setSharedVideoStatus(
                     { videoUrl:_videoUrl, status:'pause', time:_time, muted:_muted, ownerId:_ownerId, previousOwnerId:_ownerId }
-                )      
-            } 
+                )
+            }
+            else if(timeout)
+                clearTimeout(timeout)
+ 
             return;
         }
+
 
         const playerTime = this.getTime();
 

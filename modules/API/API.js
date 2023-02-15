@@ -1665,6 +1665,19 @@ class API {
     }
 
     /**
+     * Notify external application (if API is enabled) the updated ownerId of the shared video.
+     *
+     * @param {Object} ownerId - Id of the current shared video owner
+     * @returns {void}
+     */
+    notifySharedVideoOwnerUpdated(ownerId: Object) {
+        this._sendEvent({
+            name: 'shared-video-owner-updated',
+            ownerId
+        });
+    }
+
+    /**
      * Notify external application (if API is enabled) wether the used browser is supported or not.
      *
      * @param {boolean} supported - If browser is supported or not.

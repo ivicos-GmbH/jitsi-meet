@@ -188,6 +188,9 @@ export function fetchDetailedSpeakerStats() {
 
     const localParticipant = state['features/base/participants'].local;
     const raisedHandsQueue = state['features/base/participants'].raisedHandsQueue;
+
+    const sharedVideoCurrentState = state['features/shared-video'];
+
     const getLocalSpeakerStats = () => {
         const stats = conference.getSpeakerStats();
 
@@ -221,6 +224,8 @@ export function fetchDetailedSpeakerStats() {
         const handRaised = raisedHandsQueue.find(item => item.id === key);
 
         localSpeakerStats[key].raisedHandTimestamp = handRaised ? handRaised.raisedHandTimestamp : 0;
+
+        localSpeakerStats[key].isSharedVideoOwner = sharedVideoCurrentState && sharedVideoCurrentState.ownerId && sharedVideoCurrentState.ownerId===key
     });
 
     APP.API.notifySpeakerStatsReceived(localSpeakerStats);

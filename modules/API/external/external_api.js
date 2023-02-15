@@ -128,6 +128,7 @@ const events = {
     'speaker-stats-collect-started': 'speakerStatsCollectStarted',
     'speaker-stats-collect-stopped': 'speakerStatsCollectStopped',
     'speaker-stats-updated': 'speakerStatsUpdated',
+    'shared-video-owner-updated' : 'sharedVideoOwnerUpdated',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
     'video-conference-left': 'videoConferenceLeft',
@@ -1298,8 +1299,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * @param { number } intervalRequest - Interval (ms) between each speaker stats notification.
      * @returns {void}
      */
-    startCollectSpeakerStats(intervalRequest = 1000) {
-        this.executeCommand('getSpeakerStats', true, intervalRequest);
+    startCollectSpeakerStats(intervalRequest = 1000, repeatedRequest=true) {
+        this.executeCommand('getSpeakerStats', repeatedRequest, intervalRequest);
     }
 
     /**
