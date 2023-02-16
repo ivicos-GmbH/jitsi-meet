@@ -62,6 +62,7 @@ const commands = {
     setVideoQuality: 'set-video-quality',
     startRecording: 'start-recording',
     startShareVideo: 'start-share-video',
+    updateShareVideoOwner: 'update-share-video-owner',
     stopRecording: 'stop-recording',
     stopShareVideo: 'stop-share-video',
     subject: 'subject',
@@ -127,6 +128,7 @@ const events = {
     'speaker-stats-collect-started': 'speakerStatsCollectStarted',
     'speaker-stats-collect-stopped': 'speakerStatsCollectStopped',
     'speaker-stats-updated': 'speakerStatsUpdated',
+    'shared-video-owner-updated' : 'sharedVideoOwnerUpdated',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
     'video-conference-left': 'videoConferenceLeft',
@@ -1297,8 +1299,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * @param { number } intervalRequest - Interval (ms) between each speaker stats notification.
      * @returns {void}
      */
-    startCollectSpeakerStats(intervalRequest = 1000) {
-        this.executeCommand('getSpeakerStats', true, intervalRequest);
+    startCollectSpeakerStats(intervalRequest = 1000, repeatedRequest=true) {
+        this.executeCommand('getSpeakerStats', repeatedRequest, intervalRequest);
     }
 
     /**
@@ -1331,4 +1333,34 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this.executeCommand('setUILanguage', language);
     }
 
+    /** .........
+     * Start sharing video
+     *
+     * @param { string } videoUrl - Youtube video url parameter
+     * @returns {void}
+     */
+    startShareVideo(videoUrl) {
+        this.executeCommand('startShareVideo', videoUrl);
+    }
+
+    /** .........
+     * Update owner Id of the shared video
+     *
+     * @param { string } ownerId - Language code of the language to set.
+     * @returns {void}
+     */
+    updateShareVideoOwner(ownerId) {
+            this.executeCommand('updateShareVideoOwner', ownerId);
+    }
+
+    /** .........
+     * Stops sharing video
+     *
+     * @returns {void}
+     */
+    stopShareVideo() {
+        this.executeCommand('stopShareVideo');
+    }
+
 }
+

@@ -13,7 +13,7 @@ import { NOTIFICATION_TIMEOUT_TYPE } from '../../../notifications';
 import { showWarningNotification } from '../../../notifications/actions';
 import { dockToolbox } from '../../../toolbox/actions.web';
 import { muteLocal } from '../../../video-menu/actions.any';
-import { setSharedVideoStatus, stopSharedVideo } from '../../actions.any';
+import { resetSharedVideoStatus, setSharedVideoStatus, stopSharedVideo } from '../../actions.any';
 import { PLAYBACK_STATUSES } from '../../constants';
 
 const logger = Logger.getLogger(__filename);
@@ -145,7 +145,8 @@ class AbstractVideoManager extends PureComponent<Props> {
      * @inheritdoc
      */
     componentDidUpdate(prevProps: Props) {
-        const { _videoUrl } = this.props;
+
+        const { _videoUrl, _time } = this.props;
 
         if (prevProps._videoUrl !== _videoUrl) {
             sendAnalytics(createEvent('started'));
@@ -175,11 +176,33 @@ class AbstractVideoManager extends PureComponent<Props> {
      * @returns {void}
      */
     processUpdatedProps() {
-        const { _status, _time, _isOwner, _muted } = this.props;
+        const { _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId, _setSharedVideoStatus } = this.props;
+   
+        const hasOwnerChanged=_ownerId!==_previousOwnerId
+
+        let timeout=null
+
+        if(hasOwnerChanged)
+            APP.API.notifySharedVideoOwnerUpdated(_ownerId);
 
         if (_isOwner) {
+            if(hasOwnerChanged)
+            {
+                timeout = setTimeout(()=>{
+                    this.seek(_status==='start' ? 0 : _time)
+                    this.pause()
+                }, 2000);
+
+                _setSharedVideoStatus(
+                    { videoUrl:_videoUrl, status:'pause', time:_time, muted:_muted, ownerId:_ownerId, previousOwnerId:_ownerId }
+                )
+            }
+            else if(timeout)
+                clearTimeout(timeout)
+ 
             return;
         }
+
 
         const playerTime = this.getTime();
 
@@ -293,15 +316,21 @@ class AbstractVideoManager extends PureComponent<Props> {
         const {
             _ownerId,
             _setSharedVideoStatus,
-            _videoUrl
-        } = this.props;
+            _videoUrl,
+            _previousOwnerId,
+            _time
+        } = this.props; 
+
+        const actualTime=_ownerId===_previousOwnerId ?  this.getTime() : _time
 
         _setSharedVideoStatus({
             videoUrl: _videoUrl,
             status,
-            time: this.getTime(),
+            // time: this.getTime(),
+            time: actualTime,
             ownerId: _ownerId,
-            muted: this.isMuted()
+            muted: this.isMuted(),
+            previousOwnerId: _previousOwnerId
         });
     }
 
@@ -398,7 +427,7 @@ export default AbstractVideoManager;
  * @returns {Props}
  */
 export function _mapStateToProps(state: Object): $Shape<Props> {
-    const { ownerId, status, time, videoUrl, muted } = state['features/shared-video'];
+    const { ownerId, status, time, videoUrl, muted, previousOwnerId } = state['features/shared-video'];
     const localParticipant = getLocalParticipant(state);
     const _isLocalAudioMuted = isLocalTrackMuted(state['features/base/tracks'], MEDIA_TYPE.AUDIO);
 
@@ -410,7 +439,8 @@ export function _mapStateToProps(state: Object): $Shape<Props> {
         _ownerId: ownerId,
         _status: status,
         _time: time,
-        _videoUrl: videoUrl
+        _videoUrl: videoUrl,
+        _previousOwnerId: previousOwnerId
     };
 }
 
@@ -436,13 +466,14 @@ export function _mapDispatchToProps(dispatch: Function): $Shape<Props> {
         _muteLocal: value => {
             dispatch(muteLocal(value, MEDIA_TYPE.AUDIO));
         },
-        _setSharedVideoStatus: ({ videoUrl, status, time, ownerId, muted }) => {
+        _setSharedVideoStatus: ({ videoUrl, status, time, ownerId, muted, previousOwnerId }) => {
             dispatch(setSharedVideoStatus({
                 videoUrl,
                 status,
                 time,
                 ownerId,
-                muted
+                muted,
+                previousOwnerId
             }));
         }
     };

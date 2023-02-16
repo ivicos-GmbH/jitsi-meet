@@ -71,7 +71,7 @@ import { setBackgroundImage } from '../../react/features/room-background/actions
 import { isScreenAudioSupported, isScreenVideoShared } from '../../react/features/screen-share';
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
-import { playSharedVideo, stopSharedVideo } from '../../react/features/shared-video/actions.any';
+import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner } from '../../react/features/shared-video/actions.any';
 import {
     fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
@@ -425,6 +425,12 @@ function initCommands() {
             logger.debug('Share video command received');
             sendAnalytics(createApiEvent('share.video.start'));
             APP.store.dispatch(playSharedVideo(url));
+        },
+
+        'update-share-video-owner': ownerId => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.start'));
+            APP.store.dispatch(updateSharedVideoOwner(ownerId));
         },
 
         'stop-share-video': () => {
@@ -1655,6 +1661,19 @@ class API {
     notifySpeakerStatsCollectStopped() {
         this._sendEvent({
             name: 'speaker-stats-collect-stopped'
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) the updated ownerId of the shared video.
+     *
+     * @param {Object} ownerId - Id of the current shared video owner
+     * @returns {void}
+     */
+    notifySharedVideoOwnerUpdated(ownerId: Object) {
+        this._sendEvent({
+            name: 'shared-video-owner-updated',
+            ownerId
         });
     }
 

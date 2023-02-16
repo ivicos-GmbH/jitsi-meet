@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.43] - 2023-02-15
+### Changed
+- Endpoints for starting stopping video sharing are implemented
+- Endpoint for updating the shared video owner is implemented
+- Notification of shared vido owner update to all participants is implemented
+- Speaker stats update notification is extended with video owner information
+- Automatic transfer of video ownership when the video owner leaves the call is implemented
+
 ## [1.1.42] - 2022-12-13
 ### Changed
 - Enable back the private message option inside calls
