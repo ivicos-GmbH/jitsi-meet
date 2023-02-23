@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.44] - 2023-02-23
+### Changed
+- Minified external API js files updated in order to resolve the problem with the missing video sharing endpoints on the external api
+
 ## [1.1.43] - 2023-02-15
 ### Changed
 - Endpoints for starting stopping video sharing are implemented
