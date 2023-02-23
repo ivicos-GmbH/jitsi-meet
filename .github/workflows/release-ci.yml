@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '15.x'
       - id: changelog_reader
         name: Get Changelog Entry
         uses: mindsers/changelog-reader-action@v2
