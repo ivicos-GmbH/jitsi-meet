@@ -129,6 +129,7 @@ const events = {
     'speaker-stats-collect-stopped': 'speakerStatsCollectStopped',
     'speaker-stats-updated': 'speakerStatsUpdated',
     'shared-video-owner-updated' : 'sharedVideoOwnerUpdated',
+    'shared-video-stopped' : 'sharedVideoStopped',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
     'video-conference-left': 'videoConferenceLeft',

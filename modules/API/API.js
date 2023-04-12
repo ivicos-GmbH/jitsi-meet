@@ -72,6 +72,7 @@ import { isScreenAudioSupported, isScreenVideoShared } from '../../react/feature
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
 import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner } from '../../react/features/shared-video/actions.any';
+import {fetchStoppedVideoUrl} from '../../react/features/shared-video/functions';
 import {
     fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
@@ -436,6 +437,7 @@ function initCommands() {
         'stop-share-video': () => {
             logger.debug('Share video command received');
             sendAnalytics(createApiEvent('share.video.stop'));
+            fetchStoppedVideoUrl()
             APP.store.dispatch(stopSharedVideo());
         },
 
@@ -1677,6 +1679,19 @@ class API {
         });
     }
 
+     /**
+     * Notify external application (if API is enabled) the updated ownerId of the shared video.
+     *
+     * @param {Object} ownerId - Id of the current shared video owner
+     * @returns {void}
+     */
+     notifySharedVideoStopped(videoUrl: Object) {
+        this._sendEvent({
+            name: 'shared-video-stopped',
+            videoUrl
+        });
+    }
+    
     /**
      * Notify external application (if API is enabled) wether the used browser is supported or not.
      *
