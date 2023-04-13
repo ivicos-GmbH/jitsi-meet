@@ -8,7 +8,7 @@ Jicofo and JVB you are using, and explain (as detailed as you can) how the
 problem can be reproduced.
 
 # Code contributions
-Found a bug and know how to fix it? Great! Please read on.
+Found a bug and know how to fix it? Great! Please read on. 
 
 ## Contributor License Agreement
 While the Jitsi projects are released under the
