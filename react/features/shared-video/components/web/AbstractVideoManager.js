@@ -183,7 +183,7 @@ class AbstractVideoManager extends PureComponent<Props> {
         let timeout=null
 
         if(hasOwnerChanged)
-            APP.API.notifySharedVideoOwnerUpdated(_ownerId);
+            APP.API.notifySharedVideoOwnerUpdated({ _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId});
 
         if (_isOwner) {
             if(hasOwnerChanged)

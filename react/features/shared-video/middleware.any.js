@@ -18,7 +18,7 @@ import {
     setSharedVideoStatus
 } from './actions.any';
 import { SHARED_VIDEO, VIDEO_PLAYER_PARTICIPANT_NAME } from './constants';
-import { isSharingStatus } from './functions';
+import { isSharingStatus, fetchStoppedVideoUrl } from './functions';
 
 /**
  * Middleware that captures actions related to video sharing and updates
@@ -51,6 +51,7 @@ MiddlewareRegistry.register(store => next => action => {
     case CONFERENCE_LEFT:
         dispatch(resetSharedVideoStatus());
         break;
+
     case PARTICIPANT_LEFT:
 
         const hasVideoOwnerLeft=action.participant.id === sharedVideoCurrentState.ownerId
@@ -58,9 +59,8 @@ MiddlewareRegistry.register(store => next => action => {
         if (hasVideoOwnerLeft) {
 
             const newState={...sharedVideoCurrentState}
-            const newVideoOwnerId=getNewVideoOwnerId(conference,localParticipantId)
 
-            if(newVideoOwnerId===localParticipantId)
+            if(conference && getNewVideoOwnerId(conference,localParticipantId)===localParticipantId)
             {
                 newState.ownerId=localParticipantId
                 newState.previousOwnerId=sharedVideoCurrentState.ownerId
@@ -73,7 +73,7 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     case SET_SHARED_VIDEO_STATUS:
         getNewVideoOwnerId(conference,localParticipantId)
-        if (localParticipantId === sharedVideoCurrentState.ownerId) {
+        if (!Object.hasOwn(sharedVideoCurrentState, 'ownerId') || sharedVideoCurrentState.ownerId === '' || localParticipantId === sharedVideoCurrentState.ownerId) {
             sendShareVideoCommand({
                 conference,
                 localParticipantId,
@@ -123,9 +123,10 @@ StateListenerRegistry.register(
 
                     if (isSharingStatus(status)) {
                         handleSharingVideoStatus(store, value, attributes, conference);
-                    } else if (status === 'stop') {
+                    } else if (status === 'stop') {                        
                         dispatch(participantLeft(value, conference));
                         if (localParticipantId !== from) {
+                            fetchStoppedVideoUrl()
                             dispatch(resetSharedVideoStatus());
                         }
                     }
