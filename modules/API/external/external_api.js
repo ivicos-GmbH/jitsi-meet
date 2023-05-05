@@ -834,11 +834,11 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         const participantIds = Object.keys(this._participants);
         const participantsInfo = Object.values(this._participants);
 
-        participantsInfo.forEach((participant, idx) => {
-            participant.participantId = participantIds[idx];
+        const participantsInfoUpdated=participantsInfo.map((participant, idx) => {
+            return {...participant, participantId:participantIds[idx]}
         });
 
-        return participantsInfo;
+        return participantsInfoUpdated;
     }
 
     /**
