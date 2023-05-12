@@ -71,8 +71,7 @@ import { setBackgroundImage } from '../../react/features/room-background/actions
 import { isScreenAudioSupported, isScreenVideoShared } from '../../react/features/screen-share';
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
-import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner } from '../../react/features/shared-video/actions.any';
-import {fetchStoppedVideoUrl} from '../../react/features/shared-video/functions';
+import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner, pauseSharedVideo } from '../../react/features/shared-video/actions.any';
 import {
     fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
@@ -439,6 +438,11 @@ function initCommands() {
             sendAnalytics(createApiEvent('share.video.stop'));
             fetchStoppedVideoUrl()
             APP.store.dispatch(stopSharedVideo());
+        },
+        'pause-share-video': () => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.pause'));
+            APP.store.dispatch(pauseSharedVideo());
         },
 
         /**

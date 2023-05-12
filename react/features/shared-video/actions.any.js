@@ -150,3 +150,29 @@ export function updateSharedVideoOwner(ownerId) {
         }
     };
 }
+
+/**
+ *
+ * Pauses a shared video
+ *
+ * @returns {Function}
+ */
+export function pauseSharedVideo() {
+    return (dispatch, getState) => {
+        const conference = getCurrentConference(getState());
+        const state = getState();
+        const currentVideoState = state['features/shared-video'];
+
+        if (conference) {
+
+            dispatch(setSharedVideoStatus({
+                videoUrl: currentVideoState.videoUrl,
+                status: 'pause',
+                time: currentVideoState.time,
+                muted: currentVideoState.muted,
+                ownerId: currentVideoState.ownerId,
+                previousOwnerId: currentVideoState.previousOwnerId
+            }));
+        }
+    };
+}
