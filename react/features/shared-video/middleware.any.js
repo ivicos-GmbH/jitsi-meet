@@ -36,7 +36,7 @@ MiddlewareRegistry.register(store => next => action => {
     const sharedVideoCurrentState = state['features/shared-video'];
 
     const getNewVideoOwnerId=(conference,localParticipantId)=>{
-        const remoteParticipantIds = Object.keys(conference.participants)
+        const remoteParticipantIds = conference? Object.keys(conference.participants) : []
         const allParticipantIds=[localParticipantId,...remoteParticipantIds]
         allParticipantIds.sort(function (a, b) {
             return (a).localeCompare(b);

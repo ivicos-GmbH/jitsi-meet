@@ -178,56 +178,50 @@ class AbstractVideoManager extends PureComponent<Props> {
     processUpdatedProps() {
         const { _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId, _setSharedVideoStatus } = this.props;
    
-        const hasOwnerChanged=_ownerId!==_previousOwnerId
+        const hasOwnerChanged = _ownerId!== _previousOwnerId
+
+        const hasPreviousOwner = _previousOwnerId!=null
 
         let timeout=null
-            
+        
         if(hasOwnerChanged)
+        {
             APP.API.notifySharedVideoOwnerUpdated({ _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId});
+            _setSharedVideoStatus({ videoUrl:_videoUrl, status:_status, time:_time, muted:_muted, ownerId:_ownerId, previousOwnerId:_ownerId })
+        }
 
-        if (_isOwner) {
-            if(_status==='pause')
+        if(hasOwnerChanged && hasPreviousOwner)
+        {
+            timeout = setTimeout(()=>{
+                this.seek(_time)
                 this.pause()
-
-            if(hasOwnerChanged)
-            {
-                timeout = setTimeout(()=>{
-                    this.seek(_status==='start' ? 0 : _time)
-                    this.pause()
-                }, 2000);
-
-                _setSharedVideoStatus(
-                    { videoUrl:_videoUrl, status:'pause', time:_time, muted:_muted, ownerId:_ownerId, previousOwnerId:_ownerId }
-                )
-            }
-            else if(timeout)
-                clearTimeout(timeout)
- 
-            return;
+            }, 2000);
+            return ;
         }
+        else
+        {
+            const playerTime = this.getTime();
 
-
-        const playerTime = this.getTime();
-
-        if (shouldSeekToPosition(_time, playerTime)) {
-            this.seek(_time);
-        }
-
-        if (this.getPlaybackStatus() !== _status) {
-            if (_status === PLAYBACK_STATUSES.PLAYING) {
-                this.play();
+            if (shouldSeekToPosition(_time, playerTime)) {
+                this.seek(_time);
             }
-
-            if (_status === PLAYBACK_STATUSES.PAUSED) {
-                this.pause();
+    
+            if (this.getPlaybackStatus() !== _status) {
+                if (_status === PLAYBACK_STATUSES.PLAYING) {
+                    this.play();
+                }
+    
+                if (_status === PLAYBACK_STATUSES.PAUSED) {
+                    this.pause();
+                }
             }
-        }
-
-        if (this.isMuted() !== _muted) {
-            if (_muted) {
-                this.mute();
-            } else {
-                this.unMute();
+    
+            if (this.isMuted() !== _muted) {
+                if (_muted) {
+                    this.mute();
+                } else {
+                    this.unMute();
+                }
             }
         }
     }

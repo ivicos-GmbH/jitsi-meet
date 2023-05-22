@@ -71,6 +71,7 @@ import { setBackgroundImage } from '../../react/features/room-background/actions
 import { isScreenAudioSupported, isScreenVideoShared } from '../../react/features/screen-share';
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
+import { fetchStoppedVideoUrl } from '../../react/features/shared-video/functions';
 import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner, pauseSharedVideo } from '../../react/features/shared-video/actions.any';
 import {
     fetchDetailedSpeakerStats
