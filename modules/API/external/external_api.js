@@ -65,6 +65,7 @@ const commands = {
     updateShareVideoOwner: 'update-share-video-owner',
     stopRecording: 'stop-recording',
     stopShareVideo: 'stop-share-video',
+    pauseShareVideo: 'pause-share-video',
     subject: 'subject',
     submitFeedback: 'submit-feedback',
     toggleAudio: 'toggle-audio',
@@ -1361,6 +1362,15 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     stopShareVideo() {
         this.executeCommand('stopShareVideo');
+    }
+
+    /** .........
+     * Pauses sharing video
+     *
+     * @returns {void}
+     */
+    pauseShareVideo() {
+        this.executeCommand('pauseShareVideo');
     }
 
 }
