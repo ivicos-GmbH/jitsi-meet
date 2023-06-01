@@ -186,7 +186,7 @@ class AbstractVideoManager extends PureComponent<Props> {
         
         if(hasOwnerChanged)
         {
-            APP.API.notifySharedVideoOwnerUpdated({ _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId});
+            APP.API.notifySharedVideoStateUpdated({videoUrl:_videoUrl, status:_status, time:_time, muted:_muted, ownerId:_ownerId, previousOwnerId:_previousOwnerId});
             _setSharedVideoStatus({ videoUrl:_videoUrl, status:_status, time:_time, muted:_muted, ownerId:_ownerId, previousOwnerId:_ownerId })
         }
 

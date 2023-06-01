@@ -129,7 +129,7 @@ const events = {
     'speaker-stats-collect-started': 'speakerStatsCollectStarted',
     'speaker-stats-collect-stopped': 'speakerStatsCollectStopped',
     'speaker-stats-updated': 'speakerStatsUpdated',
-    'shared-video-owner-updated' : 'sharedVideoOwnerUpdated',
+    'shared-video-state-updated' : 'sharedVideoStateUpdated',
     'shared-video-stopped' : 'sharedVideoStopped',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
@@ -1371,6 +1371,17 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     pauseShareVideo() {
         this.executeCommand('pauseShareVideo');
+    }
+
+    /** .........
+     * Returns the current language of state of the shared video
+     *
+     * @returns {Promise} - Resolves with current state of the video
+     */
+    getCurrentSharedVideoState() {
+        return this._transport.sendRequest({
+            name: 'get-current-shared-video-state'
+        });
     }
 
 }

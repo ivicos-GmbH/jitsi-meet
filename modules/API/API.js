@@ -744,6 +744,14 @@ function initCommands() {
             });
             break;
         }
+        case 'get-current-shared-video-state' : {
+            const currentSharedVideoState = APP.store.getState()['features/shared-video'] || {};
+
+            callback({
+                currentSharedVideoState
+            });
+            break;
+        }
         default:
             return false;
         }
@@ -1672,15 +1680,15 @@ class API {
     }
 
     /**
-     * Notify external application (if API is enabled) the updated ownerId of the shared video.
+     * Notify external application (if API is enabled) the updated state of the shared video.
      *
-     * @param {Object} ownerId - Id of the current shared video owner
+     * @param {Object} sharedVideoState - State of the shared video
      * @returns {void}
      */
-    notifySharedVideoOwnerUpdated(ownerId: Object) {
+    notifySharedVideoStateUpdated(sharedVideoState: Object) {
         this._sendEvent({
-            name: 'shared-video-owner-updated',
-            ownerId
+            name: 'shared-video-state-updated',
+            sharedVideoState
         });
     }
 
@@ -1690,7 +1698,7 @@ class API {
      * @param {Object} ownerId - Id of the current shared video owner
      * @returns {void}
      */
-     notifySharedVideoStopped(videoUrl: Object) {
+    notifySharedVideoStopped(videoUrl: Object) {
         this._sendEvent({
             name: 'shared-video-stopped',
             videoUrl
