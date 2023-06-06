@@ -62,7 +62,8 @@ const commands = {
     setVideoQuality: 'set-video-quality',
     startRecording: 'start-recording',
     startShareVideo: 'start-share-video',
-    updateShareVideoOwner: 'update-share-video-owner',
+    updateSharedVideoOwner: 'update-shared-video-owner',
+    updateSharedVideoState: 'update-shared-video-state',
     stopRecording: 'stop-recording',
     stopShareVideo: 'stop-share-video',
     pauseShareVideo: 'pause-share-video',
@@ -1351,8 +1352,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * @param { string } ownerId - Language code of the language to set.
      * @returns {void}
      */
-    updateShareVideoOwner(ownerId) {
-            this.executeCommand('updateShareVideoOwner', ownerId);
+    updateSharedVideoOwner(ownerId) {
+            this.executeCommand('updateSharedVideoOwner', ownerId);
     }
 
     /** .........
@@ -1382,6 +1383,15 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         return this._transport.sendRequest({
             name: 'get-current-shared-video-state'
         });
+    }
+    /** .........
+     * Update owner Id of the shared video
+     *
+     * @param { string } ownerId - Language code of the language to set.
+     * @returns {void}
+     */
+    updateSharedVideoState(updatedState) {
+        this.executeCommand('updateSharedVideoState', updatedState);
     }
 
 }
