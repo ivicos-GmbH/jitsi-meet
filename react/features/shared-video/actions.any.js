@@ -176,3 +176,25 @@ export function pauseSharedVideo() {
         }
     };
 }
+
+
+/**
+ *
+ * Shared video state is updated with the passed object
+ *
+ * @param {string} videoUrl - The video url to be played.
+ *
+ * @returns {Function}
+ */
+export function updateVideoState(updatedState) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const currentVideoState = state['features/shared-video'];
+        const localParticipantId = getLocalParticipant(state)?.id;
+        const conference = getCurrentConference(state);
+
+        if (conference && localParticipantId && localParticipantId===currentVideoState.ownerId){
+            dispatch(setSharedVideoStatus(updatedState ? updatedState : currentVideoState));
+        }
+    };
+}

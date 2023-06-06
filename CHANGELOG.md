@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.50] - 2023-06-06
+### Changed
+- Video state update notification instead of owner update implemented
+- External API endpoints for getting and updating shared video state are added
+- Video owner update mechanism changed, video state notification is send on each state update attempt
+
 ## [1.1.49] - 2023-05-22
 ### Changed
 - Made the video player play the video directly after starting the video instead of pausing

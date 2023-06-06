@@ -72,7 +72,7 @@ import { isScreenAudioSupported, isScreenVideoShared } from '../../react/feature
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
 import { fetchStoppedVideoUrl } from '../../react/features/shared-video/functions';
-import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner, pauseSharedVideo } from '../../react/features/shared-video/actions.any';
+import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner, pauseSharedVideo, updateVideoState } from '../../react/features/shared-video/actions.any';
 import {
     fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
@@ -428,10 +428,16 @@ function initCommands() {
             APP.store.dispatch(playSharedVideo(url));
         },
 
-        'update-share-video-owner': ownerId => {
+        'update-shared-video-owner': ownerId => {
             logger.debug('Share video command received');
             sendAnalytics(createApiEvent('share.video.start'));
             APP.store.dispatch(updateSharedVideoOwner(ownerId));
+        },
+
+        'update-shared-video-state': updatedState => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.start'));
+            APP.store.dispatch(updateVideoState(updatedState));
         },
 
         'stop-share-video': () => {
@@ -741,6 +747,14 @@ function initCommands() {
 
             callback({
                 currentLanguage
+            });
+            break;
+        }
+        case 'get-current-shared-video-state' : {
+            const currentSharedVideoState = APP.store.getState()['features/shared-video'] || {};
+
+            callback({
+                currentSharedVideoState
             });
             break;
         }
@@ -1672,15 +1686,15 @@ class API {
     }
 
     /**
-     * Notify external application (if API is enabled) the updated ownerId of the shared video.
+     * Notify external application (if API is enabled) the updated state of the shared video.
      *
-     * @param {Object} ownerId - Id of the current shared video owner
+     * @param {Object} sharedVideoState - State of the shared video
      * @returns {void}
      */
-    notifySharedVideoOwnerUpdated(ownerId: Object) {
+    notifySharedVideoStateUpdated(sharedVideoState: Object) {
         this._sendEvent({
-            name: 'shared-video-owner-updated',
-            ownerId
+            name: 'shared-video-state-updated',
+            sharedVideoState
         });
     }
 
@@ -1690,7 +1704,7 @@ class API {
      * @param {Object} ownerId - Id of the current shared video owner
      * @returns {void}
      */
-     notifySharedVideoStopped(videoUrl: Object) {
+    notifySharedVideoStopped(videoUrl: Object) {
         this._sendEvent({
             name: 'shared-video-stopped',
             videoUrl

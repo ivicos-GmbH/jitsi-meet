@@ -62,7 +62,8 @@ const commands = {
     setVideoQuality: 'set-video-quality',
     startRecording: 'start-recording',
     startShareVideo: 'start-share-video',
-    updateShareVideoOwner: 'update-share-video-owner',
+    updateSharedVideoOwner: 'update-shared-video-owner',
+    updateSharedVideoState: 'update-shared-video-state',
     stopRecording: 'stop-recording',
     stopShareVideo: 'stop-share-video',
     pauseShareVideo: 'pause-share-video',
@@ -129,7 +130,7 @@ const events = {
     'speaker-stats-collect-started': 'speakerStatsCollectStarted',
     'speaker-stats-collect-stopped': 'speakerStatsCollectStopped',
     'speaker-stats-updated': 'speakerStatsUpdated',
-    'shared-video-owner-updated' : 'sharedVideoOwnerUpdated',
+    'shared-video-state-updated' : 'sharedVideoStateUpdated',
     'shared-video-stopped' : 'sharedVideoStopped',
     'video-ready-to-close': 'readyToClose',
     'video-conference-joined': 'videoConferenceJoined',
@@ -1351,8 +1352,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * @param { string } ownerId - Language code of the language to set.
      * @returns {void}
      */
-    updateShareVideoOwner(ownerId) {
-            this.executeCommand('updateShareVideoOwner', ownerId);
+    updateSharedVideoOwner(ownerId) {
+            this.executeCommand('updateSharedVideoOwner', ownerId);
     }
 
     /** .........
@@ -1371,6 +1372,26 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     pauseShareVideo() {
         this.executeCommand('pauseShareVideo');
+    }
+
+    /** .........
+     * Returns the current language of state of the shared video
+     *
+     * @returns {Promise} - Resolves with current state of the video
+     */
+    getCurrentSharedVideoState() {
+        return this._transport.sendRequest({
+            name: 'get-current-shared-video-state'
+        });
+    }
+    /** .........
+     * Update owner Id of the shared video
+     *
+     * @param { string } ownerId - Language code of the language to set.
+     * @returns {void}
+     */
+    updateSharedVideoState(updatedState) {
+        this.executeCommand('updateSharedVideoState', updatedState);
     }
 
 }
