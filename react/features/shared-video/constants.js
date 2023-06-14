@@ -30,3 +30,10 @@ export const PLAYBACK_STATUSES = {
     PAUSED: 'pause',
     STOPPED: 'stop'
 };
+
+/**
+ * Command for requesting shared video state from the video owner.
+ *
+ * @type {string}
+ */
+export const REQUEST_SHARED_VIDEO_STATE_COMMAND = 'request-shared-video-state';

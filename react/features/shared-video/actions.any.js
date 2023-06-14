@@ -3,7 +3,7 @@ import { openDialog } from '../base/dialog/actions';
 import { getLocalParticipant } from '../base/participants';
 import { SharedVideoDialog } from '../shared-video/components';
 
-import { RESET_SHARED_VIDEO_STATUS, SET_SHARED_VIDEO_STATUS } from './actionTypes';
+import { RESET_SHARED_VIDEO_STATUS, SET_SHARED_VIDEO_STATUS,REQUEST_SHARED_VIDEO_STATE } from './actionTypes';
 
 /**
  * Resets the status of the shared video.
@@ -196,5 +196,27 @@ export function updateVideoState(updatedState) {
         if (conference && localParticipantId && localParticipantId===currentVideoState.ownerId){
             dispatch(setSharedVideoStatus(updatedState ? updatedState : currentVideoState));
         }
+    };
+}
+
+/**
+ * Requests shared video state from the video owner.
+ *
+ * @returns {{
+*     type: REQUEST_SHARED_VIDEO_STATE,
+*     muted: boolean,
+*     ownerId: string,
+*     status: string,
+*     time: number,
+*     videoUrl: string,
+*     previousOwnerId: string,
+* }}
+*/
+
+export function requestSharedVideoStateFromVideoOwner(currentVideoState) {
+    // const currentVideoState = state['features/shared-video']
+    return {
+        type: REQUEST_SHARED_VIDEO_STATE,
+        ...currentVideoState
     };
 }

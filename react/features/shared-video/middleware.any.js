@@ -12,12 +12,12 @@ import {
 } from '../base/participants';
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 
-import { SET_SHARED_VIDEO_STATUS, RESET_SHARED_VIDEO_STATUS } from './actionTypes';
+import { SET_SHARED_VIDEO_STATUS, RESET_SHARED_VIDEO_STATUS, REQUEST_SHARED_VIDEO_STATE } from './actionTypes';
 import {
     resetSharedVideoStatus,
     setSharedVideoStatus
 } from './actions.any';
-import { SHARED_VIDEO, VIDEO_PLAYER_PARTICIPANT_NAME } from './constants';
+import { SHARED_VIDEO, VIDEO_PLAYER_PARTICIPANT_NAME, REQUEST_SHARED_VIDEO_STATE_COMMAND } from './constants';
 import { isSharingStatus, fetchStoppedVideoUrl } from './functions';
 
 /**
@@ -50,6 +50,10 @@ MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
     case CONFERENCE_LEFT:
         dispatch(resetSharedVideoStatus());
+        break;
+
+    case REQUEST_SHARED_VIDEO_STATE:
+        sendRequestSharedVideoStateCommand(conference, videoUrl, localParticipantId)
         break;
 
     case PARTICIPANT_LEFT:
@@ -211,3 +215,46 @@ function sendShareVideoCommand({ id, status, conference, localParticipantId, tim
         }
     });
 }
+
+
+/**
+ * Sends REQUEST_SHARED_VIDEO_STATE_COMMAND command.
+ *
+ * @param {string} id - The id of the video.
+ * @param {JitsiConference} conference - The current conference.
+ * @param {string} localParticipantId - The id of the local participant.
+ * @returns {void}
+ */
+function sendRequestSharedVideoStateCommand(conference, videoUrl, localParticipantId) {
+    conference.sendCommandOnce(REQUEST_SHARED_VIDEO_STATE_COMMAND, {
+        value: videoUrl,
+        attributes: {
+            from: localParticipantId
+        }
+    });
+}
+
+/**
+ * Set up state change listener to receive reqeusts for shraed video state broadcast by the video owner
+ */
+StateListenerRegistry.register(
+    state => getCurrentConference(state),
+    (conference, store, previousConference) => {
+        if (conference && conference !== previousConference) {
+            conference.addCommandListener(REQUEST_SHARED_VIDEO_STATE_COMMAND,
+                ({ value, attributes }) => {
+
+                    const { dispatch, getState } = store;
+                    const { from } = attributes;
+                    const localParticipantId = getLocalParticipant(getState()).id;
+                    const videoState = APP.store.getState()['features/shared-video']
+
+                    if (videoState.status==='pause' && localParticipantId===videoState.ownerId && localParticipantId!==from) {
+                        const newVideoState={...videoState, time:videoState.time+0.001}
+                        dispatch(setSharedVideoStatus(newVideoState));
+                    } 
+                }
+            );
+        }
+    }
+);

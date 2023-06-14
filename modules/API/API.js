@@ -72,7 +72,7 @@ import { isScreenAudioSupported, isScreenVideoShared } from '../../react/feature
 import { startScreenShareFlow, startAudioScreenShareFlow } from '../../react/features/screen-share/actions';
 import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture';
 import { fetchStoppedVideoUrl } from '../../react/features/shared-video/functions';
-import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner, pauseSharedVideo, updateVideoState } from '../../react/features/shared-video/actions.any';
+import { playSharedVideo, stopSharedVideo, updateSharedVideoOwner, pauseSharedVideo, updateVideoState, requestSharedVideoStateFromVideoOwner } from '../../react/features/shared-video/actions.any';
 import {
     fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
@@ -452,6 +452,24 @@ function initCommands() {
             APP.store.dispatch(pauseSharedVideo());
         },
 
+        'request-shared-video-state-update-from-video-owner': () => {
+
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.stateupdaterequest'));
+
+            const videoState = APP.store.getState()['features/shared-video']
+            const conference = getCurrentConference(APP.store.getState());
+
+            if (!conference) {
+                logger.error('Conference is not defined');
+
+                return;
+            }
+
+
+            APP.store.dispatch(requestSharedVideoStateFromVideoOwner(videoState));
+        },
+
         /**
          * Starts a file recording or streaming session depending on the passed on params.
          * For RTMP streams, `rtmpStreamKey` must be passed on. `rtmpBroadcastID` is optional.
@@ -747,6 +765,14 @@ function initCommands() {
 
             callback({
                 currentLanguage
+            });
+            break;
+        }
+        case 'get-local-participant-id' : {
+            const localParticipantId = getLocalParticipant(APP.store.getState())?.id;
+
+            callback({
+                localParticipantId
             });
             break;
         }

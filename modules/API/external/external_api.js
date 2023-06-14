@@ -67,6 +67,7 @@ const commands = {
     stopRecording: 'stop-recording',
     stopShareVideo: 'stop-share-video',
     pauseShareVideo: 'pause-share-video',
+    requestSharedVideoStateUpdateFromVideoOwner: 'request-shared-video-state-update-from-video-owner',
     subject: 'subject',
     submitFeedback: 'submit-feedback',
     toggleAudio: 'toggle-audio',
@@ -1337,6 +1338,17 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /** .........
+     * Returns the Id of local participant.
+     *
+     * @returns {Promise} - Resolves with Id of local participant.
+     */
+    getLocalParticipantId() {
+        return this._transport.sendRequest({
+            name: 'get-local-participant-id'
+        });
+    }
+
+    /** .........
      * Start sharing video
      *
      * @param { string } videoUrl - Youtube video url parameter
@@ -1347,9 +1359,9 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /** .........
-     * Update owner Id of the shared video
+     * Updates owner of the shared video
      *
-     * @param { string } ownerId - Language code of the language to set.
+     * @param { string } ownerId - Owner Id of the shared video.
      * @returns {void}
      */
     updateSharedVideoOwner(ownerId) {
@@ -1385,13 +1397,22 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         });
     }
     /** .........
-     * Update owner Id of the shared video
+     * Updates state the shared video
      *
-     * @param { string } ownerId - Language code of the language to set.
+     * @param { string } updatedState - Video state object to be set
      * @returns {void}
      */
     updateSharedVideoState(updatedState) {
         this.executeCommand('updateSharedVideoState', updatedState);
+    }
+
+    /** .........
+     * Request shared video state update notification from videoOwner
+     *
+     * @returns {void}
+     */
+    requestSharedVideoStateUpdateFromVideoOwner() {
+        this.executeCommand('requestSharedVideoStateUpdateFromVideoOwner');
     }
 
 }
