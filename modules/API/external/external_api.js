@@ -670,8 +670,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             case 'audio-mute-status-changed':{
                 const user = this._participants[userID];
 
-                console.log(data);
                 if (user) {
+                    console.log(data, user);
                     user.displayName = data.displayname;
                     user.muted = data.muted;
                 }
