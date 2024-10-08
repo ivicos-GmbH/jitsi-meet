@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { IReduxState } from '../../../app/types';
 import { hideDialog } from '../../../base/dialog/actions';
 import { translate } from '../../../base/i18n/functions';
 import Dialog from '../../../base/ui/components/web/Dialog';
@@ -84,18 +85,34 @@ class SharedVideoDialog extends AbstractSharedVideoDialog<any> {
                 titleKey = 'dialog.shareVideoTitle'>
                 <Input
                     autoFocus = { true }
+                    bottomLabel = { error && t('dialog.sharedVideoDialogError') }
                     className = 'dialog-bottom-margin'
                     error = { error }
+                    id = 'shared-video-url-input'
                     label = { t('dialog.videoLink') }
                     name = 'sharedVideoUrl'
                     onChange = { this._onChange }
                     placeholder = { t('dialog.sharedVideoLinkPlaceholder') }
                     type = 'text'
                     value = { this.state.value } />
-                { error && <span className = 'shared-video-dialog-error'>{ t('dialog.sharedVideoDialogError') }</span> }
             </Dialog>
         );
     }
 }
 
-export default translate(connect()(SharedVideoDialog));
+/**
+ * Maps part of the Redux state to the props of this component.
+ *
+ * @param {Object} state - The Redux state.
+ * @private
+ * @returns {IProps}
+ */
+function mapStateToProps(state: IReduxState) {
+    const { allowedUrlDomains } = state['features/shared-video'];
+
+    return {
+        _allowedUrlDomains: allowedUrlDomains
+    };
+}
+
+export default translate(connect(mapStateToProps)(SharedVideoDialog));

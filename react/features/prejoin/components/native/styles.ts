@@ -83,23 +83,55 @@ export const preJoinStyles = {
         width: 352
     },
 
+    errorContainer: {
+        backgroundColor: BaseTheme.palette.actionDanger,
+        borderBottomRightRadius: BaseTheme.shape.borderRadius,
+        borderBottomLeftRadius: BaseTheme.shape.borderRadius,
+        boxSizing: 'border-box',
+        marginTop: -BaseTheme.spacing[2],
+        overflow: 'visible',
+        wordBreak: 'normal',
+        width: 352
+    },
+
+    error: {
+        padding: BaseTheme.spacing[1],
+        color: BaseTheme.palette.text01,
+        textAlign: 'center'
+    },
+
     preJoinRoomName: {
         ...BaseTheme.typography.heading5,
         color: BaseTheme.palette.text01,
         textAlign: 'center'
     },
 
-    displayRoomNameBackdrop: {
+    conferenceInfo: {
         alignSelf: 'center',
-        backgroundColor: BaseTheme.palette.uiBackground,
-        borderRadius: BaseTheme.shape.borderRadius,
         marginTop: BaseTheme.spacing[3],
-        opacity: 0.7,
         paddingHorizontal: BaseTheme.spacing[3],
         paddingVertical: BaseTheme.spacing[1],
         position: 'absolute',
-        maxWidth: 243,
+        maxWidth: 273,
         zIndex: 1
+    },
+    displayRoomNameBackdrop: {
+        backgroundColor: BaseTheme.palette.uiBackground,
+        borderRadius: BaseTheme.shape.borderRadius,
+        opacity: 0.7,
+        paddingHorizontal: BaseTheme.spacing[3],
+        paddingVertical: BaseTheme.spacing[1]
+    },
+    recordingWarning: {
+        display: 'flex',
+        justifyContent: 'center',
+        lineHeight: 22,
+        marginBottom: BaseTheme.spacing[2],
+        marginTop: BaseTheme.spacing[1],
+        width: 'auto'
+    },
+    recordingWarningText: {
+        color: BaseTheme.palette.text03
     },
     unsafeRoomWarningContainer: {
         height: '100%',

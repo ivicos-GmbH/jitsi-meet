@@ -1,6 +1,6 @@
 /* global APP */
 
-import _ from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 import { IReduxState } from '../app/types';
 import { getConferenceTimestamp } from '../base/conference/functions';
@@ -177,7 +177,7 @@ function getEnhancedStatsForOrdering(state: IReduxState, stats: ISpeakerStats, o
  * @public
  */
 export function filterBySearchCriteria(state: IReduxState, stats?: ISpeakerStats) {
-    const filteredStats = _.cloneDeep(stats ?? getSpeakerStats(state));
+    const filteredStats = cloneDeep(stats ?? getSpeakerStats(state));
     const criteria = getSearchCriteria(state);
 
     if (criteria !== null) {
@@ -205,7 +205,7 @@ export function filterBySearchCriteria(state: IReduxState, stats?: ISpeakerStats
  * @public
  */
 export function resetHiddenStats(state: IReduxState, stats?: ISpeakerStats) {
-    const resetStats = _.cloneDeep(stats ?? getSpeakerStats(state));
+    const resetStats = cloneDeep(stats ?? getSpeakerStats(state));
 
     for (const id in resetStats) {
         if (resetStats[id].hidden) {

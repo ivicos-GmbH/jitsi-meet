@@ -22,6 +22,7 @@ import {
     PARTICIPANT_SOURCES_UPDATED,
     PARTICIPANT_UPDATED,
     PIN_PARTICIPANT,
+    RAISE_HAND_CLEAR,
     RAISE_HAND_UPDATED,
     SCREENSHARE_PARTICIPANT_NAME_CHANGED,
     SET_LOADABLE_AVATAR_URL,
@@ -545,23 +546,27 @@ export function createVirtualScreenshareParticipant(sourceName: string, local: b
  */
 export function participantKicked(kicker: any, kicked: any) {
     return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const state = getState();
+        const localParticipant = getLocalParticipant(state);
+        const kickedId = kicked.getId();
+        const kickerId = kicker?.getId();
 
         dispatch({
             type: PARTICIPANT_KICKED,
-            kicked: kicked.getId(),
-            kicker: kicker?.getId()
+            kicked: kickedId,
+            kicker: kickerId
         });
 
-        if (kicked.isReplaced?.()) {
+        if (kicked.isReplaced?.() || !kickerId || kickerId === localParticipant?.id) {
             return;
         }
 
         dispatch(showNotification({
             titleArguments: {
                 kicked:
-                    getParticipantDisplayName(getState, kicked.getId()),
+                    getParticipantDisplayName(state, kickedId),
                 kicker:
-                    getParticipantDisplayName(getState, kicker.getId())
+                    getParticipantDisplayName(state, kickerId)
             },
             titleKey: 'notify.kickParticipant'
         }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
@@ -628,6 +633,19 @@ export function raiseHand(enabled: boolean) {
     return {
         type: LOCAL_PARTICIPANT_RAISE_HAND,
         raisedHandTimestamp: enabled ? Date.now() : 0
+    };
+}
+
+/**
+ * Clear the raise hand queue.
+ *
+ * @returns {{
+*     type: RAISE_HAND_CLEAR
+* }}
+*/
+export function raiseHandClear() {
+    return {
+        type: RAISE_HAND_CLEAR
     };
 }
 

@@ -139,7 +139,7 @@ export const commonStyles = (theme: Theme) => {
                 alignItems: 'center',
                 background: 'rgba(0,0,0,0.6)',
                 display: 'flex',
-                height: '100vh',
+                height: '100dvh',
                 justifyContent: 'center',
                 left: 0,
                 position: 'absolute' as const,
@@ -260,6 +260,7 @@ export const commonStyles = (theme: Theme) => {
             padding: 6,
             textAlign: 'center' as const,
             pointerEvents: 'all' as const,
+            display: 'flex',
             boxShadow: '0px 2px 8px 4px rgba(0, 0, 0, 0.25), 0px 0px 0px 1px rgba(0, 0, 0, 0.15)',
 
             '& > div': {

@@ -8,9 +8,7 @@ import {
     SET_DIALOUT_NUMBER,
     SET_DIALOUT_STATUS,
     SET_JOIN_BY_PHONE_DIALOG_VISIBLITY,
-    SET_PRECALL_TEST_RESULTS,
     SET_PREJOIN_DEVICE_ERRORS,
-    SET_PREJOIN_DISPLAY_NAME_REQUIRED,
     SET_PREJOIN_PAGE_VISIBILITY,
     SET_SKIP_PREJOIN_RELOAD
 } from './actionTypes';
@@ -26,7 +24,6 @@ const DEFAULT_STATE = {
     },
     dialOutNumber: '',
     dialOutStatus: 'prejoin.dialing',
-    isDisplayNameRequired: false,
     name: '',
     rawError: '',
     showPrejoin: true,
@@ -45,14 +42,8 @@ export interface IPrejoinState {
     };
     dialOutNumber: string;
     dialOutStatus: string;
-    isDisplayNameRequired: boolean;
     joiningInProgress?: boolean;
     name: string;
-    precallTestResults?: {
-        fractionalLoss: number;
-        mediaConnectivity: boolean;
-        throughput: number;
-    };
     rawError: string;
     showJoinByPhoneDialog: boolean;
     showPrejoin: boolean;
@@ -83,12 +74,6 @@ ReducerRegistry.register<IPrejoinState>(
                 skipPrejoinOnReload: action.value
             };
         }
-
-        case SET_PRECALL_TEST_RESULTS:
-            return {
-                ...state,
-                precallTestResults: action.value
-            };
 
         case SET_PREJOIN_PAGE_VISIBILITY:
             return {
@@ -140,13 +125,6 @@ ReducerRegistry.register<IPrejoinState>(
             return {
                 ...state,
                 showJoinByPhoneDialog: action.value
-            };
-        }
-
-        case SET_PREJOIN_DISPLAY_NAME_REQUIRED: {
-            return {
-                ...state,
-                isDisplayNameRequired: true
             };
         }
 

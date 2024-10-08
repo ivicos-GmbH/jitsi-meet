@@ -10,7 +10,7 @@ import { getFeatureFlag } from '../../base/flags/functions';
 import { getLocalParticipant } from '../../base/participants/functions';
 import { getFieldValue } from '../../base/react/functions';
 import { updateSettings } from '../../base/settings/actions';
-import { IMessage } from '../../chat/reducer';
+import { IMessage } from '../../chat/types';
 import { isDeviceStatusVisible } from '../../prejoin/functions';
 import { cancelKnocking, joinWithPassword, onSendMessage, setPasswordJoinFailed, startKnocking } from '../actions';
 
@@ -26,6 +26,11 @@ export interface IProps {
      * Indicates whether the device status should be visible.
      */
     _deviceStatusVisible: boolean;
+
+    /**
+     * Indicates whether the message that display name is required is shown.
+     */
+    _isDisplayNameRequiredActive: boolean;
 
     /**
      * True if moderator initiated a chat session with the participant.
@@ -435,16 +440,17 @@ export function _mapStateToProps(state: IReduxState) {
     const participantId = localParticipant?.id;
     const inviteEnabledFlag = getFeatureFlag(state, INVITE_ENABLED, true);
     const { disableInviteFunctions } = state['features/base/config'];
-    const { knocking, passwordJoinFailed } = state['features/lobby'];
+    const { isDisplayNameRequiredError, knocking, passwordJoinFailed } = state['features/lobby'];
     const { iAmSipGateway } = state['features/base/config'];
     const { disableLobbyPassword } = getSecurityUiConfig(state);
     const showCopyUrlButton = inviteEnabledFlag || !disableInviteFunctions;
     const deviceStatusVisible = isDeviceStatusVisible(state);
-    const { membersOnly } = state['features/base/conference'];
+    const { membersOnly, lobbyWaitingForHost } = state['features/base/conference'];
     const { isLobbyChatActive, lobbyMessageRecipient, messages } = state['features/chat'];
 
     return {
         _deviceStatusVisible: deviceStatusVisible,
+        _isDisplayNameRequiredActive: Boolean(isDisplayNameRequiredError),
         _knocking: knocking,
         _lobbyChatMessages: messages,
         _lobbyMessageRecipient: lobbyMessageRecipient?.name,
@@ -455,7 +461,7 @@ export function _mapStateToProps(state: IReduxState) {
         _participantId: participantId,
         _participantName: localParticipant?.name,
         _passwordJoinFailed: passwordJoinFailed,
-        _renderPassword: !iAmSipGateway && !disableLobbyPassword,
+        _renderPassword: !iAmSipGateway && !disableLobbyPassword && !lobbyWaitingForHost,
         showCopyUrlButton
     };
 }

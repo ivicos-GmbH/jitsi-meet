@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.7] - 2024-10-08
+### Upgraded
+- Jitsi meet is updated to version 9753
+
 ## [2.0.6] - 2024-05-28
 ### Upgraded
 - Modified notification for getting triggered by remote change of the mute status

@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 
 import { IStore } from '../app/types';
 import { CONFERENCE_FAILED, CONFERENCE_JOINED } from '../base/conference/actionTypes';
+import { CONNECTION_FAILED } from '../base/connection/actionTypes';
 import { SET_AUDIO_MUTED, SET_VIDEO_MUTED } from '../base/media/actionTypes';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
 import { updateSettings } from '../base/settings/actions';
@@ -15,7 +16,7 @@ import {
     setDeviceStatusWarning,
     setJoiningInProgress
 } from './actions';
-import { isPrejoinPageVisible } from './functions';
+import { isPrejoinPageVisible } from './functions.any';
 
 /**
  * The redux middleware for {@link PrejoinPage}.
@@ -23,7 +24,7 @@ import { isPrejoinPageVisible } from './functions';
  * @param {Store} store - The redux store.
  * @returns {Function}
  */
-MiddlewareRegistry.register(store => next => async action => {
+MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
     case SET_AUDIO_MUTED: {
         if (isPrejoinPageVisible(store.getState())) {
@@ -67,6 +68,7 @@ MiddlewareRegistry.register(store => next => async action => {
         break;
     }
     case CONFERENCE_FAILED:
+    case CONNECTION_FAILED:
         store.dispatch(setJoiningInProgress(false));
         break;
     case CONFERENCE_JOINED:

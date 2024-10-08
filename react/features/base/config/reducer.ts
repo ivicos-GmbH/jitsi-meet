@@ -1,6 +1,9 @@
-import _ from 'lodash';
+import { merge, union } from 'lodash-es';
 
 import { CONFERENCE_INFO } from '../../conference/components/constants';
+import { TOOLBAR_BUTTONS } from '../../toolbox/constants';
+import { ToolbarButton } from '../../toolbox/types';
+import { CONNECTION_PROPERTIES_UPDATED } from '../connection/actionTypes';
 import ReducerRegistry from '../redux/ReducerRegistry';
 import { equals } from '../redux/functions';
 
@@ -14,8 +17,8 @@ import {
 import {
     IConfig,
     IDeeplinkingConfig,
+    IDeeplinkingDesktopConfig,
     IDeeplinkingMobileConfig,
-    IDeeplinkingPlatformConfig,
     IMobileDynamicLink
 } from './configType';
 import { _cleanupConfig, _setDeeplinkingDefaults } from './functions';
@@ -43,18 +46,6 @@ const INITIAL_NON_RN_STATE: IConfig = {
  * @type {Object}
  */
 const INITIAL_RN_STATE: IConfig = {
-    // FIXME: Mobile codecs should probably be configurable separately, rather
-    // FIXME: than requiring this override here...
-
-    p2p: {
-        disabledCodec: 'vp9',
-        preferredCodec: 'h264'
-    },
-
-    videoQuality: {
-        disabledCodec: 'vp9',
-        preferredCodec: 'vp8'
-    }
 };
 
 /**
@@ -84,6 +75,13 @@ export interface IConfigState extends IConfig {
         p2p?: object;
         websocket?: string;
     };
+    visitors?: {
+        enableMediaOnPromote?: {
+            audio?: boolean;
+            video?: boolean;
+        };
+        queueService: string;
+    };
 }
 
 ReducerRegistry.register<IConfigState>('features/base/config', (state = _getInitialState(), action): IConfigState => {
@@ -103,6 +101,24 @@ ReducerRegistry.register<IConfigState>('features/base/config', (state = _getInit
             */
             locationURL: action.locationURL
         };
+
+    case CONNECTION_PROPERTIES_UPDATED: {
+        const { region, shard } = action.properties;
+        const { deploymentInfo } = state;
+
+        if (deploymentInfo?.region === region && deploymentInfo?.shard === shard) {
+            return state;
+        }
+
+        return {
+            ...state,
+            deploymentInfo: JSON.parse(JSON.stringify({
+                ...deploymentInfo,
+                region,
+                shard
+            }))
+        };
+    }
 
     case LOAD_CONFIG_ERROR:
         // XXX LOAD_CONFIG_ERROR is one of the settlement execution paths of
@@ -178,7 +194,7 @@ function _setConfig(state: IConfig, { config }: { config: IConfig; }) {
         });
     }
 
-    const newState = _.merge(
+    const newState = merge(
         {},
         config,
         hdAudioOptions,
@@ -305,7 +321,7 @@ function _translateInterfaceConfig(oldValue: IConfig) {
     } else {
         const disabled = Boolean(oldValue.disableDeepLinking);
         const deeplinking: IDeeplinkingConfig = {
-            desktop: {} as IDeeplinkingPlatformConfig,
+            desktop: {} as IDeeplinkingDesktopConfig,
             hideLogo: false,
             disabled,
             android: {} as IDeeplinkingMobileConfig,
@@ -381,7 +397,7 @@ function _translateLegacyConfig(oldValue: IConfig) {
                     = (newValue.conferenceInfo?.alwaysVisible ?? [])
                     .filter(c => !CONFERENCE_HEADER_MAPPING[key].includes(c));
                 newValue.conferenceInfo.autoHide
-                    = _.union(newValue.conferenceInfo.autoHide, CONFERENCE_HEADER_MAPPING[key]);
+                    = union(newValue.conferenceInfo.autoHide, CONFERENCE_HEADER_MAPPING[key]);
             } else {
                 newValue.conferenceInfo.alwaysVisible
                     = (newValue.conferenceInfo.alwaysVisible ?? [])
@@ -426,6 +442,12 @@ function _translateLegacyConfig(oldValue: IConfig) {
         newValue.disabledSounds.unshift('INCOMING_MSG_SOUND');
     }
 
+    newValue.raisedHands = newValue.raisedHands || {};
+
+    if (oldValue.disableRemoveRaisedHandOnFocus) {
+        newValue.raisedHands.disableRemoveRaisedHandOnFocus = oldValue.disableRemoveRaisedHandOnFocus;
+    }
+
     if (oldValue.stereo || oldValue.opusMaxAverageBitrate) {
         newValue.audioQuality = {
             opusMaxAverageBitrate: oldValue.audioQuality?.opusMaxAverageBitrate ?? oldValue.opusMaxAverageBitrate,
@@ -436,7 +458,7 @@ function _translateLegacyConfig(oldValue: IConfig) {
     newValue.e2ee = newValue.e2ee || {};
 
     if (oldValue.e2eeLabels) {
-        newValue.e2ee.e2eeLabels = oldValue.e2eeLabels;
+        newValue.e2ee.labels = oldValue.e2eeLabels;
     }
 
     newValue.defaultLocalDisplayName
@@ -475,7 +497,7 @@ function _translateLegacyConfig(oldValue: IConfig) {
     if (oldValue.autoCaptionOnRecord !== undefined) {
         newValue.transcription = {
             ...newValue.transcription,
-            autoCaptionOnRecord: oldValue.autoCaptionOnRecord
+            autoTranscribeOnRecord: oldValue.autoCaptionOnRecord
         };
     }
 
@@ -558,6 +580,11 @@ function _translateLegacyConfig(oldValue: IConfig) {
         };
     }
 
+    if (oldValue.disableProfile) {
+        newValue.toolbarButtons = (newValue.toolbarButtons || TOOLBAR_BUTTONS)
+            .filter((button: ToolbarButton) => button !== 'profile');
+    }
+
     _setDeeplinkingDefaults(newValue.deeplinking as IDeeplinkingConfig);
 
     return newValue;
@@ -572,7 +599,7 @@ function _translateLegacyConfig(oldValue: IConfig) {
  * @returns {Object} The new state after the reduction of the specified action.
  */
 function _updateConfig(state: IConfig, { config }: { config: IConfig; }) {
-    const newState = _.merge({}, state, config);
+    const newState = merge({}, state, config);
 
     _cleanupConfig(newState);
 

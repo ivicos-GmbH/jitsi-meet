@@ -10,9 +10,11 @@ import { IParticipant } from '../../../base/participants/types';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuItemGroup';
 import { stopSharedVideo } from '../../../shared-video/actions.any';
-import { showOverflowDrawer } from '../../../toolbox/functions.web';
+import { getParticipantMenuButtonsWithNotifyClick, showOverflowDrawer } from '../../../toolbox/functions.web';
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/types';
 import { setWhiteboardOpen } from '../../../whiteboard/actions';
 import { WHITEBOARD_ID } from '../../../whiteboard/constants';
+import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';
 
 interface IProps {
 
@@ -86,6 +88,23 @@ const FakeParticipantContextMenu = ({
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const _overflowDrawer: boolean = useSelector(showOverflowDrawer);
+    const buttonsWithNotifyClick = useSelector(getParticipantMenuButtonsWithNotifyClick);
+
+    const notifyClick = useCallback(
+        (buttonKey: string, participantId?: string) => {
+            const notifyMode = buttonsWithNotifyClick?.get(buttonKey);
+
+            if (!notifyMode) {
+                return;
+            }
+
+            APP.API.notifyParticipantMenuButtonClicked(
+                buttonKey,
+                participantId,
+                notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
+            );
+        }, [ buttonsWithNotifyClick ]);
+
 
     const clickHandler = useCallback(() => onSelect(true), [ onSelect ]);
 
@@ -145,6 +164,9 @@ const FakeParticipantContextMenu = ({
                 {isWhiteboardParticipant(participant) && (
                     <TogglePinToStageButton
                         key = 'pinToStage'
+                        // eslint-disable-next-line react/jsx-no-bind
+                        notifyClick = { () => notifyClick(BUTTONS.PIN_TO_STAGE, WHITEBOARD_ID) }
+                        notifyMode = { buttonsWithNotifyClick?.get(BUTTONS.PIN_TO_STAGE) }
                         participantID = { WHITEBOARD_ID } />
                 )}
             </ContextMenuItemGroup>

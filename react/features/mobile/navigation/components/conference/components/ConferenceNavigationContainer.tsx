@@ -6,6 +6,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import BreakoutRooms
+// @ts-ignore
+    from '../../../../../breakout-rooms/components/native/BreakoutRooms';
 // @ts-ignore
 import Chat from '../../../../../chat/components/native/Chat';
 // @ts-ignore
@@ -13,7 +16,7 @@ import Conference from '../../../../../conference/components/native/Conference';
 // @ts-ignore
 import CarMode from '../../../../../conference/components/native/carmode/CarMode';
 // @ts-ignore
-import { getDisablePolls } from '../../../../../conference/functions';
+import { arePollsDisabled } from '../../../../../conference/functions';
 // @ts-ignore
 import SharedDocument from '../../../../../etherpad/components/native/SharedDocument';
 // @ts-ignore
@@ -40,9 +43,11 @@ import SpeakerStats
 import LanguageSelectorDialog
 // @ts-ignore
     from '../../../../../subtitles/components/native/LanguageSelectorDialog';
+import Whiteboard from '../../../../../whiteboard/components/native/Whiteboard';
 // @ts-ignore
 import { screen } from '../../../routes';
 import {
+    breakoutRoomsScreenOptions,
     carmodeScreenOptions,
     chatScreenOptions,
     conferenceScreenOptions,
@@ -58,7 +63,8 @@ import {
     settingsNavigationContainerScreenOptions,
     sharedDocumentScreenOptions,
     speakerStatsScreenOptions,
-    subtitlesScreenOptions
+    subtitlesScreenOptions,
+    whiteboardScreenOptions
     // @ts-ignore
 } from '../../../screenOptions';
 // @ts-ignore
@@ -72,11 +78,12 @@ import {
     // @ts-ignore
 } from '../ConferenceNavigationContainerRef';
 
+
 const ConferenceStack = createStackNavigator();
 
 
 const ConferenceNavigationContainer = () => {
-    const isPollsDisabled = useSelector(getDisablePolls);
+    const isPollsDisabled = useSelector(arePollsDisabled);
     let ChatScreen;
     let chatScreenName;
     let chatTitleString;
@@ -201,6 +208,21 @@ const ConferenceNavigationContainer = () => {
                     options = {{
                         ...subtitlesScreenOptions,
                         title: t('transcribing.subtitles')
+                    }} />
+                <ConferenceStack.Screen
+                    component = { BreakoutRooms }
+                    name = { screen.conference.breakoutRooms }
+                    options = {{
+                        ...breakoutRoomsScreenOptions,
+                        title: t('breakoutRooms.title')
+                    }} />
+                <ConferenceStack.Screen
+                    // @ts-ignore
+                    component = { Whiteboard }
+                    name = { screen.conference.whiteboard }
+                    options = {{
+                        ...whiteboardScreenOptions,
+                        title: t('whiteboard.screenTitle')
                     }} />
             </ConferenceStack.Navigator>
         </NavigationContainer>

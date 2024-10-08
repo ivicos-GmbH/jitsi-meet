@@ -1,4 +1,4 @@
-import _debounce from 'lodash/debounce';
+import { debounce } from 'lodash-es';
 import React, { Component } from 'react';
 
 import { MultiSelectItem } from '../../../ui/components/types';
@@ -23,6 +23,11 @@ interface IProps {
      * Should be of type {content: <some content>}.
      */
     footer?: any;
+
+    /**
+     * Id for the included input, necessary for screen readers.
+     */
+    id: string;
 
     /**
      * Indicates if the component is disabled.
@@ -140,7 +145,7 @@ class MultiSelectAutocomplete extends Component<IProps, IState> {
         this._onFilterChange = this._onFilterChange.bind(this);
         this._onRetry = this._onRetry.bind(this);
         this._onSelectionChange = this._onSelectionChange.bind(this);
-        this._sendQuery = _debounce(this._sendQuery.bind(this), 200);
+        this._sendQuery = debounce(this._sendQuery.bind(this), 200);
     }
 
     /**
@@ -174,6 +179,7 @@ class MultiSelectAutocomplete extends Component<IProps, IState> {
                     error = { this.state.error }
                     errorDialog = { errorDialog }
                     filterValue = { this.state.filterValue }
+                    id = { this.props.id }
                     isOpen = { this.state.isOpen }
                     items = { this.state.items }
                     noMatchesText = { noMatchesFound }

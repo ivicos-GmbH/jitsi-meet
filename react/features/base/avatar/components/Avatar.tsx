@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
+import { IconUser } from '../../icons/svg';
 import { getParticipantById } from '../../participants/functions';
 import { IParticipant } from '../../participants/types';
 import { getAvatarColor, getInitials, isCORSAvatarURL } from '../functions';
@@ -46,6 +47,11 @@ export interface IProps {
      * the background color match the string that the initials are generated from.
      */
     colorBase?: string;
+
+    /**
+     * Indicates the default icon for the avatar.
+     */
+    defaultIcon?: string;
 
     /**
      * Display name of the entity to render an avatar for (if any). This is handy when we need
@@ -111,6 +117,7 @@ class Avatar<P extends IProps> extends PureComponent<P, IState> {
      * @static
      */
     static defaultProps = {
+        defaultIcon: IconUser,
         dynamicColor: true
     };
 
@@ -171,6 +178,7 @@ class Avatar<P extends IProps> extends PureComponent<P, IState> {
             _loadableAvatarUrlUseCORS,
             className,
             colorBase,
+            defaultIcon,
             dynamicColor,
             id,
             size,
@@ -182,6 +190,7 @@ class Avatar<P extends IProps> extends PureComponent<P, IState> {
 
         const avatarProps: AbstractProps & {
             className?: string;
+            iconUser?: any;
             id?: string;
             status?: string;
             testId?: string;
@@ -224,6 +233,10 @@ class Avatar<P extends IProps> extends PureComponent<P, IState> {
             }
 
             avatarProps.initials = initials;
+        }
+
+        if (navigator.product !== 'ReactNative') {
+            avatarProps.iconUser = defaultIcon;
         }
 
         return (

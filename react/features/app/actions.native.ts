@@ -1,4 +1,5 @@
 import { setRoom } from '../base/conference/actions';
+import { getConferenceState } from '../base/conference/functions';
 import {
     configWillLoad,
     loadConfigError,
@@ -8,10 +9,11 @@ import {
 import {
     createFakeConfig,
     restoreConfig
-} from '../base/config/functions';
-import { connect, disconnect, setLocationURL } from '../base/connection/actions';
+} from '../base/config/functions.native';
+import { connect, disconnect, setLocationURL } from '../base/connection/actions.native';
+import { JITSI_CONNECTION_URL_KEY } from '../base/connection/constants';
 import { loadConfig } from '../base/lib-jitsi-meet/functions.native';
-import { createDesiredLocalTracks } from '../base/tracks/actions';
+import { createDesiredLocalTracks } from '../base/tracks/actions.native';
 import isInsecureRoomName from '../base/util/isInsecureRoomName';
 import { parseURLParams } from '../base/util/parseURLParams';
 import {
@@ -27,7 +29,9 @@ import {
 } from '../mobile/navigation/rootNavigationContainerRef';
 import { screen } from '../mobile/navigation/routes';
 import { clearNotifications } from '../notifications/actions';
+import { isUnsafeRoomWarningEnabled } from '../prejoin/functions';
 
+import { maybeRedirectToTokenAuthUrl } from './actions.any';
 import { addTrackStateToURL, getDefaultURL } from './functions.native';
 import logger from './logger';
 import { IReloadNowOptions, IStore } from './types';
@@ -71,11 +75,25 @@ export function appNavigate(uri?: string, options: IReloadNowOptions = {}) {
         }
 
         location.protocol || (location.protocol = 'https:');
-        const { contextRoot, host, room } = location;
+        const { contextRoot, host, hostname, pathname, room } = location;
         const locationURL = new URL(location.toString());
+        const { conference } = getConferenceState(getState());
 
         if (room) {
-            navigateRoot(screen.connecting);
+            if (conference) {
+
+                // We need to check if the location is the same with the previous one.
+                const currentLocationURL = conference?.getConnection()[JITSI_CONNECTION_URL_KEY];
+                const { hostname: currentHostName, pathname: currentPathName } = currentLocationURL;
+
+                if (currentHostName === hostname && currentPathName === pathname) {
+                    logger.warn(`Joining same conference using URL: ${currentLocationURL}`);
+
+                    return;
+                }
+            } else {
+                navigateRoot(screen.connecting);
+            }
         }
 
         dispatch(disconnect());
@@ -136,25 +154,24 @@ export function appNavigate(uri?: string, options: IReloadNowOptions = {}) {
         dispatch(setConfig(config));
         dispatch(setRoom(room));
 
-        if (room) {
-            if (isInsecureRoomName(room)) {
+        if (!room) {
+            goBackToRoot(getState(), dispatch);
+
+            return;
+        }
+
+        dispatch(createDesiredLocalTracks());
+        dispatch(clearNotifications());
+
+        if (!options.hidePrejoin && isPrejoinPageEnabled(getState())) {
+            if (isUnsafeRoomWarningEnabled(getState()) && isInsecureRoomName(room)) {
                 navigateRoot(screen.unsafeRoomWarning);
-
-                return;
-            }
-            dispatch(createDesiredLocalTracks());
-            dispatch(clearNotifications());
-
-            const { hidePrejoin } = options;
-
-            if (!hidePrejoin && isPrejoinPageEnabled(getState())) {
-                navigateRoot(screen.preJoin);
             } else {
-                dispatch(connect());
-                navigateRoot(screen.conference.root);
+                navigateRoot(screen.preJoin);
             }
         } else {
-            goBackToRoot(getState(), dispatch);
+            dispatch(connect());
+            navigateRoot(screen.conference.root);
         }
     };
 }
@@ -188,10 +205,18 @@ export function reloadNow() {
         // @ts-ignore
         const newURL = addTrackStateToURL(locationURL, state);
 
-        logger.info(`Reloading the conference using URL: ${locationURL}`);
+        const reloadAction = () => {
+            logger.info(`Reloading the conference using URL: ${locationURL}`);
 
-        dispatch(appNavigate(toURLString(newURL), {
-            hidePrejoin: true
-        }));
+            dispatch(appNavigate(toURLString(newURL), {
+                hidePrejoin: true
+            }));
+        };
+
+        if (maybeRedirectToTokenAuthUrl(dispatch, getState, reloadAction)) {
+            return;
+        }
+
+        reloadAction();
     };
 }

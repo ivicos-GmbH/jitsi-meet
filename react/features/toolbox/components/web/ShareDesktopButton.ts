@@ -1,22 +1,26 @@
 import { connect } from 'react-redux';
 
+import { createToolbarEvent } from '../../../analytics/AnalyticsEvents';
+import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions';
-import { IconScreenshare, IconStopScreenshare } from '../../../base/icons/svg';
+import { IconScreenshare } from '../../../base/icons/svg';
 import JitsiMeetJS from '../../../base/lib-jitsi-meet/_';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
+import { startScreenShareFlow } from '../../../screen-share/actions.web';
 import { isScreenVideoShared } from '../../../screen-share/functions';
-import { isDesktopShareButtonDisabled } from '../../functions';
+import { closeOverflowMenuIfOpen } from '../../actions.web';
+import { isDesktopShareButtonDisabled } from '../../functions.web';
 
 interface IProps extends AbstractButtonProps {
 
     /**
-     * Whether or not screensharing is initialized.
+     * Whether or not screen-sharing is initialized.
      */
     _desktopSharingEnabled: boolean;
 
     /**
-     * Whether or not the local participant is screensharing.
+     * Whether or not the local participant is screen-sharing.
      */
     _screensharing: boolean;
 }
@@ -29,7 +33,6 @@ class ShareDesktopButton extends AbstractButton<IProps> {
     toggledAccessibilityLabel = 'toolbar.accessibilityLabel.stopScreenSharing';
     label = 'toolbar.startScreenSharing';
     icon = IconScreenshare;
-    toggledIcon = IconStopScreenshare;
     toggledLabel = 'toolbar.stopScreenSharing';
 
     /**
@@ -72,6 +75,23 @@ class ShareDesktopButton extends AbstractButton<IProps> {
     _isDisabled() {
         return !this.props._desktopSharingEnabled;
     }
+
+    /**
+     * Handles clicking the button, and toggles the chat.
+     *
+     * @private
+     * @returns {void}
+     */
+    _handleClick() {
+        const { dispatch, _screensharing } = this.props;
+
+        sendAnalytics(createToolbarEvent(
+            'toggle.screen.sharing',
+            { enable: !_screensharing }));
+
+        dispatch(closeOverflowMenuIfOpen());
+        dispatch(startScreenShareFlow(!_screensharing));
+    }
 }
 
 /**
@@ -81,14 +101,15 @@ class ShareDesktopButton extends AbstractButton<IProps> {
  * @returns {Object}
  */
 const mapStateToProps = (state: IReduxState) => {
-    // Disable the screenshare button if the video sender limit is reached and there is no video or media share in
+    // Disable the screen-share button if the video sender limit is reached and there is no video or media share in
     // progress.
     const desktopSharingEnabled
         = JitsiMeetJS.isDesktopSharingEnabled() && !isDesktopShareButtonDisabled(state);
 
     return {
         _desktopSharingEnabled: desktopSharingEnabled,
-        _screensharing: isScreenVideoShared(state)
+        _screensharing: isScreenVideoShared(state),
+        visible: JitsiMeetJS.isDesktopSharingEnabled()
     };
 };
 

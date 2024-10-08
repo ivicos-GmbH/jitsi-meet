@@ -1,18 +1,14 @@
-// @ts-expect-error
-import Logger from '@jitsi/logger';
 import React, { RefObject } from 'react';
 import Video from 'react-native-video';
 import { connect } from 'react-redux';
 
 import { PLAYBACK_STATUSES } from '../../constants';
+import logger from '../../logger';
 
 import AbstractVideoManager, {
     IProps,
     _mapStateToProps
 } from './AbstractVideoManager';
-
-// @ts-ignore
-const logger = Logger.getLogger(__filename);
 
 interface IState {
     currentTime: number;
@@ -23,7 +19,7 @@ interface IState {
  * Manager of shared video.
  */
 class VideoManager extends AbstractVideoManager<IState> {
-    playerRef: RefObject<Video>;
+    playerRef: RefObject<typeof Video>;
 
     /**
      * Initializes a new VideoManager instance.
@@ -87,6 +83,8 @@ class VideoManager extends AbstractVideoManager<IState> {
      */
     seek(time: number) {
         if (this.player) {
+
+            // @ts-ignore
             this.player.seek(time);
         }
     }

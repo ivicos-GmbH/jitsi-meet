@@ -26,7 +26,7 @@
 @property (nonatomic, nullable, weak) id<JitsiMeetViewDelegate> delegate;
 
 /**
- * Joins the conference specified by the given options. The gievn options will
+ * Joins the conference specified by the given options. The given options will
  * be merged with the defaultConferenceOptions (if set) in JitsiMeet. If there
  * is an already active conference it will be automatically left prior to
  * joining the new one.
@@ -46,5 +46,6 @@
 - (void)sendChatMessage:(NSString * _Nonnull)message :(NSString * _Nullable)to;
 - (void)setVideoMuted:(BOOL)muted;
 - (void)setClosedCaptionsEnabled:(BOOL)enabled;
+- (void)toggleCamera;
 
 @end

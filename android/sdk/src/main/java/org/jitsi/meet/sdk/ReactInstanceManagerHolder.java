@@ -37,6 +37,7 @@ import com.oney.WebRTCModule.webrtcutils.H264AndSoftwareVideoEncoderFactory;
 
 import org.devio.rn.splashscreen.SplashScreenModule;
 import org.webrtc.EglBase;
+import org.webrtc.Logging;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ class ReactInstanceManagerHolder {
             new com.oney.WebRTCModule.WebRTCModulePackage(),
             new com.swmansion.gesturehandler.RNGestureHandlerPackage(),
             new org.linusu.RNGetRandomValuesPackage(),
-            new com.rnimmersive.RNImmersivePackage(),
+            new com.rnimmersivemode.RNImmersiveModePackage(),
             new com.swmansion.rnscreens.RNScreensPackage(),
             new com.zmxv.RNSound.RNSoundPackage(),
             new com.th3rdwave.safeareacontext.SafeAreaContextPackage(),
@@ -204,18 +205,6 @@ class ReactInstanceManagerHolder {
                 ? reactContext.getNativeModule(nativeModuleClass) : null;
     }
 
-    /**
-     * Gets the current {@link Activity} linked to React Native.
-     *
-     * @return An activity attached to React Native.
-     */
-    static Activity getCurrentActivity() {
-        ReactContext reactContext
-            = reactInstanceManager != null
-            ? reactInstanceManager.getCurrentReactContext() : null;
-        return reactContext != null ? reactContext.getCurrentActivity() : null;
-    }
-
     static ReactInstanceManager getReactInstanceManager() {
         return reactInstanceManager;
     }
@@ -240,6 +229,8 @@ class ReactInstanceManagerHolder {
 
         options.videoDecoderFactory = new H264AndSoftwareVideoDecoderFactory(eglContext);
         options.videoEncoderFactory = new H264AndSoftwareVideoEncoderFactory(eglContext);
+        options.enableMediaProjectionService = true;
+//      options.loggingSeverity = Logging.Severity.LS_INFO;
 
         Log.d(TAG, "initializing RN with Activity");
 

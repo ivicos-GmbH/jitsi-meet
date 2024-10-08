@@ -10,7 +10,7 @@ body.welcome-page {
     flex-direction: column;
     font-family: $welcomePageFontFamily;
     justify-content: space-between;
-    min-height: 100vh;
+    min-height: 100dvh;
     position: relative;
 
     .header {
@@ -61,9 +61,38 @@ body.welcome-page {
 
         }
 
+        .not-allow-title-character-div {
+            color: #f03e3e;
+            background-color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 10px 0px 5px 0px;
+            text-align: $welcomePageHeaderTextAlign;
+            border-radius: 5px;
+            padding: 5px;
+            .not-allow-title-character-text {
+                float: right;
+                line-height: 1.9;
+            };
+            .jitsi-icon {
+                margin-right: 9px;
+                float: left;
+
+
+                svg {
+                    fill:#f03e3e;
+
+                    & > *:first-child {
+                        fill: none !important;
+                    }
+                }
+            }
+
+        }
+
         .insecure-room-name-warning {
             align-items: center;
-            color: $defaultWarningColor;
+            color: rgb(215, 121, 118);
             font-weight: 600;
             display: flex;
             flex-direction: row;
@@ -75,7 +104,7 @@ body.welcome-page {
                 margin-right: 15px;
 
                 svg {
-                    fill: $defaultWarningColor;
+                    fill: rgb(215, 121, 118);
 
                     & > *:first-child {
                         fill: none !important;
@@ -228,11 +257,6 @@ body.welcome-page {
         height: 100%;
 
         .watermark.leftwatermark {
-            width: $welcomePageWatermarkWidth;
-            height: $welcomePageWatermarkHeight;
-        }
-
-        .watermark.leftwatermarknomargin {
             width: $welcomePageWatermarkWidth;
             height: $welcomePageWatermarkHeight;
         }

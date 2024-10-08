@@ -1,5 +1,5 @@
-import { useIsFocused } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback } from 'react';
 import {
     BackHandler,
     NativeModules,
@@ -10,13 +10,13 @@ import {
     ViewStyle
 } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
-import { appNavigate } from '../../../app/actions';
+import { appNavigate } from '../../../app/actions.native';
 import { IReduxState, IStore } from '../../../app/types';
-import { FULLSCREEN_ENABLED, PIP_ENABLED } from '../../../base/flags/constants';
+import { CONFERENCE_BLURRED, CONFERENCE_FOCUSED } from '../../../base/conference/actionTypes';
+import { FULLSCREEN_ENABLED } from '../../../base/flags/constants';
 import { getFeatureFlag } from '../../../base/flags/functions';
-import { getParticipantCount } from '../../../base/participants/functions';
 import Container from '../../../base/react/components/native/Container';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
 import TintedView from '../../../base/react/components/native/TintedView';
@@ -35,23 +35,20 @@ import { FILMSTRIP_SIZE } from '../../../filmstrip/constants';
 import { isFilmstripVisible } from '../../../filmstrip/functions.native';
 import CalleeInfoContainer from '../../../invite/components/callee-info/CalleeInfoContainer';
 import LargeVideo from '../../../large-video/components/LargeVideo.native';
-import { startKnocking } from '../../../lobby/actions.any';
 import { getIsLobbyVisible } from '../../../lobby/functions';
-import { navigate }
-    from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
-import { shouldEnableAutoKnock } from '../../../mobile/navigation/functions';
+import { navigate } from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';
-import { setPictureInPictureEnabled } from '../../../mobile/picture-in-picture/functions';
+import { isPipEnabled, setPictureInPictureEnabled } from '../../../mobile/picture-in-picture/functions';
 import Captions from '../../../subtitles/components/native/Captions';
-import { setToolboxVisible } from '../../../toolbox/actions';
+import { setToolboxVisible } from '../../../toolbox/actions.native';
 import Toolbox from '../../../toolbox/components/native/Toolbox';
-import { isToolboxVisible } from '../../../toolbox/functions';
+import { isToolboxVisible } from '../../../toolbox/functions.native';
 import {
     AbstractConference,
     abstractMapStateToProps
 } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
-import { isConnecting } from '../functions';
+import { isConnecting } from '../functions.native';
 
 import AlwaysOnLabels from './AlwaysOnLabels';
 import ExpandedLabelPopup from './ExpandedLabelPopup';
@@ -59,7 +56,6 @@ import LonelyMeetingExperience from './LonelyMeetingExperience';
 import TitleBar from './TitleBar';
 import { EXPANDED_LABEL_TIMEOUT } from './constants';
 import styles from './styles';
-
 
 /**
  * The type of the React {@code Component} props of {@link Conference}.
@@ -105,11 +101,6 @@ interface IProps extends AbstractProps {
     _fullscreenEnabled: boolean;
 
     /**
-     * The indicator which determines if the conference type is one to one.
-     */
-    _isOneToOneConference: boolean;
-
-    /**
      * The indicator which determines if the participants pane is open.
      */
     _isParticipantsPaneOpen: boolean;
@@ -134,11 +125,6 @@ interface IProps extends AbstractProps {
      * smaller display areas).
      */
     _reducedUI: boolean;
-
-    /**
-     * Indicates if we should auto-knock.
-     */
-    _shouldEnableAutoKnock: boolean;
 
     /**
      * Indicates whether the lobby screen should be visible.
@@ -238,20 +224,20 @@ class Conference extends AbstractConference<IProps, State> {
      */
     componentDidUpdate(prevProps: IProps) {
         const {
-            _shouldEnableAutoKnock,
+            _audioOnlyEnabled,
             _showLobby,
-            dispatch
+            _startCarMode
         } = this.props;
 
         if (!prevProps._showLobby && _showLobby) {
             navigate(screen.lobby.root);
-
-            if (_shouldEnableAutoKnock) {
-                dispatch(startKnocking());
-            }
         }
 
         if (prevProps._showLobby && !_showLobby) {
+            if (_audioOnlyEnabled && _startCarMode) {
+                return;
+            }
+
             navigate(screen.conference.main);
         }
     }
@@ -378,7 +364,6 @@ class Conference extends AbstractConference<IProps, State> {
             _aspectRatio,
             _connecting,
             _filmstripVisible,
-            _isOneToOneConference,
             _largeVideoParticipantId,
             _reducedUI,
             _shouldDisplayTileView,
@@ -434,16 +419,14 @@ class Conference extends AbstractConference<IProps, State> {
                     <Captions onPress = { this._onClick } />
 
                     {
-                        _shouldDisplayTileView || (
-                            !_isOneToOneConference
-                            && <Container style = { styles.displayNameContainer }>
-                                <DisplayNameLabel
-                                    participantId = { _largeVideoParticipantId } />
-                            </Container>
-                        )
+                        _shouldDisplayTileView
+                        || <Container style = { styles.displayNameContainer }>
+                            <DisplayNameLabel
+                                participantId = { _largeVideoParticipantId } />
+                        </Container>
                     }
 
-                    <LonelyMeetingExperience />
+                    { !_shouldDisplayTileView && <LonelyMeetingExperience /> }
 
                     {
                         _shouldDisplayTileView
@@ -576,12 +559,12 @@ class Conference extends AbstractConference<IProps, State> {
  * @returns {IProps}
  */
 function _mapStateToProps(state: IReduxState, _ownProps: any) {
+    const { appState } = state['features/background'];
     const { isOpen } = state['features/participants-pane'];
     const { aspectRatio, reducedUI } = state['features/base/responsive-ui'];
     const { backgroundColor } = state['features/dynamic-branding'];
     const { startCarMode } = state['features/base/settings'];
     const { enabled: audioOnlyEnabled } = state['features/base/audio-only'];
-    const participantCount = getParticipantCount(state);
     const brandingStyles = backgroundColor ? {
         backgroundColor
     } : undefined;
@@ -595,12 +578,10 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
         _connecting: isConnecting(state),
         _filmstripVisible: isFilmstripVisible(state),
         _fullscreenEnabled: getFeatureFlag(state, FULLSCREEN_ENABLED, true),
-        _isOneToOneConference: Boolean(participantCount === 2),
         _isParticipantsPaneOpen: isOpen,
         _largeVideoParticipantId: state['features/large-video'].participantId,
-        _pictureInPictureEnabled: getFeatureFlag(state, PIP_ENABLED),
-        _reducedUI: reducedUI,
-        _shouldEnableAutoKnock: shouldEnableAutoKnock(state),
+        _pictureInPictureEnabled: isPipEnabled(state),
+        _reducedUI: reducedUI || appState === 'background',
         _showLobby: getIsLobbyVisible(state),
         _startCarMode: startCarMode,
         _toolboxVisible: isToolboxVisible(state)
@@ -608,18 +589,17 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
 }
 
 export default withSafeAreaInsets(connect(_mapStateToProps)(props => {
-    const isFocused = useIsFocused();
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (isFocused) {
-            setPictureInPictureEnabled(true);
-        } else {
+    useFocusEffect(useCallback(() => {
+        dispatch({ type: CONFERENCE_FOCUSED });
+        setPictureInPictureEnabled(true);
+
+        return () => {
+            dispatch({ type: CONFERENCE_BLURRED });
             setPictureInPictureEnabled(false);
-        }
-
-        // We also need to disable PiP when we are back on the WelcomePage
-        return () => setPictureInPictureEnabled(false);
-    }, [ isFocused ]);
+        };
+    }, []));
 
     return ( // @ts-ignore
         <Conference { ...props } />

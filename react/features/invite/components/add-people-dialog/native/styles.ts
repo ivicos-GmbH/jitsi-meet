@@ -29,8 +29,7 @@ export default {
     bottomBar: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: BaseTheme.palette.ui01,
-        height: BaseTheme.spacing[10]
+        backgroundColor: BaseTheme.palette.ui01
     },
 
     clearButton: {
@@ -116,6 +115,6 @@ export default {
     },
 
     sendBtn: {
-        marginRight: BaseTheme.spacing[2]
+        marginRight: BaseTheme.spacing[3]
     }
 };

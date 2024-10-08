@@ -8,10 +8,11 @@ import { isLocalParticipantModerator } from '../../../../../base/participants/fu
 import ContextMenu from '../../../../../base/ui/components/web/ContextMenu';
 import ContextMenuItemGroup from '../../../../../base/ui/components/web/ContextMenuItemGroup';
 import { getBreakoutRooms } from '../../../../../breakout-rooms/functions';
-import { showOverflowDrawer } from '../../../../../toolbox/functions.web';
+import { getParticipantMenuButtonsWithNotifyClick, showOverflowDrawer } from '../../../../../toolbox/functions.web';
+import { NOTIFY_CLICK_MODE } from '../../../../../toolbox/types';
 import SendToRoomButton from '../../../../../video-menu/components/web/SendToRoomButton';
+import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../../../../video-menu/constants';
 import { AVATAR_SIZE } from '../../../../constants';
-
 
 interface IProps {
 
@@ -72,11 +73,30 @@ export const RoomParticipantContextMenu = ({
     const lowerMenu = useCallback(() => onSelect(true), [ onSelect ]);
     const rooms: Object = useSelector(getBreakoutRooms);
     const overflowDrawer = useSelector(showOverflowDrawer);
+    const buttonsWithNotifyClick = useSelector(getParticipantMenuButtonsWithNotifyClick);
+
+    const notifyClick = useCallback(
+        (buttonKey: string, participantId?: string) => {
+            const notifyMode = buttonsWithNotifyClick?.get(buttonKey);
+
+            if (!notifyMode) {
+                return;
+            }
+
+            APP.API.notifyParticipantMenuButtonClicked(
+                buttonKey,
+                participantId,
+                notifyMode === NOTIFY_CLICK_MODE.PREVENT_AND_NOTIFY
+            );
+        }, [ buttonsWithNotifyClick ]);
 
     const breakoutRoomsButtons = useMemo(() => Object.values(rooms || {}).map((room: any) => {
         if (room.id !== entity?.room?.id) {
             return (<SendToRoomButton
                 key = { room.id }
+                // eslint-disable-next-line react/jsx-no-bind
+                notifyClick = { () => notifyClick(BUTTONS.SEND_PARTICIPANT_TO_ROOM, entity?.jid) }
+                notifyMode = { buttonsWithNotifyClick?.get(BUTTONS.SEND_PARTICIPANT_TO_ROOM) }
                 onClick = { lowerMenu }
                 participantID = { entity?.jid ?? '' }
                 room = { room } />);
@@ -84,7 +104,7 @@ export const RoomParticipantContextMenu = ({
 
         return null;
     })
-    .filter(Boolean), [ entity, rooms ]);
+    .filter(Boolean), [ entity, rooms, buttonsWithNotifyClick ]);
 
     return isLocalModerator ? (
         <ContextMenu
@@ -103,6 +123,7 @@ export const RoomParticipantContextMenu = ({
                         size = { AVATAR_SIZE } />,
                     text: entity?.participantName
                 } ] } />}
+
             <ContextMenuItemGroup>
                 <div className = { styles.text }>
                     {t('breakoutRooms.actions.sendToBreakoutRoom')}

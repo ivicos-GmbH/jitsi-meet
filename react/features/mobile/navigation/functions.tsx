@@ -11,6 +11,7 @@ import { getFeatureFlag } from '../../base/flags/functions';
 import { IconCloseLarge } from '../../base/icons/svg';
 import { toState } from '../../base/redux/functions';
 import { cancelKnocking } from '../../lobby/actions.native';
+import { isPrejoinEnabledInConfig } from '../../prejoin/functions.native';
 
 import HeaderNavigationButton from './components/HeaderNavigationButton';
 
@@ -27,6 +28,7 @@ export function screenHeaderCloseButton(goBack: (e?: GestureResponderEvent | Rea
     if (Platform.OS === 'ios') {
         return (
             <HeaderNavigationButton
+                id = { 'close-screen-button' }
                 label = { t('dialog.close') }
                 onPress = { goBack } />
         );
@@ -34,6 +36,7 @@ export function screenHeaderCloseButton(goBack: (e?: GestureResponderEvent | Rea
 
     return (
         <HeaderNavigationButton
+            id = { 'close-screen-button' }
             onPress = { goBack }
             src = { IconCloseLarge } />
     );
@@ -49,7 +52,9 @@ export function screenHeaderCloseButton(goBack: (e?: GestureResponderEvent | Rea
  * {@code true}; otherwise, {@code false}.
  */
 export function isPrejoinPageEnabled(stateful: IStateful) {
-    return getFeatureFlag(toState(stateful), PREJOIN_PAGE_ENABLED, true);
+    const state = toState(stateful);
+
+    return getFeatureFlag(state, PREJOIN_PAGE_ENABLED, isPrejoinEnabledInConfig(state));
 }
 
 /**
@@ -68,6 +73,7 @@ export function lobbyScreenHeaderCloseButton() {
     if (Platform.OS === 'ios') {
         return (
             <HeaderNavigationButton
+                id = { 'close-screen-button' }
                 label = { t('dialog.close') }
                 onPress = { goBack } />
         );
@@ -75,27 +81,8 @@ export function lobbyScreenHeaderCloseButton() {
 
     return (
         <HeaderNavigationButton
+            id = { 'close-screen-button' }
             onPress = { goBack }
             src = { IconCloseLarge } />
     );
-}
-
-/**
- * Returns true if we should auto-knock in case prejoin is enabled for the room.
- *
- * @param {Function|Object} stateful - The redux state or {@link getState}
- * function.
- * @returns {boolean}
- */
-export function shouldEnableAutoKnock(stateful: IStateful) {
-    const state = toState(stateful);
-    const { displayName } = state['features/base/settings'];
-
-    if (isPrejoinPageEnabled(state)) {
-        if (displayName) {
-            return true;
-        }
-    } else {
-        return false;
-    }
 }

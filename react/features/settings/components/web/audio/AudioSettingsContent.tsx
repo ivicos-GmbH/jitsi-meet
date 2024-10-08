@@ -98,7 +98,7 @@ const useStyles = makeStyles()(theme => {
             right: 'auto',
             margin: 0,
             marginBottom: theme.spacing(1),
-            maxHeight: 'calc(100vh - 100px)',
+            maxHeight: 'calc(100dvh - 100px)',
             overflow: 'auto',
             width: '300px'
         },
@@ -192,7 +192,6 @@ const AudioSettingsContent = ({
                 jitsiTrack = { jitsiTrack }
                 key = { `me-${index}` }
                 length = { length }
-                listHeaderId = { microphoneHeaderId }
                 measureAudioLevels = { measureAudioLevels }
                 onClick = { _onMicrophoneEntryClick }>
                 {label}
@@ -221,7 +220,6 @@ const AudioSettingsContent = ({
                 isSelected = { isSelected }
                 key = { key }
                 length = { length }
-                listHeaderId = { speakerHeaderId }
                 onClick = { _onSpeakerEntryClick }>
                 {label}
             </SpeakerEntry>
@@ -283,6 +281,7 @@ const AudioSettingsContent = ({
 
     return (
         <ContextMenu
+            activateFocusTrap = { true }
             aria-labelledby = 'audio-settings-button'
             className = { classes.contextMenu }
             hidden = { false }

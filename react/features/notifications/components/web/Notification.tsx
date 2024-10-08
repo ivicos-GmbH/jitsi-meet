@@ -129,6 +129,7 @@ const useStyles = makeStyles()((theme: Theme) => {
             ...withPixelLineHeight(theme.typography.bodyShortRegular),
             overflow: 'auto',
             overflowWrap: 'break-word',
+            userSelect: 'all',
 
             '&:not(:empty)': {
                 marginTop: theme.spacing(1)
@@ -177,6 +178,7 @@ const Notification = ({
     description,
     descriptionArguments,
     descriptionKey,
+    disableClosing,
     hideErrorSupportLink,
     icon,
     onDismissed,
@@ -207,7 +209,7 @@ const Notification = ({
         descriptionKey
             && descriptionArray.push(t(descriptionKey, descriptionArguments));
 
-        description && descriptionArray.push(description);
+        description && typeof description === 'string' && descriptionArray.push(description);
 
         // Keeping in mind that:
         // - Notifications that use the `translateToHtml` function get an element-based description array with one entry
@@ -218,11 +220,12 @@ const Notification = ({
 
         // the id is used for testing the UI
         return (
-            <p
+            <div
                 className = { classes.description }
                 data-testid = { descriptionKey } >
                 {shouldRenderHtml ? descriptionArray : <Message text = { descriptionArray.join(' ') } />}
-            </p>
+                {typeof description === 'object' && description}
+            </div>
         );
     }, [ description, descriptionArguments, descriptionKey, classes ]);
 
@@ -308,6 +311,8 @@ const Notification = ({
 
     return (
         <div
+            aria-atomic = 'false'
+            aria-live = 'polite'
             className = { cx(classes.container, unmounting.get(uid ?? '') && 'unmount') }
             data-testid = { titleKey || descriptionKey }
             id = { uid }>
@@ -334,14 +339,16 @@ const Notification = ({
                         ))}
                     </div>
                 </div>
-                <Icon
-                    className = { classes.closeIcon }
-                    color = { theme.palette.icon04 }
-                    id = 'close-notification'
-                    onClick = { onDismiss }
-                    size = { 20 }
-                    src = { IconCloseLarge }
-                    testId = { `${titleKey || descriptionKey}-dismiss` } />
+                { !disableClosing && (
+                    <Icon
+                        className = { classes.closeIcon }
+                        color = { theme.palette.icon04 }
+                        id = 'close-notification'
+                        onClick = { onDismiss }
+                        size = { 20 }
+                        src = { IconCloseLarge }
+                        testId = { `${titleKey || descriptionKey}-dismiss` } />
+                )}
             </div>
         </div>
     );

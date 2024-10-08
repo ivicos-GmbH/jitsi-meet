@@ -114,13 +114,13 @@ MiddlewareRegistry.register(store => next => action => {
             break;
         }
 
-        updateRemoteParticipants(store, action.participant?.id);
+        updateRemoteParticipants(store, false, action.participant?.id);
         break;
     }
     case SETTINGS_UPDATED: {
         if (typeof action.settings?.localFlipX === 'boolean') {
             // TODO: This needs to be removed once the large video is Reactified.
-            VideoLayout.onLocalFlipXChanged();
+            VideoLayout.onLocalFlipXChanged(action.settings.localFlipX);
         }
         if (action.settings?.disableSelfView) {
             const state = store.getState();

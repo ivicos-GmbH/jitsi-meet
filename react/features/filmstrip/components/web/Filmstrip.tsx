@@ -1,15 +1,14 @@
-import { withStyles } from '@mui/styles';
 import clsx from 'clsx';
-import _ from 'lodash';
+import { throttle } from 'lodash-es';
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { FixedSizeGrid, FixedSizeList } from 'react-window';
+import { withStyles } from 'tss-react/mui';
 
 import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState, IStore } from '../../../app/types';
-import { getToolbarButtons } from '../../../base/config/functions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
 import Icon from '../../../base/icons/components/Icon';
@@ -43,6 +42,7 @@ import {
     isStageFilmstripTopPanel,
     shouldRemoteVideosBeVisible
 } from '../../functions';
+import { isFilmstripDisabled } from '../../functions.web';
 
 import AudioTracksContainer from './AudioTracksContainer';
 import Thumbnail from './Thumbnail';
@@ -73,6 +73,11 @@ interface IProps extends WithTranslation {
      * Whether or not to hide the self view.
      */
     _disableSelfView: boolean;
+
+    /**
+     * Whether vertical/horizontal filmstrip is disabled through config.
+     */
+    _filmstripDisabled: boolean;
 
     /**
      * The height of the filmstrip.
@@ -207,7 +212,7 @@ interface IProps extends WithTranslation {
     /**
      * An object containing the CSS classes.
      */
-    classes: any;
+    classes?: Partial<Record<keyof ReturnType<typeof styles>, string>>;
 
     /**
      * The redux {@code dispatch} function.
@@ -281,7 +286,7 @@ class Filmstrip extends PureComponent <IProps, IState> {
         this._onDragMouseUp = this._onDragMouseUp.bind(this);
         this._onFilmstripResize = this._onFilmstripResize.bind(this);
 
-        this._throttledResize = _.throttle(
+        this._throttledResize = throttle(
             this._onFilmstripResize,
             50,
             {
@@ -333,6 +338,7 @@ class Filmstrip extends PureComponent <IProps, IState> {
         const {
             _currentLayout,
             _disableSelfView,
+            _filmstripDisabled,
             _localScreenShareId,
             _mainFilmstripVisible,
             _resizableFilmstrip,
@@ -342,10 +348,10 @@ class Filmstrip extends PureComponent <IProps, IState> {
             _verticalViewBackground,
             _verticalViewGrid,
             _verticalViewMaxWidth,
-            classes,
             filmstripType,
             t
         } = this.props;
+        const classes = withStyles.getClasses(this.props);
         const { isMouseDown } = this.state;
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
 
@@ -381,7 +387,8 @@ class Filmstrip extends PureComponent <IProps, IState> {
         let toolbar = null;
 
         if (!this.props._iAmRecorder && this.props._isFilmstripButtonEnabled
-            && _currentLayout !== LAYOUTS.TILE_VIEW && (filmstripType === FILMSTRIP_TYPE.MAIN
+            && _currentLayout !== LAYOUTS.TILE_VIEW
+            && ((filmstripType === FILMSTRIP_TYPE.MAIN && !_filmstripDisabled)
                 || (filmstripType === FILMSTRIP_TYPE.STAGE && _topPanelFilmstrip))) {
             toolbar = this._renderToggleButton();
         }
@@ -830,12 +837,12 @@ class Filmstrip extends PureComponent <IProps, IState> {
     _renderToggleButton() {
         const {
             t,
-            classes,
             _isVerticalFilmstrip,
             _mainFilmstripVisible,
             _topPanelFilmstrip,
             _topPanelVisible
         } = this.props;
+        const classes = withStyles.getClasses(this.props);
         const icon = (_topPanelFilmstrip ? _topPanelVisible : _mainFilmstripVisible) ? IconArrowDown : IconArrowUp;
         const actions = isMobileBrowser()
             ? { onTouchStart: this._onToggleButtonTouch }
@@ -876,15 +883,16 @@ class Filmstrip extends PureComponent <IProps, IState> {
  */
 function _mapStateToProps(state: IReduxState, ownProps: any) {
     const { _hasScroll = false, filmstripType, _topPanelFilmstrip, _remoteParticipants } = ownProps;
-    const toolbarButtons = getToolbarButtons(state);
+    const { toolbarButtons } = state['features/toolbox'];
     const { iAmRecorder } = state['features/base/config'];
     const { topPanelHeight, topPanelVisible, visible, width: verticalFilmstripWidth } = state['features/filmstrip'];
     const { localScreenShare } = state['features/base/participants'];
-    const reduceHeight = state['features/toolbox'].visible && toolbarButtons.length;
+    const reduceHeight = state['features/toolbox'].visible && toolbarButtons?.length;
     const remoteVideosVisible = shouldRemoteVideosBeVisible(state);
     const { isOpen: shiftRight } = state['features/chat'];
     const disableSelfView = getHideSelfView(state);
     const { clientWidth, clientHeight } = state['features/base/responsive-ui'];
+    const filmstripDisabled = isFilmstripDisabled(state);
 
     const collapseTileView = reduceHeight
         && isMobileBrowser()
@@ -893,7 +901,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const shouldReduceHeight = reduceHeight && isMobileBrowser();
     const _topPanelVisible = isStageFilmstripTopPanel(state) && topPanelVisible;
 
-    let isVisible = visible || filmstripType !== FILMSTRIP_TYPE.MAIN;
+    const notDisabled = visible && !filmstripDisabled;
+    let isVisible = notDisabled || filmstripType !== FILMSTRIP_TYPE.MAIN;
 
     if (_topPanelFilmstrip) {
         isVisible = _topPanelVisible;
@@ -912,13 +921,14 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _chatOpen: state['features/chat'].isOpen,
         _currentLayout,
         _disableSelfView: disableSelfView,
+        _filmstripDisabled: filmstripDisabled,
         _hasScroll,
         _iAmRecorder: Boolean(iAmRecorder),
         _isFilmstripButtonEnabled: isButtonEnabled('filmstrip', state),
         _isToolboxVisible: isToolboxVisible(state),
         _isVerticalFilmstrip,
         _localScreenShareId: localScreenShare?.id,
-        _mainFilmstripVisible: visible,
+        _mainFilmstripVisible: notDisabled,
         _maxFilmstripWidth: clientWidth - MIN_STAGE_VIEW_WIDTH,
         _maxTopPanelHeight: clientHeight - MIN_STAGE_VIEW_HEIGHT,
         _remoteParticipantsLength: _remoteParticipants?.length ?? 0,
@@ -931,4 +941,4 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     };
 }
 
-export default withStyles(styles)(translate(connect(_mapStateToProps)(Filmstrip)));
+export default withStyles(translate(connect(_mapStateToProps)(Filmstrip)), styles);

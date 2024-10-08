@@ -2,29 +2,27 @@ import ReducerRegistry from '../base/redux/ReducerRegistry';
 
 import {
     REMOVE_TRANSCRIPT_MESSAGE,
-    SET_REQUESTING_SUBTITLES, UPDATE_TRANSCRIPT_MESSAGE, UPDATE_TRANSLATION_LANGUAGE
+    SET_REQUESTING_SUBTITLES,
+    TOGGLE_REQUESTING_SUBTITLES,
+    UPDATE_TRANSCRIPT_MESSAGE
 } from './actionTypes';
+import { ITranscriptMessage } from './types';
 
 /**
  * Default State for 'features/transcription' feature.
  */
 const defaultState = {
+    _displaySubtitles: false,
     _transcriptMessages: new Map(),
     _requestingSubtitles: false,
-    _language: 'transcribing.subtitlesOff'
+    _language: null
 };
 
-interface ITranscriptMessage {
-    final: string;
-    participantName: string;
-    stable: string;
-    unstable: string;
-}
-
 export interface ISubtitlesState {
-    _language: string;
+    _displaySubtitles: boolean;
+    _language: string | null;
     _requestingSubtitles: boolean;
-    _transcriptMessages: Map<string, ITranscriptMessage> | any;
+    _transcriptMessages: Map<string, ITranscriptMessage>;
 }
 
 /**
@@ -38,15 +36,17 @@ ReducerRegistry.register<ISubtitlesState>('features/subtitles', (
         return _removeTranscriptMessage(state, action);
     case UPDATE_TRANSCRIPT_MESSAGE:
         return _updateTranscriptMessage(state, action);
-    case UPDATE_TRANSLATION_LANGUAGE:
-        return {
-            ...state,
-            _language: action.value
-        };
     case SET_REQUESTING_SUBTITLES:
         return {
             ...state,
+            _displaySubtitles: action.displaySubtitles,
+            _language: action.language,
             _requestingSubtitles: action.enabled
+        };
+    case TOGGLE_REQUESTING_SUBTITLES:
+        return {
+            ...state,
+            _requestingSubtitles: !state._requestingSubtitles
         };
     }
 

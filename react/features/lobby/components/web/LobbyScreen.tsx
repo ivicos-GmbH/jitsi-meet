@@ -153,15 +153,25 @@ class LobbyScreen extends AbstractLobbyScreen<IProps> {
      */
     _renderParticipantInfo() {
         const { displayName } = this.state;
-        const { t } = this.props;
+        const { _isDisplayNameRequiredActive, t } = this.props;
+        const showError = _isDisplayNameRequiredActive && !displayName;
 
         return (
-            <Input
-                className = 'lobby-prejoin-input'
-                onChange = { this._onChangeDisplayName }
-                placeholder = { t('lobby.nameField') }
-                testId = 'lobby.nameField'
-                value = { displayName } />
+            <>
+                <Input
+                    autoFocus = { true }
+                    className = 'lobby-prejoin-input'
+                    error = { showError }
+                    id = 'lobby-name-field'
+                    onChange = { this._onChangeDisplayName }
+                    placeholder = { t('lobby.nameField') }
+                    testId = 'lobby.nameField'
+                    value = { displayName } />
+
+                { showError && <div
+                    className = 'lobby-prejoin-error'
+                    data-testid = 'lobby.errorMessage'>{t('prejoin.errorMissingName')}</div>}
+            </>
         );
     }
 
@@ -177,8 +187,9 @@ class LobbyScreen extends AbstractLobbyScreen<IProps> {
             <>
                 <Input
                     className = { `lobby-prejoin-input ${_passwordJoinFailed ? 'error' : ''}` }
+                    id = 'lobby-password-input'
                     onChange = { this._onChangePassword }
-                    placeholder = { t('lobby.passwordField') }
+                    placeholder = { t('lobby.enterPasswordButton') }
                     testId = 'lobby.password'
                     type = 'password'
                     value = { this.state.password } />
