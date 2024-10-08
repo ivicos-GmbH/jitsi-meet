@@ -1,4 +1,13 @@
 /**
+ * Create an action to mark the participant as notified to speak next.
+ *
+ * {
+ *     type: NOTIFIED_TO_SPEAK
+ * }
+ */
+export const NOTIFIED_TO_SPEAK = 'NOTIFIED_TO_SPEAK';
+
+/**
  * Create an action for when dominant speaker changes.
  *
  * {
@@ -42,18 +51,6 @@ export const KICK_PARTICIPANT = 'KICK_PARTICIPANT';
  * }
  */
 export const MUTE_REMOTE_PARTICIPANT = 'MUTE_REMOTE_PARTICIPANT';
-
-/**
- * Create an action for when the local participant's display name is updated.
- *
- * {
- *     type: PARTICIPANT_DISPLAY_NAME_CHANGED,
- *     id: string,
- *     name: string
- * }
- */
-export const PARTICIPANT_DISPLAY_NAME_CHANGED
-    = 'PARTICIPANT_DISPLAY_NAME_CHANGED';
 
 /**
  * Action to signal that ID of participant has changed. This happens when
@@ -202,6 +199,14 @@ export const SET_LOADABLE_AVATAR_URL = 'SET_LOADABLE_AVATAR_URL';
  * }
  */
 export const LOCAL_PARTICIPANT_RAISE_HAND = 'LOCAL_PARTICIPANT_RAISE_HAND';
+
+/**
+ * Clear the raise hand queue.
+ * {
+ *     type: RAISE_HAND_CLEAR
+ * }
+ */
+export const RAISE_HAND_CLEAR = 'RAISE_HAND_CLEAR';
 
 /**
  * Updates participant in raise hand queue.

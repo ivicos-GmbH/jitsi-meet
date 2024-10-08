@@ -17,6 +17,11 @@ interface IWindow {
     innerWidth: number;
     interfaceConfig: any;
     location: ILocation;
+    PressureObserver?: any;
+    PressureRecord?: any;
+    ReactNativeWebView?: any;
+    TextDecoder?: any;
+    TextEncoder?: any;
     self: any;
     top: any;
 

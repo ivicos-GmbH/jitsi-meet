@@ -14,13 +14,22 @@ local jid = require 'util.jid';
 local st = require 'util.stanza';
 local new_id = require 'util.id'.medium;
 local filters = require 'util.filters';
+local array = require"util.array";
 
 local util = module:require 'util';
+local ends_with = util.ends_with;
+local is_vpaas = util.is_vpaas;
 local room_jid_match_rewrite = util.room_jid_match_rewrite;
 local get_room_from_jid = util.get_room_from_jid;
 local get_focus_occupant = util.get_focus_occupant;
 local internal_room_jid_match_rewrite = util.internal_room_jid_match_rewrite;
 local presence_check_status = util.presence_check_status;
+local respond_iq_result = util.respond_iq_result;
+
+local PARTICIPANT_PROP_RAISE_HAND = 'jitsi_participant_raisedHand';
+local PARTICIPANT_PROP_REQUEST_TRANSCRIPTION = 'jitsi_participant_requestingTranscription';
+local PARTICIPANT_PROP_TRANSLATION_LANG = 'jitsi_participant_translation_language';
+local TRANSCRIPT_DEFAULT_LANG = module:get_option_string('transcriptions_default_language', 'en');
 
 -- this is the main virtual host of this vnode
 local local_domain = module:get_option_string('muc_mapper_domain_base');
@@ -41,6 +50,9 @@ local local_muc_domain = muc_domain_prefix..'.'..local_domain;
 
 local NICK_NS = 'http://jabber.org/protocol/nick';
 
+-- in certain cases we consider participants with token as moderators, this is the default behavior which can be turned off
+local auto_promoted_with_token = module:get_option_boolean('visitors_auto_promoted_with_token', true);
+
 -- we send stats for the total number of rooms, total number of participants and total number of visitors
 local measure_rooms = module:measure('vnode-rooms', 'amount');
 local measure_participants = module:measure('vnode-participants', 'amount');
@@ -48,9 +60,67 @@ local measure_visitors = module:measure('vnode-visitors', 'amount');
 
 local sent_iq_cache = require 'util.cache'.new(200);
 
+local sessions = prosody.full_sessions;
+
 local um_is_admin = require 'core.usermanager'.is_admin;
 local function is_admin(jid)
     return um_is_admin(jid, module.host);
+end
+
+local function send_transcriptions_update(room)
+    -- let's notify main prosody
+    local lang_array = array{};
+    local count = 0;
+
+    for k, v in pairs(room._transcription_languages) do
+        if not lang_array[v] then
+            lang_array:push(v);
+        end
+        count = count + 1;
+    end
+
+    local iq_id = new_id();
+    sent_iq_cache:set(iq_id, socket.gettime());
+    module:send(st.iq({
+        type = 'set',
+        to = 'visitors.'..main_domain,
+        from = local_domain,
+        id = iq_id })
+      :tag('visitors', { xmlns = 'jitsi:visitors',
+                         room = jid.join(jid.node(room.jid), muc_domain_prefix..'.'..main_domain) })
+      :tag('transcription-languages', {
+        xmlns = 'jitsi:visitors',
+        langs = lang_array:sort():concat(','),
+        count = tostring(count)
+      }):up());
+end
+
+local function remove_transcription(room, occupant)
+    local send_update = false;
+    if room._transcription_languages then
+        if room._transcription_languages[occupant.jid] then
+            send_update = true;
+        end
+        room._transcription_languages[occupant.jid] = nil;
+    end
+
+    if send_update then
+        send_transcriptions_update(room);
+    end
+end
+
+-- if lang is nil we will remove it from the list
+local function add_transcription(room, occupant, lang)
+    if not room._transcription_languages then
+        room._transcription_languages = {};
+    end
+
+    local old = room._transcription_languages[occupant.jid];
+    room._transcription_languages[occupant.jid] = lang or TRANSCRIPT_DEFAULT_LANG;
+
+    if old ~= room._transcription_languages[occupant.jid] then
+        send_transcriptions_update(room);
+    end
 end
 
 -- mark all occupants as visitors
@@ -58,15 +128,57 @@ module:hook('muc-occupant-pre-join', function (event)
     local occupant, room, origin, stanza = event.occupant, event.room, event.origin, event.stanza;
     local node, host = jid.split(occupant.bare_jid);
 
-    if host == local_domain then
+    if prosody.hosts[host] and not is_admin(occupant.bare_jid) then
         if room._main_room_lobby_enabled then
-            origin.send(st.error_reply(stanza, 'cancel', 'not-allowed', 'Visitors not allowed while lobby is on!'));
+            origin.send(st.error_reply(stanza, 'cancel', 'not-allowed', 'Visitors not allowed while lobby is on!')
+                :tag('no-visitors-lobby', { xmlns = 'jitsi:visitors' }));
             return true;
         else
             occupant.role = 'visitor';
         end
     end
 end, 3);
+
+-- if a visitor leaves we want to lower its hand if it was still raised before leaving
+-- this is to clear indication for promotion on moderators visitors list
+module:hook('muc-occupant-pre-leave', function (event)
+    local occupant = event.occupant;
+
+    ---- we are interested only of visitors presence
+    if occupant.role ~= 'visitor' then
+        return;
+    end
+
+    local room = event.room;
+
+    -- let's check if the visitor has a raised hand send a lower hand
+    -- to main prosody
+    local pr = occupant:get_presence();
+
+    local raiseHand = pr:get_child_text(PARTICIPANT_PROP_RAISE_HAND);
+
+    -- a promotion detected let's send it to main prosody
+    if raiseHand and #raiseHand > 0 then
+        local iq_id = new_id();
+        sent_iq_cache:set(iq_id, socket.gettime());
+        local promotion_request = st.iq({
+            type = 'set',
+            to = 'visitors.'..main_domain,
+            from = local_domain,
+            id = iq_id })
+          :tag('visitors', { xmlns = 'jitsi:visitors',
+                             room = jid.join(jid.node(room.jid), muc_domain_prefix..'.'..main_domain) })
+          :tag('promotion-request', {
+            xmlns = 'jitsi:visitors',
+            jid = occupant.jid,
+            time = nil;
+          }):up();
+
+        module:send(promotion_request);
+    end
+
+     remove_transcription(room, occupant);
+end, 1); -- rate limit is 0
 
 -- Returns the main participants count and the visitors count
 local function get_occupant_counts(room)
@@ -117,7 +229,7 @@ module:hook('muc-occupant-left', function (event)
     local room, occupant = event.room, event.occupant;
     local occupant_domain = jid.host(occupant.bare_jid);
 
-    if occupant_domain == local_domain then
+    if prosody.hosts[occupant_domain] and not is_admin(occupant.bare_jid) then
         local focus_occupant = get_focus_occupant(room);
         if not focus_occupant then
             module:log('info', 'No focus found for %s', room.jid);
@@ -153,6 +265,7 @@ end);
 
 -- forward visitor presences to jicofo
 -- detects raise hand in visitors presence, this is request for promotion
+-- detects the requested transcription and its language to send updates for it
 module:hook('muc-broadcast-presence', function (event)
     local occupant = event.occupant;
 
@@ -182,9 +295,37 @@ module:hook('muc-broadcast-presence', function (event)
     full_p.attr.to = focus_occupant.jid;
     room:route_to_occupant(focus_occupant, full_p);
 
-    local raiseHand = full_p:get_child_text('jitsi_participant_raisedHand');
+    local raiseHand = full_p:get_child_text(PARTICIPANT_PROP_RAISE_HAND);
     -- a promotion detected let's send it to main prosody
     if raiseHand then
+        local user_id;
+        local is_moderator;
+        local session = sessions[occupant.jid];
+        local identity = session and session.jitsi_meet_context_user;
+
+        if is_vpaas(room) and identity then
+            -- in case of moderator in vpaas meeting we want to do auto-promotion
+            local is_vpaas_moderator = identity.moderator;
+            if is_vpaas_moderator == 'true' or is_vpaas_moderator == true then
+                is_moderator = true;
+            end
+        else
+            -- The case with single moderator in the room, we want to report our id
+            -- so we can be auto promoted
+            if identity and identity.id then
+                user_id = session.jitsi_meet_context_user.id;
+
+                if room._data.moderator_id then
+                    if room._data.moderator_id == user_id then
+                        is_moderator = true;
+                    end
+                elseif session.auth_token and auto_promoted_with_token then
+                    -- non-vpaas and having a token is considered a moderator
+                    is_moderator = true;
+                end
+            end
+        end
+
         local iq_id = new_id();
         sent_iq_cache:set(iq_id, socket.gettime());
         local promotion_request = st.iq({
@@ -194,7 +335,13 @@ module:hook('muc-broadcast-presence', function (event)
             id = iq_id })
           :tag('visitors', { xmlns = 'jitsi:visitors',
                              room = jid.join(jid.node(room.jid), muc_domain_prefix..'.'..main_domain) })
-          :tag('promotion-request', { xmlns = 'jitsi:visitors', jid = occupant.jid }):up();
+          :tag('promotion-request', {
+            xmlns = 'jitsi:visitors',
+            jid = occupant.jid,
+            time = raiseHand,
+            userId = user_id,
+            forcePromote = is_moderator and 'true' or 'false';
+          }):up();
 
         local nick_element = occupant:get_presence():get_child('nick', NICK_NS);
         if nick_element then
@@ -202,6 +349,18 @@ module:hook('muc-broadcast-presence', function (event)
         end
 
         module:send(promotion_request);
+    end
+
+    -- detect transcription
+    if full_p:get_child_text(PARTICIPANT_PROP_REQUEST_TRANSCRIPTION) then
+        local lang = full_p:get_child_text(PARTICIPANT_PROP_TRANSLATION_LANG);
+
+        occupant._transcription_enabled = true;
+
+        add_transcription(room, occupant, lang);
+    elseif occupant._transcription_enabled then
+        occupant._transcription_enabled = false;
+        remove_transcription(room, occupant, nil);
     end
 
     return;
@@ -248,12 +407,7 @@ local function stanza_handler(event)
     end
 
     -- respond with successful receiving the iq
-    origin.send(st.iq({
-        type = 'result';
-        from = stanza.attr.to;
-        to = stanza.attr.from;
-        id = stanza.attr.id
-    }));
+    respond_iq_result(origin, stanza);
 
     local req_jid = request_promotion.attr.jid;
     -- now let's find the occupant and forward the response
@@ -284,18 +438,31 @@ function process_host_module(name, callback)
         process_host(name);
     end
 end
+-- if the message received ends with the main domain, these are system messages
+-- for visitors, let's correct the room name there
+local function message_handler(event)
+    local origin, stanza = event.origin, event.stanza;
+
+    if ends_with(stanza.attr.from, main_domain) then
+        stanza.attr.from = stanza.attr.from:sub(1, -(main_domain:len() + 1))..local_domain;
+    end
+end
+
 process_host_module(local_domain, function(host_module, host)
     host_module:hook('iq/host', stanza_handler, 10);
+    host_module:hook('message/full', message_handler);
 end);
 
 -- only live chat is supported for visitors
 module:hook('muc-occupant-groupchat', function(event)
     local occupant, room, stanza = event.occupant, event.room, event.stanza;
     local from = stanza.attr.from;
-    local occupant_host = jid.host(occupant.bare_jid);
+    local occupant_host;
 
     -- if there is no occupant this is a message from main, probably coming from other vnode
     if occupant then
+        occupant_host = jid.host(occupant.bare_jid);
+
         -- we manage nick only for visitors
         if occupant_host ~= main_domain then
             -- add to message stanza display name for the visitor
@@ -324,7 +491,7 @@ module:hook('muc-occupant-groupchat', function(event)
     end
 
     -- send to main participants only messages from local occupants (skip from remote vnodes)
-    if occupant and occupant_host ~= main_domain then
+    if occupant and occupant_host == local_domain then
         local main_message = st.clone(stanza);
         main_message.attr.to = jid.join(jid.node(room.jid), muc_domain_prefix..'.'..main_domain);
         -- make sure we fix the from to be the real jid
@@ -351,14 +518,15 @@ module:hook_global('stats-update', function ()
     for room in prosody.hosts[module.host].modules.muc.each_room() do
         rooms_count = rooms_count + 1;
         for _, o in room:each_occupant() do
-            if jid.host(o.bare_jid) == local_domain then
-                visitors_count = visitors_count + 1;
-            else
-                participants_count = participants_count + 1;
+            if not is_admin(o.bare_jid) then
+                local _, host = jid.split(o.bare_jid);
+                if prosody.hosts[host] then -- local hosts are visitors (including jigasi)
+                    visitors_count = visitors_count + 1;
+                else
+                    participants_count = participants_count + 1;
+                end
             end
         end
-        -- do not count jicofo
-        participants_count = participants_count - 1;
     end
 
     measure_rooms(rooms_count);
@@ -430,14 +598,11 @@ local function iq_from_main_handler(event)
     end
 
     -- respond with successful receiving the iq
-    origin.send(st.iq({
-        type = 'result';
-        from = stanza.attr.to;
-        to = stanza.attr.from;
-        id = stanza.attr.id
-    }));
+    respond_iq_result(origin, stanza);
 
     if process_disconnect then
+        cancel_destroy_timer(room);
+
         local main_count, visitors_count = get_occupant_counts(room);
         module:log('info', 'Will destroy:%s main_occupants:%s visitors:%s', room.jid, main_count, visitors_count);
         room:destroy(nil, 'Conference ended.');
@@ -448,6 +613,9 @@ local function iq_from_main_handler(event)
     -- if this is update it will either set or remove the password
     room:set_password(node.attr.password);
     room._data.meetingId = node.attr.meetingId;
+    room._data.moderator_id = node.attr.moderatorId;
+    local createdTimestamp = node.attr.createdTimestamp;
+    room.created_timestamp = createdTimestamp and tonumber(createdTimestamp) or nil;
 
     if node.attr.lobby == 'true' then
         room._main_room_lobby_enabled = true;
@@ -502,7 +670,7 @@ function route_s2s_stanza(event)
     end
 
      if stanza.name == 'message' then
-        if jid.resource(stanza.to) then
+        if jid.resource(stanza.attr.to) then
             -- there is no point of delivering messages to main participants individually
             return true; -- drop it
         end

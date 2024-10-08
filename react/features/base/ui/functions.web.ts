@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { adaptV4Theme, createTheme } from '@mui/material/styles';
+import { Theme, adaptV4Theme, createTheme } from '@mui/material/styles';
 
 import { ITypography, IPalette as Palette1 } from '../ui/types';
 
@@ -81,4 +81,40 @@ export function isElementInTheViewport(element?: Element): boolean {
     }
 
     return false;
+}
+
+const enterKeyElements = [ 'select', 'textarea', 'summary', 'a' ];
+
+/**
+ * Informs whether or not the given element does something on its own when pressing the Enter key.
+ *
+ * This is useful to correctly submit custom made "forms" that are not using the native form element,
+ * only when the user is not using an element that needs the enter key to work.
+ * Note the implementation is incomplete and should be updated as needed if more complex use cases arise
+ * (for example, the Tabs aria pattern is not handled).
+ *
+ * @param {Element} element - The element.
+ * @returns {boolean}
+ */
+export function operatesWithEnterKey(element: Element): boolean {
+    if (enterKeyElements.includes(element.tagName.toLowerCase())) {
+        return true;
+    }
+
+    if (element.tagName.toLowerCase() === 'button' && element.getAttribute('role') === 'button') {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Returns a common spacing from the bottom of the page for floating elements over the video space.
+ *
+ * @param {Theme} theme - The current theme.
+ * @param {boolean} isToolbarVisible - Whether the toolbar is visible or not.
+ * @returns {number}
+ */
+export function getVideospaceFloatingElementsBottomSpacing(theme: Theme, isToolbarVisible: boolean) {
+    return parseInt(isToolbarVisible ? theme.spacing(12) : theme.spacing(6), 10);
 }

@@ -9,21 +9,35 @@ import { IStore } from '../app/types';
 import { CONFERENCE_JOIN_IN_PROGRESS, CONFERENCE_LEFT } from '../base/conference/actionTypes';
 import { getCurrentConference } from '../base/conference/functions';
 import { IJitsiConference } from '../base/conference/reducer';
+import { SET_CONFIG } from '../base/config/actionTypes';
 import { MEDIA_TYPE } from '../base/media/constants';
 import { PARTICIPANT_LEFT } from '../base/participants/actionTypes';
 import { participantJoined, participantLeft, pinParticipant } from '../base/participants/actions';
-import { getLocalParticipant, getParticipantById } from '../base/participants/functions';
+import { getLocalParticipant, getParticipantById, getParticipantDisplayName } from '../base/participants/functions';
 import { FakeParticipant } from '../base/participants/types';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
 import StateListenerRegistry from '../base/redux/StateListenerRegistry';
+import { SET_DYNAMIC_BRANDING_DATA } from '../dynamic-branding/actionTypes';
+import { showWarningNotification } from '../notifications/actions';
+import { NOTIFICATION_TIMEOUT_TYPE } from '../notifications/constants';
 
 import { REQUEST_SHARED_VIDEO_STATE, RESET_SHARED_VIDEO_STATUS, SET_SHARED_VIDEO_STATUS } from './actionTypes';
 import {
+    hideConfirmPlayingDialog,
     resetSharedVideoStatus,
-    setSharedVideoStatus
+    setAllowedUrlDomians,
+    setSharedVideoStatus,
+    showConfirmPlayingDialog
 } from './actions.any';
-import { PLAYBACK_STATUSES, REQUEST_SHARED_VIDEO_STATE_COMMAND, SHARED_VIDEO, VIDEO_PLAYER_PARTICIPANT_NAME } from './constants';
-import { fetchStoppedVideoUrl, isSharingStatus } from './functions';
+import {
+    REQUEST_SHARED_VIDEO_STATE_COMMAND,
+    DEFAULT_ALLOWED_URL_DOMAINS,
+    PLAYBACK_START,
+    PLAYBACK_STATUSES,
+    SHARED_VIDEO,
+    VIDEO_PLAYER_PARTICIPANT_NAME
+} from './constants';
+import { fetchStoppedVideoUrl, isSharedVideoEnabled, isSharingStatus, isURLAllowedForSharedVideo } from './functions';
 import logger from './logger';
 import { ISharedVideoState } from './reducer';
 
@@ -54,10 +68,14 @@ MiddlewareRegistry.register(store => next => action => {
         return allParticipantIds[0].length > 0 && allParticipantIds[0];
     };
 
+    if (!isSharedVideoEnabled(getState())) {
+        return next(action);
+    }
+
     switch (action.type) {
     case CONFERENCE_JOIN_IN_PROGRESS: {
         const { conference } = action;
-        const localParticipantId = getLocalParticipant(state)?.id;
+        const localParticipantId = getLocalParticipant(getState())?.id;
 
         conference.addCommandListener(SHARED_VIDEO,
             ({ value, attributes }: { attributes: {
@@ -67,9 +85,41 @@ MiddlewareRegistry.register(store => next => action => {
                 const sharedVideoStatus = attributes.state;
 
                 if (isSharingStatus(sharedVideoStatus)) {
-                    handleSharingVideoStatus(store, value, attributes, conference);
-                } else if (sharedVideoStatus === 'stop') {
+                    // confirmShowVideo is undefined the first time we receive
+                    // when confirmShowVideo is false we ignore everything except stop that resets it
+                    if (getState()['features/shared-video'].confirmShowVideo === false) {
+                        return;
+                    }
+
+                    if (isURLAllowedForSharedVideo(value, getState()['features/shared-video'].allowedUrlDomains, true)
+                        || localParticipantId === from
+                        || getState()['features/shared-video'].confirmShowVideo) { // if confirmed skip asking again
+                        handleSharingVideoStatus(store, value, attributes, conference);
+                    } else {
+                        dispatch(showConfirmPlayingDialog(getParticipantDisplayName(getState(), from), () => {
+
+                            handleSharingVideoStatus(store, value, attributes, conference);
+
+                            return true; // on mobile this is used to close the dialog
+                        }));
+                    }
+
+                    return;
+                }
+
+                if (sharedVideoStatus === 'stop') {
                     const videoParticipant = getParticipantById(state, value);
+
+                    if (getState()['features/shared-video'].confirmShowVideo === false) {
+                        dispatch(showWarningNotification({
+                            titleKey: 'dialog.shareVideoLinkStopped',
+                            titleArguments: {
+                                name: getParticipantDisplayName(getState(), from)
+                            }
+                        }, NOTIFICATION_TIMEOUT_TYPE.LONG));
+                    }
+
+                    dispatch(hideConfirmPlayingDialog());
 
                     dispatch(participantLeft(value, conference, {
                         fakeParticipant: videoParticipant?.fakeParticipant
@@ -84,6 +134,7 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     }
     case CONFERENCE_LEFT:
+        dispatch(setAllowedUrlDomians(DEFAULT_ALLOWED_URL_DOMAINS));
         dispatch(resetSharedVideoStatus());
         break;
     case REQUEST_SHARED_VIDEO_STATE:
@@ -109,7 +160,23 @@ MiddlewareRegistry.register(store => next => action => {
         }
         break;
     }
+    case SET_CONFIG:
+    case SET_DYNAMIC_BRANDING_DATA: {
+        const result = next(action);
+        const state = getState();
+        const { sharedVideoAllowedURLDomains: allowedURLDomainsFromConfig = [] } = state['features/base/config'];
+        const { sharedVideoAllowedURLDomains: allowedURLDomainsFromBranding = [] } = state['features/dynamic-branding'];
+
+        dispatch(setAllowedUrlDomians([
+            ...DEFAULT_ALLOWED_URL_DOMAINS,
+            ...allowedURLDomainsFromBranding,
+            ...allowedURLDomainsFromConfig
+        ]));
+
+        return result;
+    }
     case SET_SHARED_VIDEO_STATUS: {
+        const state = getState();
         const conference = getCurrentConference(state);
         const localParticipantId = getLocalParticipant(state)?.id;
         const { videoUrl, status, ownerId, time, muted, volume } = action;
@@ -138,6 +205,7 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     }
     case RESET_SHARED_VIDEO_STATUS: {
+        const state = getState();
         const localParticipantId = getLocalParticipant(state)?.id;
         const { ownerId: stateOwnerId, videoUrl: statevideoUrl } = state['features/shared-video'];
 
@@ -223,8 +291,19 @@ function handleSharingVideoStatus(store: IStore, videoUrl: string,
     const { dispatch, getState } = store;
     const localParticipantId = getLocalParticipant(getState())?.id;
     const oldStatus = getState()['features/shared-video']?.status ?? '';
+    const oldVideoUrl = getState()['features/shared-video'].videoUrl;
 
-    if (state === 'start' || ![ 'playing', 'pause', 'start' ].includes(oldStatus)) {
+    if (oldVideoUrl && oldVideoUrl !== videoUrl) {
+        logger.warn(
+            `User with id: ${from} sent videoUrl: ${videoUrl} while we are playing: ${oldVideoUrl}`);
+
+        return;
+    }
+
+    // If the video was not started (no participant) we want to create the participant
+    // this can be triggered by start, but also by paused or playing
+    // commands (joining late) and getting the current state
+    if (state === PLAYBACK_START || !isSharingStatus(oldStatus)) {
         const youtubeId = videoUrl.match(/http/) ? false : videoUrl;
         const avatarURL = youtubeId ? `https://img.youtube.com/vi/${youtubeId}/0.jpg` : '';
 
@@ -237,6 +316,15 @@ function handleSharingVideoStatus(store: IStore, videoUrl: string,
         }));
 
         dispatch(pinParticipant(videoUrl));
+
+        if (localParticipantId === from) {
+            dispatch(setSharedVideoStatus({
+                videoUrl,
+                status: state,
+                time: Number(time),
+                ownerId: localParticipantId
+            }));
+        }
     }
 
     if (localParticipantId !== from) {

@@ -1,17 +1,6 @@
 export const screen = {
-    welcome: {
-        main: 'Welcome',
-        tabs: {
-            recent: 'Recent',
-            calendar: 'Calendar'
-        }
-    },
-    dialInSummary: 'Dial-In Info',
-    connecting: 'Connecting',
-    preJoin: 'Pre-Join',
     conference: {
-        root: 'Conference root',
-        main: 'Conference',
+        breakoutRooms: 'Breakout Rooms',
         carmode: 'Car Mode',
         chat: 'Chat',
         chatandpolls: {
@@ -22,29 +11,45 @@ export const screen = {
             }
         },
         container: 'Conference container',
-        security: 'Security Options',
-        recording: 'Recording',
-        liveStream: 'Live stream',
-        speakerStats: 'Speaker Stats',
-        salesforce: 'Link to Salesforce',
-        participants: 'Participants',
         gifsMenu: 'GIPHY',
         invite: 'Invite',
+        liveStream: 'Live stream',
+        main: 'Conference',
+        participants: 'Participants',
+        root: 'Conference root',
+        recording: 'Recording',
+        salesforce: 'Link to Salesforce',
+        security: 'Security Options',
         sharedDocument: 'Shared document',
-        subtitles: 'Subtitles'
+        speakerStats: 'Speaker Stats',
+        subtitles: 'Subtitles',
+        whiteboard: 'Whiteboard'
     },
+    connecting: 'Connecting',
+    dialInSummary: 'Dial-In Info',
+    preJoin: 'Pre-Join',
     lobby: {
-        root: 'Lobby root',
+        chat: 'Lobby chat',
         main: 'Lobby',
-        chat: 'Lobby chat'
+        root: 'Lobby root'
     },
     settings: {
-        main: 'Settings',
+        language: 'Language',
         links: {
             help: 'Help',
             privacy: 'Privacy',
             terms: 'Terms'
-        }
+        },
+        main: 'Settings',
+        profile: 'Profile'
     },
-    unsafeRoomWarning: 'Unsafe Room Warning'
+    unsafeRoomWarning: 'Unsafe Room Warning',
+    visitorsQueue: 'Visitors Queue',
+    welcome: {
+        main: 'Welcome',
+        tabs: {
+            calendar: 'Calendar',
+            recent: 'Recent'
+        }
+    }
 };

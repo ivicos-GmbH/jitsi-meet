@@ -18,8 +18,8 @@ import { navigate }
     from '../../../mobile/navigation/components/lobby/LobbyNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';
 import { preJoinStyles } from '../../../prejoin/components/native/styles';
-import AudioMuteButton from '../../../toolbox/components/AudioMuteButton';
-import VideoMuteButton from '../../../toolbox/components/VideoMuteButton';
+import AudioMuteButton from '../../../toolbox/components/native/AudioMuteButton';
+import VideoMuteButton from '../../../toolbox/components/native/VideoMuteButton';
 import AbstractLobbyScreen, {
     IProps as AbstractProps,
     _mapStateToProps as abstractMapStateToProps } from '../AbstractLobbyScreen';
@@ -69,7 +69,7 @@ class LobbyScreen extends AbstractLobbyScreen<IProps> {
                 safeAreaInsets = { [ 'right' ] }
                 style = { contentWrapperStyles }>
                 <BrandingImageBackground />
-                <View style = { largeVideoContainerStyles }>
+                <View style = { largeVideoContainerStyles as ViewStyle }>
                     <View style = { preJoinStyles.displayRoomNameBackdrop as ViewStyle }>
                         <Text
                             numberOfLines = { 1 }
@@ -160,7 +160,7 @@ class LobbyScreen extends AbstractLobbyScreen<IProps> {
                 customStyles = {{ input: styles.customInput }}
                 error = { _passwordJoinFailed }
                 onChange = { this._onChangePassword }
-                placeholder = { t('lobby.passwordField') }
+                placeholder = { t('lobby.enterPasswordButton') }
                 secureTextEntry = { true }
                 value = { this.state.password } />
         );

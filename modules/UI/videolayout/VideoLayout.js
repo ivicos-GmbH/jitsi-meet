@@ -23,11 +23,8 @@ const VideoLayout = {
     /**
      * Handler for local flip X changed event.
      */
-    onLocalFlipXChanged() {
+    onLocalFlipXChanged(localFlipX) {
         if (largeVideo) {
-            const { store } = APP;
-            const { localFlipX } = store.getState()['features/base/settings'];
-
             largeVideo.onLocalFlipXChange(localFlipX);
         }
     },
@@ -157,6 +154,8 @@ const VideoLayout = {
 
     updateLargeVideo(id, forceUpdate, forceStreamToReattach = false) {
         if (!largeVideo) {
+            logger.debug(`Ignoring large video update with user id ${id}: large video not initialized yet!`);
+
             return;
         }
         const currentContainer = largeVideo.getCurrentContainer();

@@ -14,7 +14,7 @@ import {
     getDeviceIdByLabel,
     groupDevicesByKind
 } from '../base/devices/functions.web';
-import { isIosMobileBrowser } from '../base/environment/utils';
+import { isIosMobileBrowser, isMobileBrowser } from '../base/environment/utils';
 import JitsiMeetJS from '../base/lib-jitsi-meet';
 import { toState } from '../base/redux/functions';
 import {
@@ -97,7 +97,7 @@ export function getAudioDeviceSelectionDialogProps(stateful: IStateful, isDispla
 export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDisplayedOnWelcomePage: boolean) {
     // On mobile Safari because of https://bugs.webkit.org/show_bug.cgi?id=179363#c30, the old track is stopped
     // by the browser when a new track is created for preview. That's why we are disabling all previews.
-    const disablePreviews = isIosMobileBrowser();
+    const disablePreviews = isMobileBrowser();
 
     const state = toState(stateful);
     const settings = state['features/base/settings'];
@@ -105,11 +105,12 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
     const inputDeviceChangeSupported = JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('input');
     const userSelectedCamera = getUserSelectedCameraDeviceId(state);
     const { localFlipX } = state['features/base/settings'];
+    const { disableLocalVideoFlip } = state['features/base/config'];
     const hideAdditionalSettings = isPrejoinPageVisible(state) || isDisplayedOnWelcomePage;
     const framerate = state['features/screen-share'].captureFrameRate ?? SS_DEFAULT_FRAME_RATE;
 
     let disableVideoInputSelect = !inputDeviceChangeSupported;
-    let selectedVideoInputId = settings.cameraDeviceId;
+    let selectedVideoInputId = settings.cameraDeviceId || userSelectedCamera;
 
     // audio input change will be a problem only when we are in a
     // conference and this is not supported, when we open device selection on
@@ -127,6 +128,7 @@ export function getVideoDeviceSelectionDialogProps(stateful: IStateful, isDispla
         desktopShareFramerates: SS_SUPPORTED_FRAMERATES,
         disableDeviceChange: !JitsiMeetJS.mediaDevices.isDeviceChangeAvailable(),
         disableVideoInputSelect,
+        disableLocalVideoFlip,
         hasVideoPermission: permissions.video,
         hideAdditionalSettings,
         hideVideoInputPreview: !inputDeviceChangeSupported || disablePreviews,
@@ -180,8 +182,8 @@ export function processExternalDeviceRequest( // eslint-disable-line max-params
                 };
                 const currentlyUsedDeviceIds = new Set([
                     getAudioOutputDeviceId(),
-                    settings.micDeviceId,
-                    settings.cameraDeviceId
+                    settings.micDeviceId ?? getUserSelectedMicDeviceId(state),
+                    settings.cameraDeviceId ?? getUserSelectedCameraDeviceId(state)
                 ]);
 
                 devices.forEach(device => {

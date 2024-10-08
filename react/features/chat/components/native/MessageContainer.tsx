@@ -3,7 +3,7 @@ import { FlatList, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { translate } from '../../../base/i18n/functions';
-import { IMessage } from '../../reducer';
+import { IMessage } from '../../types';
 import AbstractMessageContainer, { IProps as AbstractProps } from '../AbstractMessageContainer';
 
 import ChatMessageGroup from './ChatMessageGroup';
@@ -78,7 +78,9 @@ class MessageContainer extends AbstractMessageContainer<IProps, any> {
         const { t } = this.props;
 
         return (
-            <View style = { styles.emptyComponentWrapper as ViewStyle }>
+            <View
+                id = 'no-messages-message'
+                style = { styles.emptyComponentWrapper as ViewStyle }>
                 <Text style = { styles.emptyComponentText as TextStyle }>
                     { t('chat.noMessagesMessage') }
                 </Text>

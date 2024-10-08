@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import { AnyAction } from 'redux';
 
 import ReducerRegistry from '../redux/ReducerRegistry';
@@ -10,14 +10,13 @@ const DEFAULT_LOGGING_CONFIG = {
     // default log level for the app and lib-jitsi-meet
     defaultLogLevel: 'trace' as LogLevel,
 
-    // Option to disable LogCollector (which stores the logs on CallStats)
+    // Option to disable LogCollector (which stores the logs)
     // disableLogCollector: true,
 
     loggers: {
         // The following are too verbose in their logging with the
         // {@link #defaultLogLevel}:
         'modules/RTC/TraceablePeerConnection.js': 'info' as LogLevel,
-        'modules/statistics/CallStats.js': 'info' as LogLevel,
         'modules/xmpp/strophe.util.js': 'log' as LogLevel
     }
 };
@@ -96,7 +95,7 @@ ReducerRegistry.register<ILoggingState>(
  * reduction of the specified action.
  */
 function _setLoggingConfig(state: ILoggingState, action: AnyAction) {
-    const newConfig = _.merge({}, DEFAULT_STATE.config, action.config);
+    const newConfig = merge({}, DEFAULT_STATE.config, action.config);
 
     if (equals(state.config, newConfig)) {
         return state;

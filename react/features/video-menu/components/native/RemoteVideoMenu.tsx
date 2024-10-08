@@ -16,16 +16,19 @@ import { translate } from '../../../base/i18n/functions';
 import {
     getParticipantById,
     getParticipantDisplayName,
+    hasRaisedHand,
     isLocalParticipantModerator
 } from '../../../base/participants/functions';
-import { getBreakoutRooms, getCurrentRoomId } from '../../../breakout-rooms/functions';
+import { getBreakoutRooms, getCurrentRoomId, isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import PrivateMessageButton from '../../../chat/components/native/PrivateMessageButton';
 
 import AskUnmuteButton from './AskUnmuteButton';
 import ConnectionStatusButton from './ConnectionStatusButton';
+import DemoteToVisitorButton from './DemoteToVisitorButton';
 import GrantModeratorButton from './GrantModeratorButton';
 import KickButton from './KickButton';
+import LowerHandButton from './LowerHandButton';
 import MuteButton from './MuteButton';
 import MuteEveryoneElseButton from './MuteEveryoneElseButton';
 import MuteVideoButton from './MuteVideoButton';
@@ -68,9 +71,19 @@ interface IProps {
     _disableRemoteMute: boolean;
 
     /**
+     * Whether or not the current room is a breakout room.
+     */
+    _isBreakoutRoom: boolean;
+
+    /**
      * Whether the participant is present in the room or not.
      */
     _isParticipantAvailable?: boolean;
+
+    /**
+     * Whether or not the targeted participant joined without audio.
+     */
+    _isParticipantSilent: boolean;
 
     /**
      * Whether the local participant is moderator or not.
@@ -83,9 +96,19 @@ interface IProps {
     _participantDisplayName: string;
 
     /**
+     * Whether the targeted participant raised hand or not.
+     */
+    _raisedHand: boolean;
+
+    /**
      * Array containing the breakout rooms.
      */
     _rooms: Array<IRoom>;
+
+    /**
+     * Whether to display the demote button.
+     */
+    _showDemote: boolean;
 
     /**
      * The Redux dispatch function.
@@ -130,9 +153,13 @@ class RemoteVideoMenu extends PureComponent<IProps> {
             _disablePrivateChat,
             _disableRemoteMute,
             _disableGrantModerator,
+            _isBreakoutRoom,
             _isParticipantAvailable,
+            _isParticipantSilent,
             _moderator,
+            _raisedHand,
             _rooms,
+            _showDemote,
             _currentRoomId,
             participantId,
             t
@@ -153,15 +180,17 @@ class RemoteVideoMenu extends PureComponent<IProps> {
             <BottomSheet
                 renderHeader = { this._renderMenuHeader }
                 showSlidingView = { _isParticipantAvailable }>
-                <AskUnmuteButton { ...buttonProps } />
+                {!_isParticipantSilent && <AskUnmuteButton { ...buttonProps } />}
                 { !_disableRemoteMute && <MuteButton { ...buttonProps } /> }
                 <MuteEveryoneElseButton { ...buttonProps } />
-                { !_disableRemoteMute && <MuteVideoButton { ...buttonProps } /> }
+                { _moderator && _raisedHand && <LowerHandButton { ...buttonProps } /> }
+                { !_disableRemoteMute && !_isParticipantSilent && <MuteVideoButton { ...buttonProps } /> }
                 {/* @ts-ignore */}
                 <Divider style = { styles.divider as ViewStyle } />
                 { !_disableKick && <KickButton { ...buttonProps } /> }
-                { !_disableGrantModerator && <GrantModeratorButton { ...buttonProps } /> }
+                { !_disableGrantModerator && !_isBreakoutRoom && <GrantModeratorButton { ...buttonProps } /> }
                 <PinButton { ...buttonProps } />
+                { _showDemote && <DemoteToVisitorButton { ...buttonProps } /> }
                 { !_disablePrivateChat && <PrivateMessageButton { ...buttonProps } /> }
                 <ConnectionStatusButton { ...connectionStatusButtonProps } />
                 {_moderator && _rooms.length > 1 && <>
@@ -228,23 +257,29 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const kickOutEnabled = getFeatureFlag(state, KICK_OUT_ENABLED, true);
     const { participantId } = ownProps;
     const { remoteVideoMenu = {}, disableRemoteMute } = state['features/base/config'];
-    const isParticipantAvailable = getParticipantById(state, participantId);
+    const participant = getParticipantById(state, participantId);
     const { disableKick, disablePrivateChat } = remoteVideoMenu;
     const _rooms = Object.values(getBreakoutRooms(state));
     const _currentRoomId = getCurrentRoomId(state);
     const shouldDisableKick = disableKick || !kickOutEnabled;
     const moderator = isLocalParticipantModerator(state);
     const _iAmVisitor = state['features/visitors'].iAmVisitor;
+    const _isBreakoutRoom = isInBreakoutRoom(state);
+    const raisedHand = hasRaisedHand(participant);
 
     return {
         _currentRoomId,
         _disableKick: Boolean(shouldDisableKick),
         _disableRemoteMute: Boolean(disableRemoteMute),
         _disablePrivateChat: Boolean(disablePrivateChat) || _iAmVisitor,
-        _isParticipantAvailable: Boolean(isParticipantAvailable),
+        _isBreakoutRoom,
+        _isParticipantAvailable: Boolean(participant),
+        _isParticipantSilent: Boolean(participant?.isSilent),
         _moderator: moderator,
         _participantDisplayName: getParticipantDisplayName(state, participantId),
-        _rooms
+        _raisedHand: raisedHand,
+        _rooms,
+        _showDemote: moderator
     };
 }
 

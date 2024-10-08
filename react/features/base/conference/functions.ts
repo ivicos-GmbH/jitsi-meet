@@ -1,5 +1,5 @@
 import { sha512_256 as sha512 } from 'js-sha512';
-import _ from 'lodash';
+import { upperFirst, words } from 'lodash-es';
 
 import { getName } from '../../app/functions';
 import { IReduxState, IStore } from '../../app/types';
@@ -36,14 +36,6 @@ import { IJitsiConference } from './reducer';
  * @returns {Object} Conference state.
  */
 export const getConferenceState = (state: IReduxState) => state['features/base/conference'];
-
-/**
- * Is the conference joined or not.
- *
- * @param {IReduxState} state - Global state.
- * @returns {boolean}
- */
-export const getIsConferenceJoined = (state: IReduxState) => Boolean(getConferenceState(state).conference);
 
 /**
  * Attach a set of local tracks to a conference.
@@ -98,7 +90,9 @@ export function commonUserJoinedHandling(
     } else {
         const isReplacing = user?.isReplacing();
 
+        // the identity and avatar come from jwt and never change in the presence
         dispatch(participantJoined({
+            avatarURL: user.getIdentity()?.user?.avatar,
             botType: user.getBotType(),
             conference,
             id,
@@ -188,8 +182,8 @@ export function getConferenceName(stateful: IStateful): string {
     const { callDisplayName } = state['features/base/config'];
     const { localSubject, pendingSubjectChange, room, subject } = getConferenceState(state);
 
-    return (pendingSubjectChange
-        || localSubject
+    return (localSubject
+        || pendingSubjectChange
         || subject
         || callDisplayName
         || callee?.name
@@ -246,8 +240,6 @@ export function getConferenceOptions(stateful: IStateful) {
         delete config.analytics?.scriptURLs;
         delete config.analytics?.amplitudeAPPKey;
         delete config.analytics?.googleAnalyticsTrackingId;
-        delete options.callStatsID;
-        delete options.callStatsSecret;
     }
 
     return options;
@@ -284,12 +276,12 @@ export function restoreConferenceOptions(stateful: IStateful) {
  * Override the global config (that is, window.config) with XMPP configuration required to join as a visitor.
  *
  * @param {IStateful} stateful - The redux store state.
- * @param {Array<string>} params - The received parameters.
+ * @param {string|undefined} vnode - The received parameters.
+ * @param {string} focusJid - The received parameters.
+ * @param {string|undefined} username - The received parameters.
  * @returns {Object}
  */
-export function getVisitorOptions(stateful: IStateful, params: Array<string>) {
-    const [ vnode, focusJid, username ] = params;
-
+export function getVisitorOptions(stateful: IStateful, vnode: string, focusJid: string, username: string) {
     const config = toState(stateful)['features/base/config'];
 
     if (!config?.hosts) {
@@ -304,10 +296,7 @@ export function getVisitorOptions(stateful: IStateful, params: Array<string>) {
         // and the visitor will be redirected back to a vnode from jicofo
         if (config.oldConfig && username) {
             return {
-                hosts: {
-                    domain: config.oldConfig.hosts.domain,
-                    muc: config.oldConfig.hosts.muc
-                },
+                hosts: config.oldConfig.hosts,
                 focusUserJid: focusJid,
                 disableLocalStats: false,
                 bosh: config.oldConfig.bosh && appendURLParam(config.oldConfig.bosh, 'customusername', username),
@@ -323,14 +312,16 @@ export function getVisitorOptions(stateful: IStateful, params: Array<string>) {
 
     const oldConfig = {
         hosts: {
-            domain: config.hosts.domain,
-            muc: config.hosts.muc
+            domain: ''
         },
         focusUserJid: config.focusUserJid,
         bosh: config.bosh,
         p2p: config.p2p,
         websocket: config.websocket
     };
+
+    // copy original hosts, to make sure we do not use a modified one later
+    Object.assign(oldConfig.hosts, config.hosts);
 
     const domain = `${vnode}.meet.jitsi`;
 
@@ -582,7 +573,7 @@ export function sendLocalParticipant(
  * @returns {string}
  */
 function safeStartCase(s = '') {
-    return _.words(`${s}`.replace(/['\u2019]/g, '')).reduce(
-        (result, word, index) => result + (index ? ' ' : '') + _.upperFirst(word)
+    return words(`${s}`.replace(/['\u2019]/g, '')).reduce(
+        (result, word, index) => result + (index ? ' ' : '') + upperFirst(word)
         , '');
 }

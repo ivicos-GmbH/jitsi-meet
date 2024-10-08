@@ -10,7 +10,7 @@ import AbstractButton, { type IProps as AbstractButtonProps } from '../../../bas
 import ToolboxButtonWithPopup from '../../../base/toolbox/components/web/ToolboxButtonWithPopup';
 import { toggleReactionsMenuVisibility } from '../../actions.web';
 import { IReactionEmojiProps } from '../../constants';
-import { getReactionsQueue, isReactionsEnabled } from '../../functions.any';
+import { getReactionsQueue } from '../../functions.any';
 import { getReactionsMenuVisibility, isReactionsButtonEnabled } from '../../functions.web';
 import { IReactionsMenuParent } from '../../types';
 
@@ -41,11 +41,6 @@ interface IProps extends WithTranslation {
     dispatch: IStore['dispatch'];
 
     /**
-     * Click handler for raise hand functionality.
-     */
-    handleClick: Function;
-
-    /**
      * Whether or not it's narrow mode or mobile browser.
      */
     isNarrow: boolean;
@@ -65,6 +60,11 @@ interface IProps extends WithTranslation {
      * The array of reactions to be displayed.
      */
     reactionsQueue: Array<IReactionEmojiProps>;
+
+    /**
+     * Whether or not to show the raise hand button.
+     */
+    showRaiseHand?: boolean;
 }
 
 
@@ -91,11 +91,11 @@ function ReactionsMenuButton({
     _isMobile,
     buttonKey,
     dispatch,
-    handleClick,
     isOpen,
     isNarrow,
     notifyMode,
     reactionsQueue,
+    showRaiseHand,
     t
 }: IProps) {
     const toggleReactionsMenu = useCallback(() => {
@@ -110,18 +110,38 @@ function ReactionsMenuButton({
         isOpen && toggleReactionsMenu();
     }, [ isOpen, toggleReactionsMenu ]);
 
+    if (!showRaiseHand && !_reactionsButtonEnabled) {
+        return null;
+    }
+
     const reactionsMenu = (<div className = 'reactions-menu-container'>
         <ReactionsMenu parent = { IReactionsMenuParent.Button } />
     </div>);
 
     let content: ReactElement | null = null;
 
-    if (_reactionsButtonEnabled) {
+    if (showRaiseHand) {
+        content = isNarrow
+            ? (
+                <RaiseHandButton
+                    buttonKey = { buttonKey }
+                    notifyMode = { notifyMode } />)
+            : (
+                <ToolboxButtonWithPopup
+                    ariaLabel = { t('toolbar.accessibilityLabel.reactionsMenu') }
+                    icon = { IconArrowUp }
+                    iconDisabled = { false }
+                    onPopoverClose = { toggleReactionsMenu }
+                    onPopoverOpen = { openReactionsMenu }
+                    popoverContent = { reactionsMenu }
+                    visible = { isOpen }>
+                    <RaiseHandButton
+                        buttonKey = { buttonKey }
+                        notifyMode = { notifyMode } />
+                </ToolboxButtonWithPopup>);
+    } else {
         content = (
             <ToolboxButtonWithPopup
-                ariaControls = 'reactions-menu-dialog'
-                ariaExpanded = { isOpen }
-                ariaHasPopup = { true }
                 ariaLabel = { t('toolbar.accessibilityLabel.reactionsMenu') }
                 onPopoverClose = { closeReactionsMenu }
                 onPopoverOpen = { openReactionsMenu }
@@ -132,31 +152,6 @@ function ReactionsMenuButton({
                     buttonKey = { buttonKey }
                     notifyMode = { notifyMode } />
             </ToolboxButtonWithPopup>);
-    } else {
-        content = isNarrow
-            ? (
-                <RaiseHandButton
-                    buttonKey = { buttonKey }
-                    handleClick = { handleClick }
-                    notifyMode = { notifyMode } />)
-            : (
-                <ToolboxButtonWithPopup
-                    ariaControls = 'reactions-menu-dialog'
-                    ariaExpanded = { isOpen }
-                    ariaHasPopup = { true }
-                    ariaLabel = { t('toolbar.accessibilityLabel.reactionsMenu') }
-                    icon = { IconArrowUp }
-                    iconDisabled = { false }
-                    iconId = 'reactions-menu-button'
-                    onPopoverClose = { toggleReactionsMenu }
-                    onPopoverOpen = { openReactionsMenu }
-                    popoverContent = { reactionsMenu }
-                    visible = { isOpen }>
-                    <RaiseHandButton
-                        buttonKey = { buttonKey }
-                        handleClick = { handleClick }
-                        notifyMode = { notifyMode } />
-                </ToolboxButtonWithPopup>);
     }
 
     return (
@@ -183,7 +178,6 @@ function mapStateToProps(state: IReduxState) {
 
     return {
         _reactionsButtonEnabled: isReactionsButtonEnabled(state),
-        _reactionsEnabled: isReactionsEnabled(state),
         _isMobile: isMobileBrowser(),
         isOpen: getReactionsMenuVisibility(state),
         isNarrow: isNarrowLayout,

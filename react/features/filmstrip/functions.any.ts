@@ -1,4 +1,4 @@
-import { IStore } from '../app/types';
+import { IReduxState, IStore } from '../app/types';
 import {
     getActiveSpeakersToBeDisplayed,
     getVirtualScreenshareParticipantOwnerId
@@ -11,16 +11,17 @@ import { isFilmstripScrollVisible } from './functions';
  * Computes the reorderd list of the remote participants.
  *
  * @param {*} store - The redux store.
+ * @param {boolean} force - Does not short circuit, the execution, make execute all checks.
  * @param {string} participantId - The endpoint id of the participant that joined the call.
  * @returns {void}
  * @private
  */
-export function updateRemoteParticipants(store: IStore, participantId?: string) {
+export function updateRemoteParticipants(store: IStore, force?: boolean, participantId?: string) {
     const state = store.getState();
     let reorderedParticipants = [];
     const { sortedRemoteVirtualScreenshareParticipants } = state['features/base/participants'];
 
-    if (!isFilmstripScrollVisible(state) && !sortedRemoteVirtualScreenshareParticipants.size) {
+    if (!isFilmstripScrollVisible(state) && !sortedRemoteVirtualScreenshareParticipants.size && !force) {
         if (participantId) {
             const { remoteParticipants } = state['features/filmstrip'];
 
@@ -94,4 +95,16 @@ export function updateRemoteParticipantsOnLeave(store: IStore, participantId: st
 
     reorderedParticipants.delete(participantId)
         && store.dispatch(setRemoteParticipants(Array.from(reorderedParticipants)));
+}
+
+/**
+ * Returns whether tileview is completely disabled.
+ *
+ * @param {IReduxState} state - Redux state.
+ * @returns {boolean} - Whether tileview is completely disabled.
+ */
+export function isTileViewModeDisabled(state: IReduxState) {
+    const { tileView = {} } = state['features/base/config'];
+
+    return tileView.disabled;
 }

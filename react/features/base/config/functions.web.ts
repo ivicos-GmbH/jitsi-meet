@@ -1,8 +1,12 @@
 import { IReduxState } from '../../app/types';
 import JitsiMeetJS from '../../base/lib-jitsi-meet';
 
-import { IConfig, IDeeplinkingConfig, IDeeplinkingMobileConfig, IDeeplinkingPlatformConfig } from './configType';
-import { TOOLBAR_BUTTONS } from './constants';
+import {
+    IConfig,
+    IDeeplinkingConfig,
+    IDeeplinkingDesktopConfig,
+    IDeeplinkingMobileConfig
+} from './configType';
 
 export * from './functions.any';
 
@@ -27,25 +31,6 @@ export function getReplaceParticipant(state: IReduxState): string | undefined {
 }
 
 /**
- * Returns the list of enabled toolbar buttons.
- *
- * @param {Object} state - The redux state.
- * @returns {Array<string>} - The list of enabled toolbar buttons.
- */
-export function getToolbarButtons(state: IReduxState): Array<string> {
-    const { toolbarButtons, customToolbarButtons } = state['features/base/config'];
-    const customButtons = customToolbarButtons?.map(({ id }) => id);
-
-    const buttons = Array.isArray(toolbarButtons) ? toolbarButtons : TOOLBAR_BUTTONS;
-
-    if (customButtons) {
-        buttons.push(...customButtons);
-    }
-
-    return buttons;
-}
-
-/**
  * Returns the configuration value of web-hid feature.
  *
  * @param {Object} state - The state of the app.
@@ -53,20 +38,6 @@ export function getToolbarButtons(state: IReduxState): Array<string> {
  */
 export function getWebHIDFeatureConfig(state: IReduxState): boolean {
     return state['features/base/config'].enableWebHIDFeature || false;
-}
-
-/**
- * Checks if the specified button is enabled.
- *
- * @param {string} buttonName - The name of the button.
- * {@link interfaceConfig}.
- * @param {Object|Array<string>} state - The redux state or the array with the enabled buttons.
- * @returns {boolean} - True if the button is enabled and false otherwise.
- */
-export function isToolbarButtonEnabled(buttonName: string, state: IReduxState | Array<string>) {
-    const buttons = Array.isArray(state) ? state : getToolbarButtons(state);
-
-    return buttons.includes(buttonName);
 }
 
 /**
@@ -86,13 +57,21 @@ export function areAudioLevelsEnabled(state: IReduxState): boolean {
  * @returns {void}
  */
 export function _setDeeplinkingDefaults(deeplinking: IDeeplinkingConfig) {
-    const {
-        desktop = {} as IDeeplinkingPlatformConfig,
-        android = {} as IDeeplinkingMobileConfig,
-        ios = {} as IDeeplinkingMobileConfig
-    } = deeplinking;
+    deeplinking.desktop = deeplinking.desktop || {} as IDeeplinkingDesktopConfig;
+    deeplinking.android = deeplinking.android || {} as IDeeplinkingMobileConfig;
+    deeplinking.ios = deeplinking.ios || {} as IDeeplinkingMobileConfig;
+
+    const { android, desktop, ios } = deeplinking;
 
     desktop.appName = desktop.appName || 'Jitsi Meet';
+    desktop.appScheme = desktop.appScheme || 'jitsi-meet';
+    desktop.download = desktop.download || {};
+    desktop.download.windows = desktop.download.windows
+        || 'https://github.com/jitsi/jitsi-meet-electron/releases/latest/download/jitsi-meet.exe';
+    desktop.download.macos = desktop.download.macos
+        || 'https://github.com/jitsi/jitsi-meet-electron/releases/latest/download/jitsi-meet.dmg';
+    desktop.download.linux = desktop.download.linux
+        || 'https://github.com/jitsi/jitsi-meet-electron/releases/latest/download/jitsi-meet-x86_64.AppImage';
 
     ios.appName = ios.appName || 'Jitsi Meet';
     ios.appScheme = ios.appScheme || 'org.jitsi.meet';
@@ -118,30 +97,3 @@ export function _setDeeplinkingDefaults(deeplinking: IDeeplinkingConfig) {
         android.dynamicLink.isi = android.dynamicLink.isi || '1165103905';
     }
 }
-
-/**
- * Returns the list of buttons that have that notify the api when clicked.
- *
- * @param {Object} state - The redux state.
- * @returns {Array} - The list of buttons.
- */
-export function getButtonsWithNotifyClick(state: IReduxState): Array<{ key: string; preventExecution: boolean; }> {
-    const { buttonsWithNotifyClick, customToolbarButtons } = state['features/base/config'];
-    const customButtons = customToolbarButtons?.map(({ id }) => {
-        return {
-            key: id,
-            preventExecution: false
-        };
-    });
-
-    const buttons = Array.isArray(buttonsWithNotifyClick)
-        ? buttonsWithNotifyClick as Array<{ key: string; preventExecution: boolean; }>
-        : [];
-
-    if (customButtons) {
-        buttons.push(...customButtons);
-    }
-
-    return buttons;
-}
-

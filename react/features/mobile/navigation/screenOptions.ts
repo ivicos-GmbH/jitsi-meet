@@ -56,6 +56,11 @@ export const welcomeScreenOptions = {
 export const conferenceScreenOptions = fullScreenOptions;
 
 /**
+ * Screen options for visitors queue.
+ */
+export const visitorsScreenOptions = fullScreenOptions;
+
+/**
  * Tab bar options for chat screen.
  */
 export const chatTabBarOptions = {
@@ -87,6 +92,11 @@ export const presentationScreenOptions = {
 };
 
 /**
+ * Screen options for breakout rooms screen.
+ */
+export const breakoutRoomsScreenOptions = presentationScreenOptions;
+
+/**
  * Screen options for car mode.
  */
 export const carmodeScreenOptions = presentationScreenOptions;
@@ -110,6 +120,11 @@ export const dialInSummaryScreenOptions = {
 export const inviteScreenOptions = presentationScreenOptions;
 
 /**
+ * Screen options for live stream modal.
+ */
+export const liveStreamScreenOptions = presentationScreenOptions;
+
+/**
  * Screen options for participants modal.
  */
 export const participantsScreenOptions = presentationScreenOptions;
@@ -128,11 +143,6 @@ export const securityScreenOptions = presentationScreenOptions;
  * Screen options for recording modal.
  */
 export const recordingScreenOptions = presentationScreenOptions;
-
-/**
- * Screen options for live stream modal.
- */
-export const liveStreamScreenOptions = presentationScreenOptions;
 
 /**
  * Screen options for subtitles modal.
@@ -184,6 +194,11 @@ export const connectingScreenOptions = {
 };
 
 /**
+ * Screen options for the whiteboard screen.
+ */
+export const whiteboardScreenOptions = presentationScreenOptions;
+
+/**
  * Screen options for pre-join screen.
  */
 export const preJoinScreenOptions = {
@@ -195,6 +210,24 @@ export const preJoinScreenOptions = {
         color: BaseTheme.palette.text01
     }
 };
+
+/**
+ * Screen options for profile setting.
+ */
+export const profileSettingsScreenOptions = {
+    headerStyle: {
+        backgroundColor: BaseTheme.palette.ui01
+    },
+    headerTitleStyle: {
+        color: BaseTheme.palette.text01
+    },
+    headerBackTitleVisible: false
+};
+
+/**
+ * Screen options for language select screen.
+ */
+export const languageSelectScreenOptions = profileSettingsScreenOptions;
 
 /**
  * Screen options for pre-join screen.
@@ -221,6 +254,7 @@ export const lobbyNavigationContainerScreenOptions = {
  * Screen options for settings navigation container screen.
  */
 export const settingsNavigationContainerScreenOptions = {
+    ...modalPresentation,
     gestureEnabled: true,
     headerShown: false
 };

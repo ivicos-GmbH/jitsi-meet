@@ -3,7 +3,7 @@ import { WithTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
 
 import { IStore } from '../../../app/types';
-import { NOTIFY_CLICK_MODE } from '../../../toolbox/constants';
+import { NOTIFY_CLICK_MODE } from '../../../toolbox/types';
 import { combineStyles } from '../../styles/functions.any';
 
 import { Styles } from './AbstractToolboxItem';
@@ -15,6 +15,11 @@ export interface IProps extends WithTranslation {
      * Function to be called after the click handler has been processed.
      */
     afterClick?: Function;
+
+    /**
+     * The button's background color.
+     */
+    backgroundColor?: string;
 
     /**
      * The button's key.
@@ -47,6 +52,11 @@ export interface IProps extends WithTranslation {
      * External handler for click action.
      */
     handleClick?: Function;
+
+    /**
+     * Whether the button open a menu or not.
+     */
+    isMenuButton?: boolean;
 
     /**
      * Notify mode for `toolbarButtonClicked` event -
@@ -97,7 +107,7 @@ export const defaultDisabledButtonStyles = {
 /**
  * An abstract implementation of a button.
  */
-export default class AbstractButton<P extends IProps, S=any> extends Component<P, S> {
+export default class AbstractButton<P extends IProps, S = any> extends Component<P, S> {
     static defaultProps = {
         afterClick: undefined,
         disabledStyles: defaultDisabledButtonStyles,
@@ -107,6 +117,13 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
         tooltipPosition: 'top',
         visible: true
     };
+
+    /**
+     * The button's background color.
+     *
+     * @abstract
+     */
+    backgroundColor?: string;
 
     /**
      * A succinct description of what the button does. Used by accessibility
@@ -337,8 +354,8 @@ export default class AbstractButton<P extends IProps, S=any> extends Component<P
      * @private
      * @returns {void}
      */
-    _onClick(e?: React.MouseEvent<HTMLElement> | GestureResponderEvent) {
-        const { afterClick, handleClick, notifyMode, buttonKey } = this.props;
+    _onClick(e?: React.MouseEvent | GestureResponderEvent) {
+        const { afterClick, buttonKey, handleClick, notifyMode } = this.props;
 
         if (typeof APP !== 'undefined' && notifyMode) {
             APP.API.notifyToolbarButtonClicked(

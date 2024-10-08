@@ -1,7 +1,5 @@
 import { AnyAction } from 'redux';
 
-// @ts-expect-error
-import UIEvents from '../../../service/UI/UIEvents';
 import { IStore } from '../app/types';
 import {
     CONFERENCE_FAILED,
@@ -12,7 +10,7 @@ import {
 import { hideDialog } from '../base/dialog/actions';
 import { JitsiConferenceErrors } from '../base/lib-jitsi-meet';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
-import { showNotification } from '../notifications/actions';
+import { showErrorNotification, showNotification } from '../notifications/actions';
 import { NOTIFICATION_TIMEOUT_TYPE } from '../notifications/constants';
 
 import { _openPasswordRequiredPrompt } from './actions';
@@ -36,12 +34,6 @@ MiddlewareRegistry.register(store => next => action => {
         return _conferenceJoined(store, next, action);
 
     case LOCK_STATE_CHANGED: {
-        // TODO Remove this logic when all components interested in the lock
-        // state change event are moved into react/redux.
-        if (typeof APP !== 'undefined') {
-            APP.UI.emitEvent(UIEvents.TOGGLE_ROOM_LOCK, action.locked);
-        }
-
         const previousLockedState = store.getState()['features/base/conference'].locked;
 
         const result = next(action);
@@ -147,10 +139,10 @@ function _setPasswordFailed(store: IStore, next: Function, action: AnyAction) {
             descriptionKey = 'dialog.lockMessage';
             titleKey = 'dialog.lockTitle';
         }
-        APP.UI.messageHandler.showError({
+        APP.store.dispatch(showErrorNotification({
             descriptionKey,
             titleKey
-        });
+        }, NOTIFICATION_TIMEOUT_TYPE.LONG));
     }
 
     return next(action);

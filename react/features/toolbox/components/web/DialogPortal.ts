@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
+import { debounce } from '../../../base/config/functions.any';
 import { ZINDEX_DIALOG_PORTAL } from '../../constants';
 
 interface IProps {
 
     /**
-     * The component(s) to be displayed within the drawer portal.
-     */
+    * The component(s) to be displayed within the drawer portal.
+    */
     children: ReactNode;
 
     /**
@@ -21,6 +22,11 @@ interface IProps {
      * Function used to get the reference to the container div.
      */
     getRef?: Function;
+
+    /**
+     * Function called when the portal target becomes actually visible.
+     */
+    onVisible?: Function;
 
     /**
      * Function used to get the updated size info of the container on it's resize.
@@ -45,7 +51,7 @@ interface IProps {
  *
  * @returns {ReactElement}
  */
-function DialogPortal({ children, className, style, getRef, setSize, targetSelector }: IProps) {
+function DialogPortal({ children, className, style, getRef, setSize, targetSelector, onVisible }: IProps) {
     const clientWidth = useSelector((state: IReduxState) => state['features/base/responsive-ui'].clientWidth);
     const [ portalTarget ] = useState(() => {
         const portalDiv = document.createElement('div');
@@ -74,14 +80,14 @@ function DialogPortal({ children, className, style, getRef, setSize, targetSelec
             getRef(portalTarget);
             portalTarget.style.zIndex = `${ZINDEX_DIALOG_PORTAL}`;
         }
-    }, [ portalTarget ]);
+    }, [ portalTarget, getRef ]);
 
     useEffect(() => {
         const size = {
             width: 1,
             height: 1
         };
-        const observer = new ResizeObserver(entries => {
+        const debouncedResizeCallback = debounce((entries: ResizeObserverEntry[]) => {
             const { contentRect } = entries[0];
 
             if (contentRect.width !== size.width || contentRect.height !== size.height) {
@@ -89,10 +95,13 @@ function DialogPortal({ children, className, style, getRef, setSize, targetSelec
                 clearTimeout(timerRef.current);
                 timerRef.current = window.setTimeout(() => {
                     portalTarget.style.visibility = 'visible';
+                    onVisible?.();
                 }, 100);
             }
-        });
+        }, 20); // 20ms delay
 
+        // Create and observe ResizeObserver
+        const observer = new ResizeObserver(debouncedResizeCallback);
         const target = targetSelector ? portalTarget.querySelector(targetSelector) : portalTarget;
 
         if (document.body) {

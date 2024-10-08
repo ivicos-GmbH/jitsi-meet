@@ -178,18 +178,20 @@ function _getUserSelectedDeviceId(options: {
         replacement = ''
     } = options;
 
-    // If there is no label at all, there is no need to fall back to checking
-    // the label for a fuzzy match.
-    if (!userSelectedDeviceLabel || !userSelectedDeviceId) {
-        return userSelectedDeviceId;
+    if (userSelectedDeviceId) {
+        const foundMatchingBasedonDeviceId = availableDevices?.find(
+            candidate => candidate.deviceId === userSelectedDeviceId);
+
+        // Prioritize matching the deviceId
+        if (foundMatchingBasedonDeviceId) {
+            return userSelectedDeviceId;
+        }
     }
 
-    const foundMatchingBasedonDeviceId = availableDevices?.find(
-        candidate => candidate.deviceId === userSelectedDeviceId);
-
-    // Prioritize matching the deviceId
-    if (foundMatchingBasedonDeviceId) {
-        return userSelectedDeviceId;
+    // If there is no label at all, there is no need to fall back to checking
+    // the label for a fuzzy match.
+    if (!userSelectedDeviceLabel) {
+        return;
     }
 
     const strippedDeviceLabel
@@ -210,6 +212,5 @@ function _getUserSelectedDeviceId(options: {
         return strippedDeviceLabel === strippedCandidateLabel;
     });
 
-    return foundMatchBasedOnLabel
-        ? foundMatchBasedOnLabel.deviceId : userSelectedDeviceId;
+    return foundMatchBasedOnLabel?.deviceId;
 }

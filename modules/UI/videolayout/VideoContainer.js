@@ -1,6 +1,7 @@
 /* global APP, interfaceConfig */
 
 /* eslint-disable no-unused-vars */
+import Logger from '@jitsi/logger';
 import $ from 'jquery';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,6 +27,14 @@ const FADE_DURATION_MS = 300;
 
 // Background resizing when applying a room background image.
 const BACKGROUND_RESIZING_RATIO = 0.7;
+const logger = Logger.getLogger(__filename);
+
+/**
+ * List of container events that we are going to process for the large video.
+ *
+ * NOTE: Currently used only for logging for debug purposes.
+ */
+const containerEvents = [ 'abort', 'canplaythrough', 'ended', 'error', 'stalled', 'suspend', 'waiting' ];
 
 /**
  * Returns an array of the video dimensions, so that it keeps it's aspect
@@ -243,10 +252,17 @@ export class VideoContainer extends LargeContainer {
         this.wrapperParent = document.getElementById('largeVideoElementsContainer');
         this.avatarHeight = document.getElementById('dominantSpeakerAvatarContainer').getBoundingClientRect().height;
         this.video.onplaying = function(event) {
+            logger.debug('Large video is playing!');
             if (typeof resizeContainer === 'function') {
                 resizeContainer(event);
             }
         };
+
+        containerEvents.forEach(event => {
+            this.video.addEventListener(event, () => {
+                logger.debug(`${event} handler was called for the large video.`);
+            });
+        });
 
         /**
          * A Set of functions to invoke when the video element resizes.
@@ -256,6 +272,7 @@ export class VideoContainer extends LargeContainer {
         this._resizeListeners = new Set();
 
         this.video.onresize = this._onResize.bind(this);
+        this._play = this._play.bind(this);
     }
 
     /**
@@ -463,14 +480,39 @@ export class VideoContainer extends LargeContainer {
     }
 
     /**
+     * Plays the large video element.
+     *
+     * @param {number} retries - Number of retries to play the large video if play fails.
+     * @returns {void}
+     */
+    _play(retries = 0) {
+        this.video.play()
+            .then(() => {
+                logger.debug(`Successfully played large video after ${retries + 1} retries!`);
+            })
+            .catch(e => {
+                if (retries < 3) {
+                    logger.debug(`Error while trying to playing the large video. Will retry after 1s. Retries: ${
+                        retries}. Error: ${e}`);
+                    window.setTimeout(() => {
+                        this._play(retries + 1);
+                    }, 1000);
+                } else {
+                    logger.error(`Error while trying to playing the large video after 3 retries: ${e}`);
+                }
+            });
+    }
+
+    /**
      * Update video stream.
      * @param {string} userID
      * @param {JitsiTrack?} stream new stream
      * @param {string} videoType video type
      */
     setStream(userID, stream, videoType) {
-        this.userId = userID;
-        if (this.stream === stream && !stream?.forceStreamToReattach) {
+        if (this.userId === userID && this.stream === stream && !stream?.forceStreamToReattach) {
+            logger.debug(`SetStream on the large video for user ${userID} ignored: the stream is not changed!`);
+
             // Handles the use case for the remote participants when the
             // videoType is received with delay after turning on/off the
             // desktop sharing.
@@ -481,6 +523,8 @@ export class VideoContainer extends LargeContainer {
 
             return;
         }
+
+        this.userId = userID;
 
         if (stream?.forceStreamToReattach) {
             delete stream.forceStreamToReattach;
@@ -495,20 +539,27 @@ export class VideoContainer extends LargeContainer {
         this.videoType = videoType;
 
         if (!stream) {
+            logger.debug('SetStream on the large video is called without a stream argument!');
+
             return;
         }
 
         if (this.video) {
-            stream.attach(this.video);
+            logger.debug(`Attaching a remote track to the large video for user ${userID}`);
+            stream.attach(this.video).catch(error => {
+                logger.error(`Attaching the remote track ${stream} to large video has failed with `, error);
+            });
 
-            // Ensure large video gets play() called on it when a new stream is attached to it. This is necessary in the
-            // case of Safari as autoplay doesn't kick-in automatically on Safari 15 and newer versions.
-            browser.isWebKitBased() && this.video.play();
+            // Ensure large video gets play() called on it when a new stream is attached to it.
+            this._play();
 
             const flipX = stream.isLocal() && this.localFlipX && !this.isScreenSharing();
 
             this.video.style.transform = flipX ? 'scaleX(-1)' : 'none';
             this._updateBackground();
+        } else {
+            logger.debug(`SetStream on the large video won't attach a track for ${
+                userID} because no large video element was found!`);
         }
     }
 
@@ -518,7 +569,7 @@ export class VideoContainer extends LargeContainer {
      */
     setLocalFlipX(val) {
         this.localFlipX = val;
-        if (!this.video || !this.stream || !this.stream.isLocal()) {
+        if (!this.video || !this.stream || !this.stream.isLocal() || this.isScreenSharing()) {
             return;
         }
         this.video.style.transform = this.localFlipX ? 'scaleX(-1)' : 'none';

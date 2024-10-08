@@ -35,3 +35,22 @@ export const PLAYBACK_STATUSES = {
  * @type {string}
  */
 export const REQUEST_SHARED_VIDEO_STATE_COMMAND = 'request-shared-video-state';
+/**
+ * Playback start state.
+ */
+export const PLAYBACK_START = 'start';
+
+/**
+ * The domain for youtube URLs.
+ */
+export const YOUTUBE_URL_DOMAIN = 'youtube.com';
+
+/**
+ * The constant to allow URL domains.
+ */
+export const ALLOW_ALL_URL_DOMAINS = '*';
+
+/**
+ * The default white listed domains for shared video.
+ */
+export const DEFAULT_ALLOWED_URL_DOMAINS = [ YOUTUBE_URL_DOMAIN ];

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
@@ -15,6 +15,11 @@ export interface IProps {
      * Label used for accessibility.
      */
     accessibilityLabel: string;
+
+    /**
+     * The context menu item background color.
+     */
+    backgroundColor?: string;
 
     /**
      * Component children.
@@ -76,8 +81,11 @@ export interface IProps {
 
     /**
      * You can use this item as a tab. Defaults to button if not set.
+     *
+     * If no onClick handler is provided, we assume the context menu item is
+     * not interactive and no role will be set.
      */
-    role?: 'tab' | 'button';
+    role?: 'tab' | 'button' | 'menuitem';
 
     /**
      * Whether the item is marked as selected.
@@ -137,6 +145,24 @@ const useStyles = makeStyles()(theme => {
             pointerEvents: 'none'
         },
 
+        contextMenuItemIconDisabled: {
+            '& svg': {
+                fill: `${theme.palette.text03} !important`
+            }
+        },
+
+        contextMenuItemLabelDisabled: {
+            color: theme.palette.text03,
+
+            '&:hover': {
+                background: 'none'
+            },
+
+            '& svg': {
+                fill: theme.palette.text03
+            }
+        },
+
         contextMenuItemDrawer: {
             padding: '13px 16px'
         },
@@ -160,6 +186,7 @@ const useStyles = makeStyles()(theme => {
 
 const ContextMenuItem = ({
     accessibilityLabel,
+    backgroundColor,
     children,
     className,
     controls,
@@ -178,6 +205,28 @@ const ContextMenuItem = ({
     textClassName }: IProps) => {
     const { classes: styles, cx } = useStyles();
     const _overflowDrawer: boolean = useSelector(showOverflowDrawer);
+    const style = backgroundColor ? { backgroundColor } : {};
+    const onKeyPressHandler = useCallback(e => {
+        // only trigger the fallback behavior (onClick) if we dont have any explicit keyboard event handler
+        if (onClick && !onKeyPress && !onKeyDown && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            onClick(e);
+        }
+
+        if (onKeyPress) {
+            onKeyPress(e);
+        }
+    }, [ onClick, onKeyPress, onKeyDown ]);
+
+    let tabIndex: undefined | 0 | -1;
+
+    if (role === 'tab') {
+        tabIndex = selected ? 0 : -1;
+    }
+
+    if (role === 'button' && !disabled) {
+        tabIndex = 0;
+    }
 
     return (
         <div
@@ -196,21 +245,21 @@ const ContextMenuItem = ({
             key = { text }
             onClick = { disabled ? undefined : onClick }
             onKeyDown = { disabled ? undefined : onKeyDown }
-            onKeyPress = { disabled ? undefined : onKeyPress }
-            role = { role }
-            tabIndex = { role === 'tab'
-                ? selected ? 0 : -1
-                : disabled ? undefined : 0
-            }>
+            onKeyPress = { disabled ? undefined : onKeyPressHandler }
+            role = { onClick ? role : undefined }
+            style = { style }
+            tabIndex = { onClick ? tabIndex : undefined }>
             {customIcon ? customIcon
                 : icon && <Icon
-                    className = { styles.contextMenuItemIcon }
+                    className = { cx(styles.contextMenuItemIcon,
+                        disabled && styles.contextMenuItemIconDisabled) }
                     size = { 20 }
                     src = { icon } />}
             {text && (
                 <TextWithOverflow
                     className = { cx(styles.text,
                     _overflowDrawer && styles.drawerText,
+                    disabled && styles.contextMenuItemLabelDisabled,
                     textClassName) }
                     overflowType = { overflowType } >
                     {text}

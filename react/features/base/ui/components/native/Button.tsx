@@ -1,10 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    Button as NativePaperButton,
-    Text,
-    TouchableRipple
-} from 'react-native-paper';
+import { StyleProp, TouchableHighlight } from 'react-native';
+import { Button as NativePaperButton, Text } from 'react-native-paper';
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 import { BUTTON_MODES, BUTTON_TYPES } from '../../constants.native';
 import BaseTheme from '../BaseTheme.native';
@@ -12,13 +10,14 @@ import { IButtonProps } from '../types';
 
 import styles from './buttonStyles';
 
+
 export interface IProps extends IButtonProps {
     color?: string | undefined;
     contentStyle?: Object | undefined;
+    id?: string;
     labelStyle?: Object | undefined;
     mode?: any;
     style?: Object | undefined;
-    useRippleColor?: boolean;
 }
 
 const Button: React.FC<IProps> = ({
@@ -27,20 +26,17 @@ const Button: React.FC<IProps> = ({
     contentStyle,
     disabled,
     icon,
+    id,
     labelKey,
     labelStyle,
     mode = BUTTON_MODES.CONTAINED,
     onClick: onPress,
     style,
-    type,
-    useRippleColor = true
+    type
 }: IProps) => {
     const { t } = useTranslation();
     const { DESTRUCTIVE, PRIMARY, SECONDARY, TERTIARY } = BUTTON_TYPES;
     const { CONTAINED, TEXT } = BUTTON_MODES;
-
-    const rippleColor
-        = useRippleColor ? BaseTheme.palette.action03Active : 'transparent';
 
     let buttonLabelStyles;
     let buttonStyles;
@@ -72,27 +68,27 @@ const Button: React.FC<IProps> = ({
     }
 
     if (type === TERTIARY) {
-        if (useRippleColor && disabled) {
+        if (disabled) {
             buttonLabelStyles = styles.buttonLabelTertiaryDisabled;
         }
         buttonLabelStyles = styles.buttonLabelTertiary;
 
         return (
-            <TouchableRipple
+            <TouchableHighlight
                 accessibilityLabel = { accessibilityLabel }
                 disabled = { disabled }
+                id = { id }
                 onPress = { onPress }
-                rippleColor = { rippleColor }
                 style = { [
                     buttonStyles,
                     style
-                ] }>
+                ] as StyleProp<object> }>
                 <Text
                     style = { [
                         buttonLabelStyles,
                         labelStyle
-                    ] }>{ t(labelKey ?? '') }</Text>
-            </TouchableRipple>
+                    ] as StyleProp<object> }>{ t(labelKey ?? '') }</Text>
+            </TouchableHighlight>
         );
     }
 
@@ -104,21 +100,20 @@ const Button: React.FC<IProps> = ({
             contentStyle = { [
                 styles.buttonContent,
                 contentStyle
-            ] }
+            ] as StyleProp<object> }
             disabled = { disabled }
-
-            // @ts-ignore
-            icon = { icon }
+            icon = { icon as IconSource | undefined }
+            id = { id }
             labelStyle = { [
                 buttonLabelStyles,
                 labelStyle
-            ] }
+            ] as StyleProp<object> }
             mode = { mode }
             onPress = { onPress }
             style = { [
                 buttonStyles,
                 style
-            ] } />
+            ] as StyleProp<object> } />
     );
 };
 

@@ -12,9 +12,19 @@ import { navigationStyles } from './styles';
 interface IProps {
 
     /**
+     * Icon button color.
+     */
+    color?: string;
+
+    /**
      * Is the button disabled?
      */
     disabled?: boolean;
+
+    /**
+     * ID of the header navigation button.
+     */
+    id?: string;
 
     /**
      * Label of the button.
@@ -42,7 +52,7 @@ interface IProps {
     twoActions?: boolean;
 }
 
-const HeaderNavigationButton = ({ disabled, label, onPress, src, style, twoActions }: IProps) => {
+const HeaderNavigationButton = ({ color, id, disabled, label, onPress, src, style, twoActions }: IProps) => {
 
     let btnStyle;
     let labelStyle;
@@ -64,16 +74,19 @@ const HeaderNavigationButton = ({ disabled, label, onPress, src, style, twoActio
             {
                 src ? (
                     <IconButton
+                        color = { color }
+                        id = { id }
                         onPress = { onPress }
                         size = { 24 }
                         src = { src }
                         style = { [
-                            navigationStyles.headerNavigationButton,
+                            navigationStyles.headerNavigationButtonIcon,
                             style
                         ] } />
                 ) : (
                     <Button
                         disabled = { disabled }
+                        id = { id }
                         labelKey = { label }
                         labelStyle = { labelStyle }
                         onClick = { onPress }
@@ -81,8 +94,7 @@ const HeaderNavigationButton = ({ disabled, label, onPress, src, style, twoActio
                             btnStyle,
                             style
                         ] }
-                        type = { BUTTON_TYPES.TERTIARY }
-                        useRippleColor = { false } />
+                        type = { BUTTON_TYPES.TERTIARY } />
                 )}
         </>
     );

@@ -184,6 +184,7 @@
         "Share": "Megosztás",
         "Submit": "Elküldés",
         "WaitForHostMsg": "A konferencia még nem kezdődött meg. Ha Ön a házigazda, akkor hitelesítse magát. Ellenkező esetben, kérjük várjon a házigazda érkezésére.",
+        "WaitForHostNoAuthMsg": "A konferencia még nem kezdődött el, mert nincs elérhető moderátor. Kérlek várj.",
         "WaitingForHost": "Várakozás a házigazdára…",
         "Yes": "Igen",
         "accessibilityLabel": {
@@ -462,8 +463,6 @@
         "youtubeTerms": "YouTube szolgáltatási feltételek"
     },
     "lobby": {
-        "admit": "Engedélyezés",
-        "admitAll": "Mindet engedélyez",
         "allow": "Engedélyez",
         "backToKnockModeButton": "Csatlakozási kérelem küldése",
         "chat": "Chat",
@@ -495,8 +494,6 @@
         "notificationTitle": "Lobby",
         "passwordField": "Adja meg az értekezlet jelszavát",
         "passwordJoinButton": "Csatlakozás",
-        "reject": "Elutasít",
-        "rejectAll": "Mindet elutasít",
         "toggleLabel": "Lobby engedélyezése"
     },
     "localRecording": {
@@ -579,6 +576,8 @@
     },
     "participantsPane": {
         "actions": {
+            "admit": "Engedélyezés",
+            "admitAll": "Mindet engedélyez",
             "allow": "Engedélyezés a résztvevőknek, hogy:",
             "allowVideo": "Videó engedélyezése",
             "askUnmute": "Kérje a némítás feloldását",
@@ -591,6 +590,7 @@
             "mute": "Némítás",
             "muteAll": "Mindenkit elnémít",
             "muteEveryoneElse": "Mute everyone else",
+            "reject": "Elutasít",
             "stopEveryonesVideo": "Mindenki videójának leállítása",
             "stopVideo": "Videó leállítása",
             "unblockEveryoneMicCamera": "Unblock everyone's mic and camera",
@@ -623,6 +623,9 @@
             "questionPlaceholder": "Írja le a kérdést",
             "removeOption": "Opció eltávolítása",
             "send": "Küldés"
+        },
+        "errors": {
+            "notUniqueOption": "Az opcióknak egyedinek kell lenniük"
         },
         "notification": {
             "description": "Szavazás megnyitása",
@@ -825,6 +828,7 @@
         "neutral": "Semleges",
         "sad": "Szomorú",
         "search": "Keresés",
+        "searchHint": "Résztvevők keresése",
         "seconds": "{{count}} mp",
         "speakerStats": "Beszélő statisztika",
         "speakerTime": "Beszélő ideje",

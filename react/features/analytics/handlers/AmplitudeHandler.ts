@@ -14,20 +14,31 @@ export default class AmplitudeHandler extends AbstractHandler {
     /**
      * Creates new instance of the Amplitude analytics handler.
      *
-     * @param {Object} options -
-     * @param {string} options.amplitudeAPPKey - The Amplitude app key required
-     * by the Amplitude API.
+     * @param {Object} options - The amplitude options.
+     * @param {string} options.amplitudeAPPKey - The Amplitude app key required by the Amplitude API.
+     * @param {boolean} options.amplitudeIncludeUTM - Whether to include UTM parameters
+     * in the Amplitude events.
      */
     constructor(options: any) {
         super(options);
 
-        const { amplitudeAPPKey, user } = options;
+        const {
+            amplitudeAPPKey,
+            amplitudeIncludeUTM: includeUtm = true,
+            user
+        } = options;
 
         this._enabled = true;
 
         const onError = (e: Error) => {
             logger.error('Error initializing Amplitude', e);
             this._enabled = false;
+        };
+
+        // Forces sending all events on exit (flushing) via sendBeacon
+        const onExitPage = () => {
+            // @ts-ignore
+            amplitude.getInstance().sendEvents();
         };
 
         if (navigator.product === 'ReactNative') {
@@ -43,7 +54,10 @@ export default class AmplitudeHandler extends AbstractHandler {
         } else {
             const amplitudeOptions: any = {
                 includeReferrer: true,
-                onError
+                includeUtm,
+                saveParamsReferrerOncePerSession: false,
+                onError,
+                onExitPage
             };
 
             // @ts-ignore

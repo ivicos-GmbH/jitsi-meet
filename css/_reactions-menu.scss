@@ -2,7 +2,7 @@
 
 .reactions-menu {
 	width: 280px;
-	background: $menuBG;
+	background: #242528;
 	box-shadow: 0px 3px 16px rgba(0, 0, 0, 0.6), 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
 	border-radius: 6px;
 	padding: 16px;
@@ -104,7 +104,7 @@
 	}
 }
 
-.reactions-animations-container {
+.reactions-animations-overflow-container {
 	position: absolute;
 	width: 20%;
 	bottom: 0;
@@ -115,6 +115,13 @@
 .reactions-menu-popup-container {
 	display: inline-block;
 	position: relative;
+}
+
+.reactions-animations-container {
+	left: 50%;
+	bottom: 0px;
+	display: inline-block;
+	position: absolute;
 }
 
 $reactionCount: 20;
@@ -154,17 +161,17 @@ $reactionCount: 20;
 	}
 
 	70% {
-		transform: translate(40px, -70vh) scale(1.5);
+		transform: translate(40px, -70dvh) scale(1.5);
 		opacity: 1;
 	}
 
 	75% {
-		transform: translate(40px, -70vh) scale(1.5);
+		transform: translate(40px, -70dvh) scale(1.5);
 		opacity: 1;
 	}
 
 	100% {
-		transform: translate(140px, -50vh) scale(1);
+		transform: translate(140px, -50dvh) scale(1);
 		opacity: 0;
 	}
 }
@@ -187,17 +194,17 @@ $reactionCount: 20;
 			}
 
 			70% {
-				transform: translate(#{$topX}px, -#{$topY}vh) scale(1.5);
+				transform: translate(#{$topX}px, -#{$topY}dvh) scale(1.5);
 				opacity: 1;
 			}
 
 			75% {
-				transform: translate(#{$topX}px, -#{$topY}vh) scale(1.5);
+				transform: translate(#{$topX}px, -#{$topY}dvh) scale(1.5);
 				opacity: 1;
 			}
 
 			100% {
-				transform: translate(#{$bottomX}px, -#{$bottomY}vh) scale(1);
+				transform: translate(#{$bottomX}px, -#{$bottomY}dvh) scale(1);
 				opacity: 0;
 			}
 		}
