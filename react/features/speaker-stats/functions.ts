@@ -1,6 +1,5 @@
 /* global APP */
 
-import _ from 'lodash';
 import { cloneDeep } from 'lodash-es';
 
 import { IReduxState } from '../app/types';

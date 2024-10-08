@@ -12,7 +12,7 @@ import {
 } from './actionTypes';
 import { ShareVideoConfirmDialog, SharedVideoDialog } from './components';
 import { PLAYBACK_START, PLAYBACK_STATUSES } from './constants';
-import { isSharedVideoEnabled, sendShareVideoCommand } from './functions';
+import { isSharedVideoEnabled } from './functions';
 
 
 /**

@@ -35,6 +35,7 @@ export const PLAYBACK_STATUSES = {
  * @type {string}
  */
 export const REQUEST_SHARED_VIDEO_STATE_COMMAND = 'request-shared-video-state';
+
 /**
  * Playback start state.
  */

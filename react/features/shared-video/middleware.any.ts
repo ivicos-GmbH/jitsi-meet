@@ -30,10 +30,10 @@ import {
     showConfirmPlayingDialog
 } from './actions.any';
 import {
-    REQUEST_SHARED_VIDEO_STATE_COMMAND,
     DEFAULT_ALLOWED_URL_DOMAINS,
     PLAYBACK_START,
     PLAYBACK_STATUSES,
+    REQUEST_SHARED_VIDEO_STATE_COMMAND,
     SHARED_VIDEO,
     VIDEO_PLAYER_PARTICIPANT_NAME
 } from './constants';

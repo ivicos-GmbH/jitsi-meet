@@ -2155,6 +2155,7 @@ class API {
             speakerData
         });
     }
+
     /**
      * Notify external application (if API is enabled) that transcribing has started or stopped.
      *
@@ -2217,6 +2218,7 @@ class API {
             videoUrl
         });
     }
+
     /**
      * Notify external application (if API is enabled) that the user received
      * a transcription chunk.
