@@ -161,7 +161,23 @@ class AbstractVideoManager extends PureComponent<IProps> {
             sendAnalytics(createEvent('started'));
         }
 
-        this.processUpdatedProps();
+        this.checkAndProcessUpdatedProps(prevProps);
+    }
+
+    checkAndProcessUpdatedProps(prevProps: IProps) {
+        // eslint-disable-next-line max-len
+        const { _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId, _setSharedVideoStatus } = this.props;
+        const isStatusStart = _status === 'start';
+        const hasStatusChanged = _status !== prevProps._status;
+        const hasOwnerChanged = _ownerId !== _previousOwnerId;
+        const hasTimeChanged = _time !== prevProps._time;
+        const hasMutedChanged = _muted !== prevProps._muted;
+        const hasVideoUrlChanged = _videoUrl !== prevProps._videoUrl;
+
+        const isProcessNeccessary = hasStatusChanged || (hasOwnerChanged && !isStatusStart) || hasTimeChanged || hasMutedChanged || hasVideoUrlChanged;
+
+        if(isProcessNeccessary)
+            this.processUpdatedProps();
     }
 
     /**

@@ -124,7 +124,7 @@ import {
     updateSharedVideoOwner,
     updateVideoState
 } from '../../react/features/shared-video/actions.any';
-import { extractYoutubeIdOrURL, fetchStoppedVideoUrl } from '../../react/features/shared-video/functions';
+import { extractYoutubeIdOrURL, sendStoppedVideoUrlNotification } from '../../react/features/shared-video/functions';
 import {
     fetchDetailedSpeakerStats
 } from '../../react/features/speaker-stats/functions';
@@ -633,7 +633,7 @@ function initCommands() {
 
         'stop-share-video': () => {
             sendAnalytics(createApiEvent('share.video.stop'));
-            fetchStoppedVideoUrl();
+            sendStoppedVideoUrlNotification();
             APP.store.dispatch(stopSharedVideo());
         },
         'pause-share-video': () => {
