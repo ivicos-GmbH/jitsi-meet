@@ -38,7 +38,7 @@ import {
     SHARED_VIDEO,
     VIDEO_PLAYER_PARTICIPANT_NAME
 } from './constants';
-import { sendStoppedVideoUrlNotification, isSharedVideoEnabled, isSharingStatus, isURLAllowedForSharedVideo } from './functions';
+import { isSharedVideoEnabled, isSharingStatus, isURLAllowedForSharedVideo, sendStoppedVideoUrlNotification } from './functions';
 import logger from './logger';
 import { ISharedVideoState } from './reducer';
 
@@ -198,7 +198,7 @@ MiddlewareRegistry.register(store => next => action => {
 
         const isNoUserInControlBeforeStateUpdate = sharedVideoCurrentState.ownerId === '' || sharedVideoCurrentState.ownerId === undefined;
         const isLocalUserOwnerCurrently = localParticipantId === ownerId;
-        const videoOwnershipInitiatedByLocalParticipant =isNoUserInControlBeforeStateUpdate && isLocalUserOwnerCurrently
+        const videoOwnershipInitiatedByLocalParticipant = isNoUserInControlBeforeStateUpdate && isLocalUserOwnerCurrently;
 
         const isLocalUserInControlBeforeStateUpdate = localParticipantId === sharedVideoCurrentState.ownerId;
         const isVideoOwnershipTransferredFromLocal = isLocalUserInControlBeforeStateUpdate && !isLocalUserOwnerCurrently;
@@ -271,7 +271,7 @@ function handleSharingVideoStatus(store: IStore, videoUrl: string,
         // eslint-disable-next-line max-len
         { state, time, from, muted, ownerId, previousOwnerId }: { from: string; muted: string; ownerId: string; previousOwnerId: string; state: string; time: string; },
         conference: IJitsiConference) {
-    
+
     const { dispatch, getState } = store;
     const localParticipantId = getLocalParticipant(getState())?.id;
     const oldStatus = getState()['features/shared-video']?.status ?? '';
@@ -284,7 +284,7 @@ function handleSharingVideoStatus(store: IStore, videoUrl: string,
         return;
     }
 
-    
+
     // If the video was not started (no participant) we want to create the participant
     // this can be triggered by start, but also by paused or playing
     // commands (joining late) and getting the current state

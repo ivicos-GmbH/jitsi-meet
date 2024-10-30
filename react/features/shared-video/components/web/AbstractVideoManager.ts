@@ -164,9 +164,14 @@ class AbstractVideoManager extends PureComponent<IProps> {
         this.checkAndProcessUpdatedProps(prevProps);
     }
 
+    /**
+     * Checks and processes updated properties.
+     *
+     * @inheritdoc
+     */
     checkAndProcessUpdatedProps(prevProps: IProps) {
         // eslint-disable-next-line max-len
-        const { _videoUrl, _status, _time, _isOwner, _muted, _ownerId, _previousOwnerId, _setSharedVideoStatus } = this.props;
+        const { _videoUrl, _status, _time, _muted, _ownerId, _previousOwnerId } = this.props;
         const isStatusStart = _status === 'start';
         const hasStatusChanged = _status !== prevProps._status;
         const hasOwnerChanged = _ownerId !== _previousOwnerId;
@@ -174,10 +179,13 @@ class AbstractVideoManager extends PureComponent<IProps> {
         const hasMutedChanged = _muted !== prevProps._muted;
         const hasVideoUrlChanged = _videoUrl !== prevProps._videoUrl;
 
-        const isProcessNeccessary = hasStatusChanged || (hasOwnerChanged && !isStatusStart) || hasTimeChanged || hasMutedChanged || hasVideoUrlChanged;
+        const isProcessNeccessary = hasStatusChanged
+            || (hasOwnerChanged && !isStatusStart)
+            || hasTimeChanged || hasMutedChanged || hasVideoUrlChanged;
 
-        if(isProcessNeccessary)
+        if (isProcessNeccessary) {
             this.processUpdatedProps();
+        }
     }
 
     /**
