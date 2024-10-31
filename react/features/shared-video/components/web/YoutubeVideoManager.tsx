@@ -167,7 +167,7 @@ class YoutubeVideoManager extends AbstractVideoManager {
      * @returns {void}
      */
     onPlayerReady = (event: any) => {
-        const { _isOwner } = this.props;
+        const { _isOwner, _status, _time } = this.props;
 
         this.player = event.target;
 
@@ -178,8 +178,12 @@ class YoutubeVideoManager extends AbstractVideoManager {
         if (_isOwner) {
             this.player.addEventListener('onVideoProgress', this.throttledFireUpdateSharedVideoEvent);
         }
-
-        this.play();
+        if (_status !== 'pause') {
+            this.play();
+        } else if (_time && _time > 0) {
+            this.seek(_time);
+            this.pause();
+        }
 
         // sometimes youtube can get muted state from previous videos played in the browser
         // and as we are disabling controls we want to unmute it

@@ -65,7 +65,7 @@ export function resetSharedVideoStatus() {
 export function setSharedVideoStatus({ videoUrl, status, time, ownerId, muted, previousOwnerId }: {
     muted?: boolean; ownerId?: string; previousOwnerId?: string; status?: string; time?: number; videoUrl?: string;
 }) {
-    return {
+    const objToStore = {
         type: SET_SHARED_VIDEO_STATUS,
         ownerId,
         status,
@@ -74,6 +74,8 @@ export function setSharedVideoStatus({ videoUrl, status, time, ownerId, muted, p
         muted,
         previousOwnerId
     };
+
+    return objToStore;
 }
 
 /**
@@ -243,8 +245,9 @@ export function updateVideoState(updatedState: {
         const currentVideoState = state['features/shared-video'];
         const localParticipantId = getLocalParticipant(state)?.id;
         const conference = getCurrentConference(state);
+        const isLocalParticipantVideoOwner = localParticipantId && localParticipantId === currentVideoState.ownerId;
 
-        if (conference && localParticipantId && localParticipantId === currentVideoState.ownerId) {
+        if (conference && isLocalParticipantVideoOwner) {
             dispatch(setSharedVideoStatus(updatedState ? updatedState : currentVideoState));
         }
     };
