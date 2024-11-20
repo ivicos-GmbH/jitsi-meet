@@ -319,11 +319,11 @@ function _translateInterfaceConfig(oldValue: IConfig) {
             ? oldValue.deeplinking.disabled
             : Boolean(oldValue.disableDeepLinking);
     } else {
-        const disabled = Boolean(oldValue.disableDeepLinking);
+        // const disabled = Boolean(oldValue.disableDeepLinking);
         const deeplinking: IDeeplinkingConfig = {
             desktop: {} as IDeeplinkingDesktopConfig,
             hideLogo: false,
-            disabled,
+            disabled: true,
             android: {} as IDeeplinkingMobileConfig,
             ios: {} as IDeeplinkingMobileConfig
         };
