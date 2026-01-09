@@ -218,6 +218,11 @@ function getConfig(options = {}) {
                 path: false,
                 process: false
             }
+        },
+        watchOptions: {
+            ignored: [ '**/node_modules/**', '**/build/**', '**/libs/**' ],
+            aggregateTimeout: 300,
+            poll: 1000
         }
     };
 }
@@ -253,6 +258,11 @@ function getDevServerConfig() {
         server: process.env.CODESPACES ? 'http' : 'https',
         static: {
             directory: process.cwd()
+        },
+        watchFiles: {
+            options: {
+                ignored: [ '**/node_modules/**', '**/build/**', '**/libs/**' ]
+            }
         }
     };
 }
