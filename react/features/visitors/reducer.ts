@@ -1,4 +1,4 @@
-import { CONFERENCE_WILL_LEAVE } from '../base/conference/actionTypes';
+import { CONFERENCE_PROPERTIES_CHANGED, CONFERENCE_WILL_LEAVE } from '../base/conference/actionTypes';
 import ReducerRegistry from '../base/redux/ReducerRegistry';
 
 import {
@@ -7,11 +7,12 @@ import {
     SET_IN_VISITORS_QUEUE,
     SET_VISITORS_SUPPORTED,
     SET_VISITOR_DEMOTE_ACTOR,
-    UPDATE_VISITORS_COUNT,
+    SUBSCRIBE_VISITORS_LIST,
     UPDATE_VISITORS_IN_QUEUE_COUNT,
+    UPDATE_VISITORS_LIST,
     VISITOR_PROMOTION_REQUEST
 } from './actionTypes';
-import { IPromotionRequest } from './types';
+import { IPromotionRequest, IVisitorListParticipant } from './types';
 
 const DEFAULT_STATE = {
     count: 0,
@@ -20,7 +21,9 @@ const DEFAULT_STATE = {
     inQueueCount: 0,
     showNotification: false,
     supported: false,
-    promotionRequests: []
+    promotionRequests: [],
+    visitors: [] as IVisitorListParticipant[],
+    visitorsListSubscribed: false
 };
 
 export interface IVisitorsState {
@@ -31,9 +34,23 @@ export interface IVisitorsState {
     inQueueCount?: number;
     promotionRequests: IPromotionRequest[];
     supported: boolean;
+    visitors: IVisitorListParticipant[];
+    visitorsListSubscribed: boolean;
 }
 ReducerRegistry.register<IVisitorsState>('features/visitors', (state = DEFAULT_STATE, action): IVisitorsState => {
     switch (action.type) {
+    case CONFERENCE_PROPERTIES_CHANGED: {
+        const visitorCount = Number(action.properties?.['visitor-count']);
+
+        if (!isNaN(visitorCount) && state.count !== visitorCount) {
+            return {
+                ...state,
+                count: visitorCount
+            };
+        }
+
+        break;
+    }
     case CONFERENCE_WILL_LEAVE: {
         return {
             ...state,
@@ -45,18 +62,8 @@ ReducerRegistry.register<IVisitorsState>('features/visitors', (state = DEFAULT_S
             iAmVisitor: action.isRedirect ? state.iAmVisitor : DEFAULT_STATE.iAmVisitor
         };
     }
-    case UPDATE_VISITORS_COUNT: {
-        if (state.count === action.count) {
-            return state;
-        }
-
-        return {
-            ...state,
-            count: action.count
-        };
-    }
     case UPDATE_VISITORS_IN_QUEUE_COUNT: {
-        if (state.count === action.count) {
+        if (state.inQueueCount === action.count) {
             return state;
         }
 
@@ -87,6 +94,18 @@ ReducerRegistry.register<IVisitorsState>('features/visitors', (state = DEFAULT_S
         return {
             ...state,
             supported: action.value
+        };
+    }
+    case SUBSCRIBE_VISITORS_LIST: {
+        return {
+            ...state,
+            visitorsListSubscribed: true
+        };
+    }
+    case UPDATE_VISITORS_LIST: {
+        return {
+            ...state,
+            visitors: action.visitors
         };
     }
     case VISITOR_PROMOTION_REQUEST: {

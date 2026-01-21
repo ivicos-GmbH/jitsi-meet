@@ -47,7 +47,8 @@ export const SET_DISABLE_BUTTON = 'SET_DISABLE_BUTTON';
  * }
  */
 export const REQUEST_SHARED_VIDEO_STATE = 'REQUEST_SHARED_VIDEO_STATE';
-/** 
+
+/**
  * The type of the action which sets an array of whitelisted urls.
  *
  * {
