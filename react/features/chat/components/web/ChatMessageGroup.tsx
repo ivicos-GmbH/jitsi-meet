@@ -74,7 +74,6 @@ const ChatMessageGroup = ({ className = '', messages }: IProps) => {
                         className = { className }
                         key = { i }
                         message = { message }
-                        shouldDisplayChatMessageMenu = { false }
                         showDisplayName = { i === 0 }
                         showTimestamp = { i === messages.length - 1 } />
                 ))}

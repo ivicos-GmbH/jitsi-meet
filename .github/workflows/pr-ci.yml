@@ -4,6 +4,7 @@ on:
     push:
         branches-ignore:
             - 'master'
+            - 'sync-upstream-2026-01-21'
     pull_request:
         branches-ignore:
             - 'master'
