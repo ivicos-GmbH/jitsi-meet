@@ -1978,6 +1978,12 @@ var config = {
 
     // Hide login button on auth dialog, you may want to enable this if you are using JWT tokens to authenticate users
     // hideLoginButton: true,
+
+    // Hide lobby button to prevent users from enabling lobby
+    securityUi: {
+        hideLobbyButton: true,
+        disableLobbyPassword: true,
+    },
 };
 
 // Set the default values for JaaS customers

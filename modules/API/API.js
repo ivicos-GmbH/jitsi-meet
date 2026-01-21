@@ -19,8 +19,6 @@ import {
     endConference,
     sendTones,
     setAssumedBandwidthBps,
-    setFollowMe,
-    setFollowMeRecorder,
     setLocalSubject,
     setPassword,
     setSubject
@@ -126,13 +124,9 @@ import { isScreenshotCaptureEnabled } from '../../react/features/screenshot-capt
 import SettingsDialog from '../../react/features/settings/components/web/SettingsDialog';
 import { SETTINGS_TABS } from '../../react/features/settings/constants';
 import {
-    pauseSharedVideo,
     playSharedVideo,
-    requestSharedVideoStateFromVideoOwner,
-    stopSharedVideo,
-    updateSharedVideoOwner,
-    updateVideoState
-} from '../../react/features/shared-video/actions.any';
+    stopSharedVideo
+} from '../../react/features/shared-video/actions';
 import { extractYoutubeIdOrURL, sendStoppedVideoUrlNotification } from '../../react/features/shared-video/functions';
 import {
     fetchDetailedSpeakerStats
@@ -649,43 +643,10 @@ function initCommands() {
                 APP.store.dispatch(playSharedVideo(id));
             }
         },
-        'update-shared-video-owner': ownerId => {
-            logger.debug('Share video command received');
-            sendAnalytics(createApiEvent('share.video.start'));
-            APP.store.dispatch(updateSharedVideoOwner(ownerId));
-        },
-
-        'update-shared-video-state': updatedState => {
-            logger.debug('Share video command received');
-            sendAnalytics(createApiEvent('share.video.start'));
-            APP.store.dispatch(updateVideoState(updatedState));
-        },
-
         'stop-share-video': () => {
             sendAnalytics(createApiEvent('share.video.stop'));
             sendStoppedVideoUrlNotification();
             APP.store.dispatch(stopSharedVideo());
-        },
-        'pause-share-video': () => {
-            logger.debug('Share video command received');
-            sendAnalytics(createApiEvent('share.video.pause'));
-            APP.store.dispatch(pauseSharedVideo());
-        },
-
-        'request-shared-video-state-update-from-video-owner': () => {
-
-            logger.debug('Share video command received');
-            sendAnalytics(createApiEvent('share.video.stateupdaterequest'));
-
-            const videoState = APP.store.getState()['features/shared-video'];
-            const conference = getCurrentConference(APP.store.getState());
-
-            if (!conference) {
-                logger.error('Conference is not defined');
-
-                return;
-            }
-            APP.store.dispatch(requestSharedVideoStateFromVideoOwner(videoState));
         },
 
         /**

@@ -1723,10 +1723,14 @@ export default {
                 }, timeout);
             }
         );
-    },
 
         room.on(JitsiConferenceEvents.PERMISSIONS_RECEIVED, p => {
             const localParticipant = getLocalParticipant(APP.store.getState());
+
+            if (!localParticipant) {
+                logger.warn('PERMISSIONS_RECEIVED: localParticipant not found');
+                return;
+            }
 
             APP.store.dispatch(participantUpdated({
                 id: localParticipant.id,

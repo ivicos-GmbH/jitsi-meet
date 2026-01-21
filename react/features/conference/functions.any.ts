@@ -30,7 +30,13 @@ export function arePollsDisabled(stateful: IStateful) {
 
     const { conference } = state['features/base/conference'];
 
-    if (!conference?.getPolls()?.isSupported()) {
+    if (!conference || typeof conference.getPolls !== 'function') {
+        return true;
+    }
+
+    const polls = conference.getPolls();
+
+    if (!polls || typeof polls.isSupported !== 'function' || !polls.isSupported()) {
         return true;
     }
 
