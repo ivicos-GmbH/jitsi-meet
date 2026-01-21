@@ -8,7 +8,7 @@ import { isPrejoinPageVisible } from '../../prejoin/functions';
 import { iAmVisitor } from '../../visitors/functions';
 import { CONNECTION_DISCONNECTED, CONNECTION_ESTABLISHED } from '../connection/actionTypes';
 import { hangup } from '../connection/actions.web';
-import { JitsiConferenceErrors, browser } from '../lib-jitsi-meet';
+import { JitsiConferenceErrors, JitsiConnectionErrors, browser } from '../lib-jitsi-meet';
 import { gumPending, setInitialGUMPromise } from '../media/actions';
 import { MEDIA_TYPE } from '../media/constants';
 import { IGUMPendingState } from '../media/types';
@@ -24,8 +24,8 @@ import {
     KICKED_OUT
 } from './actionTypes';
 import { TRIGGER_READY_TO_CLOSE_REASONS } from './constants';
+import { processDestroyConferenceEvent } from './functions';
 import logger from './logger';
-
 import './middleware.any';
 
 let screenLock: WakeLockSentinel | undefined;
@@ -117,17 +117,26 @@ MiddlewareRegistry.register(store => next => action => {
     case CONFERENCE_FAILED: {
         const errorName = action.error?.name;
 
-        if (enableForcedReload && errorName === JitsiConferenceErrors.CONFERENCE_RESTARTED) {
+        if (enableForcedReload
+            && (errorName === JitsiConferenceErrors.CONFERENCE_RESTARTED
+                || errorName === JitsiConnectionErrors.SHARD_CHANGED_ERROR)) {
             dispatch(setSkipPrejoinOnReload(true));
         }
 
         if (errorName === JitsiConferenceErrors.CONFERENCE_DESTROYED) {
+            const state = getState();
+            const { notifyOnConferenceDestruction = true } = state['features/base/config'];
             const [ reason ] = action.error.params;
+
+            if (processDestroyConferenceEvent(state, dispatch, action.error.params)) {
+                break;
+            }
+
             const titlekey = Object.keys(TRIGGER_READY_TO_CLOSE_REASONS)[
                 Object.values(TRIGGER_READY_TO_CLOSE_REASONS).indexOf(reason)
             ];
 
-            dispatch(hangup(true, i18next.t(titlekey) || reason));
+            dispatch(hangup(true, i18next.t(titlekey) || reason, notifyOnConferenceDestruction));
         }
 
         releaseScreenLock();
@@ -149,12 +158,15 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     }
     case CONNECTION_ESTABLISHED: {
-        if (isPrejoinPageVisible(getState())) {
-            let { initialGUMPromise } = getState()['features/base/media'];
+        const { initialGUMPromise } = getState()['features/base/media'];
+        const promise = initialGUMPromise ? initialGUMPromise.promise : Promise.resolve({ tracks: [] });
+        const prejoinVisible = isPrejoinPageVisible(getState());
 
-            initialGUMPromise = initialGUMPromise || Promise.resolve({ tracks: [] });
+        logger.debug(`On connection established: prejoinVisible: ${prejoinVisible}, initialGUMPromiseExists=${
+            Boolean(initialGUMPromise)}, promiseExists=${Boolean(promise)}`);
 
-            initialGUMPromise.then(() => {
+        if (prejoinVisible) {
+            promise.then(() => {
                 const state = getState();
                 let localTracks = getLocalTracks(state['features/base/tracks']);
                 const trackReplacePromises = [];
@@ -183,14 +195,11 @@ MiddlewareRegistry.register(store => next => action => {
 
 
                     return APP.conference.startConference(jitsiTracks);
-                });
+                })
+                .catch(logger.error);
             });
         } else {
-            let { initialGUMPromise } = getState()['features/base/media'];
-
-            initialGUMPromise = initialGUMPromise || Promise.resolve({ tracks: [] });
-
-            initialGUMPromise.then(({ tracks }) => {
+            promise.then(({ tracks }) => {
                 let tracksToUse = tracks ?? [];
 
                 if (iAmVisitor(getState())) {

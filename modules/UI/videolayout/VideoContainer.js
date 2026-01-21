@@ -27,7 +27,7 @@ const FADE_DURATION_MS = 300;
 
 // Background resizing when applying a room background image.
 const BACKGROUND_RESIZING_RATIO = 0.7;
-const logger = Logger.getLogger(__filename);
+const logger = Logger.getLogger('ui:VideoContainer');
 
 /**
  * List of container events that we are going to process for the large video.

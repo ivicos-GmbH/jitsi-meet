@@ -57,11 +57,12 @@ ReducerRegistry.register<ISharedVideoState>('features/shared-video',
             previousOwnerId
         };
 
-    case SET_DISABLE_BUTTON:
+    case SET_ALLOWED_URL_DOMAINS: {
         return {
             ...state,
-            disabled
+            allowedUrlDomains: action.allowedUrlDomains
         };
+    }
 
     case SET_ALLOWED_URL_DOMAINS: {
         return {

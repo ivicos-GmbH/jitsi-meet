@@ -8,15 +8,18 @@ import { isMobileBrowser } from '../../../base/environment/utils';
 import { getLocalParticipant, isLocalParticipantModerator } from '../../../base/participants/functions';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
 import { isReactionsButtonEnabled, shouldDisplayReactionsButtons } from '../../../reactions/functions.web';
+import { isCCTabEnabled } from '../../../subtitles/functions.any';
+import { isTranscribing } from '../../../transcribing/functions';
 import {
     setHangupMenuVisible,
     setOverflowMenuVisible,
     setToolbarHovered,
-    showToolbox
+    setToolboxVisible
 } from '../../actions.web';
 import {
     getJwtDisabledButtons,
     getVisibleButtons,
+    getVisibleButtonsForReducedUI,
     isButtonEnabled,
     isToolboxVisible
 } from '../../functions.web';
@@ -36,6 +39,11 @@ import Separator from './Separator';
 interface IProps {
 
     /**
+     * Optional toolbar background color passed as a prop.
+     */
+    toolbarBackgroundColor?: string;
+
+    /**
      * Explicitly passed array with the buttons which this Toolbox should display.
      */
     toolbarButtons?: Array<string>;
@@ -43,15 +51,6 @@ interface IProps {
 
 const useStyles = makeStyles()(() => {
     return {
-        contextMenu: {
-            position: 'relative',
-            right: 'auto',
-            margin: 0,
-            marginBottom: '8px',
-            maxHeight: 'calc(100dvh - 100px)',
-            minWidth: '240px'
-        },
-
         hangupMenu: {
             position: 'relative',
             right: 'auto',
@@ -60,7 +59,7 @@ const useStyles = makeStyles()(() => {
             rowGap: '8px',
             margin: 0,
             padding: '16px',
-            marginBottom: '4px'
+            marginBottom: '8px'
         }
     };
 });
@@ -72,7 +71,8 @@ const useStyles = makeStyles()(() => {
  * @returns {ReactElement}
  */
 export default function Toolbox({
-    toolbarButtons
+    toolbarButtons,
+    toolbarBackgroundColor: toolbarBackgroundColorProp
 }: IProps) {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -81,10 +81,9 @@ export default function Toolbox({
 
     const conference = useSelector((state: IReduxState) => state['features/base/conference'].conference);
     const isNarrowLayout = useSelector((state: IReduxState) => state['features/base/responsive-ui'].isNarrowLayout);
-    const clientWidth = useSelector((state: IReduxState) => state['features/base/responsive-ui'].clientWidth);
+    const videoSpaceWidth = useSelector((state: IReduxState) => state['features/base/responsive-ui'].videoSpaceWidth);
     const isModerator = useSelector(isLocalParticipantModerator);
-    const customToolbarButtons = useSelector(
-        (state: IReduxState) => state['features/base/config'].customToolbarButtons);
+    const customToolbarButtons = useSelector((state: IReduxState) => state['features/base/config'].customToolbarButtons);
     const iAmRecorder = useSelector((state: IReduxState) => state['features/base/config'].iAmRecorder);
     const iAmSipGateway = useSelector((state: IReduxState) => state['features/base/config'].iAmSipGateway);
     const overflowDrawer = useSelector((state: IReduxState) => state['features/toolbox'].overflowDrawer);
@@ -95,18 +94,27 @@ export default function Toolbox({
         = useSelector((state: IReduxState) => state['features/toolbox'].buttonsWithNotifyClick);
     const reduxToolbarButtons = useSelector((state: IReduxState) => state['features/toolbox'].toolbarButtons);
     const toolbarButtonsToUse = toolbarButtons || reduxToolbarButtons;
-    const chatOpen = useSelector((state: IReduxState) => state['features/chat'].isOpen);
     const isDialogVisible = useSelector((state: IReduxState) => Boolean(state['features/base/dialog'].component));
-    const jwt = useSelector((state: IReduxState) => state['features/base/jwt'].jwt);
     const localParticipant = useSelector(getLocalParticipant);
-    const jwtDisabledButtons = useSelector((state: IReduxState) =>
-        getJwtDisabledButtons(state, jwt, localParticipant?.features));
+    const transcribing = useSelector(isTranscribing);
+    const _isCCTabEnabled = useSelector(isCCTabEnabled);
+    // Read toolbar background color from config (if provided) or from props.
+    const toolbarBackgroundColorFromConfig = useSelector((state: IReduxState) =>
+        state['features/base/config'].toolbarConfig?.backgroundColor);
+    const toolbarBackgroundColor = toolbarBackgroundColorProp || toolbarBackgroundColorFromConfig;
+    // Do not convert to selector, it returns new array and will cause re-rendering of toolbox on every action.
+    const jwtDisabledButtons = getJwtDisabledButtons(transcribing, _isCCTabEnabled, localParticipant?.features);
+
     const reactionsButtonEnabled = useSelector(isReactionsButtonEnabled);
     const _shouldDisplayReactionsButtons = useSelector(shouldDisplayReactionsButtons);
     const toolbarVisible = useSelector(isToolboxVisible);
     const mainToolbarButtonsThresholds
         = useSelector((state: IReduxState) => state['features/toolbox'].mainToolbarButtonsThresholds);
+    const { reducedUImainToolbarButtons } = useSelector((state: IReduxState) => state['features/base/config']);
+    const reducedUI = useSelector((state: IReduxState) => state['features/base/responsive-ui'].reducedUI);
     const allButtons = useToolboxButtons(customToolbarButtons);
+    const isMobile = isMobileBrowser();
+    const endConferenceSupported = Boolean(conference?.isEndConferenceSupported() && isModerator);
 
     useKeyboardShortcuts(toolbarButtonsToUse);
 
@@ -146,7 +154,12 @@ export default function Toolbox({
     }, [ dispatch ]);
 
     useEffect(() => {
-        if (hangupMenuVisible && !toolbarVisible) {
+
+        // On mobile web we want to keep both toolbox and hang up menu visible
+        // because they depend on each other.
+        if (endConferenceSupported && isMobile) {
+            hangupMenuVisible && dispatch(setToolboxVisible(true));
+        } else if (hangupMenuVisible && !toolbarVisible) {
             onSetHangupVisible(false);
             dispatch(setToolbarHovered(false));
         }
@@ -194,37 +207,56 @@ export default function Toolbox({
     }, [ dispatch ]);
 
     /**
-     * Toggle the toolbar visibility when tabbing into it.
+     * Handle focus on the toolbar.
      *
      * @returns {void}
      */
-    const onTabIn = useCallback(() => {
-        if (!toolbarVisible) {
-            dispatch(showToolbox());
-        }
-    }, [ toolbarVisible, dispatch ]);
+    const handleFocus = useCallback(() => {
+        dispatch(setToolboxVisible(true));
+    }, [ dispatch ]);
+
+    /**
+     * Handle blur the toolbar..
+     *
+     * @returns {void}
+     */
+    const handleBlur = useCallback(() => {
+        dispatch(setToolboxVisible(false));
+    }, [ dispatch ]);
 
     if (iAmRecorder || iAmSipGateway) {
         return null;
     }
 
-    const endConferenceSupported = Boolean(conference?.isEndConferenceSupported() && isModerator);
-    const isMobile = isMobileBrowser();
 
     const rootClassNames = `new-toolbox ${toolbarVisible ? 'visible' : ''} ${
-        toolbarButtonsToUse.length ? '' : 'no-buttons'} ${chatOpen ? 'shift-right' : ''}`;
+        toolbarButtonsToUse.length ? '' : 'no-buttons'}`;
 
     const toolbarAccLabel = 'toolbar.accessibilityLabel.moreActionsMenu';
     const containerClassName = `toolbox-content${isMobile || isNarrowLayout ? ' toolbox-content-mobile' : ''}`;
 
-    const { mainMenuButtons, overflowMenuButtons } = getVisibleButtons({
+    const normalUIButtons = getVisibleButtons({
         allButtons,
         buttonsWithNotifyClick,
         toolbarButtons: toolbarButtonsToUse,
-        clientWidth,
+        clientWidth: videoSpaceWidth,
         jwtDisabledButtons,
         mainToolbarButtonsThresholds
     });
+
+    const reducedUIButtons = getVisibleButtonsForReducedUI({
+        allButtons,
+        buttonsWithNotifyClick,
+        jwtDisabledButtons,
+        reducedUImainToolbarButtons,
+    });
+
+    const mainMenuButtons = reducedUI
+        ? reducedUIButtons.mainMenuButtons
+        : normalUIButtons.mainMenuButtons;
+    const overflowMenuButtons = reducedUI
+        ? []
+        : normalUIButtons.overflowMenuButtons;
     const raiseHandInOverflowMenu = overflowMenuButtons.some(({ key }) => key === 'raisehand');
     const showReactionsInOverflowMenu = _shouldDisplayReactionsButtons
         && (
@@ -235,11 +267,13 @@ export default function Toolbox({
     return (
         <div
             className = { cx(rootClassNames, shiftUp && 'shift-up') }
-            id = 'new-toolbox'>
+            id = 'new-toolbox'
+            style = { toolbarBackgroundColor ? { backgroundColor: toolbarBackgroundColor } : undefined }>
             <div className = { containerClassName }>
                 <div
                     className = 'toolbox-content-wrapper'
-                    onFocus = { onTabIn }
+                    onBlur = { handleBlur }
+                    onFocus = { handleFocus }
                     { ...(isMobile ? {} : {
                         onMouseOut,
                         onMouseOver

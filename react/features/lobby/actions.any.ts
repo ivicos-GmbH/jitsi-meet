@@ -206,7 +206,11 @@ export function startKnocking() {
         const state = getState();
         const { membersOnly } = state['features/base/conference'];
 
+        logger.info(`Lobby starting knocking (membersOnly = ${membersOnly})`);
+
         if (!membersOnly) {
+            // let's hide the notification (the case with denied access and retrying)
+            dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
 
             // no membersOnly, this means we got lobby screen shown as someone
             // tried to join a conference that has lobby enabled without setting display name

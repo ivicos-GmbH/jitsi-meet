@@ -2,6 +2,7 @@ import { jitsiLocalStorage } from '@jitsi/js-utils/jitsi-local-storage';
 import EventEmitter from 'events';
 
 import { urlObjectToString } from '../../../react/features/base/util/uri';
+import { isPiPEnabled } from '../../../react/features/pip/external-api.shared';
 import {
     PostMessageTransportBackend,
     Transport
@@ -11,7 +12,6 @@ import {
     getAvailableDevices,
     getCurrentDevices,
     isDeviceChangeAvailable,
-    isDeviceListAvailable,
     isMultipleAudioInputSupported,
     setAudioInputDevice,
     setAudioOutputDevice,
@@ -40,6 +40,7 @@ const commands = {
     email: 'email',
     getSpeakerStats: 'get-speaker-stats',
     grantModerator: 'grant-moderator',
+    grantRecordingConsent: 'grant-recording-consent',
     hangup: 'video-hangup',
     hideNotification: 'hide-notification',
     initiatePrivateChat: 'initiate-private-chat',
@@ -47,6 +48,7 @@ const commands = {
     localSubject: 'local-subject',
     kickParticipant: 'kick-participant',
     muteEveryone: 'mute-everyone',
+    muteRemoteParticipant: 'mute-remote-participant',
     overwriteConfig: 'overwrite-config',
     overwriteNames: 'overwrite-names',
     password: 'password',
@@ -62,6 +64,7 @@ const commands = {
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendParticipantToRoom: 'send-participant-to-room',
     sendTones: 'send-tones',
+    setAudioOnly: 'set-audio-only',
     setAssumedBandwidthBps: 'set-assumed-bandwidth-bps',
     setBackgroundImage: 'set-background-image',
     setBlurredBackground: 'set-blurred-background',
@@ -74,6 +77,7 @@ const commands = {
     setTileView: 'set-tile-view',
     setVideoQuality: 'set-video-quality',
     setUILanguage: 'set-ui-language',
+    setVirtualBackground: 'set-virtual-background',
     showNotification: 'show-notification',
     startRecording: 'start-recording',
     startShareVideo: 'start-share-video',
@@ -100,7 +104,9 @@ const commands = {
     toggleVideo: 'toggle-video',
     toggleWhiteboard: 'toggle-whiteboard',
     updateSharedVideoOwner: 'update-shared-video-owner',
-    updateSharedVideoState: 'update-shared-video-state'
+    updateSharedVideoState: 'update-shared-video-state',
+    showPiP: 'show-pip',
+    hidePiP: 'hide-pip'
 };
 
 /**
@@ -108,9 +114,13 @@ const commands = {
  * events expected by jitsi-meet.
  */
 const events = {
+    '_pip-requested': '_pipRequested',
+    'pip-entered': 'pipEntered',
+    'pip-left': 'pipLeft',
     'avatar-changed': 'avatarChanged',
     'audio-availability-changed': 'audioAvailabilityChanged',
     'audio-mute-status-changed': 'audioMuteStatusChanged',
+    'audio-only-changed': 'audioOnlyChanged',
     'audio-or-video-sharing-toggled': 'audioOrVideoSharingToggled',
     'breakout-rooms-updated': 'breakoutRoomsUpdated',
     'browser-support': 'browserSupport',
@@ -119,6 +129,7 @@ const events = {
     'compute-pressure-changed': 'computePressureChanged',
     'conference-created-timestamp': 'conferenceCreatedTimestamp',
     'content-sharing-participants-changed': 'contentSharingParticipantsChanged',
+    'custom-notification-action-triggered': 'customNotificationActionTriggered',
     'data-channel-closed': 'dataChannelClosed',
     'data-channel-opened': 'dataChannelOpened',
     'device-list-changed': 'deviceListChanged',
@@ -149,6 +160,7 @@ const events = {
     'participant-kicked-out': 'participantKickedOut',
     'participant-left': 'participantLeft',
     'participant-menu-button-clicked': 'participantMenuButtonClick',
+    'participant-muted': 'participantMuted',
     'participant-role-changed': 'participantRoleChanged',
     'participants-pane-toggled': 'participantsPaneToggled',
     'password-required': 'passwordRequired',
@@ -157,6 +169,7 @@ const events = {
     'proxy-connection-event': 'proxyConnectionEvent',
     'raise-hand-updated': 'raiseHandUpdated',
     'ready': 'ready',
+    'recording-consent-dialog-open': 'recordingConsentDialogOpen',
     'recording-link-available': 'recordingLinkAvailable',
     'recording-status-changed': 'recordingStatusChanged',
     'room-background-updated': 'roomBackgroundUpdated',
@@ -176,6 +189,7 @@ const events = {
     'suspend-detected': 'suspendDetected',
     'tile-view-changed': 'tileViewChanged',
     'toolbar-button-clicked': 'toolbarButtonClicked',
+    'toolbar-visibility-changed': 'toolbarVisibilityChanged',
     'transcribing-status-changed': 'transcribingStatusChanged',
     'transcription-chunk-received': 'transcriptionChunkReceived',
     'whiteboard-status-changed': 'whiteboardStatusChanged'
@@ -203,80 +217,6 @@ let id = 0;
  */
 function changeParticipantNumber(APIInstance, number) {
     APIInstance._numberOfParticipants += number;
-}
-
-/**
- * Generates the URL for the iframe.
- *
- * @param {string} domain - The domain name of the server that hosts the
- * conference.
- * @param {string} [options] - Another optional parameters.
- * @param {Object} [options.configOverwrite] - Object containing configuration
- * options defined in config.js to be overridden.
- * @param {Object} [options.interfaceConfigOverwrite] - Object containing
- * configuration options defined in interface_config.js to be overridden.
- * @param {string} [options.jwt] - The JWT token if needed by jitsi-meet for
- * authentication.
- * @param {string} [options.lang] - The meeting's default language.
- * @param {string} [options.roomName] - The name of the room to join.
- * @returns {string} The URL.
- */
-function generateURL(domain, options = {}) {
-    return urlObjectToString({
-        ...options,
-        url: `https://${domain}/#jitsi_meet_external_api_id=${id}`
-    });
-}
-
-/**
- * Parses the arguments passed to the constructor. If the old format is used
- * the function translates the arguments to the new format.
- *
- * @param {Array} args - The arguments to be parsed.
- * @returns {Object} JS object with properties.
- */
-function parseArguments(args) {
-    if (!args.length) {
-        return {};
-    }
-
-    const firstArg = args[0];
-
-    switch (typeof firstArg) {
-    case 'string': // old arguments format
-    case 'undefined': {
-        // Not sure which format but we are trying to parse the old
-        // format because if the new format is used everything will be undefined
-        // anyway.
-        const [
-            roomName,
-            width,
-            height,
-            parentNode,
-            configOverwrite,
-            interfaceConfigOverwrite,
-            jwt,
-            onload,
-            lang
-        ] = args;
-
-        return {
-            roomName,
-            width,
-            height,
-            parentNode,
-            configOverwrite,
-            interfaceConfigOverwrite,
-            jwt,
-            onload,
-            lang
-        };
-    }
-    case 'object': // new arguments format
-        return args[0];
-    default:
-        throw new Error('Can\'t parse the arguments!');
-    }
 }
 
 /**
@@ -347,7 +287,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * @param {string}  [options.release] - The key used for specifying release if enabled on the backend.
      * @param {string} [options.sandbox] - Sandbox directive for the created iframe, if desired.
      */
-    constructor(domain, ...args) {
+    constructor(domain, options = {}) {
         super();
         const {
             roomName = '',
@@ -356,21 +296,22 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             parentNode = document.body,
             configOverwrite = {},
             interfaceConfigOverwrite = {},
-            jwt = undefined,
-            lang = undefined,
-            onload = undefined,
+            jwt,
+            lang,
+            onload,
             invitees,
             iceServers,
             devices,
             userInfo,
             e2eeKey,
             release,
-            sandbox = ''
-        } = parseArguments(args);
+            sandbox
+        } = options;
         const localStorageContent = jitsiLocalStorage.getItem('jitsiLocalStorage');
 
         this._parentNode = parentNode;
-        this._url = generateURL(domain, {
+
+        this._url = urlObjectToString({
             configOverwrite,
             iceServers,
             interfaceConfigOverwrite,
@@ -382,7 +323,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             appData: {
                 localStorageContent
             },
-            release
+            release,
+            url: `https://${domain}/#jitsi_meet_external_api_id=${id}`
         });
 
         this._createIFrame(height, width, sandbox);
@@ -409,6 +351,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this._participants = {};
         this._myUserID = undefined;
         this._onStageParticipant = undefined;
+        this._iAmvisitor = undefined;
+        this._pipConfig = configOverwrite?.pip;
         this._setupListeners();
         id++;
     }
@@ -630,6 +574,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
                     email: data.email,
                     avatarURL: data.avatarURL
                 };
+                this._iAmvisitor = data.visitor;
             }
 
             // eslint-disable-next-line no-fallthrough
@@ -737,6 +682,56 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
                 this.emit(requestName, data, callback);
             }
         });
+
+        this._setupIntersectionObserver();
+    }
+
+    /**
+     * Sets up IntersectionObserver to monitor iframe visibility.
+     * Calls showPiP/hidePiP based on visibility.
+     *
+     * @private
+     * @returns {void}
+     */
+    _setupIntersectionObserver() {
+        if (!isPiPEnabled(this._pipConfig)) {
+            return;
+        }
+
+        // Don't create duplicate observers.
+        if (this._intersectionObserver) {
+            return;
+        }
+
+        this._isIntersecting = true;
+
+        this._intersectionObserver = new IntersectionObserver(entries => {
+            const entry = entries[entries.length - 1];
+            const wasIntersecting = this._isIntersecting;
+
+            this._isIntersecting = entry.isIntersecting;
+
+            if (!entry.isIntersecting && wasIntersecting) {
+                this.showPiP();
+            } else if (entry.isIntersecting && !wasIntersecting) {
+                this.hidePiP();
+            }
+        });
+
+        this._intersectionObserver.observe(this._frame);
+    }
+
+    /**
+     * Tears down IntersectionObserver.
+     *
+     * @private
+     * @returns {void}
+     */
+    _teardownIntersectionObserver() {
+        if (this._intersectionObserver) {
+            this._intersectionObserver.disconnect();
+            this._intersectionObserver = null;
+        }
     }
 
     /**
@@ -766,9 +761,20 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      *
      * @returns {Object} Rooms info.
      */
-    async getRoomsInfo() {
+    getRoomsInfo() {
         return this._transport.sendRequest({
             name: 'rooms-info'
+        });
+    }
+
+    /**
+     * Returns the Shared Document Url of the conference.
+     *
+     * @returns {Object} Rooms info.
+     */
+    getSharedDocumentUrl() {
+        return this._transport.sendRequest({
+            name: 'get-shared-document-url'
         });
     }
 
@@ -899,6 +905,27 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /**
+     * Captures a picture through OS camera.
+     *
+     * @param {string} cameraFacingMode - The OS camera facing mode (environment/user).
+     * @param {string} descriptionText - The OS camera facing mode (environment/user).
+     * @param {string} titleText - The OS camera facing mode (environment/user).
+     * @returns {Promise<string>} - Resolves with a base64 encoded image data of the screenshot.
+     */
+    captureCameraPicture(
+            cameraFacingMode,
+            descriptionText,
+            titleText
+    ) {
+        return this._transport.sendRequest({
+            name: 'capture-camera-picture',
+            cameraFacingMode,
+            descriptionText,
+            titleText
+        });
+    }
+
+    /**
      * Removes the listeners and removes the Jitsi Meet frame.
      *
      * @returns {void}
@@ -907,6 +934,8 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         this.emit('_willDispose');
         this._transport.dispose();
         this.removeAllListeners();
+        this._teardownIntersectionObserver();
+
         if (this._frame && this._frame.parentNode) {
             this._frame.parentNode.removeChild(this._frame);
         }
@@ -935,10 +964,47 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
 
             return;
         }
+
+        // Handle pip config changes locally.
+        // We update local state, send command to iframe, then handle PiP show/hide
+        // so the iframe config is updated before we try to show PiP.
+        let pipTransition = null;
+
+        if (name === 'overwriteConfig' && args[0]?.pip !== undefined) {
+            const wasEnabled = isPiPEnabled(this._pipConfig);
+
+            this._pipConfig = {
+                ...this._pipConfig,
+                ...args[0].pip
+            };
+
+            const isEnabled = isPiPEnabled(this._pipConfig);
+
+            if (!wasEnabled && isEnabled) {
+                this._setupIntersectionObserver();
+                pipTransition = 'enabled';
+            } else if (wasEnabled && !isEnabled) {
+                this._teardownIntersectionObserver();
+                pipTransition = 'disabled';
+            }
+        }
+
+        // Send command to iframe first.
         this._transport.sendEvent({
             data: args,
             name: commands[name]
         });
+
+        // Handle PiP state after command is sent so iframe config is updated.
+        if (pipTransition === 'enabled') {
+            // Show PiP if iframe is currently not visible.
+            if (!this._isIntersecting) {
+                this.showPiP();
+            }
+        } else if (pipTransition === 'disabled') {
+            // Hide any open PiP window.
+            this.hidePiP();
+        }
     }
 
     /**
@@ -1068,10 +1134,15 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * Returns Promise that resolves with true if the device list is available
      * and with false if not.
      *
+     * @deprecated
+     *
      * @returns {Promise}
      */
     isDeviceListAvailable() {
-        return isDeviceListAvailable(this._transport);
+        console.warn('isDeviceListAvailable is deprecated and will be removed in the future. '
+                     + 'It always returns true');
+
+        return Promise.resolve(true);
     }
 
     /**
@@ -1187,6 +1258,15 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         return this._transport.sendRequest({
             name: 'is-start-silent'
         });
+    }
+
+    /**
+     * Returns whether we have joined as visitor in a meeting.
+     *
+     * @returns {boolean} - Returns true if we have joined as visitor.
+     */
+    isVisitor() {
+        return this._iAmvisitor;
     }
 
     /**
@@ -1323,6 +1403,10 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * Returns the state of availability electron share screen via external api.
      *
      * @returns {Promise}
+     *
+     * TODO: should be removed after we make sure that all Electron clients use only versions
+     * after with the legacy SS support was removed from the electron SDK. If we remove it now the SS for Electron
+     * clients with older versions wont work.
      */
     _isNewElectronScreensharingSupported() {
         return this._transport.sendRequest({
@@ -1675,5 +1759,45 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     requestSharedVideoStateUpdateFromVideoOwner() {
         this.executeCommand('requestSharedVideoStateUpdateFromVideoOwner');
+    }
+
+    /**
+     * Enable or disable the virtual background with a custom base64 image.
+     *
+     * @param {boolean} enabled - The boolean value to enable or disable.
+     * @param {string} backgroundImage - The base64 image.
+     * @returns {void}
+    */
+    setVirtualBackground(enabled, backgroundImage) {
+        this.executeCommand('setVirtualBackground', enabled, backgroundImage);
+    }
+
+    /**
+     * Shows Picture-in-Picture window.
+     *
+     * @returns {void}
+     */
+    showPiP() {
+        this.executeCommand('showPiP');
+    }
+
+    /**
+     * Hides Picture-in-Picture window.
+     *
+     * @returns {void}
+     */
+    hidePiP() {
+        this.executeCommand('hidePiP');
+    }
+
+    /**
+     * Opens the desktop picker. This is invoked by the Electron SDK when gDM is used.
+     *
+     * @returns {Promise}
+     */
+    _openDesktopPicker() {
+        return this._transport.sendRequest({
+            name: 'open-desktop-picker'
+        });
     }
 }
