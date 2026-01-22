@@ -61,12 +61,13 @@ export function resetSharedVideoStatus() {
  *     videoUrl: string,
  * }}
  */
-export function setSharedVideoStatus({ videoUrl, status, time, ownerId, muted }: {
-    muted?: boolean; ownerId?: string; status: string; time: number; videoUrl: string;
+export function setSharedVideoStatus({ videoUrl, status, time, ownerId, muted, previousOwnerId }: {
+    muted?: boolean; ownerId?: string; previousOwnerId?: string; status: string; time: number; videoUrl: string;
 }) {
     return {
         type: SET_SHARED_VIDEO_STATUS,
         ownerId,
+        previousOwnerId,
         status,
         time,
         videoUrl,

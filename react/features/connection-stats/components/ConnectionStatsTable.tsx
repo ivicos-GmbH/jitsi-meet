@@ -79,11 +79,6 @@ interface IProps {
     enableAssumedBandwidth?: boolean;
 
     /**
-     * Whether to enable assumed bandwidth.
-     */
-    enableAssumedBandwidth?: boolean;
-
-    /**
      * Whether or not should display the "Save Logs" link.
      */
     enableSaveLogs: boolean;

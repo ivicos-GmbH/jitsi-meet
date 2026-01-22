@@ -151,7 +151,7 @@ export function setMainToolbarThresholds() {
         });
 
         THRESHOLDS.forEach(({ width, order }) => {
-            let finalOrder = mainToolbarButtonsLenghtMap.get(order.length);
+            let finalOrder = Array.isArray(order) ? mainToolbarButtonsLenghtMap.get(order.length) : undefined;
 
             if (finalOrder) {
                 orderIsChanged = true;
