@@ -103,7 +103,7 @@ jobs:
   android-sdk-build:
     name: Build mobile SDK (Android)
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: reactnativecommunity/react-native-android:v15.0
       volumes:
         - /usr:/host/usr
@@ -198,6 +198,7 @@ jobs:
         npm -v
     - run: npm install
     - run: make
-    - run: sudo apt-get install -y debhelper
+    - run: sudo apt-get update
+    - run: sudo apt-get install -y build-essential debhelper
     - run: dpkg-buildpackage -A -rfakeroot -us -uc -d
     - run: make source-package

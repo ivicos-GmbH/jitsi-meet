@@ -27,6 +27,8 @@ jobs:
         run: cat debian/changelog
       - run: npm install
       - run: make
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential
       - name: Generate Debian package
         run: bash ./scripts/generate-package.sh
       - name: Generate external JS file for client
