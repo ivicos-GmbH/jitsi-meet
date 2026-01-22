@@ -54,7 +54,7 @@ MiddlewareRegistry.register(store => next => action => {
 
             batch(() => {
                 if (action.type !== I_AM_VISITOR_MODE) {
-                    dispatch(setMainToolbarThresholds());
+                    dispatch(setMainToolbarThresholds(THRESHOLDS));
                 }
                 dispatch({
                     type: SET_BUTTONS_WITH_NOTIFY_CLICK,
