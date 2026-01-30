@@ -4,12 +4,14 @@ import { hideDialog, openDialog } from '../base/dialog/actions';
 import { getLocalParticipant } from '../base/participants/functions';
 
 import {
+    REQUEST_SHARED_VIDEO_STATE,
     RESET_SHARED_VIDEO_STATUS,
     SET_ALLOWED_URL_DOMAINS,
     SET_CONFIRM_SHOW_VIDEO,
+    SET_DISABLE_BUTTON,
     SET_SHARED_VIDEO_STATUS
 } from './actionTypes';
-import { ShareVideoConfirmDialog, SharedVideoDialog } from './components';
+import { ShareVideoConfirmDialog, SharedVideoDialog } from './components/index.web';
 import { PLAYBACK_START, PLAYBACK_STATUSES } from './constants';
 import { isSharedVideoEnabled, sendShareVideoCommand } from './functions';
 
@@ -100,6 +102,95 @@ export function stopSharedVideo() {
         if (ownerId === localParticipant?.id) {
             dispatch(resetSharedVideoStatus());
         }
+    };
+}
+
+/**
+ * Pauses the shared video.
+ *
+ * @returns {Function}
+ */
+export function pauseSharedVideo() {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const conference = getCurrentConference(getState());
+        const state = getState();
+        const currentVideoState = state['features/shared-video'];
+
+        if (conference && currentVideoState.videoUrl) {
+            dispatch(setSharedVideoStatus({
+                videoUrl: currentVideoState.videoUrl,
+                status: 'pause',
+                time: currentVideoState.time ?? 0,
+                muted: currentVideoState.muted,
+                ownerId: currentVideoState.ownerId,
+                previousOwnerId: currentVideoState.previousOwnerId
+            }));
+        }
+    };
+}
+
+/**
+ * Updates the shared video owner.
+ *
+ * @param {string} ownerId - The new owner ID.
+ * @returns {Function}
+ */
+export function updateSharedVideoOwner(ownerId: string) {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const conference = getCurrentConference(getState());
+        const state = getState();
+        const currentVideoState = state['features/shared-video'];
+
+        if (conference && currentVideoState.videoUrl && currentVideoState.status) {
+            dispatch(setSharedVideoStatus({
+                videoUrl: currentVideoState.videoUrl,
+                status: currentVideoState.status,
+                time: currentVideoState.time ?? 0,
+                muted: currentVideoState.muted,
+                ownerId,
+                previousOwnerId: currentVideoState.ownerId
+            }));
+        }
+    };
+}
+
+/**
+ * Updates the shared video state.
+ *
+ * @param {Object} updatedState - The updated state object.
+ * @returns {Function}
+ */
+export function updateVideoState(updatedState: {
+    muted?: boolean;
+    ownerId?: string;
+    previousOwnerId?: string;
+    status?: string;
+    time?: number;
+    videoUrl?: string;
+}) {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const state = getState();
+        const currentVideoState = state['features/shared-video'];
+        const localParticipantId = getLocalParticipant(state)?.id;
+        const conference = getCurrentConference(state);
+        const isLocalParticipantVideoOwner = localParticipantId && localParticipantId === currentVideoState.ownerId;
+
+        if (conference && isLocalParticipantVideoOwner) {
+            dispatch(setSharedVideoStatus(updatedState ? updatedState as any : currentVideoState));
+        }
+    };
+}
+
+/**
+ * Requests shared video state update from the video owner.
+ *
+ * @param {Object} currentVideoState - The current video state.
+ * @returns {Object}
+ */
+export function requestSharedVideoStateFromVideoOwner(currentVideoState: any) {
+    return {
+        type: REQUEST_SHARED_VIDEO_STATE,
+        ...currentVideoState
     };
 }
 
@@ -200,5 +291,21 @@ export function showConfirmPlayingDialog(actor: String, onSubmit: Function) {
 export function hideConfirmPlayingDialog() {
     return (dispatch: IStore['dispatch']) => {
         dispatch(hideDialog('ShareVideoConfirmDialog', ShareVideoConfirmDialog));
+    };
+}
+
+/**
+ * Disables or enables the share video button.
+ *
+ * @param {boolean} disabled - The current state of the share video button.
+ * @returns {{
+ *     type: SET_DISABLE_BUTTON,
+ *     disabled: boolean
+ * }}
+ */
+export function setDisableButton(disabled: boolean) {
+    return {
+        type: SET_DISABLE_BUTTON,
+        disabled
     };
 }

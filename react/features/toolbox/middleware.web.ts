@@ -15,7 +15,7 @@ import {
     SET_TOOLBOX_TIMEOUT
 } from './actionTypes';
 import { setMainToolbarThresholds } from './actions.web';
-import { THRESHOLDS, TOOLBAR_BUTTONS } from './constants';
+import { TOOLBAR_BUTTONS } from './constants';
 import { getToolbarButtons } from './functions.web';
 import { NOTIFY_CLICK_MODE } from './types';
 
