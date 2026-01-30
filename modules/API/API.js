@@ -28,8 +28,8 @@ import { overwriteConfig } from '../../react/features/base/config/actions';
 import { getWhitelistedJSON } from '../../react/features/base/config/functions.any';
 import { toggleDialog } from '../../react/features/base/dialog/actions';
 import { isSupportedBrowser } from '../../react/features/base/environment/environment';
-import i18next, { DEFAULT_LANGUAGE } from '../../react/features/base/i18n/i18next';
 import { isMobileBrowser } from '../../react/features/base/environment/utils';
+import i18next, { DEFAULT_LANGUAGE } from '../../react/features/base/i18n/i18next';
 import { parseJWTFromURLParams } from '../../react/features/base/jwt/functions';
 import JitsiMeetJS, { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
 import { MEDIA_TYPE, VIDEO_TYPE } from '../../react/features/base/media/constants';
@@ -124,8 +124,12 @@ import { isScreenshotCaptureEnabled } from '../../react/features/screenshot-capt
 import SettingsDialog from '../../react/features/settings/components/web/SettingsDialog';
 import { SETTINGS_TABS } from '../../react/features/settings/constants';
 import {
+    pauseSharedVideo,
     playSharedVideo,
-    stopSharedVideo
+    requestSharedVideoStateFromVideoOwner,
+    stopSharedVideo,
+    updateSharedVideoOwner,
+    updateVideoState
 } from '../../react/features/shared-video/actions';
 import { extractYoutubeIdOrURL, sendStoppedVideoUrlNotification } from '../../react/features/shared-video/functions';
 import {
@@ -643,10 +647,39 @@ function initCommands() {
                 APP.store.dispatch(playSharedVideo(id));
             }
         },
+        'update-shared-video-owner': ownerId => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.start'));
+            APP.store.dispatch(updateSharedVideoOwner(ownerId));
+        },
+        'update-shared-video-state': updatedState => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.start'));
+            APP.store.dispatch(updateVideoState(updatedState));
+        },
         'stop-share-video': () => {
             sendAnalytics(createApiEvent('share.video.stop'));
             sendStoppedVideoUrlNotification();
             APP.store.dispatch(stopSharedVideo());
+        },
+        'pause-share-video': () => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.pause'));
+            APP.store.dispatch(pauseSharedVideo());
+        },
+        'request-shared-video-state-update-from-video-owner': () => {
+            logger.debug('Share video command received');
+            sendAnalytics(createApiEvent('share.video.stateupdaterequest'));
+
+            const videoState = APP.store.getState()['features/shared-video'];
+            const conference = getCurrentConference(APP.store.getState());
+
+            if (!conference) {
+                logger.error('Conference is not defined');
+
+                return;
+            }
+            APP.store.dispatch(requestSharedVideoStateFromVideoOwner(videoState));
         },
 
         /**
@@ -1621,6 +1654,21 @@ class API {
             name: 'avatar-changed',
             avatarURL,
             id
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that user updated its background information.
+     *
+     * @param {string} localId - Local participant ID.
+     * @param {Object} backgroundData - Background image/color object.
+     * @returns {void}
+     */
+    notifyBackgroundChanged(localId, backgroundData) {
+        this._sendEvent({
+            name: 'room-background-updated',
+            backgroundData,
+            localId
         });
     }
 

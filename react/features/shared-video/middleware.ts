@@ -1,4 +1,9 @@
-import { batch } from 'react-redux';
+/* global APP */
+
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable valid-jsdoc */
 
 import { IStore } from '../app/types';
 import { CONFERENCE_JOIN_IN_PROGRESS, CONFERENCE_LEFT } from '../base/conference/actionTypes';
@@ -11,15 +16,18 @@ import { participantJoined, participantLeft, pinParticipant } from '../base/part
 import { getLocalParticipant, getParticipantById, getParticipantDisplayName } from '../base/participants/functions';
 import { FakeParticipant } from '../base/participants/types';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
+import StateListenerRegistry from '../base/redux/StateListenerRegistry';
 import { SET_DYNAMIC_BRANDING_DATA } from '../dynamic-branding/actionTypes';
 import { showWarningNotification } from '../notifications/actions';
 import { NOTIFICATION_TIMEOUT_TYPE } from '../notifications/constants';
 
-import { RESET_SHARED_VIDEO_STATUS, SET_SHARED_VIDEO_STATUS } from './actionTypes';
+import { REQUEST_SHARED_VIDEO_STATE, RESET_SHARED_VIDEO_STATUS, SET_SHARED_VIDEO_STATUS } from './actionTypes';
 import {
     hideConfirmPlayingDialog,
+    requestSharedVideoStateFromVideoOwner,
     resetSharedVideoStatus,
     setAllowedUrlDomians,
+    setDisableButton,
     setSharedVideoStatus,
     showConfirmPlayingDialog
 } from './actions';
@@ -27,11 +35,13 @@ import {
     DEFAULT_ALLOWED_URL_DOMAINS,
     PLAYBACK_START,
     PLAYBACK_STATUSES,
+    REQUEST_SHARED_VIDEO_STATE_COMMAND,
     SHARED_VIDEO,
     VIDEO_PLAYER_PARTICIPANT_NAME
 } from './constants';
-import { isSharedVideoEnabled, isSharingStatus, isURLAllowedForSharedVideo, sendShareVideoCommand } from './functions';
+import { isSharedVideoEnabled, isSharingStatus, isURLAllowedForSharedVideo, sendStoppedVideoUrlNotification } from './functions';
 import logger from './logger';
+import { ISharedVideoState } from './reducer';
 
 
 /**
@@ -43,6 +53,23 @@ import logger from './logger';
  */
 MiddlewareRegistry.register(store => next => action => {
     const { dispatch, getState } = store;
+    const state = getState();
+    const conference = getCurrentConference(state);
+    const localParticipantId = getLocalParticipant(state)?.id;
+    const { videoUrl, status, ownerId, time, muted, volume, previousOwnerId } = action;
+    const sharedVideoCurrentState: ISharedVideoState = state['features/shared-video'];
+
+    const findNewVideoOwnerId = (conference: any, localParticipantId: any) => {
+        const remoteParticipantIds = conference ? Object.keys(conference.participants) : [];
+        const allParticipantIds = [ localParticipantId, ...remoteParticipantIds ];
+
+        allParticipantIds.sort((a, b) => a.localeCompare(b));
+
+        logger.debug('All participant Ids ', allParticipantIds);
+        logger.debug('Local participant Id ', localParticipantId);
+
+        return allParticipantIds[0].length > 0 && allParticipantIds[0];
+    };
 
     if (!isSharedVideoEnabled(getState())) {
         return next(action);
@@ -53,43 +80,31 @@ MiddlewareRegistry.register(store => next => action => {
         const { conference } = action;
         const localParticipantId = getLocalParticipant(getState())?.id;
 
+        requestSharedVideoStateFromVideoOwner(sharedVideoCurrentState);
+
         conference.addCommandListener(SHARED_VIDEO,
             ({ value, attributes }: { attributes: {
-                muted: string; state: string; time: string; }; value: string; },
-            from: string) => {
-                const state = getState();
+                from: string; muted: string; ownerId: string; previousOwnerId: string; state: string; time: string; }; value: string; }) => {
+
+                const { from, state, time, muted, ownerId, previousOwnerId } = attributes;
                 const sharedVideoStatus = attributes.state;
-
-                const { ownerId } = state['features/shared-video'];
-
-                if (ownerId && ownerId !== from) {
-                    logger.warn(
-                        `User with id: ${from} sent shared video command: ${sharedVideoStatus} while we are playing.`);
-
-                    return;
-                }
 
                 if (isSharingStatus(sharedVideoStatus)) {
                     // confirmShowVideo is undefined the first time we receive
                     // when confirmShowVideo is false we ignore everything except stop that resets it
-                    if (state['features/shared-video'].confirmShowVideo === false) {
+                    if (getState()['features/shared-video'].confirmShowVideo === false) {
                         return;
                     }
 
-                    if (isURLAllowedForSharedVideo(value, state['features/shared-video'].allowedUrlDomains, true)
+                    if (isURLAllowedForSharedVideo(value, getState()['features/shared-video'].allowedUrlDomains, true)
                         || localParticipantId === from
-                        || state['features/shared-video'].confirmShowVideo) { // if confirmed skip asking again
-                        handleSharingVideoStatus(store, value, {
-                            ...attributes,
-                            from
-                        }, conference);
-                    } else {
-                        dispatch(showConfirmPlayingDialog(getParticipantDisplayName(state, from), () => {
+                        || getState()['features/shared-video'].confirmShowVideo) { // if confirmed skip asking again
 
-                            handleSharingVideoStatus(store, value, {
-                                ...attributes,
-                                from
-                            }, conference);
+                        handleSharingVideoStatus(store, value, attributes, conference);
+                    } else {
+                        dispatch(showConfirmPlayingDialog(getParticipantDisplayName(getState(), from), () => {
+
+                            handleSharingVideoStatus(store, value, attributes, conference);
 
                             return true; // on mobile this is used to close the dialog
                         }));
@@ -99,13 +114,13 @@ MiddlewareRegistry.register(store => next => action => {
                 }
 
                 if (sharedVideoStatus === 'stop') {
-                    const videoParticipant = getParticipantById(state, value);
+                    const videoParticipant = getParticipantById(getState(), value);
 
-                    if (state['features/shared-video'].confirmShowVideo === false) {
+                    if (getState()['features/shared-video'].confirmShowVideo === false) {
                         dispatch(showWarningNotification({
                             titleKey: 'dialog.shareVideoLinkStopped',
                             titleArguments: {
-                                name: getParticipantDisplayName(state, from)
+                                name: getParticipantDisplayName(getState(), from)
                             }
                         }, NOTIFICATION_TIMEOUT_TYPE.LONG));
                     }
@@ -117,27 +132,58 @@ MiddlewareRegistry.register(store => next => action => {
                     }));
 
                     if (localParticipantId !== from) {
+                        sendStoppedVideoUrlNotification();
                         dispatch(resetSharedVideoStatus());
                     }
                 }
             }
         );
+
+        // Web-specific: disable share button when someone else is sharing
+        conference.addCommandListener(SHARED_VIDEO, ({ attributes }: { attributes:
+            { from: string; state: string; }; }) => {
+            const { from } = attributes;
+            const status = attributes.state;
+
+            if (status === PLAYBACK_STATUSES.PLAYING) {
+                if (localParticipantId !== from) {
+                    dispatch(setDisableButton(true));
+                }
+            } else if (status === 'stop') {
+                dispatch(setDisableButton(false));
+            }
+        });
         break;
     }
     case CONFERENCE_LEFT:
         dispatch(setAllowedUrlDomians(DEFAULT_ALLOWED_URL_DOMAINS));
         dispatch(resetSharedVideoStatus());
         break;
-    case PARTICIPANT_LEFT: {
-        const state = getState();
-        const conference = getCurrentConference(state);
-        const { ownerId: stateOwnerId, videoUrl: statevideoUrl } = state['features/shared-video'];
+    case REQUEST_SHARED_VIDEO_STATE:
+        sendRequestSharedVideoStateCommand(conference, videoUrl, localParticipantId);
+        break;
 
-        if (action.participant.id === stateOwnerId) {
-            batch(() => {
-                dispatch(resetSharedVideoStatus());
-                dispatch(participantLeft(statevideoUrl ?? '', conference));
-            });
+    case PARTICIPANT_LEFT: {
+        const hasVideoOwnerLeft = action.participant.id === sharedVideoCurrentState.ownerId;
+
+        if (conference && hasVideoOwnerLeft) {
+
+            const { 'disabled': deletedKey, ...newState } = { ...sharedVideoCurrentState };
+            const isLocalParticipantNewVideoOwner = findNewVideoOwnerId(conference, localParticipantId) === localParticipantId;
+
+            if (isLocalParticipantNewVideoOwner && newState.videoUrl && newState.status && newState.time !== undefined) {
+                newState.ownerId = localParticipantId;
+                newState.previousOwnerId = sharedVideoCurrentState.ownerId;
+
+                dispatch(setSharedVideoStatus({
+                    videoUrl: newState.videoUrl,
+                    status: newState.status,
+                    time: newState.time,
+                    ownerId: newState.ownerId,
+                    previousOwnerId: newState.previousOwnerId,
+                    muted: newState.muted
+                }));
+            }
         }
         break;
     }
@@ -160,32 +206,35 @@ MiddlewareRegistry.register(store => next => action => {
         const state = getState();
         const conference = getCurrentConference(state);
         const localParticipantId = getLocalParticipant(state)?.id;
-        const { videoUrl, status, ownerId, time, muted, volume } = action;
-        const operator = status === PLAYBACK_STATUSES.PLAYING ? 'is' : '';
+        const { videoUrl, status, ownerId, time, muted, volume, previousOwnerId } = action;
 
-        logger.debug(`User with id: ${ownerId} ${operator} ${status} video sharing.`);
+        // const operator = status === PLAYBACK_STATUSES.PLAYING ? 'is' : '';
+
+        // logger.debug(`User with id: ${ownerId} ${operator} ${status} video sharing.`);
 
         if (typeof APP !== 'undefined') {
             APP.API.notifyAudioOrVideoSharingToggled(MEDIA_TYPE.VIDEO, status, ownerId);
         }
 
-        // when setting status we need to send the command for that, but not do it for the start command
-        // as we are sending the command in playSharedVideo and setting the start status once
-        // we receive the response, this way we will start the video at the same time when remote participants
-        // start it, on receiving the command
-        if (status === 'start') {
-            break;
-        }
+        const isNoUserInControlBeforeStateUpdate = sharedVideoCurrentState.ownerId === '' || sharedVideoCurrentState.ownerId === undefined;
+        const isLocalUserOwnerCurrently = localParticipantId === ownerId;
+        const videoOwnershipInitiatedByLocalParticipant = isNoUserInControlBeforeStateUpdate && isLocalUserOwnerCurrently;
 
-        if (localParticipantId === ownerId) {
-            sendShareVideoCommand({
+        const isLocalUserInControlBeforeStateUpdate = localParticipantId === sharedVideoCurrentState.ownerId;
+        const isVideoOwnershipTransferredFromLocal = isLocalUserInControlBeforeStateUpdate && !isLocalUserOwnerCurrently;
+
+        const isLocalUserInControlContinuously = isLocalUserInControlBeforeStateUpdate && isLocalUserOwnerCurrently;
+
+        if (videoOwnershipInitiatedByLocalParticipant || isVideoOwnershipTransferredFromLocal || isLocalUserInControlContinuously) {
+            sendShareVideoCommandExtended({
                 conference,
                 localParticipantId,
                 muted,
                 status,
                 time,
                 id: videoUrl,
-                volume
+                ownerId,
+                previousOwnerId
             });
         }
         break;
@@ -205,17 +254,18 @@ MiddlewareRegistry.register(store => next => action => {
             APP.API.notifyAudioOrVideoSharingToggled(MEDIA_TYPE.VIDEO, 'stop', stateOwnerId);
         }
 
-        if (localParticipantId === stateOwnerId) {
+        if (localParticipantId === stateOwnerId && sharedVideoCurrentState.videoUrl) {
             const conference = getCurrentConference(state);
 
-            sendShareVideoCommand({
+            sendShareVideoCommandExtended({
                 conference,
-                id: statevideoUrl ?? '',
+                id: sharedVideoCurrentState.videoUrl,
                 localParticipantId,
                 muted: true,
                 status: 'stop',
                 time: 0,
-                volume: 0
+                ownerId: sharedVideoCurrentState.ownerId,
+                previousOwnerId: sharedVideoCurrentState.previousOwnerId
             });
         }
         break;
@@ -224,6 +274,7 @@ MiddlewareRegistry.register(store => next => action => {
 
     return next(action);
 });
+
 
 /**
  * Handles the playing, pause and start statuses for the shared video.
@@ -237,8 +288,10 @@ MiddlewareRegistry.register(store => next => action => {
  * @returns {void}
  */
 function handleSharingVideoStatus(store: IStore, videoUrl: string,
-        { state, time, from, muted }: { from: string; muted: string; state: string; time: string; },
+        // eslint-disable-next-line max-len
+        { state, time, from, muted, ownerId, previousOwnerId }: { from: string; muted: string; ownerId: string; previousOwnerId: string; state: string; time: string; },
         conference: IJitsiConference) {
+
     const { dispatch, getState } = store;
     const localParticipantId = getLocalParticipant(getState())?.id;
     const oldStatus = getState()['features/shared-video']?.status ?? '';
@@ -250,6 +303,7 @@ function handleSharingVideoStatus(store: IStore, videoUrl: string,
 
         return;
     }
+
 
     // If the video was not started (no participant) we want to create the participant
     // this can be triggered by start, but also by paused or playing
@@ -268,23 +322,107 @@ function handleSharingVideoStatus(store: IStore, videoUrl: string,
 
         dispatch(pinParticipant(videoUrl));
 
-        if (localParticipantId === from) {
-            dispatch(setSharedVideoStatus({
-                videoUrl,
-                status: state,
-                time: Number(time),
-                ownerId: localParticipantId
-            }));
-        }
     }
 
     if (localParticipantId !== from) {
-        dispatch(setSharedVideoStatus({
+        const newState = {
             muted: muted === 'true',
-            ownerId: from,
+            ownerId,
             status: state,
             time: Number(time),
-            videoUrl
-        }));
+            videoUrl,
+            previousOwnerId
+        };
+
+        dispatch(setSharedVideoStatus(newState));
     }
 }
+
+/* eslint-disable max-params */
+
+/**
+ * Sends SHARED_VIDEO command.
+ *
+ * @param {string} id - The id of the video.
+ * @param {string} status - The status of the shared video.
+ * @param {JitsiConference} conference - The current conference.
+ * @param {string} localParticipantId - The id of the local participant.
+ * @param {string} time - The seek position of the video.
+ * @param {string} ownerId - The id of video owner.
+ * @param {string} previousOwnerId - The id of the previous video.
+ * @returns {void}
+ */
+// eslint-disable-next-line max-len, require-jsdoc
+function sendShareVideoCommandExtended({ id, status, conference, localParticipantId = '', time, muted, ownerId, previousOwnerId }: {
+    conference?: IJitsiConference; id: string; localParticipantId?: string; muted: boolean;
+    ownerId?: string; previousOwnerId?: string; status: string; time: number;
+}): void {
+    conference?.sendCommandOnce(SHARED_VIDEO, {
+
+        value: id,
+        attributes: {
+            from: localParticipantId,
+            muted,
+            state: status,
+            time,
+            ownerId,
+            previousOwnerId
+        }
+    });
+}
+
+
+/**
+ * Sends REQUEST_SHARED_VIDEO_STATE_COMMAND command.
+ *
+ * @param {string} id - The id of the video.
+ * @param {JitsiConference} conference - The current conference.
+ * @param {string} localParticipantId - The id of the local participant.
+ * @returns {void}
+ */
+function sendRequestSharedVideoStateCommand(conference: any, videoUrl: any, localParticipantId: any) {
+
+    conference.sendCommandOnce(REQUEST_SHARED_VIDEO_STATE_COMMAND, {
+        value: videoUrl,
+        attributes: {
+            from: localParticipantId
+        }
+    });
+}
+
+/**
+ * Set up state change listener to receive reqeusts for shraed video state broadcast by the video owner.
+ */
+StateListenerRegistry.register(
+    state => getCurrentConference(state),
+    (conference, store, previousConference) => {
+        if (conference && conference !== previousConference) {
+            conference.addCommandListener(REQUEST_SHARED_VIDEO_STATE_COMMAND,
+                ({ value, attributes }: { attributes: any; value: any; }) => {
+
+                    const { dispatch, getState } = store;
+                    const { from } = attributes;
+                    const localParticipantId = getLocalParticipant(getState())?.id;
+                    const videoState = APP.store.getState()['features/shared-video'];
+
+                    const isLocalParticipantVideoOwner = localParticipantId === videoState.ownerId;
+                    const isSenderNotLocalParticipanr = from !== videoState.ownerId;
+                    const isTheVideoPaused = videoState.status === 'pause';
+
+                    // eslint-disable-next-line max-len
+                    if (isTheVideoPaused && isLocalParticipantVideoOwner && isSenderNotLocalParticipanr
+                        && videoState.videoUrl && videoState.status && videoState.time !== undefined) {
+                        dispatch(setSharedVideoStatus({
+                            videoUrl: videoState.videoUrl,
+                            status: videoState.status,
+                            time: videoState.time + 0.001,
+                            ownerId: videoState.ownerId,
+                            previousOwnerId: videoState.previousOwnerId,
+                            muted: videoState.muted
+                        }));
+                    }
+                }
+            );
+        }
+    }
+);
