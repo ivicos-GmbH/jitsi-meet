@@ -141,7 +141,7 @@ MiddlewareRegistry.register(store => next => action => {
 
         // Web-specific: disable share button when someone else is sharing
         conference.addCommandListener(SHARED_VIDEO, ({ attributes }: { attributes:
-            { from: string; state: string; }; }) => {
+        { from: string; state: string; }; }) => {
             const { from } = attributes;
             const status = attributes.state;
 

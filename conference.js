@@ -1729,6 +1729,7 @@ export default {
 
             if (!localParticipant) {
                 logger.warn('PERMISSIONS_RECEIVED: localParticipant not found');
+
                 return;
             }
 
