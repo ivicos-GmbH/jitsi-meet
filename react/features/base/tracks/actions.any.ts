@@ -6,7 +6,6 @@ import { NOTIFICATION_TIMEOUT, NOTIFICATION_TIMEOUT_TYPE } from '../../notificat
 import { getCurrentConference } from '../conference/functions';
 import { IJitsiConference } from '../conference/reducer';
 import { JitsiTrackErrors, JitsiTrackEvents } from '../lib-jitsi-meet';
-import { createLocalTrack } from '../lib-jitsi-meet/functions.any';
 import { setAudioMuted, setScreenshareMuted, setVideoMuted } from '../media/actions';
 import {
     CAMERA_FACING_MODE,
@@ -17,7 +16,6 @@ import {
     VideoType
 } from '../media/constants';
 import { getLocalParticipant } from '../participants/functions';
-import { updateSettings } from '../settings/actions';
 
 import {
     SET_NO_SRC_DATA_NOTIFICATION_UID,
@@ -31,6 +29,7 @@ import {
     TRACK_UPDATED,
     TRACK_WILL_CREATE
 } from './actionTypes';
+import { toggleScreensharing } from './actions';
 import {
     createLocalTracksF,
     getCameraFacingMode,
@@ -86,12 +85,16 @@ export function createDesiredLocalTracks(...desiredTypes: any) {
         dispatch(destroyLocalDesktopTrackIfExists());
 
         if (desiredTypes.length === 0) {
+            const { startSilent } = state['features/base/config'];
             const { video } = state['features/base/media'];
 
-            // XXX: Always create the audio track early, even if it will be muted.
-            // This fixes a timing issue when adding the track to the conference which
-            // manifests primarily on iOS 15.
-            desiredTypes.push(MEDIA_TYPE.AUDIO);
+            if (!startSilent) {
+                // Always create the audio track early, even if it will be muted.
+                // This fixes a timing issue when adding the track to the conference which
+                // manifests primarily on iOS 15.
+                // Unless we are silent, of course.
+                desiredTypes.push(MEDIA_TYPE.AUDIO);
+            }
 
             // XXX When the app is coming into the foreground from the
             // background in order to handle a URL, it may realize the new
@@ -162,6 +165,7 @@ export function createLocalTracksA(options: ITrackOptions = {}) {
                 = createLocalTracksF(
                     {
                         cameraDeviceId: options.cameraDeviceId,
+                        constraints: options?.constraints,
                         devices: [ device ],
                         facingMode:
                             options.facingMode || getCameraFacingMode(state),
@@ -287,7 +291,7 @@ export function showNoDataFromSourceVideoError(jitsiTrack: any) {
             const notificationAction = dispatch(showErrorNotification({
                 descriptionKey: 'dialog.cameraNotSendingData',
                 titleKey: 'dialog.cameraNotSendingDataTitle'
-            }, NOTIFICATION_TIMEOUT_TYPE.LONG));
+            }));
 
             notificationInfo = {
                 uid: notificationAction?.uid
@@ -382,7 +386,21 @@ export function trackAdded(track: any) {
         const mediaType = track.getVideoType() === VIDEO_TYPE.DESKTOP
             ? MEDIA_TYPE.SCREENSHARE
             : track.getType();
+
         let isReceivingData, noDataFromSourceNotificationInfo, participantId;
+
+        // Make screen share toggle off listen to MediaStreamTrack "ended" event
+        // when it's terminated via Android status bar chip.
+        if (navigator.product === 'ReactNative') {
+            const mediaStreamTrack = track?.getTrack?.();
+
+            if (mediaType === MEDIA_TYPE.SCREENSHARE) {
+                const onEnded = () => dispatch(toggleScreensharing(false));
+
+                mediaStreamTrack.addEventListener('ended', onEnded);
+                track._onEnded = onEnded;
+            }
+        }
 
         if (local) {
             // Reset the no data from src notification state when we change the track, as it's context is set
@@ -419,12 +437,14 @@ export function trackAdded(track: any) {
             }
 
             track.on(JitsiTrackEvents.LOCAL_TRACK_STOPPED,
-                () => dispatch({
-                    type: TRACK_STOPPED,
-                    track: {
-                        jitsiTrack: track
-                    }
-                }));
+                () => {
+                    logger.debug(`Local track stopped: ${track}, removing it from the conference`);
+                    dispatch({
+                        type: TRACK_STOPPED,
+                        track: {
+                            jitsiTrack: track
+                        } });
+                });
         } else {
             participantId = track.getParticipantId();
             isReceivingData = true;
@@ -562,6 +582,16 @@ export function trackRemoved(track: any): {
     track.removeAllListeners(JitsiTrackEvents.TRACK_MUTE_CHANGED);
     track.removeAllListeners(JitsiTrackEvents.TRACK_VIDEOTYPE_CHANGED);
     track.removeAllListeners(JitsiTrackEvents.NO_DATA_FROM_SOURCE);
+
+    // Remove MediaStreamTrack "ended" event.
+    if (navigator.product === 'ReactNative') {
+        const mediaStreamTrack = track?.getTrack?.();
+
+        if (track._onEnded) {
+            mediaStreamTrack.removeEventListener('ended', track._onEnded);
+            delete track._onEnded;
+        }
+    }
 
     return {
         type: TRACK_REMOVED,
@@ -819,41 +849,5 @@ export function setNoSrcDataNotificationUid(uid?: string) {
     return {
         type: SET_NO_SRC_DATA_NOTIFICATION_UID,
         uid
-    };
-}
-
-/**
- * Toggles the facingMode constraint on the video stream.
- *
- * @returns {Function}
- */
-export function toggleCamera() {
-    return async (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
-        const state = getState();
-        const tracks = state['features/base/tracks'];
-        const localVideoTrack = getLocalVideoTrack(tracks)?.jitsiTrack;
-        const currentFacingMode = localVideoTrack.getCameraFacingMode();
-        const { localFlipX } = state['features/base/settings'];
-
-        /**
-         * FIXME: Ideally, we should be dispatching {@code replaceLocalTrack} here,
-         * but it seems to not trigger the re-rendering of the local video on Chrome;
-         * could be due to a plan B vs unified plan issue. Therefore, we use the legacy
-         * method defined in conference.js that manually takes care of updating the local
-         * video as well.
-         */
-        await APP.conference.useVideoStream(null);
-
-        const targetFacingMode = currentFacingMode === CAMERA_FACING_MODE.USER
-            ? CAMERA_FACING_MODE.ENVIRONMENT
-            : CAMERA_FACING_MODE.USER;
-
-        // Update the flipX value so the environment facing camera is not flipped, before the new track is created.
-        dispatch(updateSettings({ localFlipX: targetFacingMode === CAMERA_FACING_MODE.USER ? localFlipX : false }));
-
-        const newVideoTrack = await createLocalTrack('video', null, null, { facingMode: targetFacingMode });
-
-        // FIXME: See above.
-        await APP.conference.useVideoStream(newVideoTrack);
     };
 }

@@ -48,17 +48,28 @@ function init_session(event)
         -- After validating auth_token will be cleaned in case of error and few
         -- other fields will be extracted from the token and set in the session
 
-        if query and params.token then
+        if params and params.token then
             token = params.token;
         end
     end
 
     -- in either case set auth_token in the session
     session.auth_token = token;
+    session.user_agent_header = request.headers['user_agent'];
 end
 
 module:hook_global("bosh-session", init_session);
 module:hook_global("websocket-session", init_session);
+
+module:hook("pre-resource-unbind", function (e)
+    local error, session = e.error, e.session;
+
+    prosody.events.fire_event('jitsi-pre-session-unbind', {
+        jid = session.full_jid,
+        session = session,
+        error = error
+    });
+end, 11);
 
 function provider.test_password(username, password)
     return nil, "Password based auth not supported";
@@ -101,8 +112,9 @@ function provider.get_sasl_handler(session)
         local res, error, reason = token_util:process_and_verify_token(session);
         if res == false then
             module:log("warn",
-                "Error verifying token err:%s, reason:%s tenant:%s room:%s",
-                    error, reason, session.jitsi_web_query_prefix, session.jitsi_web_query_room);
+                "Error verifying token err:%s, reason:%s tenant:%s room:%s user_agent:%s",
+                    error, reason, session.jitsi_web_query_prefix, session.jitsi_web_query_room,
+                    session.user_agent_header);
             session.auth_token = nil;
             measure_verify_fail(1);
             return res, error, reason;

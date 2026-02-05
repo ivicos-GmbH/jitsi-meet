@@ -4,7 +4,6 @@ import {
     RESET_SHARED_VIDEO_STATUS,
     SET_ALLOWED_URL_DOMAINS,
     SET_CONFIRM_SHOW_VIDEO,
-    SET_DISABLE_BUTTON,
     SET_SHARED_VIDEO_STATUS
 } from './actionTypes';
 import { DEFAULT_ALLOWED_URL_DOMAINS } from './constants';
@@ -16,7 +15,6 @@ const initialState = {
 export interface ISharedVideoState {
     allowedUrlDomains: Array<string>;
     confirmShowVideo?: boolean;
-    disabled?: boolean;
     muted?: boolean;
     ownerId?: string;
     previousOwnerId?: string;
@@ -31,7 +29,7 @@ export interface ISharedVideoState {
  */
 ReducerRegistry.register<ISharedVideoState>('features/shared-video',
 (state = initialState, action): ISharedVideoState => {
-    const { videoUrl, status, time, ownerId, disabled, muted, volume, previousOwnerId } = action;
+    const { videoUrl, status, time, ownerId, muted, volume, previousOwnerId } = action;
 
     switch (action.type) {
     case RESET_SHARED_VIDEO_STATUS:
@@ -57,11 +55,12 @@ ReducerRegistry.register<ISharedVideoState>('features/shared-video',
             previousOwnerId
         };
 
-    case SET_DISABLE_BUTTON:
+    case SET_ALLOWED_URL_DOMAINS: {
         return {
             ...state,
-            disabled
+            allowedUrlDomains: action.allowedUrlDomains
         };
+    }
 
     case SET_ALLOWED_URL_DOMAINS: {
         return {

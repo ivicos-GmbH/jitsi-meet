@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.11] - 2026-02-05
+### Upgraded
+- Jitsi meet is updated to stable/jitsi-meet_10741
+
+## [2.0.10] - 2026-01-30
+### Upgraded
+- Fix bugs on the upgraded version
+
+## [2.0.9] - 2026-01-21
+### Upgraded
+- Jitsi meet is updated to stable/jitsi-meet_10710
+
 ## [2.0.8] - 2024-10-30
 ### Upgraded
 - Video sharing problem is fixed

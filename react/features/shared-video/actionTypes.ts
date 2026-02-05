@@ -34,7 +34,7 @@ export const SET_CONFIRM_SHOW_VIDEO = 'SET_CONFIRM_SHOW_VIDEO';
  * button.
  *
  * {
- *     type: SET_DISABLE_BUTTON
+ *     type: SET_CONFIRM_SHOW_VIDEO
  * }
  */
 export const SET_DISABLE_BUTTON = 'SET_DISABLE_BUTTON';
@@ -47,7 +47,7 @@ export const SET_DISABLE_BUTTON = 'SET_DISABLE_BUTTON';
  * }
  */
 export const REQUEST_SHARED_VIDEO_STATE = 'REQUEST_SHARED_VIDEO_STATE';
-/** 
+/**
  * The type of the action which sets an array of whitelisted urls.
  *
  * {

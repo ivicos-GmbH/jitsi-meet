@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import Filmstrip from '../../../../../modules/UI/videolayout/Filmstrip';
 import { IReduxState } from '../../../app/types';
 import { getLocalParticipant } from '../../../base/participants/functions';
+import { FakeParticipant } from '../../../base/participants/types';
 import { getVerticalViewMaxWidth } from '../../../filmstrip/functions.web';
+import { getLargeVideoParticipant } from '../../../large-video/functions';
 import { getToolboxHeight } from '../../../toolbox/functions.web';
-import { isSharedVideoEnabled } from '../../functions';
+import { isSharedVideoEnabled, isVideoPlaying } from '../../functions';
 
 import VideoManager from './VideoManager';
 import YoutubeVideoManager from './YoutubeVideoManager';
@@ -42,14 +44,24 @@ interface IProps {
     isEnabled: boolean;
 
     /**
-     * Is the video shared by the local user.
+     * Whether the shared video is owned by the local user.
      */
     isOwner: boolean;
 
     /**
-     * Whether or not the user is actively resizing the filmstrip.
+     * Whether the user is actively resizing the filmstrip.
      */
     isResizing: boolean;
+
+    /**
+     * Whether the shared video is currently playing.
+     */
+    isVideoShared: boolean;
+
+    /**
+     * Whether the shared video should be shown on stage.
+     */
+    onStage: boolean;
 
     /**
      * The shared video url.
@@ -155,14 +167,13 @@ class SharedVideo extends Component<IProps> {
  */
 function _mapStateToProps(state: IReduxState) {
     const { ownerId, videoUrl } = state['features/shared-video'];
-    const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+    const { clientHeight, videoSpaceWidth } = state['features/base/responsive-ui'];
     const { visible, isResizing } = state['features/filmstrip'];
-
     const localParticipant = getLocalParticipant(state);
 
     return {
         clientHeight,
-        clientWidth,
+        clientWidth: videoSpaceWidth,
         filmstripVisible: visible,
         filmstripWidth: getVerticalViewMaxWidth(state),
         isEnabled: isSharedVideoEnabled(state),

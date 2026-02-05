@@ -13,13 +13,12 @@ import {
     requestEnableAudioModeration,
     requestEnableVideoModeration
 } from '../../react/features/av-moderation/actions';
-import { isEnabledFromState } from '../../react/features/av-moderation/functions';
+import { isEnabledFromState, isForceMuted } from '../../react/features/av-moderation/functions';
+import { setAudioOnly } from '../../react/features/base/audio-only/actions';
 import {
     endConference,
     sendTones,
     setAssumedBandwidthBps,
-    setFollowMe,
-    setFollowMeRecorder,
     setLocalSubject,
     setPassword,
     setSubject
@@ -29,6 +28,7 @@ import { overwriteConfig } from '../../react/features/base/config/actions';
 import { getWhitelistedJSON } from '../../react/features/base/config/functions.any';
 import { toggleDialog } from '../../react/features/base/dialog/actions';
 import { isSupportedBrowser } from '../../react/features/base/environment/environment';
+import { isMobileBrowser } from '../../react/features/base/environment/utils';
 import i18next, { DEFAULT_LANGUAGE } from '../../react/features/base/i18n/i18next';
 import { parseJWTFromURLParams } from '../../react/features/base/jwt/functions';
 import JitsiMeetJS, { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
@@ -75,6 +75,7 @@ import {
     toggleChat
 } from '../../react/features/chat/actions';
 import { openChat } from '../../react/features/chat/actions.web';
+import { showDesktopPicker } from '../../react/features/desktop-picker/actions';
 import {
     processExternalDeviceRequest
 } from '../../react/features/device-selection/functions';
@@ -89,6 +90,7 @@ import {
     togglePinStageParticipant
 } from '../../react/features/filmstrip/actions.web';
 import { getPinnedActiveParticipants, isStageFilmstripAvailable } from '../../react/features/filmstrip/functions.web';
+import { setFollowMe, setFollowMeRecorder } from '../../react/features/follow-me/actions';
 import { invite } from '../../react/features/invite/actions.any';
 import {
     selectParticipantInLargeVideo
@@ -105,14 +107,19 @@ import {
     close as closeParticipantsPane,
     open as openParticipantsPane
 } from '../../react/features/participants-pane/actions';
-import { getParticipantsPaneOpen, isForceMuted } from '../../react/features/participants-pane/functions';
+import { getParticipantsPaneOpen } from '../../react/features/participants-pane/functions';
+import { hidePiP, showPiP } from '../../react/features/pip/actions';
 import { startLocalVideoRecording, stopLocalVideoRecording } from '../../react/features/recording/actions.any';
-import { RECORDING_METADATA_ID, RECORDING_TYPES } from '../../react/features/recording/constants';
+import { grantRecordingConsent, grantRecordingConsentAndUnmute } from '../../react/features/recording/actions.web';
+import { RECORDING_TYPES } from '../../react/features/recording/constants';
 import { getActiveSession, supportsLocalRecording } from '../../react/features/recording/functions';
 import { setBackgroundImage } from '../../react/features/room-background/actions';
 import { startAudioScreenShareFlow, startScreenShareFlow } from '../../react/features/screen-share/actions';
 import { isScreenAudioSupported } from '../../react/features/screen-share/functions';
-import { toggleScreenshotCaptureSummary } from '../../react/features/screenshot-capture/actions';
+import {
+    openCameraCaptureDialog,
+    toggleScreenshotCaptureSummary
+} from '../../react/features/screenshot-capture/actions';
 import { isScreenshotCaptureEnabled } from '../../react/features/screenshot-capture/functions';
 import SettingsDialog from '../../react/features/settings/components/web/SettingsDialog';
 import { SETTINGS_TABS } from '../../react/features/settings/constants';
@@ -123,7 +130,7 @@ import {
     stopSharedVideo,
     updateSharedVideoOwner,
     updateVideoState
-} from '../../react/features/shared-video/actions.any';
+} from '../../react/features/shared-video/actions';
 import { extractYoutubeIdOrURL, sendStoppedVideoUrlNotification } from '../../react/features/shared-video/functions';
 import {
     fetchDetailedSpeakerStats
@@ -131,9 +138,10 @@ import {
 import { setRequestingSubtitles, toggleRequestingSubtitles } from '../../react/features/subtitles/actions';
 import { isAudioMuteButtonDisabled } from '../../react/features/toolbox/functions';
 import { setTileView, toggleTileView } from '../../react/features/video-layout/actions.any';
-import { muteAllParticipants } from '../../react/features/video-menu/actions';
+import { muteAllParticipants, muteRemote } from '../../react/features/video-menu/actions';
 import { setVideoQuality } from '../../react/features/video-quality/actions';
-import { toggleBlurredBackgroundEffect } from '../../react/features/virtual-background/actions';
+import { toggleBackgroundEffect, toggleBlurredBackgroundEffect } from '../../react/features/virtual-background/actions';
+import { VIRTUAL_BACKGROUND_TYPE } from '../../react/features/virtual-background/constants';
 import { toggleWhiteboard } from '../../react/features/whiteboard/actions.web';
 import { getJitsiMeetTransport } from '../transport';
 
@@ -142,8 +150,7 @@ import {
     ENDPOINT_TEXT_MESSAGE_NAME
 } from './constants';
 
-
-const logger = Logger.getLogger(__filename);
+const logger = Logger.getLogger('api:core');
 
 /**
  * List of the available commands.
@@ -226,6 +233,10 @@ function initCommands() {
             }
             APP.store.dispatch(grantModerator(participantId));
         },
+        'grant-recording-consent': unmute => {
+            unmute ? APP.store.dispatch(grantRecordingConsentAndUnmute())
+                : APP.store.dispatch(grantRecordingConsent());
+        },
         'display-name': displayName => {
             sendAnalytics(createApiEvent('display.name.changed'));
             APP.store.dispatch(updateSettings({ displayName: getNormalizedDisplayName(displayName) }));
@@ -268,6 +279,17 @@ function initCommands() {
             }
 
             APP.store.dispatch(muteAllParticipants(exclude, muteMediaType));
+        },
+        'mute-remote-participant': (participantId, mediaType) => {
+            if (!isLocalParticipantModerator(APP.store.getState())) {
+                logger.error('Missing moderator rights to mute remote participant');
+
+                return;
+            }
+
+            const muteMediaType = mediaType ? mediaType : MEDIA_TYPE.AUDIO;
+
+            APP.store.dispatch(muteRemote(participantId, muteMediaType));
         },
         'toggle-lobby': isLobbyEnabled => {
             APP.store.dispatch(toggleLobbyMode(isLobbyEnabled));
@@ -535,7 +557,8 @@ function initCommands() {
             APP.store.dispatch(toggleRequestingSubtitles());
         },
         'set-subtitles': (enabled, displaySubtitles, language) => {
-            APP.store.dispatch(setRequestingSubtitles(enabled, displaySubtitles, language));
+            APP.store.dispatch(setRequestingSubtitles(
+                enabled, displaySubtitles, language ? `translation-languages:${language}` : null));
         },
         'toggle-tile-view': () => {
             sendAnalytics(createApiEvent('tile-view.toggled'));
@@ -611,6 +634,10 @@ function initCommands() {
             sendAnalytics(createApiEvent('set.video.quality'));
             APP.store.dispatch(setVideoQuality(frameHeight));
         },
+        'set-audio-only': enable => {
+            sendAnalytics(createApiEvent('set.audio.only'));
+            APP.store.dispatch(setAudioOnly(enable));
+        },
         'start-share-video': url => {
             sendAnalytics(createApiEvent('share.video.start'));
             const id = extractYoutubeIdOrURL(url);
@@ -664,13 +691,17 @@ function initCommands() {
          * @param { string } arg.title - Notification title.
          * @param { string } arg.description - Notification description.
          * @param { string } arg.uid - Optional unique identifier for the notification.
-         * @param { string } arg.type - Notification type, either `error`, `info`, `normal`, `success` or `warning`.
+         * @param { string } arg.type - Notification type, either `error`, `normal`, `success` or `warning`.
          * Defaults to "normal" if not provided.
          * @param { string } arg.timeout - Timeout type, either `short`, `medium`, `long` or `sticky`.
          * Defaults to "short" if not provided.
+         * @param { Array<Object> } arg.customActions - An array of custom actions to be displayed in the notification.
+         * Each object should have a `label` and a `uuid` property. It should be used along a listener
+         * for the `customNotificationActionTriggered` event to handle the custom action.
          * @returns {void}
          */
         'show-notification': ({
+            customActions = [],
             title,
             description,
             uid,
@@ -692,7 +723,15 @@ function initCommands() {
                 return;
             }
 
+            const handlers = customActions.map(({ uuid }) => () => {
+                APP.API.notifyCustomNotificationActionTriggered(uuid);
+            });
+
+            const keys = customActions.map(({ label }) => label);
+
             APP.store.dispatch(showNotification({
+                customActionHandler: handlers,
+                customActionNameKey: keys,
                 uid,
                 title,
                 description,
@@ -829,10 +868,7 @@ function initCommands() {
             }
 
             if (transcription) {
-                APP.store.dispatch(setRequestingSubtitles(true, false, null));
-                conference.getMetadataHandler().setMetadata(RECORDING_METADATA_ID, {
-                    isTranscribingEnabled: true
-                });
+                APP.store.dispatch(setRequestingSubtitles(true, false, null, true));
             }
         },
 
@@ -854,10 +890,7 @@ function initCommands() {
             }
 
             if (transcription) {
-                APP.store.dispatch(setRequestingSubtitles(false, false, null));
-                conference.getMetadataHandler().setMetadata(RECORDING_METADATA_ID, {
-                    isTranscribingEnabled: false
-                });
+                APP.store.dispatch(setRequestingSubtitles(false, false, null, true));
             }
 
             if (mode === 'local') {
@@ -925,6 +958,8 @@ function initCommands() {
         'overwrite-config': config => {
             const whitelistedConfig = getWhitelistedJSON('config', config);
 
+            logger.info(`Overwriting config with: ${JSON.stringify(whitelistedConfig)}`);
+
             APP.store.dispatch(overwriteConfig(whitelistedConfig));
         },
         'toggle-virtual-background': () => {
@@ -946,6 +981,22 @@ function initCommands() {
         },
         'toggle-whiteboard': () => {
             APP.store.dispatch(toggleWhiteboard());
+        },
+        'set-virtual-background': (enabled, backgroundImage) => {
+            const tracks = APP.store.getState()['features/base/tracks'];
+            const jitsiTrack = getLocalVideoTrack(tracks)?.jitsiTrack;
+
+            APP.store.dispatch(toggleBackgroundEffect({
+                backgroundEffectEnabled: enabled,
+                backgroundType: VIRTUAL_BACKGROUND_TYPE.IMAGE,
+                virtualSource: backgroundImage
+            }, jitsiTrack));
+        },
+        'show-pip': () => {
+            APP.store.dispatch(showPiP());
+        },
+        'hide-pip': () => {
+            APP.store.dispatch(hidePiP());
         }
     };
     transport.on('event', ({ data, name }) => {
@@ -983,6 +1034,20 @@ function initCommands() {
                     });
                 });
             break;
+        case 'capture-camera-picture' : {
+            const { cameraFacingMode, descriptionText, titleText } = request;
+
+            if (!isMobileBrowser()) {
+                logger.error('This feature is only supported on mobile');
+
+                return;
+            }
+
+            APP.store.dispatch(openCameraCaptureDialog(callback, { cameraFacingMode,
+                descriptionText,
+                titleText }));
+            break;
+        }
         case 'deployment-info':
             callback(APP.store.getState()['features/base/config'].deploymentInfo);
             break;
@@ -1122,6 +1187,12 @@ function initCommands() {
             callback(getRoomsInfo(APP.store.getState()));
             break;
         }
+        case 'get-shared-document-url': {
+            const { etherpad } = APP.store.getState()['features/etherpad'];
+
+            callback(etherpad?.documentUrl || '');
+            break;
+        }
         case 'get-p2p-status': {
             callback(isP2pActive(APP.store.getState()));
             break;
@@ -1134,6 +1205,23 @@ function initCommands() {
         }
         case '_new_electron_screensharing_supported': {
             callback(true);
+
+            break;
+        }
+        case 'open-desktop-picker': {
+            const { desktopSharingSources } = APP.store.getState()['features/base/config'];
+            const options = {
+                desktopSharingSources: desktopSharingSources ?? [ 'screen', 'window' ]
+            };
+            const onSourceChoose = (_streamId, _type, screenShareAudio, source) => {
+                callback({
+                    screenShareAudio,
+                    source
+                });
+            };
+
+            dispatch(showDesktopPicker(options, onSourceChoose));
+
             break;
         }
         default:
@@ -1265,6 +1353,20 @@ class API {
         this._sendEvent({
             name: 'large-video-visibility-changed',
             isVisible: !isHidden
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that the in-page toolbox
+     * visibility changed.
+     *
+     * @param {boolean} visible - True if the toolbox is visible, false otherwise.
+     * @returns {void}
+     */
+    notifyToolbarVisibilityChanged(visible) {
+        this._sendEvent({
+            name: 'toolbar-visibility-changed',
+            visible
         });
     }
 
@@ -1409,6 +1511,25 @@ class API {
             name: 'moderation-participant-rejected',
             id: participantId,
             mediaType
+        });
+    }
+
+    /**
+     * Notify the external application that a participant's mute status changed.
+     *
+     * @param {string} participantId - The ID of the participant.
+     * @param {boolean} isMuted - True if muted, false if unmuted.
+     * @param {string} mediaType - Media type that was muted ('audio', 'video', or 'desktop').
+     * @param {boolean} isSelfMuted - True if participant muted themselves, false if muted by moderator.
+     * @returns {void}
+     */
+    notifyParticipantMuted(participantId, isMuted, mediaType, isSelfMuted = true) {
+        this._sendEvent({
+            name: 'participant-muted',
+            id: participantId,
+            isMuted,
+            mediaType,
+            isSelfMuted
         });
     }
 
@@ -1569,6 +1690,21 @@ class API {
     }
 
     /**
+     * Notify external application (if API is enabled) that a custom notification action has been triggered.
+     *
+     * @param {string} actionUuid - The UUID of the action that has been triggered.
+     * @returns {void}
+    */
+    notifyCustomNotificationActionTriggered(actionUuid) {
+        this._sendEvent({
+            name: 'custom-notification-action-triggered',
+            data: {
+                id: actionUuid
+            }
+        });
+    }
+
+    /**
      * Notify external application (if API is enabled) that the list of sharing participants changed.
      *
      * @param {Object} data - The event data.
@@ -1659,8 +1795,8 @@ class API {
                 formattedArgument += `${arg.toString()}: ${arg.stack}`;
             } else if (typeof arg === 'object') {
                 // NOTE: The non-enumerable properties of the objects wouldn't be included in the string after
-                // JSON.strigify. For example Map instance will be translated to '{}'. So I think we have to eventually
-                // do something better for parsing the arguments. But since this option for strigify is part of the
+                // JSON.stringify. For example Map instance will be translated to '{}'. So I think we have to eventually
+                // do something better for parsing the arguments. But since this option for stringify is part of the
                 // public interface and I think it could be useful in some cases I will it for now.
                 try {
                     formattedArgument += JSON.stringify(arg);
@@ -1949,6 +2085,19 @@ class API {
             name: 'participant-kicked-out',
             kicked,
             kicker
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that the recording consent dialog open state has changed.
+     *
+     * @param {boolean} open - True if the dialog is open, false otherwise.
+     * @returns {void}
+     */
+    notifyRecordingConsentDialogOpen(open) {
+        this._sendEvent({
+            name: 'recording-consent-dialog-open',
+            open
         });
     }
 
@@ -2312,6 +2461,40 @@ class API {
     }
 
     /**
+     * Notify external application (if API is enabled) that Picture-in-Picture was requested.
+     * Used by Electron to handle PiP requests with proper user gesture context.
+     *
+     * @returns {void}
+     */
+    notifyPictureInPictureRequested() {
+        this._sendEvent({
+            name: '_pip-requested'
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that Picture-in-Picture mode was entered.
+     *
+     * @returns {void}
+     */
+    notifyPictureInPictureEntered() {
+        this._sendEvent({
+            name: 'pip-entered'
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that Picture-in-Picture mode was exited.
+     *
+     * @returns {void}
+     */
+    notifyPictureInPictureLeft() {
+        this._sendEvent({
+            name: 'pip-left'
+        });
+    }
+
+    /**
      * Notify external application ( if API is enabled) that a participant menu button was clicked.
      *
      * @param {string} key - The key of the participant menu button.
@@ -2397,6 +2580,19 @@ class API {
         this._sendEvent({
             name: 'compute-pressure-changed',
             records
+        });
+    }
+
+    /**
+     * Notify the external application (if API is enabled) when the audio only enabled status changed.
+     *
+     * @param {boolean} enabled - Whether the audio only is enabled or not.
+     * @returns {void}
+     */
+    notifyAudioOnlyChanged(enabled) {
+        this._sendEvent({
+            name: 'audio-only-changed',
+            enabled
         });
     }
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, Platform, TextInput, View, ViewStyle } from 'react-native';
+import { FlatList, SafeAreaView, TextInput, View, ViewStyle } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
@@ -45,7 +45,9 @@ const PollCreate = (props: AbstractProps) => {
 
     useEffect(() => {
         answerInputs.current = answerInputs.current.slice(0, answers.length);
-
+        setTimeout(() => {
+            answerListRef.current?.scrollToEnd({ animated: true });
+        }, 1000);
     }, [ answers ]);
 
     /*
@@ -95,9 +97,6 @@ const PollCreate = (props: AbstractProps) => {
             type = { TERTIARY } />
     );
 
-    const pollCreateButtonsContainerStyles = Platform.OS === 'android'
-        ? pollsStyles.pollCreateButtonsContainerAndroid : pollsStyles.pollCreateButtonsContainerIos;
-
     /* eslint-disable react/jsx-no-bind */
     const renderListItem = ({ index }: { index: number; }) => {
 
@@ -120,8 +119,7 @@ const PollCreate = (props: AbstractProps) => {
                     maxLength = { CHAR_LIMIT }
                     onChange = { name => setAnswer(index,
                         {
-                            name,
-                            voters: []
+                            name
                         }) }
                     onKeyPress = { ev => onAnswerKeyDown(index, ev) }
                     placeholder = { t('polls.create.answerPlaceholder', { index: index + 1 }) }
@@ -159,7 +157,7 @@ const PollCreate = (props: AbstractProps) => {
     ), [ question ]);
 
     return (
-        <View style = { pollsStyles.pollCreateContainer as ViewStyle }>
+        <SafeAreaView style = { pollsStyles.pollCreateContainer as ViewStyle }>
             <View style = { pollsStyles.pollCreateSubContainer as ViewStyle }>
                 <FlatList
                     ListHeaderComponent = { renderListHeaderComponent }
@@ -168,7 +166,7 @@ const PollCreate = (props: AbstractProps) => {
                     keyExtractor = { (item, index) => index.toString() }
                     ref = { answerListRef }
                     renderItem = { renderListItem } />
-                <View style = { pollCreateButtonsContainerStyles as ViewStyle }>
+                <View style = { pollsStyles.pollCreateButtonsContainer as ViewStyle }>
                     <Button
                         accessibilityLabel = 'polls.create.addOption'
                         disabled = { answers.length >= ANSWERS_LIMIT }
@@ -206,7 +204,7 @@ const PollCreate = (props: AbstractProps) => {
                     </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 

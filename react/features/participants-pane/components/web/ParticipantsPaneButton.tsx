@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { IReduxState } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions';
 import { IconUsers } from '../../../base/icons/svg';
+import { getParticipantCountForDisplay } from '../../../base/participants/functions';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
 import {
     close as closeParticipantsPane,
@@ -29,18 +30,22 @@ interface IProps extends AbstractButtonProps {
      * Whether participants feature is enabled or not.
      */
     _isParticipantsPaneEnabled: boolean;
+
+    /**
+     * Participants count.
+     */
+    _participantsCount: number;
 }
 
 /**
  * Implementation of a button for accessing participants pane.
  */
 class ParticipantsPaneButton extends AbstractButton<IProps> {
-    accessibilityLabel = 'toolbar.accessibilityLabel.participants';
-    toggledAccessibilityLabel = 'toolbar.accessibilityLabel.closeParticipantsPane';
-    icon = IconUsers;
-    label = 'toolbar.participants';
-    tooltip = 'toolbar.participants';
-    toggledTooltip = 'toolbar.closeParticipantsPane';
+    override toggledAccessibilityLabel = 'toolbar.accessibilityLabel.closeParticipantsPane';
+    override icon = IconUsers;
+    override label = 'toolbar.participants';
+    override tooltip = 'toolbar.participants';
+    override toggledTooltip = 'toolbar.closeParticipantsPane';
 
     /**
      * Indicates whether this button is in toggled state or not.
@@ -49,7 +54,7 @@ class ParticipantsPaneButton extends AbstractButton<IProps> {
      * @protected
      * @returns {boolean}
      */
-    _isToggled() {
+    override _isToggled() {
         return this.props._isOpen;
     }
 
@@ -59,7 +64,7 @@ class ParticipantsPaneButton extends AbstractButton<IProps> {
     * @private
     * @returns {void}
     */
-    _handleClick() {
+    override _handleClick() {
         const { dispatch, _isOpen } = this.props;
 
         dispatch(closeOverflowMenuIfOpen());
@@ -70,6 +75,26 @@ class ParticipantsPaneButton extends AbstractButton<IProps> {
         }
     }
 
+
+    /**
+     * Override the _getAccessibilityLabel method to incorporate the dynamic participant count.
+     *
+     * @override
+     * @returns {string}
+     */
+    override _getAccessibilityLabel() {
+        const { t, _participantsCount, _isOpen } = this.props;
+
+        if (_isOpen) {
+            return t('toolbar.accessibilityLabel.closeParticipantsPane');
+        }
+
+        return t('toolbar.accessibilityLabel.participants', {
+            participantsCount: _participantsCount
+        });
+
+    }
+
     /**
      * Overrides AbstractButton's {@link Component#render()}.
      *
@@ -77,7 +102,7 @@ class ParticipantsPaneButton extends AbstractButton<IProps> {
      * @protected
      * @returns {React$Node}
      */
-    render() {
+    override render() {
         const { _isParticipantsPaneEnabled } = this.props;
 
         if (!_isParticipantsPaneEnabled) {
@@ -105,7 +130,8 @@ function mapStateToProps(state: IReduxState) {
 
     return {
         _isOpen: isOpen,
-        _isParticipantsPaneEnabled: isParticipantsPaneEnabled(state)
+        _isParticipantsPaneEnabled: isParticipantsPaneEnabled(state),
+        _participantsCount: getParticipantCountForDisplay(state)
     };
 }
 

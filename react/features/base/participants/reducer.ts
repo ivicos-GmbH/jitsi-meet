@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 
+import { UPDATE_CONFERENCE_METADATA } from '../conference/actionTypes';
 import { MEDIA_TYPE } from '../media/constants';
 import ReducerRegistry from '../redux/ReducerRegistry';
 import { set } from '../redux/functions';
@@ -26,6 +27,7 @@ import {
     isRemoteScreenshareParticipant,
     isScreenShareParticipant
 } from './functions';
+import logger from './logger';
 import { FakeParticipant, ILocalParticipant, IParticipant, ISourceInfo } from './types';
 
 /**
@@ -363,6 +365,8 @@ ReducerRegistry.register<IParticipantsState>('features/base/participants',
             sortedRemoteVirtualScreenshareParticipants.sort((a, b) => a[1].localeCompare(b[1]));
 
             state.sortedRemoteVirtualScreenshareParticipants = new Map(sortedRemoteVirtualScreenshareParticipants);
+
+            logger.debug('Remote screenshare participant joined', id);
         }
 
         // Exclude the screenshare participant from the fake participant count to avoid duplicates.
@@ -447,6 +451,8 @@ ReducerRegistry.register<IParticipantsState>('features/base/participants',
         if (sortedRemoteVirtualScreenshareParticipants.has(id)) {
             sortedRemoteVirtualScreenshareParticipants.delete(id);
             state.sortedRemoteVirtualScreenshareParticipants = new Map(sortedRemoteVirtualScreenshareParticipants);
+
+            logger.debug('Remote screenshare participant left', id);
         }
 
         if (oldParticipant && !oldParticipant.fakeParticipant && !isLocalScreenShare) {
@@ -498,6 +504,34 @@ ReducerRegistry.register<IParticipantsState>('features/base/participants',
             ...state,
             raisedHandsQueue: action.queue
         };
+    }
+    case UPDATE_CONFERENCE_METADATA: {
+        const { metadata } = action;
+
+
+        if (metadata?.visitors?.promoted) {
+            let participantProcessed = false;
+
+            Object.entries(metadata?.visitors?.promoted).forEach(([ key, _ ]) => {
+
+                const p = state.remote.get(key);
+
+                if (p && !p.isPromoted) {
+
+                    state.remote.set(key, {
+                        ...p,
+                        isPromoted: true
+                    });
+                    participantProcessed = true;
+                }
+            });
+
+            if (participantProcessed) {
+                return { ...state };
+            }
+        }
+
+        break;
     }
     case OVERWRITE_PARTICIPANT_NAME: {
         const { id, name } = action;
@@ -585,6 +619,7 @@ function _participantJoined({ participant }: { participant: IParticipant; }) {
         dominantSpeaker,
         email,
         fakeParticipant,
+        isPromoted,
         isReplacing,
         loadableAvatarUrl,
         local,
@@ -616,6 +651,7 @@ function _participantJoined({ participant }: { participant: IParticipant; }) {
         email,
         fakeParticipant,
         id,
+        isPromoted,
         isReplacing,
         loadableAvatarUrl,
         local: local || false,
