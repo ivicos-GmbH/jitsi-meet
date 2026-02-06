@@ -11,6 +11,7 @@ import {
     requestEnableAudioModeration,
     requestEnableVideoModeration
 } from '../../../av-moderation/actions';
+import { MEDIA_TYPE } from '../../../av-moderation/constants';
 import {
     isEnabled as isAvModerationEnabled,
     isSupported as isAvModerationSupported
@@ -20,10 +21,8 @@ import { hideSheet, openDialog } from '../../../base/dialog/actions';
 import BottomSheet from '../../../base/dialog/components/native/BottomSheet';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCheck, IconRaiseHand, IconVideoOff } from '../../../base/icons/svg';
-import { MEDIA_TYPE } from '../../../base/media/constants';
 import { raiseHand } from '../../../base/participants/actions';
-import { getParticipantCount, getRaiseHandsQueue, isEveryoneModerator, isLocalParticipantModerator }
-    from '../../../base/participants/functions';
+import { getRaiseHandsQueue, isLocalParticipantModerator } from '../../../base/participants/functions';
 import { LOWER_HAND_MESSAGE } from '../../../base/tracks/constants';
 import MuteEveryonesVideoDialog
     from '../../../video-menu/components/native/MuteEveryonesVideoDialog';
@@ -33,7 +32,7 @@ import styles from './styles';
 export const ContextMenuMore = () => {
     const dispatch = useDispatch();
     const muteAllVideo = useCallback(() => {
-        dispatch(openDialog(MuteEveryonesVideoDialog));
+        dispatch(openDialog('MuteEveryonesVideoDialog', MuteEveryonesVideoDialog));
         dispatch(hideSheet());
     }, [ dispatch ]);
     const conference = useSelector(getCurrentConference);
@@ -47,8 +46,6 @@ export const ContextMenuMore = () => {
     const { t } = useTranslation();
 
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
-    const allModerators = useSelector(isEveryoneModerator);
-    const participantCount = useSelector(getParticipantCount);
 
     const isAudioModerationEnabled = useSelector(isAvModerationEnabled(MEDIA_TYPE.AUDIO));
     const isVideoModerationEnabled = useSelector(isAvModerationEnabled(MEDIA_TYPE.VIDEO));
@@ -79,7 +76,7 @@ export const ContextMenuMore = () => {
                     src = { IconRaiseHand } />
                 <Text style = { styles.contextMenuItemText }>{t('participantsPane.actions.lowerAllHands')}</Text>
             </TouchableOpacity> }
-            {isModerationSupported && ((participantCount === 1 || !allModerators)) && <>
+            {isModerationSupported && <>
                 {/* @ts-ignore */}
                 <Divider style = { styles.divider } />
                 <View style = { styles.contextMenuItem as ViewStyle }>

@@ -17,6 +17,7 @@
 package org.jitsi.meet.sdk;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -29,14 +30,16 @@ import com.facebook.react.ReactRootView;
 
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class JitsiMeetView extends FrameLayout {
 
     /**
-     * Background color used by {@code BaseReactView} and the React Native root
-     * view.
+     * Background color. Should match the background color set in JS.
      */
-    private static final int BACKGROUND_COLOR = 0xFF111111;
+    public static final int BACKGROUND_COLOR = 0xFF040404;
 
     /**
      * React Native root view.
@@ -84,6 +87,10 @@ public class JitsiMeetView extends FrameLayout {
                 result.putInt(key, (int)bValue);
             } else if (valueType.contentEquals("Bundle")) {
                 result.putBundle(key, mergeProps((Bundle)aValue, (Bundle)bValue));
+            } else if (valueType.contentEquals("String[]")) {
+                // Convert String[] to ArrayList<String> for React Native bridge compatibility
+                String[] stringArray = (String[]) bValue;
+                result.putStringArrayList(key, new ArrayList<>(Arrays.asList(stringArray)));
             } else {
                 throw new RuntimeException("Unsupported type: " + valueType);
             }
@@ -197,8 +204,6 @@ public class JitsiMeetView extends FrameLayout {
         }
 
         setBackgroundColor(BACKGROUND_COLOR);
-
-        ReactInstanceManagerHolder.initReactInstanceManager((Activity) context);
     }
 
     /**

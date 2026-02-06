@@ -2,12 +2,17 @@
 import jwtDecode from 'jwt-decode';
 
 import { IReduxState } from '../../app/types';
+import { isVpaasMeeting } from '../../jaas/functions';
 import { getLocalParticipant } from '../participants/functions';
-import { IParticipantFeatures } from '../participants/types';
+import { IParticipantFeatures, ParticipantFeaturesKey } from '../participants/types';
 import { parseURLParams } from '../util/parseURLParams';
 
 import { JWT_VALIDATION_ERRORS, MEET_FEATURES } from './constants';
 import logger from './logger';
+
+/**
+ * Note that this is just client-side code and it intentionally does not verify the signature of the JWT.
+ */
 
 /**
  * Retrieves the JSON Web Token (JWT), if any, defined by a specific
@@ -44,27 +49,31 @@ export function getJwtName(state: IReduxState) {
  *
  * @param {IReduxState} state - The app state.
  * @param {string} feature - The feature we want to check.
- * @param {boolean} ifNoToken - Default value if there is no token.
  * @param {boolean} ifNotInFeatures - Default value if features prop exists but does not have the {@code feature}.
  * @returns {boolean}
  */
-export function isJwtFeatureEnabled(state: IReduxState, feature: string, ifNoToken = false, ifNotInFeatures = false) {
-    const { jwt } = state['features/base/jwt'];
-    const { features } = getLocalParticipant(state) || {};
+export function isJwtFeatureEnabled(
+        state: IReduxState,
+        feature: ParticipantFeaturesKey,
+        ifNotInFeatures: boolean
+) {
+    let { features } = getLocalParticipant(state) || {};
+
+    if (typeof features === 'undefined' && isVpaasMeeting(state)) {
+        // for vpaas the backend is always initialized with empty features if those are missing
+        features = {};
+    }
 
     return isJwtFeatureEnabledStateless({
-        jwt,
         localParticipantFeatures: features,
         feature,
-        ifNoToken,
         ifNotInFeatures
     });
 }
 
 interface IIsJwtFeatureEnabledStatelessParams {
-    feature: string;
-    ifNoToken?: boolean;
-    ifNotInFeatures?: boolean;
+    feature: ParticipantFeaturesKey;
+    ifNotInFeatures: boolean;
     jwt?: string;
     localParticipantFeatures?: IParticipantFeatures;
 }
@@ -72,34 +81,22 @@ interface IIsJwtFeatureEnabledStatelessParams {
 /**
  * Check if the given JWT feature is enabled.
  *
- * @param {string | undefined} jwt - The jwt token.
  * @param {ILocalParticipant} localParticipantFeatures - The features of the local participant.
  * @param {string} feature - The feature we want to check.
- * @param {boolean} ifNoToken - Default value if there is no token.
- * @param {boolean} ifNotInFeatures - Default value if features prop exists but does not have the {@code feature}.
- * @returns {bolean}
+ * @param {boolean} ifNotInFeatures - Default value if features is missing
+ * or prop exists but does not have the {@code feature}.
+ * @returns {boolean}
  */
 export function isJwtFeatureEnabledStateless({
-    jwt,
     localParticipantFeatures: features,
     feature,
-    ifNoToken = false,
-    ifNotInFeatures = false
+    ifNotInFeatures
 }: IIsJwtFeatureEnabledStatelessParams) {
-    if (!jwt) {
-        return ifNoToken;
-    }
-
-    // If `features` is undefined, act as if everything is enabled.
-    if (typeof features === 'undefined') {
-        return true;
-    }
-
-    if (typeof features[feature as keyof typeof features] === 'undefined') {
+    if (typeof features?.[feature] === 'undefined') {
         return ifNotInFeatures;
     }
 
-    return String(features[feature as keyof typeof features]) === 'true';
+    return String(features[feature]) === 'true';
 }
 
 /**
@@ -196,7 +193,7 @@ export function validateJwt(jwt: string) {
             const { features } = context;
             const meetFeatures = Object.values(MEET_FEATURES);
 
-            Object.keys(features).forEach(feature => {
+            (Object.keys(features) as ParticipantFeaturesKey[]).forEach(feature => {
                 if (meetFeatures.includes(feature)) {
                     const featureValue = features[feature];
 

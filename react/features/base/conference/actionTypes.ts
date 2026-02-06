@@ -82,6 +82,19 @@ export const CONFERENCE_FOCUSED = 'CONFERENCE_FOCUSED';
  */
  export const CONFERENCE_LOCAL_SUBJECT_CHANGED = 'CONFERENCE_LOCAL_SUBJECT_CHANGED';
 
+/**
+ * The type of (redux) action, which indicates conference properties change.
+ *
+ * {
+ *     type: CONFERENCE_PROPERTIES_CHANGED
+ *     properties: {
+*           audio-recording-enabled: boolean,
+ *          visitor-count: number
+ *     }
+ * }
+ */
+ export const CONFERENCE_PROPERTIES_CHANGED = 'CONFERENCE_PROPERTIES_CHANGED';
+
  /**
  * The type of (redux) action, which indicates conference subject changes.
  *
@@ -246,28 +259,6 @@ export const P2P_STATUS_CHANGED = 'P2P_STATUS_CHANGED';
  * }
  */
 export const SEND_TONES = 'SEND_TONES';
-
-/**
- * The type of (redux) action which updates the current known status of the
- * Follow Me feature.
- *
- * {
- *     type: SET_FOLLOW_ME,
- *     enabled: boolean
- * }
- */
-export const SET_FOLLOW_ME = 'SET_FOLLOW_ME';
-
-/**
- * The type of (redux) action which updates the current known status of the
- * Follow Me feature that is used only by the recorder.
- *
- * {
- *     type: SET_FOLLOW_ME_RECORDER,
- *     enabled: boolean
- * }
- */
-export const SET_FOLLOW_ME_RECORDER = 'SET_FOLLOW_ME_RECORDER';
 
 /**
  * The type of (redux) action which sets the obfuscated room name.

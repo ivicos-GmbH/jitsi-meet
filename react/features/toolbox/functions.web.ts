@@ -1,13 +1,14 @@
 import { IReduxState } from '../app/types';
-import { hasAvailableDevices } from '../base/devices/functions';
+import { hasAvailableDevices } from '../base/devices/functions.web';
 import { MEET_FEATURES } from '../base/jwt/constants';
 import { isJwtFeatureEnabled } from '../base/jwt/functions';
 import { IGUMPendingState } from '../base/media/types';
 import { isScreenMediaShared } from '../screen-share/functions';
 import { isWhiteboardVisible } from '../whiteboard/functions';
 
-import { MAIN_TOOLBAR_BUTTONS_PRIORITY, TOOLBAR_TIMEOUT } from './constants';
-import { IMainToolbarButtonThresholds, IToolboxButton, NOTIFY_CLICK_MODE } from './types';
+import { DEFAULT_REDUCED_UI_MAIN_TOOLBAR_BUTTONS, MAIN_TOOLBAR_BUTTONS_PRIORITY, TOOLBAR_TIMEOUT } from './constants';
+import { isButtonEnabled } from './functions.any';
+import { IGetVisibleButtonsForReducedUIParams, IGetVisibleButtonsParams, IToolboxButton, NOTIFY_CLICK_MODE } from './types';
 
 export * from './functions.any';
 
@@ -20,19 +21,6 @@ export function getToolboxHeight() {
     const toolbox = document.getElementById('new-toolbox');
 
     return toolbox?.clientHeight || 0;
-}
-
-/**
- * Checks if the specified button is enabled.
- *
- * @param {string} buttonName - The name of the button. See {@link interfaceConfig}.
- * @param {Object|Array<string>} state - The redux state or the array with the enabled buttons.
- * @returns {boolean} - True if the button is enabled and false otherwise.
- */
-export function isButtonEnabled(buttonName: string, state: IReduxState | Array<string>) {
-    const buttons = Array.isArray(state) ? state : state['features/toolbox'].toolbarButtons || [];
-
-    return buttons.includes(buttonName);
 }
 
 /**
@@ -85,7 +73,7 @@ export function isAudioSettingsButtonDisabled(state: IReduxState) {
 export function isDesktopShareButtonDisabled(state: IReduxState) {
     const { muted, unmuteBlocked } = state['features/base/media'].video;
     const videoOrShareInProgress = !muted || isScreenMediaShared(state);
-    const enabledInJwt = isJwtFeatureEnabled(state, MEET_FEATURES.SCREEN_SHARING, true, true);
+    const enabledInJwt = isJwtFeatureEnabled(state, MEET_FEATURES.SCREEN_SHARING, true);
 
     return !enabledInJwt || (unmuteBlocked && !videoOrShareInProgress);
 }
@@ -126,26 +114,6 @@ export function showOverflowDrawer(state: IReduxState) {
 }
 
 /**
- * Returns true if the overflow menu button is displayed and false otherwise.
- *
- * @param {IReduxState} state - The state from the Redux store.
- * @returns {boolean} - True if the overflow menu button is displayed and false otherwise.
- */
-export function showOverflowMenu(state: IReduxState) {
-    return state['features/toolbox'].overflowMenuVisible;
-}
-
-/**
- * Indicates whether the toolbox is enabled or not.
- *
- * @param {IReduxState} state - The state from the Redux store.
- * @returns {boolean}
- */
-export function isToolboxEnabled(state: IReduxState) {
-    return state['features/toolbox'].enabled;
-}
-
-/**
  * Returns the toolbar timeout from config or the default value.
  *
  * @param {IReduxState} state - The state from the Redux store.
@@ -176,15 +144,6 @@ function setButtonsNotifyClickMode(buttons: Object, buttonsWithNotifyClick: Map<
     });
 }
 
-interface IGetVisibleButtonsParams {
-    allButtons: { [key: string]: IToolboxButton; };
-    buttonsWithNotifyClick: Map<string, NOTIFY_CLICK_MODE>;
-    clientWidth: number;
-    jwtDisabledButtons: string[];
-    mainToolbarButtonsThresholds: IMainToolbarButtonThresholds;
-    toolbarButtons: string[];
-}
-
 /**
  * Returns all buttons that need to be rendered.
  *
@@ -202,7 +161,7 @@ export function getVisibleButtons({
     setButtonsNotifyClickMode(allButtons, buttonsWithNotifyClick);
 
     const filteredButtons = Object.keys(allButtons).filter(key =>
-        typeof key !== 'undefined' // filter invalid buttons that may be comming from config.mainToolbarButtons
+        typeof key !== 'undefined' // filter invalid buttons that may be coming from config.mainToolbarButtons
         // override
         && !jwtDisabledButtons.includes(key)
         && isButtonEnabled(key, toolbarButtons));
@@ -234,9 +193,46 @@ export function getVisibleButtons({
         button && mainButtonsKeys.push(button);
     }
 
+    const mainMenuButtons = mainButtonsKeys.map(key => allButtons[key]);
+
     return {
-        mainMenuButtons: mainButtonsKeys.map(key => allButtons[key]),
+        mainMenuButtons,
         overflowMenuButtons
+    };
+}
+
+/**
+ * Returns buttons that need to be rendered for reduced UI mode.
+ *
+ * @param {IGetVisibleButtonsForReducedUIParams} params - The parameters needed to extract the visible buttons.
+ * @returns {Object} - The visible buttons for reduced ui.
+ */
+export function getVisibleButtonsForReducedUI({
+    allButtons,
+    buttonsWithNotifyClick,
+    jwtDisabledButtons,
+    reducedUImainToolbarButtons
+}: IGetVisibleButtonsForReducedUIParams) {
+    setButtonsNotifyClickMode(allButtons, buttonsWithNotifyClick);
+
+    if (!Array.isArray(reducedUImainToolbarButtons) || reducedUImainToolbarButtons.length === 0) {
+        const defaultButtons = DEFAULT_REDUCED_UI_MAIN_TOOLBAR_BUTTONS.map(key => allButtons[key]);
+
+        return {
+            mainMenuButtons: defaultButtons
+        };
+    }
+
+    const filteredButtons = reducedUImainToolbarButtons.filter(key =>
+        typeof key !== 'undefined'
+        && !jwtDisabledButtons.includes(key)
+        && isButtonEnabled(key, reducedUImainToolbarButtons)
+        && allButtons[key]);
+
+    const mainMenuButtons = filteredButtons.map(key => allButtons[key]);
+
+    return {
+        mainMenuButtons
     };
 }
 
@@ -264,7 +260,7 @@ interface ICSSTransitionObject {
  * @returns {ICSSTransitionObject}
  */
 export function getTransitionParamsForElementsAboveToolbox(isToolbarVisible: boolean): ICSSTransitionObject {
-    // The transistion time and delay is different to account for the time when the toolbar is about to hide/show but
+    // The transition time and delay is different to account for the time when the toolbar is about to hide/show but
     // the elements don't have to move.
     return isToolbarVisible ? {
         duration: 0.15,

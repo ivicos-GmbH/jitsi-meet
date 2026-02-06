@@ -32,11 +32,6 @@ const languageDetector
             order
         });
 
-// Add the language detector which looks the language up in the config. Its
-// order has already been established above.
-// @ts-ignore
-// languageDetector.addDetector(customNavigatorDetector);
-
 // @ts-ignore
 languageDetector.addDetector(configLanguageDetector);
 

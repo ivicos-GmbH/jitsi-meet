@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
     SectionList as ReactNativeSectionList,
-    SafeAreaView,
     SectionListRenderItemInfo,
     ViewStyle
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Item, Section } from '../../types';
 
@@ -73,9 +73,10 @@ export default class SectionList extends Component<IProps> {
      * @inheritdoc
      * @returns {ReactElement}
      */
-    render() {
+    override render() {
         return (
             <SafeAreaView
+                edges = { [ 'left', 'right' ] }
                 style = { styles.container as ViewStyle } >
                 <ReactNativeSectionList
                     ListEmptyComponent = { this.props.ListEmptyComponent }
