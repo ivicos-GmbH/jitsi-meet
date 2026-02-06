@@ -355,7 +355,9 @@ module.exports = (_env, argv) => {
                 ...config.plugins,
                 ...getBundleAnalyzerPlugin(analyzeBundle, 'external_api')
             ],
-            performance: getPerformanceHints(perfHintOptions, 95 * 1024) },
+            performance: { hints: false } // Disabled because it's too large
+            // performance: getPerformanceHints(perfHintOptions, 95 * 1024) },
+        },
         { ...config,
             entry: {
                 'face-landmarks-worker': './react/features/face-landmarks/faceLandmarksWorker.ts'
