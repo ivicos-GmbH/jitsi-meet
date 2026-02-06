@@ -63,9 +63,7 @@ MiddlewareRegistry.register(store => next => action => {
         const allParticipantIds = [ localParticipantId, ...remoteParticipantIds ];
 
         allParticipantIds.sort((a, b) => a.localeCompare(b));
-
-        console.log('!!! All participant Ids ', allParticipantIds);
-        console.log('!!! Local participant Id ', localParticipantId);
+        logger.debug('Shared video owner candidates', { allParticipantIds, localParticipantId });
 
         return allParticipantIds[0].length > 0 && allParticipantIds[0];
     };
@@ -133,17 +131,6 @@ MiddlewareRegistry.register(store => next => action => {
 
                     dispatch(hideConfirmPlayingDialog());
 
-                    if (state['features/shared-video'].confirmShowVideo === false) {
-                        dispatch(showWarningNotification({
-                            titleKey: 'dialog.shareVideoLinkStopped',
-                            titleArguments: {
-                                name: getParticipantDisplayName(state, from)
-                            }
-                        }, NOTIFICATION_TIMEOUT_TYPE.LONG));
-                    }
-
-                    dispatch(hideConfirmPlayingDialog());
-
                     dispatch(participantLeft(value, conference, {
                         fakeParticipant: videoParticipant?.fakeParticipant
                     }));
@@ -171,7 +158,7 @@ MiddlewareRegistry.register(store => next => action => {
         const hasVideoOwnerLeft = action.participant.id === sharedVideoCurrentState.ownerId;
 
         if (conference && hasVideoOwnerLeft) {
-            const { 'disabled': deletedKey, ...newState } = { ...sharedVideoCurrentState };
+            const { disabled: _dropped, ...newState } = sharedVideoCurrentState as ISharedVideoState & { disabled?: boolean; };
             const isLocalParticipantNewVideoOwner = findNewVideoOwnerId(conference, localParticipantId) === localParticipantId;
 
             if (isLocalParticipantNewVideoOwner) {
