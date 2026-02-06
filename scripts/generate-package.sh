@@ -3,7 +3,7 @@ set -e
 
 echo 'Updating and installing the necessary packages'
 sudo apt-get update
-sudo apt-get install debhelper nodejs
+sudo apt-get install -y build-essential debhelper nodejs
 
 echo 'Packaging the repository into a debian package'
 mkdir -p artifacts/
