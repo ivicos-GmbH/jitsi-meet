@@ -137,7 +137,7 @@ class SharedVideo extends Component<IProps> {
      * @inheritdoc
      * @returns {React$Element}
      */
-    render() {
+    override render() {
         const { isEnabled, isOwner, isResizing } = this.props;
 
         if (!isEnabled) {
@@ -179,6 +179,8 @@ function _mapStateToProps(state: IReduxState) {
         isEnabled: isSharedVideoEnabled(state),
         isOwner: ownerId === localParticipant?.id,
         isResizing,
+        isVideoShared: !!videoUrl,
+        onStage: getLargeVideoParticipant(state)?.id === videoUrl,
         videoUrl
     };
 }
