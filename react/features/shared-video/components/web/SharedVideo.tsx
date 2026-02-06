@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// @ts-expect-error
 import Filmstrip from '../../../../../modules/UI/videolayout/Filmstrip';
 import { IReduxState } from '../../../app/types';
 import { getLocalParticipant } from '../../../base/participants/functions';
-import { FakeParticipant } from '../../../base/participants/types';
 import { getVerticalViewMaxWidth } from '../../../filmstrip/functions.web';
 import { getLargeVideoParticipant } from '../../../large-video/functions';
 import { getToolboxHeight } from '../../../toolbox/functions.web';
-import { isSharedVideoEnabled, isVideoPlaying } from '../../functions';
+import { isSharedVideoEnabled } from '../../functions';
 
 import VideoManager from './VideoManager';
 import YoutubeVideoManager from './YoutubeVideoManager';
